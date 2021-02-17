@@ -2,10 +2,10 @@
 // @name          Manganelo Tweaks (Chapter)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Auto next, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
+// @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0a
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -36,7 +36,6 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_btn_next: 'navi-change-chapter-btn-next a-h', // class to find the button next
             class_btn_previous: 'navi-change-chapter-btn-prev a-h', // class to find the button previous
             class_change_chapter: 'navi-change-chapter', // class to find the combo chapter
-            class_info: 'panel-chapter-info-top', // class to find the chapter name / title for the not working export
             class_img: 'container-chapter-reader', // class to find the pages (images)
             class_margin: 'server-cbb-content-margin' // // class to find the combo margin
         }
@@ -49,7 +48,6 @@ var CST_HOME = null,
     CST_CLASS_BTN_NEXT = null,
     CST_CLASS_BTN_PREVIOUS = null,
     CST_CLASS_CHANGE_CHAPTER = null,
-    CST_CLASS_INFO = null,
     CST_CLASS_IMG = null,
     CST_CLASS_MARGIN = null;
 
@@ -61,7 +59,6 @@ env.some(function(e){
         CST_CLASS_BTN_NEXT = e.class_btn_next;
         CST_CLASS_BTN_PREVIOUS = e.class_btn_previous;
         CST_CLASS_CHANGE_CHAPTER = e.class_change_chapter;
-        CST_CLASS_INFO = e.class_info;
         CST_CLASS_IMG = e.class_img;
         CST_CLASS_MARGIN = e.class_margin;
     }
@@ -75,8 +72,17 @@ var buttonNext = document.getElementsByClassName(CST_CLASS_BTN_NEXT)[0],
     head = document.getElementsByTagName('head')[0],
     images = document.getElementsByClassName(CST_CLASS_IMG)[0].getElementsByTagName('img'),
     timerStart = Date.now(),
-    title = document.getElementsByClassName(CST_CLASS_INFO)[0].firstElementChild.textContent,
     scroll = null;
+
+// Duplicate Chapter
+if ((buttonNext ? buttonNext.href : null) == window.location.href) {
+    console.warn('Duplicated chapter :(');
+    // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
+    let tmp = document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].options[document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].selectedIndex - 2];
+    if (buttonNext && tmp) {
+        buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+    }
+}
 
 // Menu
 function addStyles(css) {
@@ -284,10 +290,10 @@ function stopScrolling(){
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 function goNext(){
-    buttonNext.click();
+    window.location.replace(buttonNext.href);
 };
 function goPrevious(){
-    buttonPrevious.click();
+    window.location.replace(buttonPrevious.href);
 };
 
 document.addEventListener('keydown', event => {
