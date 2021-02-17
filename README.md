@@ -4,7 +4,7 @@
 
  My homemade Tampermonkey userscripts
 
-## Manganelo tweeks
+## Manganelo tweaks
 Inspire by:
 - [sm00nie](https://greasyfork.org/fr/users/165048-sm00nie)
 
