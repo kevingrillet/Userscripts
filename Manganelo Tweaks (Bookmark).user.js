@@ -2,10 +2,10 @@
 // @name          Manganelo Tweaks (Bookmark)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Export Bookmark (edited from https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
+// @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0a
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -23,27 +23,32 @@ var env = [
     {
         name: 'Manganelo', // Name
         match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
+        chapter_url: 'chapter_',
         class_blue: 'page-blue',
         class_bookmark: 'bookmark-item',
         class_bookmark_panel: 'panel-bookmark',
         class_btn: 'panel-breadcrumb',
         class_name: 'item-story-name',
         class_page: 'group-page',
-        class_title: 'item-title'
+        class_title: 'item-title',
+        class_user_notif: 'user-notification'
     }
 ];
 
 // Env consts
-var CST_CLASS_BLUE = null,
+var CST_CHAPTER_URL = null,
+    CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
-    CST_CLASS_TITLE = null;
+    CST_CLASS_TITLE = null,
+    CST_CLASS_USER_NOTIF = null;
 
 env.some(function(e){
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
+        CST_CHAPTER_URL = e.chapter_url;
         CST_CLASS_BLUE = e.class_blue;
         CST_CLASS_BOOKMARK = e.class_bookmark;
         CST_CLASS_BOOKMARK_PANEL = e.class_bookmark_panel;
@@ -51,6 +56,7 @@ env.some(function(e){
         CST_CLASS_NAME = e.class_name;
         CST_CLASS_PAGE = e.class_page;
         CST_CLASS_TITLE = e.class_title;
+        CST_CLASS_USER_NOTIF = e.class_user_notif;
     }
 });
 
@@ -87,6 +93,22 @@ document.addEventListener('keydown', event => {
     }
 });
 
+
+// Get
+function getUserNotif() {
+    let request = new XMLHttpRequest();
+    request.responseType = 'document';
+    request.open('GET', `https://${domain}/`);
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            document.getElementsByClassName(CST_CLASS_USER_NOTIF)[0].innerHTML = request.responseXML.getElementsByClassName(CST_CLASS_USER_NOTIF)[0].innerHTML;
+        }
+    };
+    request.send();
+}
+getUserNotif();
+
+// Export
 function deleteTemp() {
     if (document.getElementById('temp_data')) {
         document.getElementById('temp_data').remove();
@@ -149,13 +171,13 @@ function exportBookmark(){
                             current = bm[j].getElementsByClassName(CST_CLASS_TITLE)[1] ? bm[j].getElementsByClassName(CST_CLASS_TITLE)[1].getElementsByTagName('a')[0] : null;
 
                         toSave += bookmarkTitle.text;
-                        toSave += `;${lastViewed && current ? (current.href.split("/")[5].replace('chapter_','') - lastViewed.href.split("/")[5].replace('chapter_','')).toFixed(2).replace('.',',') : 'Not Found' }`;
+                        toSave += `;${lastViewed && current ? (current.href.split("/")[5].replace(CST_CHAPTER_URL,'') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'')).toFixed(2).replace('.',',') : 'Not Found' }`;
                         toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found' }`;
                         toSave += `;${lastViewed && current ? current.text : 'Not Found' }`;
                         toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found' }`;
                         //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[5].replace('chapter_','').replace('.',',') : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? current.href.split("/")[5].replace('chapter_','').replace('.',',') : 'Not Found' }`;
+                        //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+                        //toSave += `;${lastViewed && current ? current.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
                         toSave += ` \n`;
 
                     }
