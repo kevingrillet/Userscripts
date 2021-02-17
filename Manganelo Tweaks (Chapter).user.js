@@ -7,9 +7,9 @@
 // @license       GPL-3.0 License
 // @version       1.0
 
-// @homepageURL   https://github.com/kevingrillet
+// @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @updateURL     https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js
+// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js
 // @updateURL     https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/chapter/*/*
