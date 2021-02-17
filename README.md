@@ -11,19 +11,21 @@ Inspire by:
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
 ### Bookmark
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
+- Repair user-notification
 - Shortcut (Shift + E)
 
 I use it to order my bookmarks by number to read...
 
 ### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
+- Duplicate chapter
 - Load time (after JS is loaded, so it's mostly false, but indicate if images take .2s or 10s to load)
 - Margin [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
 - Max width [*](https://greasyfork.org/fr/scripts/408505-mangakakalot-image-max-width-height)
