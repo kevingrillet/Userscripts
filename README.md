@@ -4,29 +4,34 @@
 
  My homemade Tampermonkey userscripts
 
-## Manganelo tweeks
+## Manganelo tweaks
 Inspire by:
 - [sm00nie](https://greasyfork.org/fr/users/165048-sm00nie)
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
 ### Bookmark
+[![Manganelo tweaks (Bookmark)](https://img.shields.io/badge/Install.svg)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+
 Add some functions:
-- Add an export button 
+- Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
 - Shortcut (Shift + E)
 
 I use it to order my bookmarks by number to read...
 
 ### Chapter
+[![Manganelo tweaks (Chapter)](https://img.shields.io/badge/Install.svg)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+
 Add many functions:
 - Auto next (when scroll hit bottom)
 - Load time (after JS is loaded, so it's mostly false, but indicate if images take .2s or 10s to load)
-- Margin
+- Margin [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
+- Max width [*](https://greasyfork.org/fr/scripts/408505-mangakakalot-image-max-width-height)
+- Navigation: ←/A/Q (previous), →/D (previous),  B (bookmark page), H (home page) [*](https://greasyfork.org/fr/scripts/38268-left-right-arrow-key-navigation-for-manga-manhwa-manhua-sites)
 - Prerender
 - Reloading on error
-- Removes Add div
-- Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down)
-- Navigation: ←/A/Q (previous), →/D (previous),  B (bookmark page), H (home page)
+- Removes Add div [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
+- Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 
 ## WIP
 - Add other manga reader websites
