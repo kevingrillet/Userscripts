@@ -5,12 +5,12 @@
 // @description   Export Bookmark (edited from https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.0a
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js
-// @updateURL     https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js
+// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js
+// @updateURL     https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
