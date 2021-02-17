@@ -33,7 +33,7 @@ Add many functions:
 - Removes Add div [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
 - Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 
-## WIP
+### WIP
 - Add other manga reader websites
 - Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)
 - Export chapter?
