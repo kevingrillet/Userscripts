@@ -26,7 +26,7 @@ window.addEventListener('load', function () {
             if (Date.now() - new Date(document.querySelector('relative-time').date) > (days * 1000 * 60 * 60 * 24)) {
                 var elDiv = document.createElement("div");
                 elDiv.setAttribute('style','display: flex; height: 50px; width: 100%; background-color: tomato; color: white; font-size: 2rem; font-family: consolas; text-align: center;');
-                elDiv.innerHTML = '<p style="width: 100%">WARNING: This repo is prety old ;) </p>';
+                elDiv.innerHTML = '<p style="width: 100%">WARNING: This repo is pretty old ;) </p>';
                 document.querySelector('#js-repo-pjax-container').prepend(elDiv);
             }
             clearInterval(myInterval);
