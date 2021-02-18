@@ -45,7 +45,7 @@ Inspire by:
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
 ### Bookmark
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
@@ -55,7 +55,7 @@ Add some functions:
 I use it to order my bookmarks by number to read...
 
 ### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)

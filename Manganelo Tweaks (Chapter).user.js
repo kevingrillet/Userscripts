@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.2
+// @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -314,7 +314,7 @@ document.addEventListener('keydown', event => {
         window.location.replace(CST_HOME);
     }
     else if (event.code == 'KeyM') {
-        window.location.replace(document.querySelectorAll(':scope ' + CST_BREADCRUMB + ' a')[1].href);
+        window.location.replace(document.querySelectorAll(':scope ' + CST_CLASS_BREADCRUMB + ' a')[1].href);
     }
     else if (event.code == 'KeyE') {
     }

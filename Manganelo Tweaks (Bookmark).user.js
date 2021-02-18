@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.2
+// @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -24,6 +24,7 @@ var env = [
         name: 'Manganelo', // Name
         match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
         chapter_url: 'chapter_',
+        class_blue: 'page-blue',
         class_bookmark: 'bookmark-item',
         class_bookmark_panel: 'panel-bookmark',
         class_btn: 'panel-breadcrumb',
@@ -36,6 +37,7 @@ var env = [
 
 // Env consts
 var CST_CHAPTER_URL = null,
+    CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
@@ -47,6 +49,7 @@ var CST_CHAPTER_URL = null,
 env.some(function(e){
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_CHAPTER_URL = e.chapter_url;
+        CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
@@ -124,7 +127,7 @@ function exportBookmark(){
     deleteTemp();
 
     var elDivTemp = document.body.appendChild(document.createElement('div'));
-    elDivTemp.id = 'temp_data';    
+    elDivTemp.id = 'temp_data';
 
     var pageSuccess = 0,
         toSave = `${domain} Bookmark`;
@@ -140,7 +143,7 @@ function exportBookmark(){
     for(var i = 0; i < pageCount; i++) {
         // Prepare divs for info (useless but easier to debug)
         var elDivPage = elDivTemp.appendChild(document.createElement('div'));
-        elDivPage.id = `page${i+1}`;        
+        elDivPage.id = `page${i+1}`;
 
         let request = new XMLHttpRequest();
         request.responseType = 'document';
@@ -150,7 +153,8 @@ function exportBookmark(){
             if (request.status >= 200 && request.status < 400) {
                 pageSuccess++;
                 var resp = request.responseXML;
-                document.querySelector(`#page${i+1}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
+                var p = resp.querySelectorAll(':scope ' + CST_CLASS_PAGE + ' ' + CST_CLASS_BLUE)[1].text; // 0 is first, 1 is current, 2 is last
+                document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
             }
 
             // Last page is load, let's save
