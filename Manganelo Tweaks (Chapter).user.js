@@ -5,12 +5,12 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js
-// @updateURL     https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Manganelo%20Tweaks%20(Chapter).user.js
 
 // @match         *://manganelo.com/chapter/*/*
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
@@ -44,7 +44,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
 // Env consts.
 var CST_HOME = null,
     CST_BOOKMARK = null,
-    CST_BREADCRUMB = null,
+    CST_CLASS_BREADCRUMB = null,
     CST_CLASS_BTN_NEXT = null,
     CST_CLASS_BTN_PREVIOUS = null,
     CST_CLASS_CHANGE_CHAPTER = null,
@@ -55,22 +55,22 @@ env.some(function(e){
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_HOME = e.url_home;
         CST_BOOKMARK = e.url_bookmark;
-        CST_BREADCRUMB = e.class_breadcrumb;
-        CST_CLASS_BTN_NEXT = e.class_btn_next;
-        CST_CLASS_BTN_PREVIOUS = e.class_btn_previous;
-        CST_CLASS_CHANGE_CHAPTER = e.class_change_chapter;
-        CST_CLASS_IMG = e.class_img;
-        CST_CLASS_MARGIN = e.class_margin;
+        CST_CLASS_BREADCRUMB = '.' + e.class_breadcrumb.replace(' ', '.');
+        CST_CLASS_BTN_NEXT = '.' + e.class_btn_next.replace(' ', '.');
+        CST_CLASS_BTN_PREVIOUS = '.' + e.class_btn_previous.replace(' ', '.');
+        CST_CLASS_CHANGE_CHAPTER = '.' + e.class_change_chapter.replace(' ', '.');
+        CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
+        CST_CLASS_MARGIN = '.' + e.class_margin.replace(' ', '.');
     }
 });
 
 // Vars
-var buttonNext = document.getElementsByClassName(CST_CLASS_BTN_NEXT)[0],
-    buttonPrevious = document.getElementsByClassName(CST_CLASS_BTN_PREVIOUS)[0],
-    chapterMax = Number(document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].options[0].getAttribute('data-c')),
-    chapterCurrent = Number(document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].selectedOptions[0].getAttribute('data-c')),
-    head = document.getElementsByTagName('head')[0],
-    images = document.getElementsByClassName(CST_CLASS_IMG)[0].getElementsByTagName('img'),
+var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
+    buttonPrevious = document.querySelector(CST_CLASS_BTN_PREVIOUS),
+    chapterMax = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[0].getAttribute('data-c')),
+    chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
+    head = document.head,
+    images = document.querySelectorAll(':scope ' + CST_CLASS_IMG + ' img'),
     timerStart = Date.now(),
     scroll = null;
 
@@ -78,7 +78,7 @@ var buttonNext = document.getElementsByClassName(CST_CLASS_BTN_NEXT)[0],
 if ((buttonNext ? buttonNext.href : null) == window.location.href) {
     console.warn('Duplicated chapter :(');
     // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
-    let tmp = document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].options[document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].selectedIndex - 2];
+    let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
     if (buttonNext && tmp) {
         buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
     }
@@ -86,10 +86,9 @@ if ((buttonNext ? buttonNext.href : null) == window.location.href) {
 
 // Menu
 function addStyles(css) {
-    var style = document.createElement('style');
+    var style = head.appendChild(document.createElement('style'));
     style.type = 'text/css';
     style.innerHTML = css;
-    head.appendChild(style);
 }
 
 addStyles(`
@@ -104,12 +103,12 @@ addStyles(`
 #my_footer span { cursor: pointer; font-size: 1em; color: GhostWhite; }
 `);
 
-var elDiv = document.createElement('div');
+var elDiv = document.body.appendChild(document.createElement('div'));
 elDiv.id = 'my_footer';
 elDiv.innerHTML = `
   <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
   <span>
-    <a href="${document.getElementsByClassName(CST_BREADCRUMB)[0].getElementsByTagName('a')[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
+    <a href="${document.querySelectorAll(':scope ' + CST_CLASS_BREADCRUMB + ' a')[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
   </span>
   </br>
   <span class="home">
@@ -144,28 +143,27 @@ elDiv.innerHTML = `
     <i class="fas fa-fw fa-spinner fa-pulse"></i>
   </p>
 `;
-document.body.append(elDiv);
 
 if (chapterMax - chapterCurrent == 0) {
-    document.getElementsByClassName('chap')[0].style.color = 'PaleGreen';
+    document.querySelector('.chap').style.color = 'PaleGreen';
 }
-document.getElementsByClassName('goUp')[0].onclick = function() { window.scrollBy({top: 5 * -scrollValue,left: 0, behavior: 'smooth'}); };
-document.getElementsByClassName('goDown')[0].onclick = function() { window.scrollBy({top: 5 * scrollValue,left: 0, behavior: 'smooth'}); };
-document.getElementsByClassName('unzoom')[0].onclick = function() { unzoom(); };
-document.getElementsByClassName('zoom')[0].onclick = function() { zoom(); };
+document.querySelector('.goUp').onclick = function() { window.scrollBy({top: 5 * -scrollValue,left: 0, behavior: 'smooth'}); };
+document.querySelector('.goDown').onclick = function() { window.scrollBy({top: 5 * scrollValue,left: 0, behavior: 'smooth'}); };
+document.querySelector('.unzoom').onclick = function() { unzoom(); };
+document.querySelector('.zoom').onclick = function() { zoom(); };
 if (buttonPrevious){
-    document.getElementsByClassName('goPrevious')[0].firstElementChild.href = buttonPrevious.href;
-    document.getElementsByClassName('goPrevious')[0].firstElementChild.title = document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].options[document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].selectedIndex + 1].value + ' (←/A/Q)';
+    document.querySelector('.goPrevious').firstElementChild.href = buttonPrevious.href;
+    document.querySelector('.goPrevious').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex + 1].value + ' (←/A/Q)';
 }
 else {
-    document.getElementsByClassName('goPrevious')[0].style.color = 'Tomato';
+    document.querySelector('.goPrevious').style.color = 'Tomato';
 }
 if (buttonNext){
-    document.getElementsByClassName('goNext')[0].firstElementChild.href = buttonNext.href;
-    document.getElementsByClassName('goNext')[0].firstElementChild.title = document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].options[document.getElementsByClassName(CST_CLASS_CHANGE_CHAPTER)[0].selectedIndex - 1].value + ' (→/D)';
+    document.querySelector('.goNext').firstElementChild.href = buttonNext.href;
+    document.querySelector('.goNext').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 1].value + ' (→/D)';
 }
 else {
-    document.getElementsByClassName('goNext')[0].style.color = 'Tomato';
+    document.querySelector('.goNext').style.color = 'Tomato';
 }
 
 // Scroll things, Auto next & Prerender
@@ -189,10 +187,9 @@ window.onscroll = function(ev) {
     if (buttonNext !== undefined) {
         if (buttonNext.rel == 'nofollow') {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
-                let link = document.createElement('link');
+                let link = head.appendChild(document.createElement('link'));
                 link.setAttribute('rel', rel);
                 link.setAttribute('href', buttonNext.href);
-                head.appendChild(link);
                 buttonNext.setAttribute('rel', rel);
             }
         }
@@ -213,9 +210,8 @@ function reloadImage(pThis){
     }
 };
 
-var script = document.createElement('script');
+var script = head.appendChild(document.createElement('script'));
 script.appendChild(document.createTextNode(reloadImage));
-head.appendChild(script);
 
 function setReload() {
     for (let i of images) {
@@ -227,9 +223,9 @@ function setReload() {
 setReload();
 
 // Margins
-if (document.getElementsByClassName(CST_CLASS_MARGIN)[0].selectedIndex !== imagesMargin) {
+if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
     if (imagesMargin >= 0 && imagesMargin <= 10) {
-        document.getElementsByClassName(CST_CLASS_MARGIN)[0].selectedIndex = imagesMargin;
+        document.querySelector(CST_CLASS_MARGIN).selectedIndex = imagesMargin;
     }
     function setMargin(value) {
         for (let i of images) {
@@ -242,22 +238,22 @@ if (document.getElementsByClassName(CST_CLASS_MARGIN)[0].selectedIndex !== image
 // Max Width
 function setMaxWidth(value) {
     if (value <= 10) {
-        document.getElementsByClassName('unzoom')[0].onclick = null;
-        document.getElementsByClassName('unzoom')[0].style.color = 'Tomato';
-        document.getElementsByClassName('unzoom')[0].title = 'Min';
+        document.querySelector('.unzoom').onclick = null;
+        document.querySelector('.unzoom').style.color = 'Tomato';
+        document.querySelector('.unzoom').title = 'Min';
     } else {
-        document.getElementsByClassName('unzoom')[0].onclick = function() { unzoom(); };
-        document.getElementsByClassName('unzoom')[0].style.color = 'GhostWhite';
-        document.getElementsByClassName('unzoom')[0].title = (value - zoomW).toString() + '%';
+        document.querySelector('.unzoom').onclick = function() { unzoom(); };
+        document.querySelector('.unzoom').style.color = 'GhostWhite';
+        document.querySelector('.unzoom').title = (value - zoomW).toString() + '%';
     }
     if (value >= 100) {
-        document.getElementsByClassName('zoom')[0].onclick = null;
-        document.getElementsByClassName('zoom')[0].style.color = 'Tomato';
-        document.getElementsByClassName('zoom')[0].title = 'Max';
+        document.querySelector('.zoom').onclick = null;
+        document.querySelector('.zoom').style.color = 'Tomato';
+        document.querySelector('.zoom').title = 'Max';
     } else {
-        document.getElementsByClassName('zoom')[0].onclick = function() { zoom(); };
-        document.getElementsByClassName('zoom')[0].title = (value + zoomW).toString() + '%';
-        document.getElementsByClassName('zoom')[0].style.color = 'GhostWhite';
+        document.querySelector('.zoom').onclick = function() { zoom(); };
+        document.querySelector('.zoom').title = (value + zoomW).toString() + '%';
+        document.querySelector('.zoom').style.color = 'GhostWhite';
     }
     for (let i of images) {
         i.style.maxWidth = value + '%';
@@ -318,7 +314,7 @@ document.addEventListener('keydown', event => {
         window.location.replace(CST_HOME);
     }
     else if (event.code == 'KeyM') {
-        window.location.replace(document.getElementsByClassName(CST_BREADCRUMB)[0].getElementsByTagName('a')[1].href);
+        window.location.replace(document.querySelectorAll(':scope ' + CST_BREADCRUMB + ' a')[1].href);
     }
     else if (event.code == 'KeyE') {
     }
@@ -332,16 +328,16 @@ document.addEventListener('keyup', event => {
 
 window.addEventListener('load', function () {
     let loadTime = Date.now()-timerStart;
-    document.getElementsByClassName('load')[0].firstElementChild.remove();
-    document.getElementsByClassName('load')[0].textContent = loadTime.toFixed(0).toString() + 'ms';
-    document.getElementsByClassName('load')[0].title = 'Time until everything loaded';
+    document.querySelector('.load').firstElementChild.remove();
+    document.querySelector('.load').textContent = loadTime.toFixed(0).toString() + 'ms';
+    document.querySelector('.load').title = 'Time until everything loaded';
     if (loadTime > 1000) {
-        document.getElementsByClassName('load')[0].style.color = 'Tomato';
+        document.querySelector('.load').style.color = 'Tomato';
     }
     else if (loadTime > 200) {
-        document.getElementsByClassName('load')[0].style.color = 'PaleGoldenRod';
+        document.querySelector('.load').style.color = 'PaleGoldenRod';
     }
     else {
-        document.getElementsByClassName('load')[0].style.color = 'PaleGreen';
+        document.querySelector('.load').style.color = 'PaleGreen';
     }
 });
