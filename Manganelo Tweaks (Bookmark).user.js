@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.3
+// @version       1.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -153,17 +153,17 @@ function exportBookmark(){
             if (request.status >= 200 && request.status < 400) {
                 pageSuccess++;
                 var resp = request.responseXML;
-                var p = resp.querySelectorAll(':scope ' + CST_CLASS_PAGE + ' ' + CST_CLASS_BLUE)[1].text; // 0 is first, 1 is current, 2 is last
+                var p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
                 document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
             }
 
             // Last page is load, let's save
             if (pageSuccess == pageCount) {
-                var bm = document.querySelectorAll(':scope #temp_data ' + CST_CLASS_BOOKMARK);
+                var bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
                 for (var j = 0; j < bm.length; j++) {
                     var bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
                     if (bookmarkTitle) {
-                        var lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(':scope ' + CST_CLASS_TITLE + ' a') : null,
+                        var lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
                             current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
                         toSave += bookmarkTitle.text;
