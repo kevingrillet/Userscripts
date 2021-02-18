@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.3
+// @version       1.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -70,7 +70,7 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterMax = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[0].getAttribute('data-c')),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
-    images = document.querySelectorAll(':scope ' + CST_CLASS_IMG + ' img'),
+    images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
     timerStart = Date.now(),
     scroll = null;
 
@@ -108,7 +108,7 @@ elDiv.id = 'my_footer';
 elDiv.innerHTML = `
   <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
   <span>
-    <a href="${document.querySelectorAll(':scope ' + CST_CLASS_BREADCRUMB + ' a')[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
+    <a href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
   </span>
   </br>
   <span class="home">
@@ -172,19 +172,19 @@ window.onscroll = function(ev) {
     if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .99) {
         setTimeout(function() {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .99) {
-                if (buttonNext !== undefined) {
+                if (buttonNext && buttonNext !== undefined) {
                     goNext();
                 }
                 else {
                     setTimeout(function() {
-                        window.location.replace(CST_HOME + CST_BOOKMARK);
+                        window.location.href = CST_HOME + CST_BOOKMARK;
                     }, autoNextBookmarkSpeed); // wait 4 secs
                 }
             }
         }, autoNextSpeed); // wait 1 secs
     }
     // Prerender
-    if (buttonNext !== undefined) {
+    if (buttonNext && buttonNext !== undefined) {
         if (buttonNext.rel == 'nofollow') {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
                 let link = head.appendChild(document.createElement('link'));
@@ -286,10 +286,14 @@ function stopScrolling(){
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 function goNext(){
-    window.location.replace(buttonNext.href);
+    if (buttonNext) {
+        window.location.href = buttonNext.href;
+    }
 };
 function goPrevious(){
-    window.location.replace(buttonPrevious.href);
+    if (buttonPrevious) {
+        window.location.href = buttonPrevious.href;
+    }
 };
 
 document.addEventListener('keydown', event => {
@@ -308,13 +312,13 @@ document.addEventListener('keydown', event => {
         startScrolling(scrollValue);
     }
     else if (event.code == 'KeyB') {
-        window.location.replace(CST_HOME + CST_BOOKMARK);
+        window.location.href = CST_HOME + CST_BOOKMARK;
     }
     else if (event.code == 'KeyH') {
-        window.location.replace(CST_HOME);
+        window.location.href = CST_HOME;
     }
     else if (event.code == 'KeyM') {
-        window.location.replace(document.querySelectorAll(':scope ' + CST_CLASS_BREADCRUMB + ' a')[1].href);
+        window.location.href = document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href;
     }
     else if (event.code == 'KeyE') {
     }
