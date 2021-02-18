@@ -1,17 +1,39 @@
 # Userscripts
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?logo=gnu)](https://www.gnu.org/licenses/gpl-3.0)
 [![Tampermonkey, v4.11](https://img.shields.io/badge/Tampermonkey-v4.11-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
+[![Google Chrome, v88 min](https://img.shields.io/badge/Chrome->v88-blue?logo=tampermonkey)](https://www.google.com/intl/fr_fr/chrome/)
 
- My homemade Tampermonkey userscripts
+ My homemade Tampermonkey userscripts.
+
+ ## Summary
+ - [Amazon][#Amazon-tweaks]
+ - [Github](#Github)
+ - [Google](#Google)
+ - [League of Legends](#League-of-Legends)
+ - [Manganelo](#Manganelo)
+ - [Youtube](#Youtube)
+
+## Github
+### Inactive
+[![Github - Inactive](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
+
+Add warning to to repos without updates for more than 1 year.
+
+## Google
+### Search Ad Remover
+[![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
+
+Remove the add at the beginig of some searches.
 
 ## Manganelo tweaks
 Inspire by:
+- [fuzetsu](https://github.com/fuzetsu/manga-loader)
 - [sm00nie](https://greasyfork.org/fr/users/165048-sm00nie)
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
 ### Bookmark
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
@@ -21,7 +43,7 @@ Add some functions:
 I use it to order my bookmarks by number to read...
 
 ### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -35,8 +57,8 @@ Add many functions:
 - Removes Add div [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
 - Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 
-### WIP
-- Add other manga reader websites
+### ToDo
+- Add other manga reader websites (atm i only read here...)
 - Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)
 - Export chapter?
 
@@ -143,3 +165,89 @@ Add many functions:
 ```
 
 </details>
+
+- Loading bar (for % of images loaded?)
+
+<details>
+  <summary>State of the Art</summary>
+
+  Not working atm :sob:
+  
+  ```Javascript
+    var elDivLoading = document.createElement('div');
+    elDivLoading.id = 'my_loading';
+    elDivLoading.innerHTML = `
+    <div id="success"></div>
+    <div id="error"></div>
+    `;
+    document.body.append(elDivLoading);
+
+    function imageIsLoad(){
+        imgSuccess++;
+        document.getElementById('my_loading').getElementById('success').style.width = images.length / imgSuccess + "%";
+        if ((imgSuccess + imgError) >= images.length) {
+            document.getElementById('my_loading').style.opacity = 0;
+        }
+    }
+
+    // Reloading on errors
+    function reloadImage(pThis){
+        if ( pThis && pThis.src) {
+            pThis.setAttribute('try', pThis.hasAttribute('try') ? Number(pThis.getAttribute('try')) + 1 : 1);
+            if (Number(pThis.getAttribute('try')) == 1) {
+                imgError++;
+                document.getElementById('my_loading').getElementById('error').style.width = images.length / imgError + "%";
+                if ((imgSuccess + imgError) >= images.length) {
+                    document.getElementById('my_loading').style.opacity = 0;
+                }
+            }
+            if (Number(pThis.getAttribute('try')) > 5) {
+                console.error('Failed to load: ' + pThis.src);
+                pThis.removeAttribute('onerror');
+            } else {
+                console.warn('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
+                pThis.src = pThis.src;
+            }
+        }
+    };
+
+    var script = document.createElement('script');
+    script.appendChild(document.createTextNode(`
+    var imgSuccess = 0, imgError = 0, images = document.getElementsByClassName('${CST_CLASS_IMG}')[0].getElementsByTagName('img'),images
+    ${imageIsLoad}
+    ${reloadImage}
+    `));
+    head.appendChild(script);
+
+    function setSuccess() {
+        for (let i of images) {
+            if ( i && i.src) {
+                i.setAttribute('load','imageIsLoad();');
+            }
+        };
+    }
+    setSuccess();
+
+    function setReload() {
+        for (let i of images) {
+            if ( i && i.src) {
+                i.setAttribute('onerror','reloadImage(this);');
+            }
+        };
+    }
+    setReload();
+```
+
+</details>
+
+## YouTube
+### Auto Confirmer
+[![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
+
+Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
+**Need to be the active tab.**
+
+### Downloader (Yout.com)
+[![YouTube - Downloader](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+
+Add button near subscribe to go to Yout.com to download the video/mp3.
