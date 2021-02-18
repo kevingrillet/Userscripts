@@ -6,7 +6,7 @@
  My homemade Tampermonkey userscripts.
 
  ## Summary
- - [Amazon][#Amazon-tweaks]
+ - [Amazon](#Amazon-tweaks)
  - [Github](#Github)
  - [Google](#Google)
  - [League of Legends](#League-of-Legends)
@@ -21,9 +21,9 @@
 
 ## Github
 ### Inactive
-[![Github - Inactive](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
+[![Github - Inactive](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
 
-Add warning to to repos without updates for more than 1 year.
+Add warning to to repos without updates for more than 1/2 year.
 
 ## Google
 ### Search Ad Remover
@@ -33,7 +33,7 @@ Remove the add at the beginig of some searches.
 
 ## League Of Legends
 ### WIP - League Of Fitness
-[![League Of Fitness](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
+[![League Of Fitness](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
@@ -45,7 +45,7 @@ Inspire by:
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
 ### Bookmark
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
@@ -55,7 +55,7 @@ Add some functions:
 I use it to order my bookmarks by number to read...
 
 ### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -260,6 +260,6 @@ Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pop
 **Need to be the active tab.**
 
 ### Downloader (Yout.com)
-[![YouTube - Downloader](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+[![YouTube - Downloader](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.
