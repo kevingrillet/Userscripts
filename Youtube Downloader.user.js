@@ -5,7 +5,7 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -17,21 +17,21 @@
 // @run-at        document-end
 // ==/UserScript==
 
-var CST_ID_SUBSCRIBE = '#subscribe-button';
+var CST_ID_METACONTENT = '#meta-contents #subscribe-button ytd-subscribe-button-renderer';
 
 // Menu
 function addStyles(css) {
-    var style = head.appendChild(document.createElement('style'));
+    var style = document.head.appendChild(document.createElement('style'));
     style.type = 'text/css';
     style.innerHTML = css;
 }
 
 addStyles(`
 #my_dl { cursor: pointer; float: right; }
-#my_dl span { font-size: 1em; color: GhostWhite; }
+#my_dl span { font-size: 3em; color: GhostWhite; }
 `);
 
-var elDiv = document.querySelector(CST_ID_SUBSCRIBE).appendChild(document.createElement('div'));
+var elDiv = document.createElement('div');
 elDiv.id = 'my_dl';
 elDiv.innerHTML = `
   <span class="dl" title="Download">
@@ -39,10 +39,19 @@ elDiv.innerHTML = `
   </span>
 `;
 
-document.querySelector('.export').onclick = function() { launchDl(); };
-
 function launchDl(){
     if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
         window.open(window.location.href.replace('youtube.com', 'yout.com'), "_blank");
-    }    
+    }
 }
+
+window.addEventListener('load', function () {
+    var myInterval = setInterval(function() {
+        if (document.querySelector(`:scope ${CST_ID_METACONTENT}`)) {
+            document.querySelector(`:scope ${CST_ID_METACONTENT}`).append(elDiv);
+            document.querySelector('.dl').onclick = function() { launchDl(); };
+            clearInterval(myInterval);
+            myInterval = null;
+        }
+    }, .5 * 1000);
+});
