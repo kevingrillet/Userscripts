@@ -33,7 +33,7 @@ Remove the add at the beginig of some searches.
 
 ## League Of Legends
 ### WIP - League Of Fitness
-[![League Of Fitness](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
+[![League Of Fitness](https://img.shields.io/badge/Install-0.2-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 

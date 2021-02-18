@@ -5,7 +5,7 @@
 // @description   https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -115,13 +115,13 @@ function upd(doc){
 
     var elDiv = document.querySelector('.game-header').appendChild(document.createElement('div'));
     elDiv.classList.add('content-border');
-    elDiv.style='margin-top: 0px; width: 100%; font-family: consolas;'
+    elDiv.style='margin-top: 0; border-top: 0; padding-top: 0; width: 100%; font-family: consolas;'
     elDiv.innerHTML = `
-  <div class="white-stone" style="display: flex;">
-    <h2>League Of Fitness</h2>
-    <span id="pu" style="margin-left: 10%;"></span>
-    <span id="su" style="margin-left: 10%; margin-right: 10%"></span>
-    <span id="s"></span>
+  <div class="white-stone" style="display: flex; width: 100%;">
+    <h2 style="flex: 1;">League Of Fitness</h2>
+    <span id="pu" style="flex: 1;"></span>
+    <span id="su" style="flex: 1;"></span>
+    <span id="s" style="flex: 1;"></span>
   </span>
 `;
 
