@@ -5,7 +5,7 @@
 // @description   https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -118,7 +118,7 @@ function upd(doc){
     elDiv.style='margin-top: 0; border-top: 0; padding-top: 0; width: 100%; font-family: consolas;'
     elDiv.innerHTML = `
   <div class="white-stone" style="display: flex; width: 100%;">
-    <h2 style="flex: 1;">League Of Fitness</h2>
+    <h4 style="flex: 1;">League Of Fitness</h4>
     <span id="pu" style="flex: 1;"></span>
     <span id="su" style="flex: 1;"></span>
     <span id="s" style="flex: 1;"></span>
