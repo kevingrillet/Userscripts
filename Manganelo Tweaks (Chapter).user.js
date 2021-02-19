@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.4
+// @version       1.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
