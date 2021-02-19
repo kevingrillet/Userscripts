@@ -55,7 +55,7 @@ Add some functions:
 I use it to order my bookmarks by number to read...
 
 ### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.5-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)

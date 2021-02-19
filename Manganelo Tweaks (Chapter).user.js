@@ -169,15 +169,15 @@ else {
 // Scroll things, Auto next & Prerender
 window.onscroll = function(ev) {
     // Auto next when scroll to the bottom
-    if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .99) {
+    if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
         setTimeout(function() {
-            if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .99) {
+            if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
                 if (buttonNext && buttonNext !== undefined) {
                     goNext();
                 }
                 else {
                     setTimeout(function() {
-                        window.location.href = CST_HOME + CST_BOOKMARK;
+                        window.location.assign(CST_HOME + CST_BOOKMARK);
                     }, autoNextBookmarkSpeed); // wait 4 secs
                 }
             }
@@ -287,12 +287,12 @@ function stopScrolling(){
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 function goNext(){
     if (buttonNext) {
-        window.location.href = buttonNext.href;
+        window.location.assign(buttonNext.href);
     }
 };
 function goPrevious(){
     if (buttonPrevious) {
-        window.location.href = buttonPrevious.href;
+        window.location.assign(buttonPrevious.href);
     }
 };
 
@@ -312,13 +312,13 @@ document.addEventListener('keydown', event => {
         startScrolling(scrollValue);
     }
     else if (event.code == 'KeyB') {
-        window.location.href = CST_HOME + CST_BOOKMARK;
+        window.location.assign(CST_HOME + CST_BOOKMARK);
     }
     else if (event.code == 'KeyH') {
-        window.location.href = CST_HOME;
+        window.location.assign(CST_HOME);
     }
     else if (event.code == 'KeyM') {
-        window.location.href = document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href;
+        window.location.assign(document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href);
     }
     else if (event.code == 'KeyE') {
     }
