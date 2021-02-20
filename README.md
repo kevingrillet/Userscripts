@@ -16,9 +16,9 @@
 
 ## Amazon tweaks
 ### ToDo - UI
-[![Amazon tweaks - UI](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20tweaks%20(UI).user.js)
+[![Amazon tweaks - UI](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(UI).user.js)
 ### WIP - Wishlist
-[![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20tweaks%20(Wishlist).user.js)
+[![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 ## Bing
 ### To Google
