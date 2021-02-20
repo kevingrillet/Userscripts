@@ -2,10 +2,10 @@
 // @name          Bing to Google
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add button on search to go search on Google ;) (or auto)
+// @description   Redirect the search to google
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -20,4 +20,4 @@
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-window.location.href.assign("https://google.com/search?"+document.URL.match(/q\=[^&]*/));
+window.location.assign("https://google.com/search?"+document.URL.match(/q\=[^&]*/));
