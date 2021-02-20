@@ -5,7 +5,7 @@
 // @description   Add banner to innactive github
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -16,10 +16,16 @@
 // @run-at        document-end
 // ==/UserScript==
 
-// Can be edited
+
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
 var days = 365/2;
 
-// Script
+
+// **************************************************
+// **********         S C R I P T          **********
+// **************************************************
 window.addEventListener('load', function () {
     var myInterval = setInterval(function() {
         if (document.querySelector('relative-time')) {
