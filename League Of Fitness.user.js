@@ -5,7 +5,7 @@
 // @description   https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -16,6 +16,19 @@
 // @run-at        document-end
 // ==/UserScript==
 
+
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
+// KI, DE, AS, VI, DEF, TU, IN,  BA,  DR, RI, ETU, EIN, EBA, EDR, ERI
+var pu = [.5, 1, 0, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1.5, 5], // Push ups
+    su = [ 0, 0, 1, 6, 10, 0, 0, 0, 0, 0, 0, 2, 4.5, 0, 0], // Sit Ups
+    s = [0, 0, 0, 12, 16, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0]; // Squats
+
+
+// **************************************************
+// **********      V A R I A B L E S       **********
+// **************************************************
 const KILL = 0,
       DEATH = 1,
       ASSIST = 2,
@@ -40,13 +53,12 @@ const KILL = 0,
 
 var fpu = 0,
     fsu = 0,
-    fs = 0,
-    // KI, DE, AS, VI, DEF, TU, IN,  BA,  DR, RI, ETU, EIN, EBA, EDR, ERI
-    pu = [.5, 1, 0, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1.5, 5], // Push ups
-    su = [ 0, 0, 1, 6, 10, 0, 0, 0, 0, 0, 0, 2, 4.5, 0, 0], // Sit Ups
-    s = [0, 0, 0, 12, 16, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0]; // Squats
+    fs = 0;
 
-// Let's gooo
+
+// **************************************************
+// **********         S C R I P T          **********
+// **************************************************
 function fitness(doc) {
     var fpu = fsu = fs = 0,
         // KI, DE, AS, VI, DEF, TU, IN, BA, DR, RI, ETU, EIN, EBA, EDR, ERI
@@ -106,12 +118,7 @@ function fitness(doc) {
         fs += s[index] * data[index];
     }
 
-    return [fpu, fsu, fs];
-};
-
-// Récupère le dom et tente de faire l'update
-function upd(doc){
-    var fit = fitness(doc);
+    var fit = [fpu, fsu, fs];
 
     var elDiv = document.querySelector('.game-header').appendChild(document.createElement('div'));
     elDiv.classList.add('content-border');
@@ -128,12 +135,11 @@ function upd(doc){
     document.querySelector("#pu").innerHTML = 'Push-ups: ' + fit[0];
     document.querySelector("#su").innerHTML = 'Sit-ups: ' + fit[1];
     document.querySelector("#s").innerHTML = 'Squats: ' + fit[2];
-}
+};
 
-// Listener - La page est chargée, on commence le traitement.
 var myInterval = setInterval(function() {
     if (document.querySelector('.scoreboard')) {
-        upd(document.body);
+        fitness(document.body);
         clearInterval(myInterval);
         myInterval = null;
     }
