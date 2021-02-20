@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.4
+// @version       1.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -18,29 +18,42 @@
 // @run-at        document-end
 // ==/UserScript==
 
-// Can be edited
-var env = [
-    {
-        name: 'Manganelo', // Name
-        match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
-        chapter_url: 'chapter_',
-        class_blue: 'page-blue',
-        class_bookmark: 'bookmark-item',
-        class_bookmark_panel: 'panel-bookmark',
-        class_btn: 'panel-breadcrumb',
-        class_name: 'item-story-name',
-        class_page: 'group-page',
-        class_title: 'item-title',
-        class_user_notif: 'user-notification'
-    }
-];
 
-// Env consts
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
+var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
+    env = [
+        {
+            name: 'Manganelo', // Name
+            match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
+            chapter_url: 'chapter_', // to remove chapter from link to do proper count
+            class_blue: 'page-blue', // class to find active page
+            class_bookmark: 'bookmark-item', // class bookmark
+            class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
+            class_btn: 'panel-breadcrumb', // class to add icon
+            class_container_left: 'container-main-left', // class container bookmark
+            class_container_right: 'container-main-right', // class container popular / by genre
+            class_img: 'img-loading', // class to get image cover
+            class_name: 'item-story-name', // class manga title
+            class_page: 'group-page', // class div pages
+            class_title: 'item-title', // class for Viewed / Current row
+            class_user_notif: 'user-notification' // class to copy number of notifs from home page
+        }
+    ];
+
+
+// **************************************************
+// **********      V A R I A B L E S       **********
+// **************************************************
 var CST_CHAPTER_URL = null,
     CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
+    CST_CLASS_CONTAINER_LEFT = null,
+    CST_CLASS_CONTAINER_RIGHT = null,
+    CST_CLASS_IMG = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
     CST_CLASS_TITLE = null,
@@ -53,6 +66,9 @@ env.some(function(e){
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
+        CST_CLASS_CONTAINER_LEFT = '.' + e.class_container_left.replace(' ', '.');
+        CST_CLASS_CONTAINER_RIGHT = '.' + e.class_container_right.replace(' ', '.');
+        CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
         CST_CLASS_NAME = '.' + e.class_name.replace(' ', '.');
         CST_CLASS_PAGE = '.' + e.class_page.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
@@ -64,7 +80,11 @@ var domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE).lastElementChild.text.replace(/\D+/g, ''));
 
-// Menu
+
+// **************************************************
+// **********           M E N U            **********
+// **************************************************
+// require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
     var style = head.appendChild(document.createElement('style'));
     style.type = 'text/css';
@@ -82,39 +102,42 @@ elDiv.innerHTML = `
   <span class="export" title="Export (Shift + E)">
     <a><i class="fas fa-fw fa-file-download" ></i></a>
   </span>
+  <span class="sort" title="Sort (Shift + S)">
+    <a><i class="fas fa-fw fa-minus-square" ></i></a>
+  </span>
 `;
 
-document.querySelector('.export').onclick = function() { exportBookmark(); };
 
+// **************************************************
+// **********       O N   C L I C K        **********
+// **************************************************
+document.querySelector('.export').onclick = function() { exportBookmark(); };
+document.querySelector('.sort').onclick = function() { letsSort(); };
+
+
+// **************************************************
+// **********       L I S T E N E R        **********
+// **************************************************
 document.addEventListener('keydown', event => {
     if (event.code == 'KeyE' && event.shiftKey) {
         exportBookmark();
     }
+    else if (event.code == 'KeyS' && event.shiftKey) {
+        letsSort();
+    }
 });
 
 
-// Get
-function getUserNotif() {
-    let request = new XMLHttpRequest();
-    request.responseType = 'document';
-    request.open('GET', `https://${domain}/`);
-    request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-            document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = request.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
-        }
-    };
-    request.send();
-}
-getUserNotif();
-
-// Export
+// **************************************************
+// **********         E X P O R T          **********
+// **************************************************
+// require: https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 function deleteTemp() {
     if (document.querySelector('#temp_data')) {
         document.querySelector('#temp_data').remove();
     }
 }
 
-// require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 function saveFile(saveData) {
     let d = new Date(),
         time = d.getFullYear() + '.' + ('0' + parseInt(d.getMonth()+1)).slice(-2) + '.' + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + '.' + ('0' + d.getMinutes()).slice(-2),
@@ -175,7 +198,6 @@ function exportBookmark(){
                         //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
                         //toSave += `;${lastViewed && current ? current.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
                         toSave += ` \n`;
-
                     }
                 }
                 saveFile(toSave);
@@ -184,5 +206,129 @@ function exportBookmark(){
         };
         request.send();
     }
-
 }
+
+
+// **************************************************
+// **********     M O V E   R I G H T      **********
+// **************************************************
+function moveRight() {
+    document.querySelector(CST_CLASS_CONTAINER_LEFT).style.width = '100%';
+    document.querySelector(CST_CLASS_CONTAINER_RIGHT).style.width = '100%';
+}
+if (moveContainerRight) {
+    moveRight();
+}
+
+
+// **************************************************
+// **********           S O R T            **********
+// **************************************************
+function letsSort() {
+    var bm = document.querySelectorAll(CST_CLASS_BOOKMARK),
+        elDiv = document.querySelector(CST_CLASS_BOOKMARK_PANEL).appendChild(document.createElement('div')),
+        elTable = elDiv.appendChild(document.createElement('table')),
+        elThead = elTable.appendChild(document.createElement('thead')),
+        elTbody = elTable.appendChild(document.createElement('tbody'));
+
+    elTable.id = 'my_table';
+    addStyles(`
+#my_table {
+	color: Silver;
+    width: 100%;
+}
+#my_table a{
+	color: #079eda;
+}
+#my_footer a:link, #my_footer a:visited, #my_footer a:hover, #my_footer a:active {
+    text-decoration: underline;
+}
+#my_table img {
+    margin-right: 0 !important;
+}
+#my_table th, #my_table td {
+    border-bottom: 1px solid #ddd;5t
+    padding: 15px;
+    vertical-align : middle;
+}
+#my_table th {
+    padding: 15px;
+	background-color: #FF7D47;
+	color: black;
+	text-transform: uppercase;
+	font-weight: bolder;
+}
+#my_table tr {
+	background-color: #323232;
+}
+#my_table tbody tr:nth-child(even) {
+	background-color: #282828;
+}
+#my_table tbody tr:hover {
+	background-color: #656565;
+}
+`);
+
+    elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th></tr>';
+
+    for (var j = 0; j < bm.length; j++) {
+        var bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME);
+        if (bookmarkTitle) {
+            var elTr = document.createElement('tr'),
+                lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
+                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+
+            elTr.innerHTML = `<td>${lastViewed && current ? (current.href.split("/")[5].replace(CST_CHAPTER_URL,'') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'')).toFixed(2).toString() : 'Not Found' }</td>
+						<td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
+						<td>${bookmarkTitle.text}</td>
+						<td><a href="${lastViewed && current ? lastViewed.href : 'Not Found' }">${lastViewed && current ? lastViewed.text : 'Not Found' }</a></td>`;
+
+            elTbody.appendChild(elTr);
+        }
+    }
+
+    document.querySelectorAll(CST_CLASS_BOOKMARK).forEach(e=>e.remove());
+    elDiv.classList.add(CST_CLASS_BOOKMARK.replace('.',''));
+
+    sortTable();
+}
+
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.querySelector('#my_table');
+    switching = true;
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+};
+
+
+// **************************************************
+// **********     U S E R   N O T I F      **********
+// **************************************************
+function getUserNotif() {
+    let request = new XMLHttpRequest();
+    request.responseType = 'document';
+    request.open('GET', `https://${domain}/`);
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = request.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
+        }
+    };
+    request.send();
+}
+getUserNotif();
