@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.5
+// @version       1.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -78,7 +78,8 @@ env.some(function(e){
 
 var domain = window.location.hostname,
     head = document.head,
-    pageCount = Number(document.querySelector(CST_CLASS_PAGE).lastElementChild.text.replace(/\D+/g, ''));
+    pageCount = Number(document.querySelector(CST_CLASS_PAGE).lastElementChild.text.replace(/\D+/g, '')),
+    sortStyleInjected = false;
 
 
 // **************************************************
@@ -86,7 +87,7 @@ var domain = window.location.hostname,
 // **************************************************
 // require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
-    var style = head.appendChild(document.createElement('style'));
+    let style = head.appendChild(document.createElement('style'));
     style.type = 'text/css';
     style.innerHTML = css;
 }
@@ -225,14 +226,25 @@ if (moveContainerRight) {
 // **********           S O R T            **********
 // **************************************************
 function letsSort() {
-    var bm = document.querySelectorAll(CST_CLASS_BOOKMARK),
-        elDiv = document.querySelector(CST_CLASS_BOOKMARK_PANEL).appendChild(document.createElement('div')),
+    var tmp = document.querySelector('#my_table'),
+        bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
+
+    if (tmp) {
+        tmp.remove();
+        bm.forEach(e=>{e.style.display = 'block'});
+        return;
+    }
+
+    var elDiv = document.querySelector(CST_CLASS_BOOKMARK_PANEL).appendChild(document.createElement('div')),
         elTable = elDiv.appendChild(document.createElement('table')),
         elThead = elTable.appendChild(document.createElement('thead')),
         elTbody = elTable.appendChild(document.createElement('tbody'));
 
     elTable.id = 'my_table';
-    addStyles(`
+
+    if (!sortStyleInjected){
+        sortStyleInjected = true;
+        addStyles(`
 #my_table {
 	color: Silver;
     width: 100%;
@@ -244,15 +256,14 @@ function letsSort() {
     text-decoration: underline;
 }
 #my_table img {
-    margin-right: 0 !important;
+    margin-right: 0;
 }
-#my_table th, #my_table td {
-    border-bottom: 1px solid #ddd;5t
+#my_table th,td {
+    border-bottom: 1px solid #ddd;
     padding: 15px;
     vertical-align : middle;
 }
 #my_table th {
-    padding: 15px;
 	background-color: #FF7D47;
 	color: black;
 	text-transform: uppercase;
@@ -267,7 +278,9 @@ function letsSort() {
 #my_table tbody tr:hover {
 	background-color: #656565;
 }
-`);
+`
+        );
+    }
 
     elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th></tr>';
 
@@ -278,7 +291,7 @@ function letsSort() {
                 lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
                 current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
-            elTr.innerHTML = `<td>${lastViewed && current ? (current.href.split("/")[5].replace(CST_CHAPTER_URL,'') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'')).toFixed(2).toString() : 'Not Found' }</td>
+            elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL,'') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'')).toFixed(2)) : 'Not Found' }</td>
 						<td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
 						<td>${bookmarkTitle.text}</td>
 						<td><a href="${lastViewed && current ? lastViewed.href : 'Not Found' }">${lastViewed && current ? lastViewed.text : 'Not Found' }</a></td>`;
@@ -287,7 +300,7 @@ function letsSort() {
         }
     }
 
-    document.querySelectorAll(CST_CLASS_BOOKMARK).forEach(e=>e.remove());
+    bm.forEach(e=>{e.style.display = 'none'});
     elDiv.classList.add(CST_CLASS_BOOKMARK.replace('.',''));
 
     sortTable();
