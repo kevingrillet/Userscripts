@@ -32,7 +32,7 @@ Add warning to to repos without updates for more than 1/2 year.
 
 ## Google
 ### Incognito
-[![Google - Incognito](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
+[![Google - Incognito](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
 
 ### Search Ad Remover
 [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
