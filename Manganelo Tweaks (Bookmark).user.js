@@ -216,6 +216,11 @@ function exportBookmark(){
 function moveRight() {
     document.querySelector(CST_CLASS_CONTAINER_LEFT).style.width = '100%';
     document.querySelector(CST_CLASS_CONTAINER_RIGHT).style.width = '100%';
+    addStyles(`
+    .panel-topview-item {
+    background-position: 10px !important;
+}`
+             );
 }
 if (moveContainerRight) {
     moveRight();
