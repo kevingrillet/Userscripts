@@ -5,7 +5,7 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -17,9 +17,17 @@
 // @run-at        document-end
 // ==/UserScript==
 
+
+// **************************************************
+// **********      V A R I A B L E S       **********
+// **************************************************
 var CST_ID_METACONTENT = '#meta-contents #subscribe-button ytd-subscribe-button-renderer';
 
-// Menu
+
+// **************************************************
+// **********           M E N U            **********
+// **************************************************
+// require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
     var style = document.head.appendChild(document.createElement('style'));
     style.type = 'text/css';
@@ -39,12 +47,10 @@ elDiv.innerHTML = `
   </span>
 `;
 
-function launchDl(){
-    if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
-        window.open(window.location.href.replace('youtube.com', 'yout.com'), "_blank");
-    }
-}
 
+// **************************************************
+// **********       L I S T E N E R        **********
+// **************************************************
 window.addEventListener('load', function () {
     var myInterval = setInterval(function() {
         if (document.querySelector(`:scope ${CST_ID_METACONTENT}`)) {
@@ -55,3 +61,13 @@ window.addEventListener('load', function () {
         }
     }, .5 * 1000);
 });
+
+
+// **************************************************
+// **********         S C R I P T          **********
+// **************************************************
+function launchDl(){
+    if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
+        window.open(window.location.href.assign('youtube.com', 'yout.com'), "_blank");
+    }
+}
