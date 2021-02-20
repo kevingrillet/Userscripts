@@ -5,7 +5,7 @@
 // @description   Remove Adds on top of Google search
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -16,5 +16,18 @@
 // @run-at        document-end
 // ==/UserScript==
 
-//document.querySelectorAll('#taw').forEach((ad)=>{ad.style.display = "none"});
-document.querySelectorAll('#taw').forEach((ad)=>{ad.remove()});
+
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
+var removeAdd = true;
+
+
+// **************************************************
+// **********         S C R I P T          **********
+// **************************************************
+if (removeAdd) {
+    document.querySelectorAll('#taw').forEach((ad)=>{ad.remove()});
+} else {
+    document.querySelectorAll('#taw').forEach((ad)=>{ad.style.display = "none"});
+}
