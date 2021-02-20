@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.5
+// @version       1.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -17,7 +17,10 @@
 // @run-at        document-end
 // ==/UserScript==
 
-// Can be edited
+
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
 var autoNextSpeed = .5 * 1000, // .5 s
     autoNextBookmarkSpeed = 1 * 1000, // +1 s
     imagesMargin = 0, // px
@@ -41,7 +44,10 @@ var autoNextSpeed = .5 * 1000, // .5 s
         }
     ];
 
-// Env consts.
+
+// **************************************************
+// **********      V A R I A B L E S       **********
+// **************************************************
 var CST_HOME = null,
     CST_BOOKMARK = null,
     CST_CLASS_BREADCRUMB = null,
@@ -64,7 +70,6 @@ env.some(function(e){
     }
 });
 
-// Vars
 var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     buttonPrevious = document.querySelector(CST_CLASS_BTN_PREVIOUS),
     chapterMax = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[0].getAttribute('data-c')),
@@ -74,7 +79,10 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     timerStart = Date.now(),
     scroll = null;
 
-// Duplicate Chapter
+
+// **************************************************
+// **********     D U P L I C A T E D      **********
+// **************************************************
 if ((buttonNext ? buttonNext.href : null) == window.location.href) {
     console.warn('Duplicated chapter :(');
     // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
@@ -84,7 +92,11 @@ if ((buttonNext ? buttonNext.href : null) == window.location.href) {
     }
 }
 
-// Menu
+
+// **************************************************
+// **********           M E N U            **********
+// **************************************************
+// require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
     var style = head.appendChild(document.createElement('style'));
     style.type = 'text/css';
@@ -144,6 +156,10 @@ elDiv.innerHTML = `
   </p>
 `;
 
+
+// **************************************************
+// **********       O N   C L I C K        **********
+// **************************************************
 if (chapterMax - chapterCurrent == 0) {
     document.querySelector('.chap').style.color = 'PaleGreen';
 }
@@ -166,8 +182,18 @@ else {
     document.querySelector('.goNext').style.color = 'Tomato';
 }
 
-// Scroll things, Auto next & Prerender
-window.onscroll = function(ev) {
+
+// **************************************************
+// **********           A D D S            **********
+// **************************************************
+document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
+
+
+
+// **************************************************
+// **********      A U T O   N E X T       **********
+// **************************************************
+function autoNext(){
     // Auto next when scroll to the bottom
     if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
         setTimeout(function() {
@@ -183,7 +209,13 @@ window.onscroll = function(ev) {
             }
         }, autoNextSpeed); // wait 1 secs
     }
-    // Prerender
+}
+
+
+// **************************************************
+// **********      P R E R E N D E R       **********
+// **************************************************
+function prerender(){
     if (buttonNext && buttonNext !== undefined) {
         if (buttonNext.rel == 'nofollow') {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
@@ -194,9 +226,12 @@ window.onscroll = function(ev) {
             }
         }
     }
-};
+}
 
-// Reloading on errors
+
+// **************************************************
+// **********         R E L O A D          **********
+// **************************************************
 function reloadImage(pThis){
     if ( pThis && pThis.src) {
         pThis.setAttribute('try', pThis.hasAttribute('try') ? Number(pThis.getAttribute('try')) + 1 : 1);
@@ -222,7 +257,10 @@ function setReload() {
 }
 setReload();
 
-// Margins
+
+// **************************************************
+// **********         M A R G I N          **********
+// **************************************************
 if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
     if (imagesMargin >= 0 && imagesMargin <= 10) {
         document.querySelector(CST_CLASS_MARGIN).selectedIndex = imagesMargin;
@@ -235,7 +273,10 @@ if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
     setMargin(imagesMargin);
 }
 
-// Max Width
+
+// **************************************************
+// **********      M A X   W I D T H       **********
+// **************************************************
 function setMaxWidth(value) {
     if (value <= 10) {
         document.querySelector('.unzoom').onclick = null;
@@ -270,10 +311,10 @@ function unzoom() {
     setMaxWidth(maxWidth);
 };
 
-// Removes Add divs
-document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
 
-// Scrolling
+// **************************************************
+// **********      S C R O L L I N G       **********
+// **************************************************
 function startScrolling(value){
     scroll = setInterval(function() {
         window.scrollBy(0, value);
@@ -284,7 +325,10 @@ function stopScrolling(){
     scroll = null;
 }
 
-// Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
+
+// **************************************************
+// **********     N A V I G A T I O N      **********
+// **************************************************
 function goNext(){
     if (buttonNext) {
         window.location.assign(buttonNext.href);
@@ -296,6 +340,16 @@ function goPrevious(){
     }
 };
 
+
+// **************************************************
+// **********       L I S T E N E R        **********
+// **************************************************
+window.onscroll = function(ev) {
+    autoNext();
+    prerender();    
+};
+
+// Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
         goPrevious();
