@@ -40,7 +40,8 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_btn_previous: 'navi-change-chapter-btn-prev a-h', // class to find the button previous
             class_change_chapter: 'navi-change-chapter', // class to find the combo chapter
             class_img: 'container-chapter-reader', // class to find the pages (images)
-            class_margin: 'server-cbb-content-margin' // // class to find the combo margin
+            class_margin: 'server-cbb-content-margin', // class to find the combo margin
+            class_title: 'panel-chapter-info-top' // class to find the title for google search
         }
     ];
 
@@ -55,7 +56,8 @@ var CST_HOME = null,
     CST_CLASS_BTN_PREVIOUS = null,
     CST_CLASS_CHANGE_CHAPTER = null,
     CST_CLASS_IMG = null,
-    CST_CLASS_MARGIN = null;
+    CST_CLASS_MARGIN = null,
+    CST_CLASS_TITLE = null;
 
 env.some(function(e){
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
@@ -67,6 +69,7 @@ env.some(function(e){
         CST_CLASS_CHANGE_CHAPTER = '.' + e.class_change_chapter.replace(' ', '.');
         CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
         CST_CLASS_MARGIN = '.' + e.class_margin.replace(' ', '.');
+        CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
     }
 });
 
@@ -121,6 +124,9 @@ elDiv.innerHTML = `
   <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
   <span>
     <a href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
+  </span>
+  <span>
+    <a class="my_search" href="https://www.google.com/search?q=${encodeURI(document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText)}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
   </span>
   </br>
   <span class="home">
@@ -346,7 +352,7 @@ function goPrevious(){
 // **************************************************
 window.onscroll = function(ev) {
     autoNext();
-    prerender();    
+    prerender();
 };
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
@@ -374,7 +380,8 @@ document.addEventListener('keydown', event => {
     else if (event.code == 'KeyM') {
         window.location.assign(document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href);
     }
-    else if (event.code == 'KeyE') {
+    else if (event.code == 'KeyF') {
+        document.querySelector('.my_search').click();
     }
 });
 
