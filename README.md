@@ -22,7 +22,7 @@
 
 ## Bing
 ### To Google
-[![Bing - To Google](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+[![Bing - To Google](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
 
 ## Github
 ### Inactive
