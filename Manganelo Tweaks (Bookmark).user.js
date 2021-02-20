@@ -23,6 +23,7 @@
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
+    moveContinerTop = true, // Move top to bottom, need right to be active
     env = [
         {
             name: 'Manganelo', // Name
@@ -37,6 +38,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_img: 'img-loading', // class to get image cover
             class_name: 'item-story-name', // class manga title
             class_page: 'group-page', // class div pages
+            class_slider: 'container container-silder', // class containing the top slider
             class_title: 'item-title', // class for Viewed / Current row
             class_user_notif: 'user-notification' // class to copy number of notifs from home page
         }
@@ -56,6 +58,7 @@ var CST_CHAPTER_URL = null,
     CST_CLASS_IMG = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
+    CST_CLASS_SLIDER = null,
     CST_CLASS_TITLE = null,
     CST_CLASS_USER_NOTIF = null;
 
@@ -71,6 +74,7 @@ env.some(function(e){
         CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
         CST_CLASS_NAME = '.' + e.class_name.replace(' ', '.');
         CST_CLASS_PAGE = '.' + e.class_page.replace(' ', '.');
+        CST_CLASS_SLIDER = '.' + e.class_slider.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
         CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
     }
@@ -217,13 +221,24 @@ function moveRight() {
     document.querySelector(CST_CLASS_CONTAINER_LEFT).style.width = '100%';
     document.querySelector(CST_CLASS_CONTAINER_RIGHT).style.width = '100%';
     addStyles(`
-    .panel-topview-item {
+.panel-topview-item {
     background-position: 10px !important;
-}`
+}
+.panel-topview {
+    margin-top: 10px;
+}
+`
              );
+    if (moveContinerTop) {
+        moveTop();
+    }
 }
 if (moveContainerRight) {
     moveRight();
+}
+
+function moveTop() {
+    document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector('.container.container-silder'), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
 }
 
 
