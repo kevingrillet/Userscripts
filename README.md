@@ -15,37 +15,30 @@
  - [Youtube](#Youtube)
 
 ## Amazon tweaks
-### ToDo - UI
-[![Amazon tweaks - UI](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(UI).user.js)
-### WIP - Wishlist
-[![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### ToDo - UI [![Amazon tweaks - UI](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(UI).user.js)
+### WIP - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 ## Bing
-### To Google
-[![Bing - To Google](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
 
 ## Github
-### Inactive
-[![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
+### Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
 
 Add warning to to repos without updates for more than 1/2 year.
 
 ## Google
-### ~~Incognito~~
-[![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
+### ~~Incognito~~ [![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
 
 ~~Open every docs.google.com link in incognito.~~
 
 :warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
-### Search Ad Remover
-[![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
+### Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
 
 Remove the add at the beginig of some searches.
 
 ## League Of Legends
-### League Of Fitness
-[![League Of Fitness](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
+### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
@@ -56,8 +49,7 @@ Inspire by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Bookmark
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.6-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.6-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
@@ -66,8 +58,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Chapter
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.6-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.6-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -265,13 +256,11 @@ Add many functions:
 </details>
 
 ## YouTube
-### Auto Confirmer
-[![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
+### Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
 
 Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 **Need to be the active tab.**
 
-### Downloader (Yout.com)
-[![YouTube - Downloader](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.
