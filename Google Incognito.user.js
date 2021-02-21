@@ -2,7 +2,7 @@
 // @name          Google Incognito
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add banner to innactive github
+// @description   Open google docs incognito
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @version       0.1
@@ -16,8 +16,13 @@
 // @run-at        document-end
 // ==/UserScript==
 
-document.querySelectorAll('a').forEach(el => {
-    if (el.href.test('.*docs\.google\.com.*')) {
-        el.onclick = `javascript:chrome.windows.create({"url": ${el.href}, "incognito": true}); return false;`;
-    }
+// **************************************************
+// **********       L I S T E N E R        **********
+// **************************************************
+window.addEventListener('load', function () {
+    document.querySelectorAll('a').forEach(el => {
+        if (el.href.match('.*docs\.google\.com.*') != null) {
+            el.setAttribute('onclick', `javascript:windows.create({"url": ${el.href}, "incognito": true});`);
+        }
+    });
 });
