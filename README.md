@@ -31,8 +31,12 @@
 Add warning to to repos without updates for more than 1/2 year.
 
 ## Google
-### Incognito
-[![Google - Incognito](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
+### ~~Incognito~~
+[![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
+
+~~Open every docs.google.com link in incognito.~~
+
+:warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
 ### Search Ad Remover
 [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
