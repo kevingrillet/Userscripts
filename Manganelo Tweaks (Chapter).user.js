@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.6
+// @version       1.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -26,8 +26,9 @@ var autoNextSpeed = .5 * 1000, // .5 s
     imagesMargin = 0, // px
     maxWidth = document.body.offsetWidth > 1280 ? 80 : 90, // %
     rel = 'prerender', // prerender/prefetch
+    relOnLoad = true, // does rel is added on scroll or on load
     scrollSpeed = 1000 / 60, // 1/60 s
-    scrollValue = 128, // px
+    scrollValue = 64, // px
     zoomW = 5, // % zoom delta
     env = [
         {
@@ -267,15 +268,15 @@ setReload();
 // **************************************************
 // **********         M A R G I N          **********
 // **************************************************
+function setMargin(value) {
+    for (let i of images) {
+        i.style.marginTop = value + 'px';
+    };
+};
 if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
     if (imagesMargin >= 0 && imagesMargin <= 10) {
         document.querySelector(CST_CLASS_MARGIN).selectedIndex = imagesMargin;
     }
-    function setMargin(value) {
-        for (let i of images) {
-            i.style.marginTop = value + 'px';
-        };
-    };
     setMargin(imagesMargin);
 }
 
@@ -404,5 +405,9 @@ window.addEventListener('load', function () {
     }
     else {
         document.querySelector('.load').style.color = 'PaleGreen';
+    }
+
+    if (relOnLoad) {
+        prerender();
     }
 });
