@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.7
+// @version       1.8
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -131,10 +131,10 @@ elDiv.innerHTML = `
   </span>
   </br>
   <span class="home">
-    <a href="${CST_HOME}" title="Homepage (H)"><i class="fas fa-fw fa-home" ></i></a>
+    <a class="goHome" href="${CST_HOME}" title="Homepage (H)"><i class="fas fa-fw fa-home" ></i></a>
   </span>
   <span class="bookmark">
-    <a href="${CST_HOME + CST_BOOKMARK}" title="Bookmark (B)"><i class="fas fa-fw fa-bell" ></i></a>
+    <a class="goBookmark" href="${CST_HOME + CST_BOOKMARK}" title="Bookmark (B)"><i class="fas fa-fw fa-bell" ></i></a>
   </span>
   <br/>
   <span class="unzoom">
@@ -263,6 +263,32 @@ function setReload() {
     };
 }
 setReload();
+
+
+// **************************************************
+// **********      G R A Y S C A L E       **********
+// **************************************************
+function toogleGrayscale(pThis) {
+    if ( pThis && pThis.src) {
+        if (pThis.style.filter) {
+            pThis.style.removeProperty('filter');
+        } else {
+            pThis.style.filter = "grayscale(1)";
+        }
+    }
+};
+
+script = head.appendChild(document.createElement('script'));
+script.appendChild(document.createTextNode(toogleGrayscale));
+
+function setGrayscale() {
+    for (let i of images) {
+        if ( i && i.src) {
+            i.setAttribute('onclick','toogleGrayscale(this);');
+        }
+    };
+}
+setGrayscale();
 
 
 // **************************************************

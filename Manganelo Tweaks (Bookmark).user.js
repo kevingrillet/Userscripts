@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.6
+// @version       1.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -24,6 +24,7 @@
 // **************************************************
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContinerTop = true, // Move top to bottom, need right to be active
+    showToRead = true,
     env = [
         {
             name: 'Manganelo', // Name
@@ -229,13 +230,9 @@ function moveRight() {
 }
 `
              );
-    if (moveContinerTop) {
-        moveTop();
-    }
+    if (moveContinerTop) moveTop();
 }
-if (moveContainerRight) {
-    moveRight();
-}
+if (moveContainerRight) moveRight();
 
 function moveTop() {
     document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector('.container.container-silder'), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
@@ -348,6 +345,51 @@ function sortTable() {
         }
     }
 };
+
+
+// **************************************************
+// **********        T O   R E A D         **********
+// **************************************************
+function addToRead(){
+    addStyles(`
+${CST_CLASS_BOOKMARK} {
+    position: relative !important;
+}
+.to-read {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    min-width: 20px;
+    height: 20px;
+    padding: 2px;
+    border-radius: 100%;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 40%);
+    text-align: center;
+    background: #ff5c19;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 20px;
+}
+`
+             );
+    var bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
+
+    for (var j = 0; j < bm.length; j++) {
+        if (bm[j].querySelector(CST_CLASS_NAME)) {
+            var lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[5].replace(CST_CHAPTER_URL,'') : null,
+                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a').href.split("/")[5].replace(CST_CHAPTER_URL,'') : null;
+
+            if (lastViewed && current) {
+                var el = document.createElement('em');
+                el.classList.add('to-read');
+                el.innerHTML = `${parseFloat((current-lastViewed).toFixed(2))}`;
+                bm[j].appendChild(el);
+            }
+        }
+    }
+}
+if (showToRead) addToRead();
 
 
 // **************************************************
