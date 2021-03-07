@@ -49,13 +49,14 @@ Inspire by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.7-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.8-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
 - Repair user-notification
 - Shortcut (Shift + E)
 - ToRead
+- Rating
 
 I use it to order my bookmarks by number to read...
 

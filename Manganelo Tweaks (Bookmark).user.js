@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.7
+// @version       1.8
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -13,6 +13,8 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
+// @grant         GM_setValue
+// @grant         GM_getValue
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 // @run-at        document-end
@@ -24,6 +26,10 @@
 // **************************************************
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContinerTop = true, // Move top to bottom, need right to be active
+    forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
+    showAdult = true, 
+    showHype = true,
+    showRank = true,
     showToRead = true,
     env = [
         {
@@ -49,7 +55,8 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
 // **************************************************
 // **********      V A R I A B L E S       **********
 // **************************************************
-var CST_CHAPTER_URL = null,
+var CST_APP_VERSION = 1.8,
+    CST_CHAPTER_URL = null,
     CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
@@ -372,7 +379,7 @@ ${CST_CLASS_BOOKMARK} {
     line-height: 20px;
 }
 `
-             );
+    );
     var bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
     for (var j = 0; j < bm.length; j++) {
@@ -407,3 +414,187 @@ function getUserNotif() {
     request.send();
 }
 getUserNotif();
+
+
+// **************************************************
+// **********        S T O R A G E         **********
+// **************************************************
+function diff_weeks(dt1, dt2) {
+    var diff =(dt1 - dt2) / (1000 * 60 * 60 * 24 * 7);
+    return Math.abs(Math.round(diff));
+}
+
+function getData(elTmp) {
+    let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[4],
+        value = GM_getValue(tag, null);
+
+    if ((!forceRefresh && value
+         && value.version && value.version == CST_APP_VERSION
+         && value.date && diff_weeks(new Date(value.date), new Date()) < 1
+        ))
+    {
+        if (showAdult && value.adult) setAdult(tag, value.adult);
+        if (showHype && value.hype) setHype(tag, value.hype);
+        if (showRank && value.rank) setRank(tag, value.rank);
+    } else {
+        let request = new XMLHttpRequest();
+        request.responseType = 'document';
+        request.open('GET', `${elTmp.querySelector(CST_CLASS_NAME).href}`);
+        request.onload = function() {
+            if (request.status >= 200 && request.status < 400) {
+                var resp = request.responseXML,
+                    tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4];
+
+                value = {
+                    version: CST_APP_VERSION,
+                    date: new Date(),
+                    adult: (resp.querySelector('.panel-story-info').innerHTML.match(/Adult/gm) || []).length,
+                    hype: resp.querySelector(':scope .info-image em') ? resp.querySelector(':scope .info-image em').classList[0] : null,
+                    rank: resp.querySelector('em[property="v:average"]').textContent
+                };
+
+                GM_setValue(tag, value);
+                if (showAdult && value.adult) setAdult(tag, value.adult);
+                if (showHype && value.hype) setHype(tag, value.hype);
+                if (showRank && value.rank) setRank(tag, value.rank);
+
+                console.warn(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`)
+            }
+        };
+        request.send();
+    }
+};
+
+function loadData() {
+    var bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
+
+    for (var j = 0; j < bm.length; j++) {
+        if (bm[j].querySelector(CST_CLASS_NAME)) {
+            getData(bm[j]);
+        }
+    }
+}
+
+if (showAdult || showHype || showRank) loadData();
+
+// **************************************************
+// **********           R A N K            **********
+// **************************************************
+function addRank(){
+    addStyles(`
+    .genres-item-rate{
+        font-style: normal;
+        position: absolute;
+        left: 5px;
+        bottom: 5px;
+        background: rgba(0,0,0,.69);
+        padding: 2px 5px 2px 8px;
+        color: #d7d7da;
+        font-size: 12px;
+        font-style: italic;
+    }
+    .genres-item-rate:after{
+        content: '\\2B50';
+        font-style: normal;
+        margin: 0;
+        padding: 0;
+        color: #f9d932;
+    }
+`
+    );
+}
+
+function setRank(tag, value){
+    var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+        el = document.createElement('em');
+    el.classList.add('genres-item-rate');
+    el.innerHTML = `${value}`;
+    elImg.appendChild(el);
+}
+
+if (showRank) addRank();
+
+
+// **************************************************
+// **********           H Y P E            **********
+// **************************************************
+function addHype(){
+    addStyles(`
+    .item-hot{
+        font-style: normal;
+        position: absolute;
+        top: 5px;
+        left: 45px;
+        background: #c0392b;
+        border-radius: 15px;
+        padding: 2px 5px;
+        color: #fff;
+        line-height: 25px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+    .item-hot:before{
+        content: "HOT";
+    }
+    .item-ss{
+        font-style: normal;
+        position: absolute;
+        top: 5px;
+        left: 55px;
+        background: #000;
+        border-radius: 15px;
+        padding: 2px 5px;
+        color: #fff;
+        line-height: 25px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+    .item-ss:before{
+        content: "SS";
+    }
+`
+    );
+}
+
+function setHype(tag, value){
+    if (value && value != "" && value != "img-loading") {
+        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+            el = document.createElement('em');
+        el.classList.add(`${value}`);
+        elImg.appendChild(el);
+    }
+}
+
+if (showHype) addHype();
+
+
+// **************************************************
+// **********          A D U L T           **********
+// **************************************************
+function addAdult(){
+    addStyles(`
+    #adult{
+        position: absolute;
+        top: 5px;
+        left: 2px;
+        font-size: 1em;
+        color: #f783ac;
+    }
+`
+    );
+}
+
+function setAdult(tag, value){
+    if (value > 0) {
+        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+            elDiv = elImg.appendChild(document.createElement('div'));
+        elDiv.id = 'adult';
+        elDiv.innerHTML = `
+        <span  title="Adult">
+            <a><i style="font-size: 1.5em" class="fas fa-fw fa-ban" ></i></a>
+        </span>
+        `;
+    }
+}
+
+if (showAdult) addAdult();
