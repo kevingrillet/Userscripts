@@ -27,7 +27,7 @@
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContinerTop = true, // Move top to bottom, need right to be active
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
-    showAdult = true, 
+    showAdult = true,
     showHype = true,
     showRank = true,
     showToRead = true,
