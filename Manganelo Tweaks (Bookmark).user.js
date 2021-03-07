@@ -443,23 +443,23 @@ function getData(elTmp) {
         request.open('GET', `${elTmp.querySelector(CST_CLASS_NAME).href}`);
         request.onload = function() {
             if (request.status >= 200 && request.status < 400) {
-                var resp = request.responseXML,
-                    tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4];
-
-                value = {
-                    version: CST_APP_VERSION,
-                    date: new Date(),
-                    adult: (resp.querySelector('.panel-story-info').innerHTML.match(/Adult/gm) || []).length,
-                    hype: resp.querySelector(':scope .info-image em') ? resp.querySelector(':scope .info-image em').classList[0] : null,
-                    rank: resp.querySelector('em[property="v:average"]').textContent
-                };
+                let resp = request.responseXML,
+                    tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4],
+                    value = {
+                        version: CST_APP_VERSION,
+                        date: new Date(),
+                        adult: (resp.querySelector('.panel-story-info').innerHTML.match(/Adult/gm) || []).length,
+                        hype: resp.querySelector(':scope .info-image em') ? resp.querySelector(':scope .info-image em').classList[0] : null,
+                        rank: resp.querySelector('em[property="v:average"]').textContent
+                    };
 
                 GM_setValue(tag, value);
                 if (showAdult && value.adult) setAdult(tag, value.adult);
                 if (showHype && value.hype) setHype(tag, value.hype);
                 if (showRank && value.rank) setRank(tag, value.rank);
 
-                console.warn(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`)
+                console.warn(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
+                console.warn(value);
             }
         };
         request.send();
