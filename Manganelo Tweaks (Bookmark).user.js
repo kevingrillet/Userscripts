@@ -363,6 +363,7 @@ ${CST_CLASS_BOOKMARK} {
     position: relative !important;
 }
 .to-read {
+    font-style: normal;
     position: absolute;
     top: 5px;
     left: 5px;
