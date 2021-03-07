@@ -60,7 +60,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.8-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.9-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -73,6 +73,7 @@ Add many functions:
 - Reloading on error
 - Removes Add div [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
 - Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
+- Download ([when this issue will be fully resolved](https://github.com/Tampermonkey/tampermonkey/issues/1113))
 
 ### ToDo
 - Add other manga reader websites (atm i only read here...)
