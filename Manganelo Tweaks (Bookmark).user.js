@@ -13,13 +13,13 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
+// @grant         GM_info
 // @grant         GM_setValue
 // @grant         GM_getValue
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 // @run-at        document-end
 // ==/UserScript==
-
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
@@ -55,7 +55,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
 // **************************************************
 // **********      V A R I A B L E S       **********
 // **************************************************
-var CST_APP_VERSION = 1.8,
+var CST_APP_VERSION = GM_info.script.version,
     CST_CHAPTER_URL = null,
     CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
