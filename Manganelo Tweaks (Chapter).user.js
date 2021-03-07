@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.8
+// @version       1.9
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Manganelo%20Tweaks%20(Chapter).user.js
 
 // @match         *://manganelo.com/chapter/*/*
+// @grant         GM_download
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
 // @run-at        document-end
 // ==/UserScript==
@@ -123,6 +124,10 @@ var elDiv = document.body.appendChild(document.createElement('div'));
 elDiv.id = 'my_footer';
 elDiv.innerHTML = `
   <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
+  <span class="export" title="Export (E)">
+    <a><i class="fas fa-fw fa-file-download" ></i></a>
+  </span>
+  </br>
   <span>
     <a href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
   </span>
@@ -170,6 +175,7 @@ elDiv.innerHTML = `
 if (chapterMax - chapterCurrent == 0) {
     document.querySelector('.chap').style.color = 'PaleGreen';
 }
+document.querySelector('.export').onclick = function() { downloadImages(); };
 document.querySelector('.goUp').onclick = function() { window.scrollBy({top: 5 * -scrollValue,left: 0, behavior: 'smooth'}); };
 document.querySelector('.goDown').onclick = function() { window.scrollBy({top: 5 * scrollValue,left: 0, behavior: 'smooth'}); };
 document.querySelector('.unzoom').onclick = function() { unzoom(); };
@@ -375,6 +381,18 @@ function goPrevious(){
 
 
 // **************************************************
+// **********       D O W N L O A D        **********
+// **************************************************
+// issue https://github.com/Tampermonkey/tampermonkey/issues/1113
+function downloadImages() {
+    let cnt = 0;
+    for (let i of images) {
+        GM_download(i.src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++cnt}`);
+    }
+}
+
+
+// **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
 window.onscroll = function(ev) {
@@ -409,6 +427,9 @@ document.addEventListener('keydown', event => {
     }
     else if (event.code == 'KeyF') {
         document.querySelector('.my_search').click();
+    }
+    else if (event.code == 'KeyE') {
+        downloadImages();
     }
 });
 
