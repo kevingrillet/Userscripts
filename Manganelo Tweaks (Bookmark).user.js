@@ -36,18 +36,21 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             name: 'Manganelo', // Name
             match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
+            class_adult: 'panel-story-info',
             class_blue: 'page-blue', // class to find active page
             class_bookmark: 'bookmark-item', // class bookmark
             class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
             class_container_left: 'container-main-left', // class container bookmark
             class_container_right: 'container-main-right', // class container popular / by genre
+            class_hype: 'info-image',
             class_img: 'img-loading', // class to get image cover
             class_name: 'item-story-name', // class manga title
             class_page: 'group-page', // class div pages
             class_slider: 'container container-silder', // class containing the top slider
             class_title: 'item-title', // class for Viewed / Current row
-            class_user_notif: 'user-notification' // class to copy number of notifs from home page
+            class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            tag_rank: '[property="v:average"]'
         }
     ];
 
@@ -57,34 +60,40 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
 // **************************************************
 var CST_APP_VERSION = GM_info.script.version,
     CST_CHAPTER_URL = null,
+    CST_CLASS_ADULT = null,
     CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
     CST_CLASS_CONTAINER_LEFT = null,
     CST_CLASS_CONTAINER_RIGHT = null,
+    CST_CLASS_HYPE = null,
     CST_CLASS_IMG = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
     CST_CLASS_SLIDER = null,
     CST_CLASS_TITLE = null,
-    CST_CLASS_USER_NOTIF = null;
+    CST_CLASS_USER_NOTIF = null,
+    CST_TAG_RANK = null;
 
 env.some(function(e){
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_CHAPTER_URL = e.chapter_url;
+        CST_CLASS_ADULT = '.' + e.class_adult.replace(' ', '.');
         CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
         CST_CLASS_CONTAINER_LEFT = '.' + e.class_container_left.replace(' ', '.');
         CST_CLASS_CONTAINER_RIGHT = '.' + e.class_container_right.replace(' ', '.');
+        CST_CLASS_HYPE = '.' + e.class_hype.replace(' ', '.');
         CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
         CST_CLASS_NAME = '.' + e.class_name.replace(' ', '.');
         CST_CLASS_PAGE = '.' + e.class_page.replace(' ', '.');
         CST_CLASS_SLIDER = '.' + e.class_slider.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
         CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
+        CST_TAG_RANK = e.tag_rank;
     }
 });
 
@@ -242,7 +251,7 @@ function moveRight() {
 if (moveContainerRight) moveRight();
 
 function moveTop() {
-    document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector('.container.container-silder'), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
+    document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector(CST_CLASS_SLIDER), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
 }
 
 
@@ -448,9 +457,9 @@ function getData(elTmp) {
                     value = {
                         version: CST_APP_VERSION,
                         date: new Date(),
-                        adult: (resp.querySelector('.panel-story-info').innerHTML.match(/Adult/gm) || []).length,
-                        hype: resp.querySelector(':scope .info-image em') ? resp.querySelector(':scope .info-image em').classList[0] : null,
-                        rank: resp.querySelector('em[property="v:average"]').textContent
+                        adult: (resp.querySelector(CST_CLASS_ADULT).innerHTML.match(/Adult/gm) || []).length,
+                        hype: resp.querySelector(`:scope ${CST_CLASS_HYPE} em`) ? resp.querySelector(`:scope ${CST_CLASS_HYPE} em`).classList[0] : null,
+                        rank: resp.querySelector(`em${CST_TAG_RANK}`).textContent
                     };
 
                 GM_setValue(tag, value);
@@ -506,7 +515,7 @@ function addRank(){
 }
 
 function setRank(tag, value){
-    var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+    var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
         el = document.createElement('em');
     el.classList.add('genres-item-rate');
     el.innerHTML = `${value}`;
@@ -559,7 +568,7 @@ function addHype(){
 
 function setHype(tag, value){
     if (value && value != "" && value != "img-loading") {
-        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
             el = document.createElement('em');
         el.classList.add(`${value}`);
         elImg.appendChild(el);
@@ -587,7 +596,7 @@ function addAdult(){
 
 function setAdult(tag, value){
     if (value > 0) {
-        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://manganelo.com/manga/${tag}"]`).parentElement.parentElement.parentElement,
+        var elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
             elDiv = elImg.appendChild(document.createElement('div'));
         elDiv.id = 'adult';
         elDiv.innerHTML = `
