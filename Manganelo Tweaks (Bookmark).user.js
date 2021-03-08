@@ -2,10 +2,10 @@
 // @name          Manganelo Tweaks (Bookmark)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Export Bookmark, repair user-notification
+// @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.8
+// @version       1.9
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -13,9 +13,11 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
-// @grant         GM_info
-// @grant         GM_setValue
+// @grant         GM_deleteValue
 // @grant         GM_getValue
+// @grant         GM_info
+// @grant         GM_listValues
+// @grant         GM_setValue
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 // @run-at        document-end
@@ -28,7 +30,7 @@
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContinerTop = true, // Move top to bottom, need right to be active
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
-    showAdult = true,
+    showAdult = true, // Sometimes false positive...
     showHype = true,
     showRank = true,
     showToRead = true,
@@ -37,21 +39,22 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             name: 'Manganelo', // Name
             match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
-            class_adult: 'panel-story-info',
+            class_adult: 'panel-story-info', // to find adult tag on manga page
             class_blue: 'page-blue', // class to find active page
             class_bookmark: 'bookmark-item', // class bookmark
             class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
             class_container_left: 'container-main-left', // class container bookmark
             class_container_right: 'container-main-right', // class container popular / by genre
-            class_hype: 'info-image',
+            class_hype: 'info-image', // to find hype on manga page
             class_img: 'img-loading', // class to get image cover
             class_name: 'item-story-name', // class manga title
             class_page: 'group-page', // class div pages
+            class_search: 'search-story', // class search bar
             class_slider: 'container container-silder', // class containing the top slider
             class_title: 'item-title', // class for Viewed / Current row
             class_user_notif: 'user-notification', // class to copy number of notifs from home page
-            tag_rank: '[property="v:average"]'
+            tag_rank: '[property="v:average"]' // to find rate on manga page
         }
     ];
 
@@ -72,9 +75,11 @@ var CST_APP_VERSION = GM_info.script.version,
     CST_CLASS_IMG = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
+    CST_CLASS_SEARCH = null,
     CST_CLASS_SLIDER = null,
     CST_CLASS_TITLE = null,
     CST_CLASS_USER_NOTIF = null,
+    CST_NAME = null,
     CST_TAG_RANK = null;
 
 env.some(function(e){
@@ -91,9 +96,11 @@ env.some(function(e){
         CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
         CST_CLASS_NAME = '.' + e.class_name.replace(' ', '.');
         CST_CLASS_PAGE = '.' + e.class_page.replace(' ', '.');
+        CST_CLASS_SEARCH = '.' + e.class_search.replace(' ', '.');
         CST_CLASS_SLIDER = '.' + e.class_slider.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
         CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
+        CST_NAME = e.name;
         CST_TAG_RANK = e.tag_rank;
     }
 });
@@ -142,11 +149,24 @@ document.querySelector('.sort').onclick = function() { letsSort(); };
 // **********       L I S T E N E R        **********
 // **************************************************
 document.addEventListener('keydown', event => {
-    if (event.code == 'KeyE' && event.shiftKey) {
-        exportBookmark();
-    }
-    else if (event.code == 'KeyS' && event.shiftKey) {
-        letsSort();
+    if (document.activeElement != document.querySelector(CST_CLASS_SEARCH)) {
+        if (event.code == 'KeyE' && event.shiftKey) {
+            exportBookmark();
+        }
+        else if (event.code == 'KeyS' && event.shiftKey) {
+            letsSort();
+        }
+        else if (event.code == 'KeyT' && event.shiftKey) {
+            if (showAdult || showHype || showRank) {
+                let tmp = forceRefresh;
+                forceRefresh = true;
+                loadData();
+                forceRefresh = tmp;
+            }
+        }
+        else if (event.code == 'Delete') {
+            deleteValues();
+        }
     }
 });
 
@@ -435,9 +455,16 @@ function diff_weeks(dt1, dt2) {
     return Math.abs(Math.round(diff));
 }
 
+function deleteValues() {
+    let keys = GM_listValues();
+    for (let key of keys) {
+        GM_deleteValue(key);
+    }
+}
+
 function getData(elTmp) {
     let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[4],
-        value = GM_getValue(tag, null);
+        value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
     if ((!forceRefresh && value
          && value.version && value.version == CST_APP_VERSION
@@ -463,13 +490,13 @@ function getData(elTmp) {
                         rank: resp.querySelector(`em${CST_TAG_RANK}`).textContent
                     };
 
-                GM_setValue(tag, value);
+                GM_setValue(`${CST_NAME}_${tag}`, value);
                 if (showAdult && value.adult) setAdult(tag, value.adult);
                 if (showHype && value.hype) setHype(tag, value.hype);
                 if (showRank && value.rank) setRank(tag, value.rank);
 
-                console.warn(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
-                console.warn(value);
+                //console.warn(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
+                //console.warn(value);
             }
         };
         request.send();
@@ -477,7 +504,18 @@ function getData(elTmp) {
 };
 
 function loadData() {
+    // first remove all tags
+    document.querySelectorAll('#adult').forEach((i)=>{i.remove()});
+    document.querySelectorAll('.genres-item-rate').forEach((i)=>{i.remove()});
+    document.querySelectorAll('.item-hot').forEach((i)=>{i.remove()});
+    document.querySelectorAll('.item-ss').forEach((i)=>{i.remove()});
+
     var bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
+
+    if (GM_getValue('app_version', 0) != CST_APP_VERSION) {
+        deleteValues();
+        GM_setValue('app_version', CST_APP_VERSION)
+    }
 
     for (var j = 0; j < bm.length; j++) {
         if (bm[j].querySelector(CST_CLASS_NAME)) {
