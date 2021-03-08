@@ -5,14 +5,14 @@
 // @description   Add total and "add all to cart".
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.0
+// @version       0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Whishlist).user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Amazon%20Tweaks%20(Whishlist).user.js
 
-// @match         *://www.amazon.tld/hz/wishlist/*
+// @match         *://www.amazon.fr/hz/wishlist/*
 // @run-at        document-end
 // ==/UserScript==
 
@@ -22,5 +22,5 @@ document.querySelectorAll(':scope #wl-item-view .a-offscreen').forEach(p => {
     total += Number(p.innerHTML.replace(',','.').replace('&nbsp;€',''));
 });
 
-total = Number(total).slice(-2).toString().replace('.',',');
+total = Number(total).toString().replace('.',',');
 console.log(total + ' €');
