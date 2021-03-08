@@ -49,14 +49,14 @@ Inspire by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.8-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.9-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
-- Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export)
+- Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
 - Repair user-notification
-- Shortcut (Shift + E)
+- Sort (Shift + S) 
 - ToRead
-- Rating
+- Tags: Adult, Hype, Rating (Shift + T: refresh, Delete: delete storage)
 
 I use it to order my bookmarks by number to read...
 
@@ -258,10 +258,17 @@ Add many functions:
 
 </details>
 
+### ~~Manga~~ [![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Manga).user.js)
+
+Experiment to update value everytime i look at a manga page, but gm_values are script specific :/
+
+And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
+
 ## YouTube
 ### Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
 
 Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
+
 **Need to be the active tab.**
 
 ### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
