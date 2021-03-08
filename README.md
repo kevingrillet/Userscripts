@@ -15,8 +15,7 @@
  - [Youtube](#Youtube)
 
 ## Amazon tweaks
-### ToDo - UI [![Amazon tweaks - UI](https://img.shields.io/badge/Install-0.0-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(UI).user.js)
-### WIP - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.2-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.3-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 ## Bing
 ### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
@@ -76,9 +75,9 @@ Add many functions:
 - Download ([when this issue will be fully resolved](https://github.com/Tampermonkey/tampermonkey/issues/1113))
 
 ### ToDo
-- Add other manga reader websites (atm i only read here...)
-- Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)
-- Export chapter?
+- ~~Add other manga reader websites~~ Atm i only read here... and i think i'm too specific...
+- ~~Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)~~ i'm doing it with var at the beginning of the script
+- ~~Export chapter?~~ If possible in Tampermonkey > v4.11 beta
 
 <details>
   <summary>FileSaver</summary>
