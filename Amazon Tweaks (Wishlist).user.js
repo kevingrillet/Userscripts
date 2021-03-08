@@ -5,7 +5,7 @@
 // @description   Add total and "add all to cart".
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -16,18 +16,52 @@
 // @run-at        document-end
 // ==/UserScript==
 
+
+// **************************************************
+// **********          T O T A L           **********
+// **************************************************
 var total = 0;
+function calcTotal() {
+    document.querySelectorAll(':scope #g-items .g-item-sortable').forEach(e => {
+        let price = Number(e.querySelector('.a-offscreen')? e.querySelector('.a-offscreen').innerHTML.replace(',','.').replace('&nbsp;€','') : 0),
+            quantity = e.querySelectorAll('.a-box-inner')[1].querySelectorAll('.a-letter-space'),
+            requested = quantity[1].nextElementSibling.innerHTML,
+            purchased = quantity[3].nextElementSibling.innerHTML;
+        total += price * (requested - purchased);
+    });
 
-document.querySelectorAll(':scope #g-items .g-item-sortable').forEach(e => {
-    let price = Number(e.querySelector('.a-offscreen').innerHTML.replace(',','.').replace('&nbsp;€','')),
-        quantity = e.querySelectorAll('.a-box-inner')[1].querySelectorAll('.a-letter-space'),
-        requested = quantity[1].nextElementSibling.innerHTML,
-        purchased = quantity[3].nextElementSibling.innerHTML;
-    total += price * (requested - purchased);
+    total = total.toFixed(2).toString().replace('.',',');
+}
+
+
+// **************************************************
+// **********           C A R T            **********
+// **************************************************
+function addAll() {
+    document.querySelectorAll(':scope #g-items .g-item-sortable .wl-info-aa_add_to_cart .a-button-inner').forEach(e => {
+        e.click();
+    });
+}
+
+
+// **************************************************
+// **********             U I              **********
+// **************************************************
+function setUI() {
+    var el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
+    el.classList.add('a-column', 'a-span12', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
+    el.innerHTML = `<span style="margin-right: 30px"><b>Total: ${total} €</b></span>`;
+    el = el.appendChild(document.createElement('span'));
+    el.classList.add('a-button', 'a-button-normal', 'a-button-primary', 'wl-info-aa_add_to_cart');
+    el.innerHTML = `<span class="a-button-inner" style="width: 220px"><a class="a-button-text a-text-center">Tout ajouter au panier</a></span>`;
+    el.onclick = function() { addAll(); };
+}
+
+
+// **************************************************
+// **********       L I S T E N E R        **********
+// **************************************************
+window.addEventListener('load', function () {
+    calcTotal();
+    setUI();
 });
-
-total = total.toString().replace('.',',');
-
-var el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
-el.classList.add('a-column', 'a-span6', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
-el.innerHTML = `Total: ${total} €`;
