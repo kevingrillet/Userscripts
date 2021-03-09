@@ -15,7 +15,7 @@
  - [Youtube](#Youtube)
 
 ## Amazon tweaks
-### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.4-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.5-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
