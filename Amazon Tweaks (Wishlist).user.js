@@ -5,7 +5,7 @@
 // @description   Add total and "add all to cart".
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.3
+// @version       0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -15,6 +15,40 @@
 // @match         *://www.amazon.fr/hz/wishlist/*
 // @run-at        document-end
 // ==/UserScript==
+
+
+// **************************************************
+// **********   C A N   B E   E D I T E D  **********
+// **************************************************
+var loadSpeed = .1 * 1000; //Refresh speed during load.
+
+
+// **************************************************
+// **********           C A R T            **********
+// **************************************************
+function addAll() {
+    document.querySelectorAll(':scope #g-items .g-item-sortable .wl-info-aa_add_to_cart .a-button-inner').forEach(e => {
+        e.click();
+    });
+}
+
+
+// **************************************************
+// **********           L O A D            **********
+// **************************************************
+// **************************************************
+function loadAll() {
+    if (!document.querySelector('#endOfListMarker')){
+        setTimeout(function() {
+            document.querySelectorAll(':scope #g-items li')[document.querySelectorAll(':scope #g-items li').length-1].scrollIntoView(/*{behavior: "smooth"}*/);
+            loadAll();
+        }, loadSpeed);
+    } else {
+        window.scrollTo({ top: 0/*, behavior: 'smooth'*/});
+        calcTotal();
+        setUI();
+    }
+}
 
 
 // **************************************************
@@ -31,16 +65,6 @@ function calcTotal() {
     });
 
     total = total.toFixed(2).toString().replace('.',',');
-}
-
-
-// **************************************************
-// **********           C A R T            **********
-// **************************************************
-function addAll() {
-    document.querySelectorAll(':scope #g-items .g-item-sortable .wl-info-aa_add_to_cart .a-button-inner').forEach(e => {
-        e.click();
-    });
 }
 
 
@@ -62,6 +86,8 @@ function setUI() {
 // **********       L I S T E N E R        **********
 // **************************************************
 window.addEventListener('load', function () {
-    calcTotal();
-    setUI();
+    // remove useless carousel at the bottom
+    document.querySelector('.copilot-secure-display').remove();
+
+    loadAll();
 });
