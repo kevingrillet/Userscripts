@@ -5,7 +5,7 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.2
+// @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -35,7 +35,7 @@ function addStyles(css) {
 }
 
 addStyles(`
-#my_dl { cursor: pointer; float: right; }
+#my_dl { cursor: pointer; float: right; padding-top: 2px;}
 #my_dl span { font-size: 3em; color: GhostWhite; }
 `);
 
