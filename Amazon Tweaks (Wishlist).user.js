@@ -20,7 +20,8 @@
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var loadSpeed = .1 * 1000; //Refresh speed during load.
+var loadSpeed = .1 * 1000, //Refresh speed during load.
+    maxLoadingTry = 30;
 
 
 // **************************************************
@@ -37,10 +38,12 @@ function addAll() {
 // **********           L O A D            **********
 // **************************************************
 // **************************************************
+var loadingTry = 0
 function loadAll() {
-    if (!document.querySelector('#endOfListMarker')){
+    if (!document.querySelector('#endOfListMarker') && loadingTry < maxLoadingTry){
         setTimeout(function() {
             document.querySelectorAll(':scope #g-items li')[document.querySelectorAll(':scope #g-items li').length-1].scrollIntoView(/*{behavior: "smooth"}*/);
+            loadingTry++;
             loadAll();
         }, loadSpeed);
     } else {
