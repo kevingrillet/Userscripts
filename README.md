@@ -20,7 +20,7 @@
 - Show total
 - Add button to add all products
 
-### ToDO
+### ToDo
 
 - Load the full page without playing with scroll... but how?
 
