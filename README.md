@@ -17,8 +17,18 @@
 ## Amazon tweaks
 ### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.3-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
+- Show total
+- Add button to add all products
+
+### ToDO
+
+- Load the full page without playing with scroll... but how?
+
 ## Bing
-### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+
+- Auto switch to google when doing a search on bing.
+- Do the 30 required search for the points on the first search of the day.
 
 ## Github
 ### Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
@@ -77,7 +87,7 @@ Add many functions:
 ### ToDo
 - ~~Add other manga reader websites~~ Atm i only read here... and i think i'm too specific...
 - ~~Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)~~ i'm doing it with var at the beginning of the script
-- ~~Export chapter?~~ If possible in Tampermonkey > v4.11 beta
+- ~~Export chapter?~~ Possible with Tampermonkey > v4.11 beta
 
 <details>
   <summary>FileSaver</summary>
