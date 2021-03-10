@@ -35,8 +35,8 @@ function addStyles(css) {
 }
 
 addStyles(`
-#my_dl { cursor: pointer; float: right; padding-top: 2px;}
-#my_dl span { font-size: 3em; color: GhostWhite; }
+#my_dl { cursor: pointer; float: right; padding-top: 8px;}
+#my_dl span { font-size: 2em; color: rgb(144, 144, 144); }
 `);
 
 var elDiv = document.createElement('div');
