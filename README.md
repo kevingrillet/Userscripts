@@ -281,6 +281,6 @@ Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pop
 
 **Need to be the active tab.**
 
-### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.
