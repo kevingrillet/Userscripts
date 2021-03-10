@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.9
+// @version       1.10
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -202,6 +202,7 @@ else {
 document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
 
 
+
 // **************************************************
 // **********      A U T O   N E X T       **********
 // **************************************************
@@ -383,11 +384,18 @@ function goPrevious(){
 // **********       D O W N L O A D        **********
 // **************************************************
 // issue https://github.com/Tampermonkey/tampermonkey/issues/1113
-function downloadImages() {
-    let cnt = 0;
-    for (let i of images) {
-        GM_download(i.src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++cnt}`);
-    }
+//function downloadImages() {
+//    let cnt = 0;
+//    for (let i of images) {
+//        GM_download(i.src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++cnt}`);
+//    }
+//}
+function downloadImages(value) {
+    value = value || 0;
+    setTimeout(function() {
+        GM_download(images[value].src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++value}`);
+        if (value < images.length) downloadImages(value);
+    }, .5 * 1000);
 }
 
 
