@@ -52,6 +52,11 @@ Remove the add at the beginig of some searches.
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
+### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/OP.gg%20(Update).user.js)
+
+- Auto update
+- Remove crap
+
 ## Manganelo tweaks
 Inspire by:
 - [fuzetsu](https://github.com/fuzetsu/manga-loader)
