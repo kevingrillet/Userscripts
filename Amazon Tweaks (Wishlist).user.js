@@ -5,7 +5,7 @@
 // @description   Add total and "add all to cart".
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5
+// @version       0.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -80,7 +80,7 @@ function calcTotal() {
 function setUI() {
     var el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
     el.classList.add('a-column', 'a-span12', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
-    el.innerHTML = `<span style="margin-right: 30px"><b>Total: ${total}€ (${number})</b></span>`;
+    el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number>1?s:''}): ${total}€ </b></span>`;
     el = el.appendChild(document.createElement('span'));
     el.classList.add('a-button', 'a-button-normal', 'a-button-primary', 'wl-info-aa_add_to_cart');
     el.innerHTML = `<span class="a-button-inner" style="width: 220px"><a class="a-button-text a-text-center">Tout ajouter au panier</a></span>`;
@@ -89,15 +89,15 @@ function setUI() {
 
 function removeCrap() {
     // remove useless carousel at the bottom
-    document.querySelector('.copilot-secure-display').remove();
+    document.querySelector('.copilot-secure-display').style.display = "none";
     // remove useless nav crap
-    document.querySelector('#nav-main').remove();
-    document.querySelector('#nav-progressive-subnav').remove();
+    document.querySelector('#nav-main').style.display = "none";
+    document.querySelector('#nav-progressive-subnav').style.display = "none";
     // remove useless footer crap
-    document.querySelector('.navAccessibility').remove();
-    document.querySelector('.navFooterLogoLine').remove();
-    document.querySelector('.navFooterPadItemLine').remove();
-    document.querySelector('.navFooterDescLine').remove();
+    document.querySelector('.navAccessibility').style.display = "none";
+    document.querySelector('.navFooterLogoLine').style.display = "none";
+    document.querySelector('.navFooterPadItemLine').style.display = "none";
+    document.querySelector('.navFooterDescLine').style.display = "none";
 }
 
 
