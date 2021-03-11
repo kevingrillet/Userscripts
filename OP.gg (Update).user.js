@@ -28,10 +28,10 @@ var minutes = 10, // number of minutes before auto refresh
 // **********             U I              **********
 // **************************************************
 function removeCrap() {
-    document.querySelectorAll('.image-banner').forEach(e => e.remove());
-    document.querySelectorAll('.vm-placement').forEach(e => e.remove());
-    document.querySelectorAll('.life-owner').forEach(e => e.remove());
-    document.querySelectorAll('.vm-skin').forEach(e => e.remove());
+    document.querySelectorAll('.image-banner').forEach(e => e.style.display = "none");
+    document.querySelectorAll('.vm-placement').forEach(e => e.style.display = "none");
+    document.querySelectorAll('.life-owner').forEach(e => e.style.display = "none");
+    document.querySelectorAll('.vm-skin').forEach(e => e.style.display = "none");
 }
 
 
