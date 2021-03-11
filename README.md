@@ -15,15 +15,21 @@
  - [Youtube](#Youtube)
 
 ## Amazon tweaks
-### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.5-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
+
+- Delete all
+- Save for later all
+- Remove crap
+
+### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.6-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
-- Remove bottom carousel
+- Remove crap
 
 ### ToDo
 
-- Load the full page without playing with scroll... but how?
+- Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
 
 ## Bing
 ### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
