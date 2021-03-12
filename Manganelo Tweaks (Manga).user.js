@@ -54,7 +54,7 @@ var CST_APP_VERSION = GM_getValue('app_version', GM_info.script.version),
     CST_CLASS_HYPE = null,
     CST_TAG_RANK = null;
 
-env.some(function(e){
+env.some(function (e) {
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_CHAPTER_URL = e.chapter_url;
         CST_CLASS_ADULT = '.' + e.class_adult.replace(' ', '.');
@@ -81,16 +81,15 @@ function refreshData(elTmp) {
 
     if (forceRefresh ||
         !(value
-          && value.adult == local_value.adult
-          && value.hype == local_value.hype
-          && value.rank == local_value.rank
-         ))
-    {
+            && value.adult == local_value.adult
+            && value.hype == local_value.hype
+            && value.rank == local_value.rank
+        )) {
         GM_setValue(tag, local_value);
 
-        console.warn(`Value updated for ${document.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
-        console.warn(local_value);
+        console.debug(`Value updated for ${document.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
+        console.debug(local_value);
     }
-};
+}
 
 refreshData();
