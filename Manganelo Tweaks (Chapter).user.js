@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.10
+// @version       1.11
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -29,7 +29,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
     rel = 'prerender', // prerender/prefetch
     relOnLoad = true, // does rel is added on scroll or on load
     scrollSpeed = 1000 / 60, // 1/60 s
-    scrollValue = 64, // px
+    scrollValue = 48, // px
     zoomW = 5, // % zoom delta
     env = [
         {
@@ -129,7 +129,7 @@ elDiv.innerHTML = `
   </span>
   </br>
   <span>
-    <a href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
+    <a class="goManga" href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
   </span>
   <span>
     <a class="my_search" href="https://www.google.com/search?q=${encodeURI(document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText)}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
@@ -199,7 +199,8 @@ else {
 // **************************************************
 // **********           A D D S            **********
 // **************************************************
-document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
+document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.style.display = "none"});
+//document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
 
 
 
@@ -216,7 +217,7 @@ function autoNext(){
                 }
                 else {
                     setTimeout(function() {
-                        window.location.assign(CST_HOME + CST_BOOKMARK);
+                        goBookmark();
                     }, autoNextBookmarkSpeed); // wait 4 secs
                 }
             }
@@ -368,14 +369,28 @@ function stopScrolling(){
 // **************************************************
 // **********     N A V I G A T I O N      **********
 // **************************************************
+function goBookmark(){
+    //window.location.assign(CST_HOME + CST_BOOKMARK);
+    document.querySelector('.goBookmark').click();
+};
+function goHome() {
+    //window.location.assign(CST_HOME);
+    document.querySelector('.goHome').click();
+};
+function goManga() {
+    //window.location.assign(document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href);
+    document.querySelector('.goManga').click();
+};
 function goNext(){
     if (buttonNext) {
-        window.location.assign(buttonNext.href);
+        //window.location.assign(buttonNext.href);
+        document.querySelector('.goNext').firstElementChild.click();
     }
 };
 function goPrevious(){
     if (buttonPrevious) {
-        window.location.assign(buttonPrevious.href);
+        //window.location.assign(buttonPrevious.href);
+        document.querySelector('.goPrevious').firstElementChild.click();
     }
 };
 
@@ -424,13 +439,13 @@ document.addEventListener('keydown', event => {
         startScrolling(scrollValue);
     }
     else if (event.code == 'KeyB') {
-        window.location.assign(CST_HOME + CST_BOOKMARK);
+        goBookmark();
     }
     else if (event.code == 'KeyH') {
-        window.location.assign(CST_HOME);
+        goHome();
     }
     else if (event.code == 'KeyM') {
-        window.location.assign(document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href);
+        goManga();
     }
     else if (event.code == 'KeyF') {
         document.querySelector('.my_search').click();
