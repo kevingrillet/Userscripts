@@ -20,18 +20,18 @@
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var days = 365/2;
+var days = 365 / 2;
 
 
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
 window.addEventListener('load', function () {
-    var myInterval = setInterval(function() {
+    var myInterval = setInterval(function () {
         if (document.querySelector('relative-time')) {
             if (Date.now() - new Date(document.querySelector('relative-time').date) > (days * 1000 * 60 * 60 * 24)) {
                 var elDiv = document.createElement("div");
-                elDiv.setAttribute('style','display: flex; height: 50px; width: 100%; background-color: tomato; color: white; font-size: 2rem; font-family: consolas; text-align: center;');
+                elDiv.setAttribute('style', 'display: flex; height: 50px; width: 100%; background-color: tomato; color: white; font-size: 2rem; font-family: consolas; text-align: center;');
                 elDiv.innerHTML = '<p style="width: 100%">WARNING: This repo is pretty old ;) </p>';
                 document.querySelector('#js-repo-pjax-container').prepend(elDiv);
             }
