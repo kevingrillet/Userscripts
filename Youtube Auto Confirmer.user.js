@@ -5,7 +5,7 @@
 // @description   Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -20,21 +20,19 @@
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var msg = ["Video paused. Continue watching?","Vidéo mise en pause. Poursuivre la lecture ?"];
+var msgs = ["Video paused. Continue watching?", "Vidéo mise en pause. Poursuivre la lecture ?"];
 
 
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-setInterval(function() {
+setInterval(function () {
     'use strict';
-    var el = document.querySelectorAll('.line-text.style-scope.yt-confirm-dialog-renderer')
-    if (el.length >= 1) {
-        for (let i = 0; i < el.length; i++) {
-            for (let j = 0; j < msg.length; j++){
-                if (el[i].innerText == msg[j]) {
-                    el[i].parentNode.parentNode.parentNode.querySelector('#confirm-button').click()
-                }
+    var els = document.querySelectorAll('.line-text.style-scope.yt-confirm-dialog-renderer') || [];
+    for (let el of els) {
+        for (let msg of msgs) {
+            if (el.innerText == msg) {
+                el.parentNode.parentNode.parentNode.querySelector('#confirm-button').click()
             }
         }
     }
