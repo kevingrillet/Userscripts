@@ -22,7 +22,7 @@
 // **************************************************
 // KI, DE, AS, VI, DEF, TU, IN,  BA,  DR, RI, ETU, EIN, EBA, EDR, ERI
 var pu = [.5, 1, 0, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1.5, 5], // Push ups
-    su = [ 0, 0, 1, 6, 10, 0, 0, 0, 0, 0, 0, 2, 4.5, 0, 0], // Sit Ups
+    su = [0, 0, 1, 6, 10, 0, 0, 0, 0, 0, 0, 2, 4.5, 0, 0], // Sit Ups
     s = [0, 0, 0, 12, 16, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0]; // Squats
 
 
@@ -30,26 +30,26 @@ var pu = [.5, 1, 0, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1.5, 5], // Push ups
 // **********      V A R I A B L E S       **********
 // **************************************************
 const KILL = 0,
-      DEATH = 1,
-      ASSIST = 2,
-      VICTORY = 3,
-      DEFEAT = 4,
-      TURRET = 5,
-      INHIBITOR = 6,
-      BARON = 7,
-      DRAGON = 8,
-      RIFT = 9,
-      ETURRET = 10,
-      EINHIBITOR = 11,
-      EBARON = 12,
-      EDRAGON = 13,
-      ERIFT = 14,
-      CST = [
-          "Kill", "Death", "Assist",
-          "Victory", "Defeat",
-          "Turret", "Inhibitor", "Baron", "Dragon", "Rift",
-          "Turret", "Inhibitor", "Baron", "Dragon", "Rift"
-      ];
+    DEATH = 1,
+    ASSIST = 2,
+    VICTORY = 3,
+    DEFEAT = 4,
+    TURRET = 5,
+    INHIBITOR = 6,
+    BARON = 7,
+    DRAGON = 8,
+    RIFT = 9,
+    ETURRET = 10,
+    EINHIBITOR = 11,
+    EBARON = 12,
+    EDRAGON = 13,
+    ERIFT = 14,
+    CST = [
+        "Kill", "Death", "Assist",
+        "Victory", "Defeat",
+        "Turret", "Inhibitor", "Baron", "Dragon", "Rift",
+        "Turret", "Inhibitor", "Baron", "Dragon", "Rift"
+    ];
 
 var fpu = 0,
     fsu = 0,
@@ -62,7 +62,7 @@ var fpu = 0,
 function fitness(doc) {
     var fpu = fsu = fs = 0,
         // KI, DE, AS, VI, DEF, TU, IN, BA, DR, RI, ETU, EIN, EBA, EDR, ERI
-        data = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     var docCurrentUser = doc.querySelector(".current-user.player");
 
@@ -122,7 +122,7 @@ function fitness(doc) {
 
     var elDiv = document.querySelector('.game-header').appendChild(document.createElement('div'));
     elDiv.classList.add('content-border');
-    elDiv.style='margin-top: 0; border-top: 0; padding-top: 0; width: 100%; font-family: consolas;'
+    elDiv.style = 'margin-top: 0; border-top: 0; padding-top: 0; width: 100%; font-family: consolas;'
     elDiv.innerHTML = `
   <div class="white-stone" style="display: flex; width: 100%;">
     <h4 style="flex: 1;">League Of Fitness</h4>
@@ -135,9 +135,9 @@ function fitness(doc) {
     document.querySelector("#pu").innerHTML = 'Push-ups: ' + fit[0];
     document.querySelector("#su").innerHTML = 'Sit-ups: ' + fit[1];
     document.querySelector("#s").innerHTML = 'Squats: ' + fit[2];
-};
+}
 
-var myInterval = setInterval(function() {
+var myInterval = setInterval(function () {
     if (document.querySelector('.scoreboard')) {
         fitness(document.body);
         clearInterval(myInterval);
