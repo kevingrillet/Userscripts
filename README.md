@@ -70,7 +70,7 @@ Inspire by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.9-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.10-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
@@ -81,7 +81,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.10-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.11-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -100,6 +100,33 @@ Add many functions:
 - ~~Add other manga reader websites~~ Atm i only read here... and i think i'm too specific...
 - ~~Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)~~ i'm doing it with var at the beginning of the script
 - ~~Export chapter?~~ Need to be updated for [![Tampermonkey, v4.11](https://img.shields.io/badge/Tampermonkey-v4.12-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
+
+<details>
+  <summary>GM_download</summary>
+  Uncaught (in promise) {error: "not_whitelisted"}
+
+  ```Javascript
+    // @grant         GM_download
+    function download(url, name) {
+    return new Promise((resolve, reject) => {
+        GM_download({
+                url,
+                name,
+                saveAs: false,
+                onerror: reject,
+                onload: resolve
+            });
+    });
+    }
+    async function downloadImages() {
+        let cnt = 0;
+        for (let i of images) {
+            await download(i.src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++cnt}`);
+        }
+    }
+  ```
+
+</details>
 
 <details>
   <summary>FileSaver</summary>
