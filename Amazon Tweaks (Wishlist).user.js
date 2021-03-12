@@ -41,14 +41,14 @@ function addAll() {
 // **************************************************
 var loadingTry = 0
 function loadAll() {
-    if (!document.querySelector('#endOfListMarker') && loadingTry < maxLoadingTry){
-        setTimeout(function() {
-            document.querySelectorAll(':scope #g-items li')[document.querySelectorAll(':scope #g-items li').length-1].scrollIntoView(/*{behavior: "smooth"}*/);
+    if (!document.querySelector('#endOfListMarker') && loadingTry < maxLoadingTry) {
+        setTimeout(function () {
+            document.querySelectorAll(':scope #g-items li')[document.querySelectorAll(':scope #g-items li').length - 1].scrollIntoView(/*{behavior: "smooth"}*/);
             loadingTry++;
             loadAll();
         }, loadSpeed);
     } else {
-        window.scrollTo({ top: 0/*, behavior: 'smooth'*/});
+        window.scrollTo({ top: 0/*, behavior: 'smooth'*/ });
         calcTotal();
         setUI();
     }
@@ -62,7 +62,7 @@ var number = 0,
     total = 0;
 function calcTotal() {
     document.querySelectorAll(':scope #g-items .g-item-sortable').forEach(e => {
-        let price = Number(e.querySelector('.a-offscreen')? e.querySelector('.a-offscreen').innerHTML.replace(',','.').replace('&nbsp;€','') : 0),
+        let price = Number(e.querySelector('.a-offscreen') ? e.querySelector('.a-offscreen').innerHTML.replace(',', '.').replace('&nbsp;€', '') : 0),
             quantity = e.querySelectorAll('.a-box-inner')[1].querySelectorAll('.a-letter-space'),
             requested = quantity[1].nextElementSibling.innerHTML,
             purchased = quantity[3].nextElementSibling.innerHTML;
@@ -70,7 +70,7 @@ function calcTotal() {
         total += price * (requested - purchased);
     });
 
-    total = total.toFixed(2).toString().replace('.',',');
+    total = total.toFixed(2).toString().replace('.', ',');
 }
 
 
@@ -80,11 +80,11 @@ function calcTotal() {
 function setUI() {
     var el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
     el.classList.add('a-column', 'a-span12', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
-    el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number>1?s:''}): ${total}€ </b></span>`;
+    el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number > 1 ? s : ''}): ${total}€ </b></span>`;
     el = el.appendChild(document.createElement('span'));
     el.classList.add('a-button', 'a-button-normal', 'a-button-primary', 'wl-info-aa_add_to_cart');
     el.innerHTML = `<span class="a-button-inner" style="width: 220px"><a class="a-button-text a-text-center">Tout ajouter au panier</a></span>`;
-    el.onclick = function() { addAll(); };
+    el.onclick = function () { addAll(); };
 }
 
 function removeCrap() {
