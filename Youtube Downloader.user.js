@@ -5,7 +5,7 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.3
+// @version       1.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -34,28 +34,31 @@ function addStyles(css) {
     style.innerHTML = css;
 }
 
-addStyles(`
+function addMenu() {
+    addStyles(`
 #my_dl { cursor: pointer; float: right; padding-top: 8px;}
 #my_dl span { font-size: 2em; color: rgb(144, 144, 144); }
 `);
 
-var elDiv = document.createElement('div');
-elDiv.id = 'my_dl';
-elDiv.innerHTML = `
+    var elParent = document.querySelector(`:scope ${CST_ID_METACONTENT}`),
+        elDiv = elParent.appendChild(document.createElement('div'));
+    elDiv.id = 'my_dl';
+    elDiv.innerHTML = `
   <span class="dl" title="Download">
     <a><i class="fas fa-fw fa-file-download" ></i></a>
   </span>
 `;
+    elDiv.onclick = function () { launchDl(); };
+}
 
 
 // **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
 window.addEventListener('load', function () {
-    var myInterval = setInterval(function() {
+    var myInterval = setInterval(function () {
         if (document.querySelector(`:scope ${CST_ID_METACONTENT}`)) {
-            document.querySelector(`:scope ${CST_ID_METACONTENT}`).append(elDiv);
-            document.querySelector('.dl').onclick = function() { launchDl(); };
+            addMenu();
             clearInterval(myInterval);
             myInterval = null;
         }
@@ -66,7 +69,7 @@ window.addEventListener('load', function () {
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-function launchDl(){
+function launchDl() {
     if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
         window.open(window.location.href.assign('youtube.com', 'yout.com'), "_blank");
     }
