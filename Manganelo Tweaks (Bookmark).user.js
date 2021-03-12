@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.9
+// @version       1.10
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -30,6 +30,8 @@
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContinerTop = true, // Move top to bottom, need right to be active
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
+    scrollSpeed = 1000 / 60, // 1/60 s
+    scrollValue = 48, // px
     showAdult = true, // Sometimes false positive...
     showHype = true,
     showRank = true,
@@ -133,7 +135,13 @@ elDiv.innerHTML = `
     <a><i class="fas fa-fw fa-file-download" ></i></a>
   </span>
   <span class="sort" title="Sort (Shift + S)">
-    <a><i class="fas fa-fw fa-minus-square" ></i></a>
+    <a><i class="fas fa-fw fa-sort" ></i></a>
+  </span>
+  <span class="refresh" title="Refresh tags (Shift + T)">
+    <a><i class="fas fa-fw fa-redo" ></i></a>
+  </span>
+  <span class="delete" title="Delete cache (Delete)">
+    <a><i class="fas fa-fw fa-trash" ></i></a>
   </span>
 `;
 
@@ -143,6 +151,22 @@ elDiv.innerHTML = `
 // **************************************************
 document.querySelector('.export').onclick = function() { exportBookmark(); };
 document.querySelector('.sort').onclick = function() { letsSort(); };
+document.querySelector('.refresh').onclick = function() { doForceRefresh(); };
+document.querySelector('.delete').onclick = function() { deleteValues(); };
+
+
+// **************************************************
+// **********      S C R O L L I N G       **********
+// **************************************************
+function startScrolling(value){
+    scroll = setInterval(function() {
+        window.scrollBy(0, value);
+    }, scrollSpeed)
+}
+function stopScrolling(){
+    clearInterval(scroll);
+    scroll = null;
+}
 
 
 // **************************************************
@@ -157,16 +181,25 @@ document.addEventListener('keydown', event => {
             letsSort();
         }
         else if (event.code == 'KeyT' && event.shiftKey) {
-            if (showAdult || showHype || showRank) {
-                let tmp = forceRefresh;
-                forceRefresh = true;
-                loadData();
-                forceRefresh = tmp;
-            }
+            doForceRefresh();
         }
         else if (event.code == 'Delete') {
             deleteValues();
         }
+        else if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ') {
+            stopScrolling();
+            startScrolling(-scrollValue);
+        }
+        else if (event.code == 'ArrowDown' || event.code == 'KeyS') {
+            stopScrolling();
+            startScrolling(scrollValue);
+        }
+    }
+});
+
+document.addEventListener('keyup', event => {
+    if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS' ) {
+        stopScrolling();
     }
 });
 
@@ -456,9 +489,20 @@ function diff_weeks(dt1, dt2) {
 }
 
 function deleteValues() {
-    let keys = GM_listValues();
-    for (let key of keys) {
-        GM_deleteValue(key);
+    if (confirm("Are you sure you want to empty cache?")) {
+        let keys = GM_listValues();
+        for (let key of keys) {
+            GM_deleteValue(key);
+        }
+    }
+}
+
+function doForceRefresh() {
+    if (showAdult || showHype || showRank) {
+        let tmp = forceRefresh;
+        forceRefresh = true;
+        loadData();
+        forceRefresh = tmp;
     }
 }
 
