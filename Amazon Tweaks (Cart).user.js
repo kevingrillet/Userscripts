@@ -64,8 +64,8 @@ function setUI() {
         </span>
     </span>`;
 
-    document.querySelector('#my_delete_all').onclick = function() { deleteAll(); };
-    document.querySelector('#my_save_all').onclick = function() { saveAll(); };
+    document.querySelector('#my_delete_all').onclick = function () { deleteAll(); };
+    document.querySelector('#my_save_all').onclick = function () { saveAll(); };
 }
 
 function removeCrap() {
