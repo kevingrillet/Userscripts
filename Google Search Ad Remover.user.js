@@ -27,7 +27,7 @@ var removeAdd = true;
 // **********         S C R I P T          **********
 // **************************************************
 if (removeAdd) {
-    document.querySelectorAll('#taw').forEach((ad)=>{ad.remove()});
+    document.querySelectorAll('#taw').forEach(ad => ad.remove());
 } else {
-    document.querySelectorAll('#taw').forEach((ad)=>{ad.style.display = "none"});
+    document.querySelectorAll('#taw').forEach(ad => ad.style.display = "none");
 }
