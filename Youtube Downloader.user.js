@@ -29,7 +29,7 @@ var CST_ID_METACONTENT = '#meta-contents #subscribe-button ytd-subscribe-button-
 // **************************************************
 // require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
-    var style = document.head.appendChild(document.createElement('style'));
+    let style = document.head.appendChild(document.createElement('style'));
     style.type = 'text/css';
     style.innerHTML = css;
 }
@@ -40,7 +40,7 @@ function addMenu() {
 #my_dl span { font-size: 2em; color: rgb(144, 144, 144); }
 `);
 
-    var elParent = document.querySelector(`:scope ${CST_ID_METACONTENT}`),
+    let elParent = document.querySelector(`:scope ${CST_ID_METACONTENT}`),
         elDiv = elParent.appendChild(document.createElement('div'));
     elDiv.id = 'my_dl';
     elDiv.innerHTML = `
