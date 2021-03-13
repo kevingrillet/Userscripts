@@ -51,7 +51,7 @@ function saveAll() {
 // **********             U I              **********
 // **************************************************
 function setUI() {
-    var el = document.querySelector('.sc-cart-header').lastElementChild;
+    let el = document.querySelector('.sc-cart-header').lastElementChild;
     el.innerHTML += `
     <span id="my_delete_all" style="float: right;" class="a-button a-spacing-top-none a-button-primary a-button-small">
         <span class="a-button-inner">
