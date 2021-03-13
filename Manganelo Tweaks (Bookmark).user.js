@@ -218,8 +218,6 @@ function prepareBookmarkDownload(e) {
         document.querySelector('#my_dialog').remove();
     }
 
-    console.debug(e);
-
     var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[5].replace(CST_CHAPTER_URL, ''),
         myDialog = document.body.appendChild(document.createElement('dialog'));
 
