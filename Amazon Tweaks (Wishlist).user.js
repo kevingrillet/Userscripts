@@ -85,7 +85,7 @@ function calcTotal() {
 function setUI() {
     let el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
     el.classList.add('a-column', 'a-span12', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
-    el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number > 1 ? s : ''}): ${total}€ </b></span>`;
+    el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number > 1 ? 's' : ''}): ${total}€ </b></span>`;
     el = el.appendChild(document.createElement('span'));
     el.classList.add('a-button', 'a-button-normal', 'a-button-primary', 'wl-info-aa_add_to_cart');
     el.innerHTML = `<span class="a-button-inner" style="width: 220px"><a class="a-button-text a-text-center">Tout ajouter au panier</a></span>`;
