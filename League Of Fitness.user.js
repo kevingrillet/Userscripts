@@ -60,26 +60,26 @@ var fpu = 0,
 // **********         S C R I P T          **********
 // **************************************************
 function fitness(doc) {
-    var fpu = fsu = fs = 0,
+    let fpu = fsu = fs = 0,
         // KI, DE, AS, VI, DEF, TU, IN, BA, DR, RI, ETU, EIN, EBA, EDR, ERI
-        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
-    var docCurrentUser = doc.querySelector(".current-user.player");
+        docCurrentUser = doc.querySelector(".current-user.player"),
 
-    // KDA
-    var docKDA = docCurrentUser.querySelector(".kda-kda");
-    var docK = docKDA.firstChild;
-    var docD = docK.nextElementSibling;
-    var docA = docD.nextElementSibling;
+        // KDA
+        docKDA = docCurrentUser.querySelector(".kda-kda"),
+        docK = docKDA.firstChild,
+        docD = docK.nextElementSibling,
+        docA = docD.nextElementSibling;
 
     data[KILL] = docK.innerHTML;
     data[DEATH] = docD.innerHTML;
     data[ASSIST] = docA.innerHTML;
 
     // GAME
-    var docTeamHeader = docCurrentUser.parentNode.parentNode.parentNode.firstElementChild;
+    let docTeamHeader = docCurrentUser.parentNode.parentNode.parentNode.firstElementChild;
 
-    var ga = docTeamHeader.firstElementChild.firstElementChild.querySelector(".game-conclusion").innerHTML;
+    let ga = docTeamHeader.firstElementChild.firstElementChild.querySelector(".game-conclusion").innerHTML;
     if (ga.match(/.*VICTORY.*/) || ga.match(/.*VICTOIRE.*/)) {
         data[VICTORY] = 1;
         data[DEFEAT] = 0;
@@ -89,7 +89,7 @@ function fitness(doc) {
     }
 
     // ALLY
-    var docTeamFooter = docCurrentUser.parentNode.parentNode.nextElementSibling.firstElementChild.firstElementChild;
+    let docTeamFooter = docCurrentUser.parentNode.parentNode.nextElementSibling.firstElementChild.firstElementChild;
 
     data[TURRET] = docTeamFooter.querySelector(":scope .tower-kills span") ? docTeamFooter.querySelector(":scope .tower-kills span").innerHTML : 0;
     data[INHIBITOR] = docTeamFooter.querySelector(":scope .inhibitor-kills span") ? docTeamFooter.querySelector(":scope .inhibitor-kills span").innerHTML : 0;
@@ -98,12 +98,12 @@ function fitness(doc) {
     data[RIFT] = docTeamFooter.querySelector(":scope .rift-herald-kills span") ? docTeamFooter.querySelector(":scope .rift-herald-kills span").innerHTML : 0;
 
     // ENEMY
-    var docTeam = docTeamHeader.parentNode.parentNode;
-    var docEnemy = docTeam.nextElementSibling;
+    let docTeam = docTeamHeader.parentNode.parentNode,
+        docEnemy = docTeam.nextElementSibling;
     if (docEnemy == null) {
         docEnemy = docTeam.previousElementSibling;
     }
-    var docEnemyFooter = docEnemy.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
+    let docEnemyFooter = docEnemy.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;
 
     data[ETURRET] = docEnemyFooter.querySelector(":scope .tower-kills span") ? docEnemyFooter.querySelector(":scope .tower-kills span").innerHTML : 0;
     data[EINHIBITOR] = docEnemyFooter.querySelector(":scope .inhibitor-kills span") ? docEnemyFooter.querySelector(":scope .inhibitor-kills span").innerHTML : 0;
@@ -118,9 +118,9 @@ function fitness(doc) {
         fs += s[index] * data[index];
     }
 
-    var fit = [fpu, fsu, fs];
+    let fit = [fpu, fsu, fs];
 
-    var elDiv = document.querySelector('.game-header').appendChild(document.createElement('div'));
+    let elDiv = document.querySelector('.game-header').appendChild(document.createElement('div'));
     elDiv.classList.add('content-border');
     elDiv.style = 'margin-top: 0; border-top: 0; padding-top: 0; width: 100%; font-family: consolas;'
     elDiv.innerHTML = `
