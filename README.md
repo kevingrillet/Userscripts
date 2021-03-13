@@ -12,6 +12,7 @@
  - [Google](#Google)
  - [League of Legends](#League-of-Legends)
  - [Manganelo](#Manganelo)
+ - [PSTHC](#PSTHC)
  - [Youtube](#Youtube)
 
 ## Amazon tweaks
@@ -75,13 +76,13 @@ It's create for Manganelo, but i think it can be used on other website like Mang
 Add some functions:
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
 - Repair user-notification
-- Sort (Shift + S) 
+- Sort (Shift + S)
 - ToRead
 - Tags: Adult, Hype, Rating (Shift + T: refresh, Delete: delete storage)
 
 I use it to order my bookmarks by number to read...
 
-### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.11-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.12-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 - Auto next (when scroll hit bottom)
@@ -99,7 +100,7 @@ Add many functions:
 ### ToDo
 - ~~Add other manga reader websites~~ Atm i only read here... and i think i'm too specific...
 - ~~Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)~~ i'm doing it with var at the beginning of the script
-- ~~Export chapter?~~ Need to be updated for [![Tampermonkey, v4.11](https://img.shields.io/badge/Tampermonkey-v4.12-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
+- ~~Export chapter?~~ Need to be updated for [![Tampermonkey, v4.12](https://img.shields.io/badge/Tampermonkey-v4.12-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
 
 <details>
   <summary>GM_download</summary>
@@ -130,7 +131,7 @@ Add many functions:
 
 <details>
   <summary>FileSaver</summary>
-  
+
   Open in popup :boom:
 
   ```Javascript
@@ -150,7 +151,7 @@ Add many functions:
   <summary>jsPDF</summary>
 
   [crossOrigin](https://developer.mozilla.org/fr/docs/Web/HTTP/CORS) :sob:
-  
+
   ```Javascript
     // require https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js
     // source https://github.com/MrRio/jsPDF/issues/317#issuecomment-604415689
@@ -169,7 +170,7 @@ Add many functions:
         //ImageToLoad.crossOrigin = "Anonymous";
 
         ImageToLoad.onError = function () {
-            console.log('Cannot load image: "' + url + '"');
+            console.debug('Cannot load image: "' + url + '"');
         };
 
         ImageToLoad.onload = function () {
@@ -238,7 +239,7 @@ Add many functions:
   <summary>State of the Art</summary>
 
   Not working atm :sob:
-  
+
   ```Javascript
     var elDivLoading = document.createElement('div');
     elDivLoading.id = 'my_loading';
@@ -268,10 +269,10 @@ Add many functions:
                 }
             }
             if (Number(pThis.getAttribute('try')) > 5) {
-                console.error('Failed to load: ' + pThis.src);
+                console.debug('Failed to load: ' + pThis.src);
                 pThis.removeAttribute('onerror');
             } else {
-                console.warn('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
+                console.debug('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
                 pThis.src = pThis.src;
             }
         }
@@ -312,13 +313,21 @@ Experiment to update value everytime i look at a manga page, but gm_values are s
 
 And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
 
+## PSTHC
+### Trophies Settings [![PSTHC - Trophies Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophies%20Settings.user.js)
+
+Automatically set trophies settings:
+- Hidden
+- Unlocked
+- Order
+
 ## YouTube
-### Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
+### Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
 
 Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 
 **Need to be the active tab.**
 
-### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.
