@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.11
+// @version       1.12
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -61,7 +61,7 @@ var CST_HOME = null,
     CST_CLASS_MARGIN = null,
     CST_CLASS_TITLE = null;
 
-env.some(function(e){
+env.some(function (e) {
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_HOME = e.url_home;
         CST_BOOKMARK = e.url_bookmark;
@@ -81,19 +81,21 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
     images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
-    timerStart = Date.now(),
-    scroll = null;
+    scroll = null,
+    timerStart = Date.now();
 
 
 // **************************************************
 // **********     D U P L I C A T E D      **********
 // **************************************************
-if ((buttonNext ? buttonNext.href : null) == window.location.href) {
-    console.warn('Duplicated chapter :(');
-    // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
-    let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
-    if (buttonNext && tmp) {
-        buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+function doDuplicated() {
+    if ((buttonNext ? buttonNext.href : null) == window.location.href) {
+        console.debug('Duplicated chapter :(');
+        // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
+        let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
+        if (buttonNext && tmp) {
+            buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+        }
     }
 }
 
@@ -103,12 +105,13 @@ if ((buttonNext ? buttonNext.href : null) == window.location.href) {
 // **************************************************
 // require: https://use.fontawesome.com/releases/v5.15.2/js/all.js
 function addStyles(css) {
-    var style = head.appendChild(document.createElement('style'));
+    let style = head.appendChild(document.createElement('style'));
     style.type = 'text/css';
     style.innerHTML = css;
 }
 
-addStyles(`
+function addMenu() {
+    addStyles(`
 #my_footer { text-align: center; position: fixed; bottom: 5px; left: 5px; opacity: 0; transition:opacity 100ms;}
 #my_footer:hover { opacity: 1}
 #my_footer a { color: inherit; }
@@ -120,11 +123,11 @@ addStyles(`
 #my_footer span { cursor: pointer; font-size: 1em; color: GhostWhite; }
 `);
 
-var elDiv = document.body.appendChild(document.createElement('div'));
-elDiv.id = 'my_footer';
-elDiv.innerHTML = `
+    let elDiv = document.body.appendChild(document.createElement('div'));
+    elDiv.id = 'my_footer';
+    elDiv.innerHTML = `
   <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
-  <span class="export" title="Export (E)">
+  <span class="export" title="Export (Shift + E)">
     <a><i class="fas fa-fw fa-file-download" ></i></a>
   </span>
   </br>
@@ -168,55 +171,54 @@ elDiv.innerHTML = `
   </p>
 `;
 
-
-// **************************************************
-// **********       O N   C L I C K        **********
-// **************************************************
-if (chapterMax - chapterCurrent == 0) {
-    document.querySelector('.chap').style.color = 'PaleGreen';
-}
-document.querySelector('.export').onclick = function() { downloadImages(); };
-document.querySelector('.goUp').onclick = function() { window.scrollBy({top: 5 * -scrollValue,left: 0, behavior: 'smooth'}); };
-document.querySelector('.goDown').onclick = function() { window.scrollBy({top: 5 * scrollValue,left: 0, behavior: 'smooth'}); };
-document.querySelector('.unzoom').onclick = function() { unzoom(); };
-document.querySelector('.zoom').onclick = function() { zoom(); };
-if (buttonPrevious){
-    document.querySelector('.goPrevious').firstElementChild.href = buttonPrevious.href;
-    document.querySelector('.goPrevious').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex + 1].value + ' (←/A/Q)';
-}
-else {
-    document.querySelector('.goPrevious').style.color = 'Tomato';
-}
-if (buttonNext){
-    document.querySelector('.goNext').firstElementChild.href = buttonNext.href;
-    document.querySelector('.goNext').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 1].value + ' (→/D)';
-}
-else {
-    document.querySelector('.goNext').style.color = 'Tomato';
+    if (chapterMax - chapterCurrent == 0) {
+        document.querySelector('.chap').style.color = 'PaleGreen';
+    }
+    document.querySelector('.export').onclick = function () { downloadImages(); };
+    document.querySelector('.goUp').onclick = function () { window.scrollBy({ top: 5 * -scrollValue, left: 0, behavior: 'smooth' }); };
+    document.querySelector('.goDown').onclick = function () { window.scrollBy({ top: 5 * scrollValue, left: 0, behavior: 'smooth' }); };
+    document.querySelector('.unzoom').onclick = function () { unzoom(); };
+    document.querySelector('.zoom').onclick = function () { zoom(); };
+    if (buttonPrevious) {
+        document.querySelector('.goPrevious').firstElementChild.href = buttonPrevious.href;
+        document.querySelector('.goPrevious').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex + 1].value + ' (←/A/Q)';
+    }
+    else {
+        document.querySelector('.goPrevious').style.color = 'Tomato';
+    }
+    if (buttonNext) {
+        document.querySelector('.goNext').firstElementChild.href = buttonNext.href;
+        document.querySelector('.goNext').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 1].value + ' (→/D)';
+    }
+    else {
+        document.querySelector('.goNext').style.color = 'Tomato';
+    }
 }
 
 
 // **************************************************
 // **********           A D D S            **********
 // **************************************************
-document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.style.display = "none"});
-//document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
+function removeAdds() {
+    document.querySelectorAll('iframe').forEach((i) => { i.parentNode.style.display = "none" });
+    //document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
+}
 
 
 
 // **************************************************
 // **********      A U T O   N E X T       **********
 // **************************************************
-function autoNext(){
+function autoNext() {
     // Auto next when scroll to the bottom
     if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
-        setTimeout(function() {
+        setTimeout(function () {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
                 if (buttonNext && buttonNext !== undefined) {
                     goNext();
                 }
                 else {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         goBookmark();
                     }, autoNextBookmarkSpeed); // wait 4 secs
                 }
@@ -229,14 +231,16 @@ function autoNext(){
 // **************************************************
 // **********      P R E R E N D E R       **********
 // **************************************************
-function prerender(){
+function prerender(force) {
+    force = force || false;
     if (buttonNext && buttonNext !== undefined) {
         if (buttonNext.rel == 'nofollow') {
-            if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
+            if (force || Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
                 let link = head.appendChild(document.createElement('link'));
                 link.setAttribute('rel', rel);
                 link.setAttribute('href', buttonNext.href);
                 buttonNext.setAttribute('rel', rel);
+                console.debug('Prerender added.')
             }
         }
     }
@@ -246,56 +250,53 @@ function prerender(){
 // **************************************************
 // **********         R E L O A D          **********
 // **************************************************
-function reloadImage(pThis){
-    if ( pThis && pThis.src) {
+function reloadImage(pThis) {
+    if (pThis && pThis.src) {
         pThis.setAttribute('try', pThis.hasAttribute('try') ? Number(pThis.getAttribute('try')) + 1 : 1);
         if (Number(pThis.getAttribute('try')) > 5) {
-            console.error('Failed to load: ' + pThis.src);
+            console.debug('Failed to load: ' + pThis.src);
             pThis.removeAttribute('onerror');
         } else {
-            console.warn('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
+            console.debug('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
             pThis.src = pThis.src;
         }
     }
-};
-
-var script = head.appendChild(document.createElement('script'));
-script.appendChild(document.createTextNode(reloadImage));
+}
 
 function setReload() {
+    let script = head.appendChild(document.createElement('script'));
+    script.appendChild(document.createTextNode(reloadImage));
+
     for (let i of images) {
-        if ( i && i.src) {
-            i.setAttribute('onerror','reloadImage(this);');
+        if (i && i.src) {
+            i.setAttribute('onerror', 'reloadImage(this);');
         }
-    };
+    }
 }
-setReload();
 
 
 // **************************************************
 // **********      G R A Y S C A L E       **********
 // **************************************************
 function toogleGrayscale(pThis) {
-    if ( pThis && pThis.src) {
+    if (pThis && pThis.src) {
         if (pThis.style.filter) {
             pThis.style.removeProperty('filter');
         } else {
             pThis.style.filter = "grayscale(1)";
         }
     }
-};
-
-script = head.appendChild(document.createElement('script'));
-script.appendChild(document.createTextNode(toogleGrayscale));
+}
 
 function setGrayscale() {
+    let script = head.appendChild(document.createElement('script'));
+    script.appendChild(document.createTextNode(toogleGrayscale));
     for (let i of images) {
-        if ( i && i.src) {
-            i.setAttribute('onclick','toogleGrayscale(this);');
+        if (i && i.src) {
+            i.setAttribute('onclick', 'toogleGrayscale(this);');
         }
-    };
+    }
 }
-setGrayscale();
 
 
 // **************************************************
@@ -304,13 +305,16 @@ setGrayscale();
 function setMargin(value) {
     for (let i of images) {
         i.style.marginTop = value + 'px';
-    };
-};
-if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
-    if (imagesMargin >= 0 && imagesMargin <= 10) {
-        document.querySelector(CST_CLASS_MARGIN).selectedIndex = imagesMargin;
     }
-    setMargin(imagesMargin);
+}
+
+function doSetMargin() {
+    if (document.querySelector(CST_CLASS_MARGIN).selectedIndex !== imagesMargin) {
+        if (imagesMargin >= 0 && imagesMargin <= 10) {
+            document.querySelector(CST_CLASS_MARGIN).selectedIndex = imagesMargin;
+        }
+        setMargin(imagesMargin);
+    }
 }
 
 
@@ -323,7 +327,7 @@ function setMaxWidth(value) {
         document.querySelector('.unzoom').style.color = 'Tomato';
         document.querySelector('.unzoom').title = 'Min';
     } else {
-        document.querySelector('.unzoom').onclick = function() { unzoom(); };
+        document.querySelector('.unzoom').onclick = function () { unzoom(); };
         document.querySelector('.unzoom').style.color = 'GhostWhite';
         document.querySelector('.unzoom').title = (value - zoomW).toString() + '%';
     }
@@ -332,35 +336,34 @@ function setMaxWidth(value) {
         document.querySelector('.zoom').style.color = 'Tomato';
         document.querySelector('.zoom').title = 'Max';
     } else {
-        document.querySelector('.zoom').onclick = function() { zoom(); };
+        document.querySelector('.zoom').onclick = function () { zoom(); };
         document.querySelector('.zoom').title = (value + zoomW).toString() + '%';
         document.querySelector('.zoom').style.color = 'GhostWhite';
     }
     for (let i of images) {
         i.style.maxWidth = value + '%';
-    };
+    }
 }
-setMaxWidth(maxWidth);
 
 function zoom() {
     maxWidth += zoomW;
     setMaxWidth(maxWidth);
-};
+}
 function unzoom() {
     maxWidth -= zoomW;
     setMaxWidth(maxWidth);
-};
+}
 
 
 // **************************************************
 // **********      S C R O L L I N G       **********
 // **************************************************
-function startScrolling(value){
-    scroll = setInterval(function() {
+function startScrolling(value) {
+    scroll = setInterval(function () {
         window.scrollBy(0, value);
     }, scrollSpeed)
 }
-function stopScrolling(){
+function stopScrolling() {
     clearInterval(scroll);
     scroll = null;
 }
@@ -369,30 +372,25 @@ function stopScrolling(){
 // **************************************************
 // **********     N A V I G A T I O N      **********
 // **************************************************
-function goBookmark(){
-    //window.location.assign(CST_HOME + CST_BOOKMARK);
+function goBookmark() {
     document.querySelector('.goBookmark').click();
-};
+}
 function goHome() {
-    //window.location.assign(CST_HOME);
     document.querySelector('.goHome').click();
-};
+}
 function goManga() {
-    //window.location.assign(document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href);
     document.querySelector('.goManga').click();
-};
-function goNext(){
+}
+function goNext() {
     if (buttonNext) {
-        //window.location.assign(buttonNext.href);
         document.querySelector('.goNext').firstElementChild.click();
     }
-};
-function goPrevious(){
+}
+function goPrevious() {
     if (buttonPrevious) {
-        //window.location.assign(buttonPrevious.href);
         document.querySelector('.goPrevious').firstElementChild.click();
     }
-};
+}
 
 
 // **************************************************
@@ -406,18 +404,33 @@ function goPrevious(){
 //    }
 //}
 function downloadImages(value) {
-    value = value || 0;
-    setTimeout(function() {
-        GM_download(images[value].src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++value}`);
-        if (value < images.length) downloadImages(value);
-    }, .5 * 1000);
+    value = value || 0;
+    setTimeout(function () {
+        GM_download(images[value].src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++value}`);
+        if (value < images.length) downloadImages(value);
+    }, .5 * 1000);
 }
 
 
 // **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
-window.onscroll = function(ev) {
+function run() {
+    // Link
+    doDuplicated(); // need to be done before addMenu()
+    // Menu
+    addMenu();
+    // Adds
+    removeAdds();
+    // Images
+    setReload();
+    setGrayscale();
+    doSetMargin();
+    setMaxWidth(maxWidth);
+}
+run();
+
+window.onscroll = function (ev) {
     autoNext();
     prerender();
 };
@@ -450,19 +463,20 @@ document.addEventListener('keydown', event => {
     else if (event.code == 'KeyF') {
         document.querySelector('.my_search').click();
     }
-    else if (event.code == 'KeyE') {
+    else if (event.code == 'KeyE' && event.shiftKey) {
         downloadImages();
     }
 });
 
 document.addEventListener('keyup', event => {
-    if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS' ) {
+    if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS') {
         stopScrolling();
     }
 });
 
 window.addEventListener('load', function () {
-    let loadTime = Date.now()-timerStart;
+    let loadTime = Date.now() - timerStart;
+    console.debug('Time until everything loaded: ' + loadTime.toFixed(0).toString() + 'ms');
     document.querySelector('.load').firstElementChild.remove();
     document.querySelector('.load').textContent = loadTime.toFixed(0).toString() + 'ms';
     document.querySelector('.load').title = 'Time until everything loaded';
@@ -477,6 +491,6 @@ window.addEventListener('load', function () {
     }
 
     if (relOnLoad) {
-        prerender();
+        prerender(true);
     }
 });
