@@ -29,5 +29,5 @@ var removeAdd = true;
 if (removeAdd) {
     document.querySelectorAll('#taw').forEach(ad => ad.remove());
 } else {
-    document.querySelectorAll('#taw').forEach(ad => ad.style.display = "none");
+    document.querySelectorAll('#taw').forEach(ad => { ad.style.display = "none" });
 }
