@@ -26,6 +26,14 @@ var cleanUI = true, // remove crap ui
 
 
 // **************************************************
+// **********      V A R I A B L E S       **********
+// **************************************************
+var loadingTry = 0,
+    number = 0,
+    total = 0;
+
+
+// **************************************************
 // **********           C A R T            **********
 // **************************************************
 function addAll() {
@@ -39,7 +47,6 @@ function addAll() {
 // **********           L O A D            **********
 // **************************************************
 // **************************************************
-var loadingTry = 0
 function loadAll() {
     if (!document.querySelector('#endOfListMarker') && loadingTry < maxLoadingTry) {
         setTimeout(function () {
@@ -58,8 +65,6 @@ function loadAll() {
 // **************************************************
 // **********          T O T A L           **********
 // **************************************************
-var number = 0,
-    total = 0;
 function calcTotal() {
     document.querySelectorAll(':scope #g-items .g-item-sortable').forEach(e => {
         let price = Number(e.querySelector('.a-offscreen') ? e.querySelector('.a-offscreen').innerHTML.replace(',', '.').replace('&nbsp;€', '') : 0),
@@ -78,7 +83,7 @@ function calcTotal() {
 // **********             U I              **********
 // **************************************************
 function setUI() {
-    var el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
+    let el = document.querySelector('#control-bar').appendChild(document.createElement('div'));
     el.classList.add('a-column', 'a-span12', 'a-text-right', 'a-spacing-none', 'a-spacing-top-base', 'a-span-last');
     el.innerHTML = `<span style="margin-right: 30px"><b>Total (${number} article${number > 1 ? s : ''}): ${total}€ </b></span>`;
     el = el.appendChild(document.createElement('span'));
