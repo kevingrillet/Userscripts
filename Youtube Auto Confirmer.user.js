@@ -28,7 +28,7 @@ var msgs = ["Video paused. Continue watching?", "Vidéo mise en pause. Poursuivr
 // **************************************************
 setInterval(function () {
     'use strict';
-    var els = document.querySelectorAll('.line-text.style-scope.yt-confirm-dialog-renderer') || [];
+    let els = document.querySelectorAll('.line-text.style-scope.yt-confirm-dialog-renderer') || [];
     for (let el of els) {
         for (let msg of msgs) {
             if (el.innerText == msg) {
