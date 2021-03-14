@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.11
+// @version       1.12
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -412,99 +412,149 @@ function moveTop() {
 // **************************************************
 // **********           S O R T            **********
 // **************************************************
-function letsSort() {
-    let tmp = document.querySelector('#my_table'),
-        bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
+// function letsSort() {
+//     let tmp = document.querySelector('#my_table'),
+//         bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
-    if (tmp) {
-        tmp.remove();
-        bm.forEach(e => { e.style.display = 'block' });
+//     if (tmp) {
+//         tmp.remove();
+//         bm.forEach(e => { e.style.display = 'block' });
+//         return;
+//     }
+
+//     let elDiv = document.querySelector(CST_CLASS_BOOKMARK_PANEL).appendChild(document.createElement('div')),
+//         elTable = elDiv.appendChild(document.createElement('table')),
+//         elThead = elTable.appendChild(document.createElement('thead')),
+//         elTbody = elTable.appendChild(document.createElement('tbody'));
+
+//     elTable.id = 'my_table';
+
+//     if (!sortStyleInjected) {
+//         sortStyleInjected = true;
+//         addStyles(`
+// #my_table {
+//     color: Silver;
+//     width: 100%;
+// }
+// #my_table a{
+//     color: #079eda;
+// }
+// #my_footer a:link, #my_footer a:visited, #my_footer a:hover, #my_footer a:active {
+//     text-decoration: underline;
+// }
+// #my_table img {
+//     margin-right: 0;
+// }
+// #my_table th,td {
+//     border-bottom: 1px solid #ddd;
+//     padding: 15px;
+//     vertical-align : middle;
+// }
+// #my_table th {
+//     background-color: #FF7D47;
+//     color: black;
+//     text-transform: uppercase;
+//     font-weight: bolder;
+// }
+// #my_table tr {
+//     background-color: #323232;
+// }
+// #my_table tbody tr:nth-child(even) {
+//     background-color: #282828;
+// }
+// #my_table tbody tr:hover {
+//     background-color: #656565;
+// }
+// `
+//         );
+//     }
+
+//     elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th><th>Current</th></tr>';
+
+//     for (let j = 0; j < bm.length; j++) {
+//         let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME);
+//         if (bookmarkTitle) {
+//             let elTr = document.createElement('tr'),
+//                 lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
+//                 current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+
+//             elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2)) : 'Not Found'}</td>
+//                         <td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
+//                         <td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
+//                         <td><a href="${lastViewed ? lastViewed.href : 'Not Found'}" title="${lastViewed ? lastViewed.text : 'Not Found'}">${lastViewed ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>
+//                         <td><a href="${current ? current.href : 'Not Found'}" title="${current ? current.text : 'Not Found'}">${current ? current.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>`;
+
+//             elTbody.appendChild(elTr);
+//         }
+//     }
+
+//     bm.forEach(e => { e.style.display = 'none' });
+//     elDiv.classList.add(CST_CLASS_BOOKMARK.replace('.', ''));
+
+//     sortTable();
+// }
+
+// function sortTable() {
+//     let table, rows, switching, i, x, y, shouldSwitch;
+//     table = document.querySelector('#my_table');
+//     switching = true;
+//     while (switching) {
+//         switching = false;
+//         rows = table.rows;
+//         for (i = 1; i < (rows.length - 1); i++) {
+//             shouldSwitch = false;
+//             x = Number(rows[i].querySelectorAll('td')[0].innerHTML) || 0;
+//             y = Number(rows[i + 1].querySelectorAll('td')[0].innerHTML) || 0;
+//             if (!(x != 0 && y == 0) && x > y) {
+//                 shouldSwitch = true;
+//                 break;
+//             }
+//         }
+//         if (shouldSwitch) {
+//             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+//             switching = true;
+//         }
+//     }
+// }
+
+
+// **************************************************
+// **********        S O R T   V 2         **********
+// **************************************************
+// Duplicate the default bookmark list and order it instead of creating a table.
+// and instead of destroying on 2nd click, just swap between the 2.
+function letsSort() {
+    if (document.querySelector('#my_sort')) {
+        if (document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display == 'none') {
+            document.querySelector('#my_sort').style.display = 'none';
+            document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display = 'block';
+        } else {
+            document.querySelector('#my_sort').style.display = 'block';
+            document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display = 'none';
+        }
         return;
     }
 
-    let elDiv = document.querySelector(CST_CLASS_BOOKMARK_PANEL).appendChild(document.createElement('div')),
-        elTable = elDiv.appendChild(document.createElement('table')),
-        elThead = elTable.appendChild(document.createElement('thead')),
-        elTbody = elTable.appendChild(document.createElement('tbody'));
-
-    elTable.id = 'my_table';
-
-    if (!sortStyleInjected) {
-        sortStyleInjected = true;
-        addStyles(`
-#my_table {
-    color: Silver;
-    width: 100%;
-}
-#my_table a{
-    color: #079eda;
-}
-#my_footer a:link, #my_footer a:visited, #my_footer a:hover, #my_footer a:active {
-    text-decoration: underline;
-}
-#my_table img {
-    margin-right: 0;
-}
-#my_table th,td {
-    border-bottom: 1px solid #ddd;
-    padding: 15px;
-    vertical-align : middle;
-}
-#my_table th {
-    background-color: #FF7D47;
-    color: black;
-    text-transform: uppercase;
-    font-weight: bolder;
-}
-#my_table tr {
-    background-color: #323232;
-}
-#my_table tbody tr:nth-child(even) {
-    background-color: #282828;
-}
-#my_table tbody tr:hover {
-    background-color: #656565;
-}
-`
-        );
-    }
-
-    elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th><th>Current</th></tr>';
-
-    for (let j = 0; j < bm.length; j++) {
-        let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME);
-        if (bookmarkTitle) {
-            let elTr = document.createElement('tr'),
-                lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
-                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
-
-            elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2)) : 'Not Found'}</td>
-                        <td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
-                        <td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
-                        <td><a href="${lastViewed ? lastViewed.href : 'Not Found'}" title="${lastViewed ? lastViewed.text : 'Not Found'}">${lastViewed ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>
-                        <td><a href="${current ? current.href : 'Not Found'}" title="${current ? current.text : 'Not Found'}">${current ? current.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>`;
-
-            elTbody.appendChild(elTr);
-        }
-    }
-
-    bm.forEach(e => { e.style.display = 'none' });
-    elDiv.classList.add(CST_CLASS_BOOKMARK.replace('.', ''));
+    let bmp = document.querySelector(CST_CLASS_BOOKMARK_PANEL),
+        bmps = bmp.cloneNode(true);
+    bmps.id = 'my_sort';
+    bmp.after(bmps);
+    bmp.style.display = 'none';
 
     sortTable();
 }
 
 function sortTable() {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.querySelector('#my_table');
+    table = document.querySelector('#my_sort');
     switching = true;
     while (switching) {
         switching = false;
-        rows = table.rows;
-        for (i = 1; i < (rows.length - 1); i++) {
+        rows = table.querySelectorAll(CST_CLASS_BOOKMARK);
+        for (i = 0; i < (rows.length - 1); i++) {
             shouldSwitch = false;
-            x = Number(rows[i].querySelectorAll('td')[0].innerHTML) || 0;
-            y = Number(rows[i + 1].querySelectorAll('td')[0].innerHTML) || 0;
+            x = Number(rows[i].querySelector('.to-read').innerText) || 0;
+            y = Number(rows[i + 1].querySelector('.to-read').innerText) || 0;
             if (!(x != 0 && y == 0) && x > y) {
                 shouldSwitch = true;
                 break;
