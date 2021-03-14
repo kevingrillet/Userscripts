@@ -503,10 +503,9 @@ function sortTable() {
         rows = table.rows;
         for (i = 1; i < (rows.length - 1); i++) {
             shouldSwitch = false;
-            x = rows[i].querySelector('.to-read').innerText;
-            y = rows[i + 1].querySelector('.to-read').innerText;
-            if (!(Number(x.innerHTML) != 0 && Number(y.innerHTML) == 0)
-                && Number(x.innerHTML) > Number(y.innerHTML)) {
+            x = Number(rows[i].querySelectorAll('td')[0].innerHTML) || 0;
+            y = Number(rows[i + 1].querySelectorAll('td')[0].innerHTML) || 0;
+            if (!(x != 0 && y == 0) && x > y) {
                 shouldSwitch = true;
                 break;
             }
