@@ -645,7 +645,7 @@ function getData(elTmp) {
 
 function loadData() {
     // first remove all tags
-    document.querySelectorAll('.adult').forEach(i => { i.remove() });
+    document.querySelectorAll('.adult').forEach(i => { i.parentElement.remove() });
     document.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
     document.querySelectorAll('.item-hot').forEach(i => { i.remove() });
     document.querySelectorAll('.item-ss').forEach(i => { i.remove() });
@@ -675,7 +675,7 @@ function doForceRefresh() {
 
 function doBookmarkRefresh(e) {
     console.debug(`Bookmark to refresh: ${e.querySelector(CST_CLASS_NAME).text}`);
-    e.querySelectorAll('.adult').forEach(i => { i.remove() });
+    e.querySelectorAll('.adult').forEach(i => { i.parentElement.remove() });
     e.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
     e.querySelectorAll('.item-hot').forEach(i => { i.remove() });
     e.querySelectorAll('.item-ss').forEach(i => { i.remove() });
@@ -789,7 +789,6 @@ function setAdult(tag, value) {
     if (value > 0) {
         let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
             elDiv = elImg.appendChild(document.createElement('div'));
-        elDiv.id = 'adult';
         elDiv.innerHTML = `
         <span class="adult" title="Adult">
             <a><i style="font-size: 1.5em" class="fas fa-fw fa-ban" ></i></a>
