@@ -71,6 +71,6 @@ window.addEventListener('load', function () {
 // **************************************************
 function launchDl() {
     if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
-        window.open(window.location.href.assign('youtube.com', 'yout.com'), "_blank");
+        window.open(window.location.href.replace('youtube.com', 'yout.com'), "_blank");
     }
 }
