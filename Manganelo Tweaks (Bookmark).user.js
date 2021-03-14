@@ -503,8 +503,8 @@ function sortTable() {
         rows = table.rows;
         for (i = 1; i < (rows.length - 1); i++) {
             shouldSwitch = false;
-            x = rows[i].getElementsByTagName("TD")[0];
-            y = rows[i + 1].getElementsByTagName("TD")[0];
+            x = rows[i].querySelector('.to-read').innerText;
+            y = rows[i + 1].querySelector('.to-read').innerText;
             if (!(Number(x.innerHTML) != 0 && Number(y.innerHTML) == 0)
                 && Number(x.innerHTML) > Number(y.innerHTML)) {
                 shouldSwitch = true;
@@ -646,10 +646,10 @@ function getData(elTmp) {
 
 function loadData() {
     // first remove all tags
-    document.querySelectorAll('#adult').forEach((i) => { i.remove() });
-    document.querySelectorAll('.genres-item-rate').forEach((i) => { i.remove() });
-    document.querySelectorAll('.item-hot').forEach((i) => { i.remove() });
-    document.querySelectorAll('.item-ss').forEach((i) => { i.remove() });
+    document.querySelectorAll('.adult').forEach(i => { i.remove() });
+    document.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
+    document.querySelectorAll('.item-hot').forEach(i => { i.remove() });
+    document.querySelectorAll('.item-ss').forEach(i => { i.remove() });
 
     let bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
@@ -676,10 +676,10 @@ function doForceRefresh() {
 
 function doBookmarkRefresh(e) {
     console.debug(`Bookmark to refresh: ${e.querySelector(CST_CLASS_NAME).text}`);
-    e.querySelectorAll('#adult').forEach((i) => { i.remove() });
-    e.querySelectorAll('.genres-item-rate').forEach((i) => { i.remove() });
-    e.querySelectorAll('.item-hot').forEach((i) => { i.remove() });
-    e.querySelectorAll('.item-ss').forEach((i) => { i.remove() });
+    e.querySelectorAll('.adult').forEach(i => { i.remove() });
+    e.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
+    e.querySelectorAll('.item-hot').forEach(i => { i.remove() });
+    e.querySelectorAll('.item-ss').forEach(i => { i.remove() });
     doRequestData(e.querySelector(CST_CLASS_NAME).href);
 }
 
@@ -775,7 +775,7 @@ function setHype(tag, value) {
 // **************************************************
 function addAdult() {
     addStyles(`
-    #adult{
+    .adult{
         position: absolute;
         top: 5px;
         left: 2px;
@@ -792,7 +792,7 @@ function setAdult(tag, value) {
             elDiv = elImg.appendChild(document.createElement('div'));
         elDiv.id = 'adult';
         elDiv.innerHTML = `
-        <span  title="Adult">
+        <span class="adult" title="Adult">
             <a><i style="font-size: 1.5em" class="fas fa-fw fa-ban" ></i></a>
         </span>
         `;
