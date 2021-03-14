@@ -433,11 +433,11 @@ function letsSort() {
         sortStyleInjected = true;
         addStyles(`
 #my_table {
-	color: Silver;
+    color: Silver;
     width: 100%;
 }
 #my_table a{
-	color: #079eda;
+    color: #079eda;
 }
 #my_footer a:link, #my_footer a:visited, #my_footer a:hover, #my_footer a:active {
     text-decoration: underline;
@@ -451,19 +451,19 @@ function letsSort() {
     vertical-align : middle;
 }
 #my_table th {
-	background-color: #FF7D47;
-	color: black;
-	text-transform: uppercase;
-	font-weight: bolder;
+    background-color: #FF7D47;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bolder;
 }
 #my_table tr {
-	background-color: #323232;
+    background-color: #323232;
 }
 #my_table tbody tr:nth-child(even) {
-	background-color: #282828;
+    background-color: #282828;
 }
 #my_table tbody tr:hover {
-	background-color: #656565;
+    background-color: #656565;
 }
 `
         );
@@ -479,8 +479,8 @@ function letsSort() {
                 current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
             elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2)) : 'Not Found'}</td>
-						<td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
-						<td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
+                        <td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
+                        <td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
                         <td><a href="${lastViewed ? lastViewed.href : 'Not Found'}" title="${lastViewed ? lastViewed.text : 'Not Found'}">${lastViewed ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>
                         <td><a href="${current ? current.href : 'Not Found'}" title="${current ? current.text : 'Not Found'}">${current ? current.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>`;
 
