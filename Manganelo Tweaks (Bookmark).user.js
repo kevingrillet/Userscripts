@@ -469,7 +469,7 @@ function letsSort() {
         );
     }
 
-    elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th></tr>';
+    elThead.innerHTML = '<tr><th>To read</th><th>Cover</th><th>Title</th><th>Viewed</th><th>Current</th></tr>';
 
     for (let j = 0; j < bm.length; j++) {
         let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME);
@@ -480,8 +480,9 @@ function letsSort() {
 
             elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2)) : 'Not Found'}</td>
 						<td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
-						<td>${bookmarkTitle.text}</td>
-						<td><a href="${lastViewed && current ? lastViewed.href : 'Not Found'}">${lastViewed && current ? lastViewed.text : 'Not Found'}</a></td>`;
+						<td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
+						<td><a href="${lastViewed && current ? lastViewed.href : 'Not Found'}">${lastViewed && current ? lastViewed.text : 'Not Found'}</a></td>
+                        <td><a href="${lastViewed && current ? current.href : 'Not Found'}">${lastViewed && current ? current.text : 'Not Found'}</a></td>`;
 
             elTbody.appendChild(elTr);
         }
@@ -504,7 +505,8 @@ function sortTable() {
             shouldSwitch = false;
             x = rows[i].getElementsByTagName("TD")[0];
             y = rows[i + 1].getElementsByTagName("TD")[0];
-            if (Number(x.innerHTML) > Number(y.innerHTML)) {
+            if (!(Number(x.innerHTML) != 0 && Number(y.innerHTML) == 0)
+                && Number(x.innerHTML) > Number(y.innerHTML)) {
                 shouldSwitch = true;
                 break;
             }
