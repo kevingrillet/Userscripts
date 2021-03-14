@@ -682,9 +682,9 @@ function getData(elTmp) {
         value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
     if ((!forceRefresh && value
-        && value.version && value.version == CST_APP_VERSION
-        && value.date && diff_weeks(new Date(value.date), new Date()) < 1
-    )) {
+         && value.version && value.version == CST_APP_VERSION
+         && value.date && diff_weeks(new Date(value.date), new Date()) < 1
+        )) {
         if (showAdult && value.adult) setAdult(tag, value.adult);
         if (showHype && value.hype) setHype(tag, value.hype);
         if (showRank && value.rank) setRank(tag, value.rank);
