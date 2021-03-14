@@ -481,8 +481,8 @@ function letsSort() {
             elTr.innerHTML = `<td style="text-align: center;">${lastViewed && current ? parseFloat((current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2)) : 'Not Found'}</td>
 						<td><img src="${bm[j].querySelector(CST_CLASS_IMG).src}"></td>
 						<td><a href="${bookmarkTitle.href}">${bookmarkTitle.text}</a></td>
-						<td><a href="${lastViewed && current ? lastViewed.href : 'Not Found'}">${lastViewed && current ? lastViewed.text : 'Not Found'}</a></td>
-                        <td><a href="${lastViewed && current ? current.href : 'Not Found'}" title="${lastViewed && current ? current.text : 'Not Found'}">${current ? current.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>`;
+                        <td><a href="${lastViewed ? lastViewed.href : 'Not Found'}" title="${lastViewed ? lastViewed.text : 'Not Found'}">${lastViewed ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>
+                        <td><a href="${current ? current.href : 'Not Found'}" title="${current ? current.text : 'Not Found'}">${current ? current.href.split("/")[5].replace(CST_CHAPTER_URL, 'Chapter ') : 'Not Found'}</a></td>`;
 
             elTbody.appendChild(elTr);
         }
