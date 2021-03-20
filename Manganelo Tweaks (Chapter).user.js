@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.12
+// @version       1.13
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -27,7 +27,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
     imagesMargin = 0, // px
     maxWidth = document.body.offsetWidth > 1280 ? 80 : 90, // %
     rel = 'prerender', // prerender/prefetch
-    relOnLoad = true, // does rel is added on scroll or on load
+    doRel = true, // does rel is added on scroll
     scrollSpeed = 1000 / 60, // 1/60 s
     scrollValue = 48, // px
     zoomW = 5, // % zoom delta
@@ -232,6 +232,7 @@ function autoNext() {
 // **********      P R E R E N D E R       **********
 // **************************************************
 function prerender(force) {
+    if (!doRel) return;
     force = force || false;
     if (buttonNext && buttonNext !== undefined) {
         if (buttonNext.rel == 'nofollow') {
@@ -490,7 +491,6 @@ window.addEventListener('load', function () {
         document.querySelector('.load').style.color = 'PaleGreen';
     }
 
-    if (relOnLoad) {
-        prerender(true);
-    }
+    // Adds dieeeeeee
+    removeAdds();
 });
