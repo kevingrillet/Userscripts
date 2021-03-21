@@ -65,7 +65,7 @@ Remove the add at the beginig of some searches.
 - Remove crap
 
 ## Manganelo tweaks
-Inspire by:
+Inspired by:
 - [fuzetsu](https://github.com/fuzetsu/manga-loader)
 - [sm00nie](https://greasyfork.org/fr/users/165048-sm00nie)
 
@@ -314,9 +314,9 @@ Experiment to update value everytime i look at a manga page, but gm_values are s
 And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
 
 ## PSTHC
-### Trophies Settings [![PSTHC - Trophies Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophies%20Settings.user.js)
+### Trophies Settings [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophy%20Settings.user.js)
 
-Automatically set trophies settings:
+Automatically set trophy settings:
 - Hidden
 - Unlocked
 - Order
