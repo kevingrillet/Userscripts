@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.12
+// @version       1.13
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -29,7 +29,8 @@
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
-    moveContinerTop = true, // Move top to bottom, need right to be active
+    moveContainerTop = true, // Move top to bottom, need right to be active
+    hideCrap = true, // Hide Top, Right, Bottom Containers
     downloadedChaptersAsRead = false, // downloadChapter will open every chapter so they will be marked as read...
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
     scrollSpeed = 1000 / 60, // 1/60 s
@@ -401,11 +402,20 @@ function moveRight() {
 }
 `
     );
-    if (moveContinerTop) moveTop();
+    if (moveContainerTop) moveTop();
 }
 
 function moveTop() {
     document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector(CST_CLASS_SLIDER), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
+}
+
+
+// **************************************************
+// **********      H I D E   C R A P       **********
+// **************************************************
+function doHideCrap() {
+    document.querySelector(CST_CLASS_CONTAINER_RIGHT).style.display = 'none';
+    document.querySelector(CST_CLASS_SLIDER).style.display = 'none';
 }
 
 
@@ -658,7 +668,6 @@ function doRequestData(url) {
             let resp = request.responseXML,
                 tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4],
                 value = {
-                    version: CST_APP_VERSION,
                     date: new Date(),
                     adult: (resp.querySelector(CST_CLASS_MANGA_ADULT).innerHTML.match(/Adult/gm) || []).length,
                     hype: resp.querySelector(`:scope ${CST_CLASS_MANGA_HYPE} em`) ? resp.querySelector(`:scope ${CST_CLASS_MANGA_HYPE} em`).classList[0] : null,
@@ -682,7 +691,6 @@ function getData(elTmp) {
         value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
     if ((!forceRefresh && value
-         && value.version && value.version == CST_APP_VERSION
          && value.date && diff_weeks(new Date(value.date), new Date()) < 1
         )) {
         if (showAdult && value.adult) setAdult(tag, value.adult);
@@ -856,6 +864,8 @@ function run() {
     getUserNotif();
     // Move it move it
     if (moveContainerRight) moveRight();
+    // Hide crap
+    if (hideCrap) doHideCrap();
     // Menu
     addMenu();
     // BOOKMARKS
