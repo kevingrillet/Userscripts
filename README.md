@@ -19,13 +19,13 @@
 
 ## Amazon tweaks
 
-### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
+### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
 - Save for later all
 - Remove crap
 
-### Amazon tweaks - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.6-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### Amazon tweaks - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
@@ -92,7 +92,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.14-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.13-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 
