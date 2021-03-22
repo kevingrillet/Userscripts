@@ -5,14 +5,14 @@
 // @description   Delete / Save for later All.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Amazon%20Tweaks%20(Cart).user.js
 
-// @match         *://www.amazon.fr/hz/wishlist/genericItemsPage/*
+// @match         *://www.amazon.fr/gp/cart/view.html*
 // @run-at        document-end
 // ==/UserScript==
 
@@ -21,11 +21,6 @@
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
 var cleanUI = true; // remove crap ui
-
-
-// **************************************************
-// **********             U I              **********
-// **************************************************
 
 
 // **************************************************
@@ -51,7 +46,10 @@ function saveAll() {
 // **********             U I              **********
 // **************************************************
 function setUI() {
-    let el = document.querySelector('.sc-cart-header').lastElementChild;
+    if (document.querySelector('#my_delete_all')) return;
+    let el = document.createElement('div');
+    el.classList.add('a-row');
+
     el.innerHTML += `
     <span id="my_delete_all" style="float: right;" class="a-button a-spacing-top-none a-button-primary a-button-small">
         <span class="a-button-inner">
@@ -64,8 +62,9 @@ function setUI() {
         </span>
     </span>`;
 
-    document.querySelector('#my_delete_all').onclick = function () { deleteAll(); };
-    document.querySelector('#my_save_all').onclick = function () { saveAll(); };
+    document.querySelector('.sc-cart-header').insertBefore(el, document.querySelector('.sc-cart-header').lastElementChild);
+    el.querySelector('#my_delete_all').onclick = function () { deleteAll(); };
+    el.querySelector('#my_save_all').onclick = function () { saveAll(); };
 }
 
 function removeCrap() {
@@ -84,9 +83,40 @@ function removeCrap() {
 
 
 // **************************************************
+// **********       O B S E R V E R        **********
+// **************************************************
+// https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+
+// Callback function to execute when mutations are observed
+const callback = function(mutationsList, observer) {
+    // Use traditional 'for loops' for IE 11
+    for(const mutation of mutationsList) {
+        for(const node of mutation.addedNodes) {
+            if (node.classList
+                && node.classList.contains('a-row')
+                && node.classList.contains('sc-subtotal')
+                && node.classList.contains('sc-subtotal-activecart')) {
+                run()
+            }
+        }
+    }
+};
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+// Start observing the target node for configured mutations
+observer.observe(document.querySelector('#sc-active-cart'), { attributes: true, childList: true, subtree: true });
+
+
+
+// **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
-window.addEventListener('load', function () {
+function run() {
     if (cleanUI) removeCrap();
     setUI();
+}
+
+window.addEventListener('load', function () {
+    run();
 });
