@@ -75,7 +75,16 @@ observer.observe(document.querySelector('.summonerLayout-spectator'), { attribut
 // **********       L I S T E N E R        **********
 // **************************************************
 window.addEventListener('load', function () {
-    if (cleanUI) removeCrap();
+    let cnt = 0;
+    if (cleanUI) {
+        let myInterval = setInterval(function () {
+            removeCrap();
+            if (++cnt > 10) {
+                clearInterval(myInterval);
+                myInterval = null;
+            }
+        }, .5 * 1000);
+    }
 
     if ((new Date() - new Date(document.querySelector('._timeago').title)) / (1000 * 60) >= minutes) {
         document.querySelector('#SummonerRefreshButton').click();
