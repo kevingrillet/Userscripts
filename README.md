@@ -1,79 +1,89 @@
 # Userscripts
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?logo=gnu)](https://www.gnu.org/licenses/gpl-3.0)
 [![Tampermonkey, v4.11](https://img.shields.io/badge/Tampermonkey-v4.11-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
 [![Google Chrome, v88 min](https://img.shields.io/badge/Chrome->v88-blue?logo=tampermonkey)](https://www.google.com/intl/fr_fr/chrome/)
 
  My homemade Tampermonkey userscripts.
 
- ## Summary
- - [Amazon](#Amazon-tweaks)
- - [Bing](#Bing)
- - [Github](#Github)
- - [Google](#Google)
- - [League of Legends](#League-of-Legends)
- - [Manganelo](#Manganelo)
- - [PSTHC](#PSTHC)
- - [Youtube](#Youtube)
+## Summary
+
+- [Amazon](#Amazon-tweaks)
+- [Bing](#Bing)
+- [Github](#Github)
+- [Google](#Google)
+- [League of Legends](#League-of-Legends)
+- [Manganelo](#Manganelo)
+- [PSTHC](#PSTHC)
+- [Youtube](#Youtube)
 
 ## Amazon tweaks
-### Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
+
+### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-0.1-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
 - Save for later all
 - Remove crap
 
-### Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.6-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
+### Amazon tweaks - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-0.6-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
 - Remove crap
 
-### ToDo
+### Amazon tweaks - ToDo
 
 - Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
 
 ## Bing
-### To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+
+### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
 
 - Auto switch to google when doing a search on bing.
 - Do the 30 required search for the points on the first search of the day.
 
 ## Github
-### Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
+
+### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
 
 Add warning to to repos without updates for more than 1/2 year.
 
 ## Google
-### ~~Incognito~~ [![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
+
+### ~~Google - Incognito~~ [![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js)
 
 ~~Open every docs.google.com link in incognito.~~
 
 :warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
-### Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
+### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Google%20Search%20Ad%20Remover.user.js)
 
 Remove the add at the beginig of some searches.
 
 ## League Of Legends
+
 ### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js)
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
-### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/OP.gg%20(Update).user.js)
+### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/OP.gg%20(Update).user.js)
 
 - Auto update
 - Remove crap
 
 ## Manganelo tweaks
+
 Inspired by:
+
 - [fuzetsu](https://github.com/fuzetsu/manga-loader)
 - [sm00nie](https://greasyfork.org/fr/users/165048-sm00nie)
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.12-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.13-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
+
 - Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
 - Repair user-notification
 - Sort (Shift + S)
@@ -82,9 +92,10 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.13-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
+### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.14-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
+
 - Auto next (when scroll hit bottom)
 - Duplicate chapter
 - Load time (after JS is loaded, so it's mostly false, but indicate if images take .2s or 10s to load)
@@ -97,7 +108,8 @@ Add many functions:
 - Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 - Download ([when this issue will be fully resolved](https://github.com/Tampermonkey/tampermonkey/issues/1113))
 
-### ToDo
+### Manganelo tweaks - ToDo
+
 - ~~Add other manga reader websites~~ Atm i only read here... and i think i'm too specific...
 - ~~Configuration? [*](https://stackoverflow.com/questions/14594346/create-a-config-or-options-page-for-a-greasemonkey-script)~~ i'm doing it with var at the beginning of the script
 - ~~Export chapter?~~ Need to be updated for [![Tampermonkey, v4.12](https://img.shields.io/badge/Tampermonkey-v4.12-blue?logo=tampermonkey)](https://www.tampermonkey.net/)
@@ -307,27 +319,30 @@ Add many functions:
 
 </details>
 
-### ~~Manga~~ [![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Manga).user.js)
+### ~~Manganelo tweaks - Manga~~ [![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Manganelo%20Tweaks%20(Manga).user.js)
 
 Experiment to update value everytime i look at a manga page, but gm_values are script specific :/
 
 And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
 
 ## PSTHC
-### Trophies Settings [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophy%20Settings.user.js)
+
+### PSTHC - Trophy Settings [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophy%20Settings.user.js)
 
 Automatically set trophy settings:
+
 - Hidden
 - Unlocked
 - Order
 
 ## YouTube
-### Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
+
+### YouTube - Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Auto%20Confirmer.user.js)
 
 Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 
 **Need to be the active tab.**
 
-### Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
+### YouTube - Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.
