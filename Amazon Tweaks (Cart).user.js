@@ -5,7 +5,7 @@
 // @description   Delete / Save for later All.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -48,7 +48,6 @@ function saveAll() {
 function setUI() {
     if (document.querySelector('#my_delete_all')) return;
     let el = document.createElement('div');
-    el.classList.add('a-row');
 
     el.innerHTML += `
     <span id="my_delete_all" style="float: right;" class="a-button a-spacing-top-none a-button-primary a-button-small">
@@ -62,7 +61,7 @@ function setUI() {
         </span>
     </span>`;
 
-    document.querySelector('.sc-cart-header').insertBefore(el, document.querySelector('.sc-cart-header').lastElementChild);
+    document.querySelector('.sc-cart-header').insertBefore(el, document.querySelector('.sc-cart-header').firstElementChild);
     el.querySelector('#my_delete_all').onclick = function () { deleteAll(); };
     el.querySelector('#my_save_all').onclick = function () { saveAll(); };
 }
