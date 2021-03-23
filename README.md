@@ -19,7 +19,7 @@
 
 ## Amazon tweaks
 
-### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
+### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
 - Save for later all
