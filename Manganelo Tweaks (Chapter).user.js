@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.13
+// @version       1.14
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -44,6 +44,8 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_btn_previous: 'navi-change-chapter-btn-prev a-h', // class to find the button previous
             class_change_chapter: 'navi-change-chapter', // class to find the combo chapter
             class_img: 'container-chapter-reader', // class to find the pages (images)
+            class_img_srv_warn: 'server-image-caption', // class to find the red line crap
+            class_logo: 'panel-logo-chapter', // class to find the banner
             class_margin: 'server-cbb-content-margin', // class to find the combo margin
             class_title: 'panel-chapter-info-top' // class to find the title for google search
         }
@@ -60,6 +62,8 @@ var CST_HOME = null,
     CST_CLASS_BTN_PREVIOUS = null,
     CST_CLASS_CHANGE_CHAPTER = null,
     CST_CLASS_IMG = null,
+    CST_CLASS_IMG_SRV_WARN = null,
+    CST_CLASS_LOGO = null,
     CST_CLASS_MARGIN = null,
     CST_CLASS_TITLE = null;
 
@@ -72,6 +76,8 @@ env.some(function (e) {
         CST_CLASS_BTN_PREVIOUS = '.' + e.class_btn_previous.replace(' ', '.');
         CST_CLASS_CHANGE_CHAPTER = '.' + e.class_change_chapter.replace(' ', '.');
         CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
+        CST_CLASS_IMG_SRV_WARN = '.' + e.class_img_srv_warn.replace(' ', '.');
+        CST_CLASS_LOGO = '.' + e.class_logo.replace(' ', '.');
         CST_CLASS_MARGIN = '.' + e.class_margin.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
     }
@@ -197,6 +203,15 @@ function addMenu() {
     else {
         document.querySelector('.goNext').style.color = 'Tomato';
     }
+}
+
+
+// **************************************************
+// **********             U I              **********
+// **************************************************
+function clearUI() {
+    document.querySelector(CST_CLASS_LOGO).style.display = 'none';
+    document.querySelector(CST_CLASS_IMG_SRV_WARN).style.display = 'none';
 }
 
 
@@ -422,6 +437,8 @@ function downloadImages(value) {
 // **********       L I S T E N E R        **********
 // **************************************************
 function run() {
+    // UI
+    clearUI();
     // Link
     doDuplicated(); // need to be done before addMenu()
     // Menu
