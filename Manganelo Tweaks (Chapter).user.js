@@ -220,7 +220,7 @@ function clearUI() {
     e.style.flexDirection = 'row';
     for (let child of e.children) {
         child.style.display = 'flex';
-        child.style.marginLeft = '25px';
+        child.style.margin = '0px 10px';
     }
 }
 
