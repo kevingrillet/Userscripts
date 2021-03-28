@@ -222,6 +222,7 @@ function clearUI() {
         child.style.display = 'flex';
         child.style.margin = '0px 10px';
     }
+    document.querySelector(CST_CLASS_IMG).nextElementSibling.style.display = 'none';
 }
 
 
