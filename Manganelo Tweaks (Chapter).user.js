@@ -212,6 +212,7 @@ function addMenu() {
 function clearUI() {
     document.querySelector(CST_CLASS_LOGO).style.display = 'none';
     let e = document.querySelector(CST_CLASS_IMG_SRV_WARN);
+    e.parentElement.parentElement.style.margin = '0';
     e.style.display = 'none';
     e = e.nextElementSibling;
     e.style.alignItems = 'center';
