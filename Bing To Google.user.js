@@ -5,7 +5,7 @@
 // @description   Redirect the search to google
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -15,7 +15,7 @@
 // @match         *://*.bing.com/search?*
 // @grant         GM_getValue
 // @grant         GM_setValue
-// @run-at        document-end
+// @run-at        document-start
 // ==/UserScript==
 
 
