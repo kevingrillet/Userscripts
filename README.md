@@ -13,7 +13,7 @@
 - [Github](#Github)
 - [Google](#Google)
 - [League of Legends](#League-of-Legends)
-- [Manganelo](#Manganelo)
+- [Manganelo](#Manganelo-tweaks)
 - [PSTHC](#PSTHC)
 - [Youtube](#Youtube)
 
@@ -44,7 +44,7 @@
 
 ## Github
 
-### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
+### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js)
 
 Add warning to to repos without updates for more than 1/2 year.
 
