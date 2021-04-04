@@ -37,7 +37,7 @@
 
 ## Bing
 
-### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
+### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js)
 
 - Auto switch to google when doing a search on bing.
 - Do the 30 required search for the points on the first search of the day.
