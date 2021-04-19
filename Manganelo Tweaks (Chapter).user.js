@@ -472,6 +472,9 @@ window.onscroll = function (ev) {
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
+    if (event.ctrlKey) {
+        return;
+    }
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
         goPrevious();
     }
