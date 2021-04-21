@@ -102,9 +102,12 @@ function doDuplicated() {
         // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
         let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
         if (buttonNext && tmp) {
-            buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+            //buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+            let url = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.href = url});
         } else {
-            buttonNext.remove();
+            //buttonNext.remove();
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.remove();});
         }
     }
 }
