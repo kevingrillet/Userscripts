@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/PSTHC%20Trophy%20Settings.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/PSTHC%20Trophy%20Settings.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/PSTHC%20Trophy%20Settings.user.js
 
 // @include       /^https:\/\/www\.psthc\.fr\/unjeu\/.*\/guide-trophees\.htm/

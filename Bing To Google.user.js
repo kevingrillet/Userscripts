@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Bing%20To%20Google.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Bing%20To%20Google.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Bing%20To%20Google.user.js
 
 // @match         *://*.bing.com/search?*

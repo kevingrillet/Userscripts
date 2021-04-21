@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Google%20Incognito.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Google%20Incognito.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Google%20Incognito.user.js
 
 // @match         *

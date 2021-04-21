@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Github%20Inactive.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Github%20Inactive.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Github%20Inactive.user.js
 
 // @match         *://github.com/*/*

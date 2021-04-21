@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/League%20Of%20Fitness.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/League%20Of%20Fitness.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/League%20Of%20Fitness.user.js
 
 // @match         *://matchhistory.euw.leagueoflegends.com/*/*

@@ -9,7 +9,7 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://github.com/kevingrillet/Userscripts/raw/main/Amazon%20Tweaks%20(Cart).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Amazon%20Tweaks%20(Cart).user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Amazon%20Tweaks%20(Cart).user.js
 
 // @match         *://www.amazon.fr/gp/cart/view.html*
