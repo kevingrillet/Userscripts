@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.13
+// @version       1.14
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -776,6 +776,9 @@ run();
 
 document.addEventListener('keydown', event => {
     if (document.activeElement != document.querySelector(CST_CLASS_SEARCH)) {
+        if (event.ctrlKey || event.code == 'Meta') {
+            return;
+        }
         if (event.code == 'KeyE' && event.shiftKey) {
             exportBookmark();
         }

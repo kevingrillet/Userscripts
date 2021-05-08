@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.15
+// @version       1.16
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -475,7 +475,7 @@ window.onscroll = function (ev) {
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
-    if (event.ctrlKey) {
+    if (event.ctrlKey || event.code == 'Meta') {
         return;
     }
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
