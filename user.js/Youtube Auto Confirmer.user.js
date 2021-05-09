@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Youtube%20Auto%20Confirmer.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Youtube%20Auto%20Confirmer.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Auto%20Confirmer.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Auto%20Confirmer.user.js
 
 // @match         https://www.youtube.com/*
 // @run-at        document-end

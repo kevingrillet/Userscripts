@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Youtube%20Downloader.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/Youtube%20Downloader.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Downloader.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Downloader.user.js
 
 // @match         https://www.youtube.com/*
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js

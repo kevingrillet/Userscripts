@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/OP.gg%20(Update).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/OP.gg%20(Update).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/OP.gg%20(Update).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/OP.gg%20(Update).user.js
 
 // @match         *://euw.op.gg/summoner/userName=*
 // @run-at        document-end
