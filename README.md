@@ -92,7 +92,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.16-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Chapter).user.js)
+### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.17-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 
