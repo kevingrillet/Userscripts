@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.16
+// @version       1.17
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -102,11 +102,10 @@ function doDuplicated() {
         // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
         let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
         if (buttonNext && tmp) {
-            //buttonNext.href = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
             let url = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
             document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.href = url});
         } else {
-            //buttonNext.remove();
+            buttonNext = null;
             document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.remove();});
         }
     }
