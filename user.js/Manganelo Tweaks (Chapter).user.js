@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.17
+// @version       1.18
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -27,7 +27,7 @@
 var autoNextSpeed = .5 * 1000, // .5 s
     autoNextBookmarkSpeed = 1 * 1000, // +1 s
     imagesMargin = 0, // px
-    maxWidth = GM_getValue('maxWidth',document.body.offsetWidth > 1280 ? 80 : 90), // %
+    maxWidth = GM_getValue('maxWidth', document.body.offsetWidth > 1280 ? 80 : 90), // %
     rel = 'prerender', // prerender/prefetch
     doRel = true, // does rel is added on scroll
     scrollSpeed = 1000 / 60, // 1/60 s
@@ -103,10 +103,10 @@ function doDuplicated() {
         let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
         if (buttonNext && tmp) {
             let url = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
-            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.href = url});
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => { e.href = url });
         } else {
             buttonNext = null;
-            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {e.remove();});
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => { e.remove(); });
         }
     }
 }
@@ -474,7 +474,7 @@ window.onscroll = function (ev) {
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.code == 'Meta') {
+    if (event.ctrlKey || event.code == 'MetaLeft' || event.code == 'MetaRight') {
         return;
     }
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
