@@ -89,6 +89,7 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
     images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
+    keyMetaDown = false,
     scroll = null,
     timerStart = Date.now();
 
@@ -474,8 +475,11 @@ window.onscroll = function (ev) {
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.code == 'MetaLeft' || event.code == 'MetaRight') {
+    if (event.ctrlKey || keyMetaDown) {
         return;
+    }
+    if (event.code == 'MetaLeft' || event.code == 'MetaRight') {
+        keyMetaDown = true;
     }
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
         goPrevious();
@@ -509,6 +513,9 @@ document.addEventListener('keydown', event => {
 });
 
 document.addEventListener('keyup', event => {
+    if (event.code == 'MetaLeft' || event.code == 'MetaRight') {
+        keyMetaDown = false;
+    }
     if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS') {
         stopScrolling();
     }
