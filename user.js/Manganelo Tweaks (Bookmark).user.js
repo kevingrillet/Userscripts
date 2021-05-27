@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.14
+// @version       1.15
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
+// @match         *://manganato.com/bookmark*
 // @grant         GM_deleteValue
 // @grant         GM_download
 // @grant         GM_getValue
@@ -44,6 +45,8 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             name: 'Manganelo', // Name
             match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
+            chapter_url_split_chapter: '5', // position in the href
+            chapter_url_split_manga: '4', // position in the href
             class_blue: 'page-blue', // class to find active page
             class_bookmark: 'bookmark-item', // class bookmark
             class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
@@ -63,6 +66,35 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_slider: 'container container-silder', // class containing the top slider
             class_title: 'item-title', // class for Viewed / Current row
             class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            full_manga_url: 'https://manganelo.com/manga/', // to complete
+            tag_manga_rank: '[property="v:average"]' // to find rate on manga page
+        },
+        {
+            name: 'Manganato', // Name
+            match: '^.*:\/\/manganato.com\/bookmark.*', // Match needed to know we are here
+            chapter_url: 'chapter-', // to remove chapter from link to do proper count
+            chapter_url_split_chapter: '4', // position in the href
+            chapter_url_split_manga: '3', // position in the href
+            class_blue: 'page-blue', // class to find active page
+            class_bookmark: 'bookmark-item', // class bookmark
+            class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
+            class_btn: 'panel-breadcrumb', // class to add icon
+            class_container_left: 'container-main-left', // class container bookmark
+            class_container_right: 'container-main-right', // class container popular / by genre
+            class_img: 'img-loading', // class to get image cover
+            class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
+            class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
+            class_manga_adult: 'panel-story-info', // to find adult tag on manga page
+            class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            class_manga_chapter: 'chapter-name', // to find chapter on manga page
+            class_manga_hype: 'info-image', // to find hype on manga page
+            class_name: 'item-story-name', // class manga title
+            class_page: 'group-page', // class div pages
+            class_search: 'search-story', // class search bar
+            class_slider: 'container container-silder', // class containing the top slider
+            class_title: 'item-title', // class for Viewed / Current row
+            class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            full_manga_url: 'https://manganato.com/', // to complete
             tag_manga_rank: '[property="v:average"]' // to find rate on manga page
         }
     ];
@@ -74,6 +106,8 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
 var CST_APP_VERSION = GM_info.script.version,
     CST_NAME = null,
     CST_CHAPTER_URL = null,
+    CST_CHAPTER_URL_SPLIT_CHAPTER = null,
+    CST_CHAPTER_URL_SPLIT_MANGA = null,
     CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
@@ -93,12 +127,15 @@ var CST_APP_VERSION = GM_info.script.version,
     CST_CLASS_SLIDER = null,
     CST_CLASS_TITLE = null,
     CST_CLASS_USER_NOTIF = null,
+    CST_FULL_MANGA_URL = null,
     CST_TAG_MANGA_RANK = null;
 
 env.some(function (e) {
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
         CST_NAME = e.name;
         CST_CHAPTER_URL = e.chapter_url;
+        CST_CHAPTER_URL_SPLIT_CHAPTER = e.chapter_url_split_chapter;
+        CST_CHAPTER_URL_SPLIT_MANGA = e.chapter_url_split_manga;
         CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
@@ -118,6 +155,7 @@ env.some(function (e) {
         CST_CLASS_SLIDER = '.' + e.class_slider.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.');
         CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
+        CST_FULL_MANGA_URL = e.full_manga_url;
         CST_TAG_MANGA_RANK = e.tag_manga_rank;
     }
 });
@@ -182,15 +220,17 @@ function addMenuOnBookmark() {
             let el = bm[j].appendChild(document.createElement('div'));
             el.id = 'my_bookmark';
             el.innerHTML = `
+    <!--
     <span class="bookmark_download" title="Download">
         <a><i class="fas fa-fw fa-file-download" ></i></a>
     </span>
+    -->
     <span class="bookmark_refresh" title="Refresh tags">
         <a><i class="fas fa-fw fa-redo" ></i></a>
     </span>
     `;
 
-            el.querySelector('.bookmark_download').onclick = function () { prepareBookmarkDownload(bm[j]); };
+            //el.querySelector('.bookmark_download').onclick = function () { prepareBookmarkDownload(bm[j]); };
             el.querySelector('.bookmark_refresh').onclick = function () { doBookmarkRefresh(bm[j]); };
         }
     }
@@ -219,7 +259,7 @@ function prepareBookmarkDownload(e) {
         document.querySelector('#my_dialog').remove();
     }
 
-    var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[5].replace(CST_CHAPTER_URL, ''),
+    var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, ''),
         myDialog = document.body.appendChild(document.createElement('dialog'));
 
     myDialog.id = 'my_dialog';
@@ -271,7 +311,7 @@ function prepareBookmarkDownload(e) {
 
 function doBookmarkDownload(url) {
     for (let checkboxe of document.querySelectorAll(':scope #my_dialog input[type=checkbox]:checked')) {
-        doChapterDownload(`https://${domain}/chapter/${url.split("/")[4]}/${CST_CHAPTER_URL}${checkboxe.value}`);
+        doChapterDownload(`https://${domain}/chapter/${url.split("/")[CST_CHAPTER_URL_SPLIT_MANGA]}/${CST_CHAPTER_URL}${checkboxe.value}`);
     }
     if (!downloadedChaptersAsRead) {
         let request = new XMLHttpRequest();
@@ -368,13 +408,13 @@ function exportBookmark() {
                             current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
                         toSave += bookmarkTitle.text;
-                        toSave += `;${lastViewed && current ? (current.href.split("/")[5].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
+                        toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
                         toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
                         toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
                         toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
                         //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? current.href.split("/")[5].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+                        //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+                        //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
                         toSave += ` \n`;
                     }
                 }
@@ -500,8 +540,8 @@ ${CST_CLASS_BOOKMARK} {
 
     for (let j = 0; j < bm.length; j++) {
         if (bm[j].querySelector(CST_CLASS_NAME)) {
-            let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[5].replace(CST_CHAPTER_URL, '') : null,
-                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a').href.split("/")[5].replace(CST_CHAPTER_URL, '') : null;
+            let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') : null,
+                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a').href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') : null;
 
             if (lastViewed && current) {
                 let el = document.createElement('em');
@@ -557,7 +597,7 @@ function doRequestData(url) {
     request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
             let resp = request.responseXML,
-                tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4],
+                tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
                 value = {
                     date: new Date(),
                     adult: (resp.querySelector(CST_CLASS_MANGA_ADULT).innerHTML.match(/Adult/gm) || []).length,
@@ -578,17 +618,17 @@ function doRequestData(url) {
 }
 
 function getData(elTmp) {
-    let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[4],
+    let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
         value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
     if ((!forceRefresh && value
-         && value.date && diff_weeks(new Date(value.date), new Date()) < 1
-        )) {
+        && value.date && diff_weeks(new Date(value.date), new Date()) < 1
+    )) {
         if (showAdult && value.adult) setAdult(tag, value.adult);
         if (showHype && value.hype) setHype(tag, value.hype);
         if (showRank && value.rank) setRank(tag, value.rank);
     } else {
-        doRequestData(elTmp.querySelector(CST_CLASS_NAME).href);
+        doRequestData(`${CST_FULL_MANGA_URL}${tag}`);
     }
 }
 
@@ -659,7 +699,7 @@ function addRank() {
 }
 
 function setRank(tag, value) {
-    let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
+    let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
         el = document.createElement('em');
     el.classList.add('genres-item-rate');
     el.innerHTML = `${value}`;

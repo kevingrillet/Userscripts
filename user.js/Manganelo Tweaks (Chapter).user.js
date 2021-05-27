@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.18
+// @version       1.19
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Manganelo%20Tweaks%20(Chapter).user.js
 
 // @match         *://manganelo.com/chapter/*/*
+// @match         *://readmanganato.com/manga-*/*
 // @grant         GM_download
 // @grant         GM_getValue
 // @grant         GM_setValue
@@ -38,6 +39,21 @@ var autoNextSpeed = .5 * 1000, // .5 s
             name: 'Manganelo', // Name
             match: '^.*:\/\/manganelo.com\/chapter\/.*\/.*', // Match needed to know we are here
             url_home: 'https://manganelo.com/', // Url to homepage
+            url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
+            class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
+            class_btn_next: 'navi-change-chapter-btn-next a-h', // class to find the button next
+            class_btn_previous: 'navi-change-chapter-btn-prev a-h', // class to find the button previous
+            class_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            class_img: 'container-chapter-reader', // class to find the pages (images)
+            class_img_srv_warn: 'server-image-caption', // class to find the red line crap
+            class_logo: 'panel-logo-chapter', // class to find the banner
+            class_margin: 'server-cbb-content-margin', // class to find the combo margin
+            class_title: 'panel-chapter-info-top' // class to find the title for google search
+        },
+        {
+            name: 'Readmanganato', // Name
+            match: '^.*:\/\/readmanganato.com\/manga-.*\/.*', // Match needed to know we are here
+            url_home: 'https://manganato.com/', // Url to homepage
             url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
             class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
             class_btn_next: 'navi-change-chapter-btn-next a-h', // class to find the button next
@@ -89,7 +105,6 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
     images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
-    keyMetaDown = false,
     scroll = null,
     timerStart = Date.now();
 
@@ -475,11 +490,8 @@ window.onscroll = function (ev) {
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
-    if (event.ctrlKey || keyMetaDown) {
+    if (event.ctrlKey || event.code == 'MetaLeft' || event.code == 'MetaRight') {
         return;
-    }
-    if (event.code == 'MetaLeft' || event.code == 'MetaRight') {
-        keyMetaDown = true;
     }
     if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
         goPrevious();
@@ -513,9 +525,6 @@ document.addEventListener('keydown', event => {
 });
 
 document.addEventListener('keyup', event => {
-    if (event.code == 'MetaLeft' || event.code == 'MetaRight') {
-        keyMetaDown = false;
-    }
     if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS') {
         stopScrolling();
     }
