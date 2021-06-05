@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.19
+// @version       1.20
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -249,6 +249,7 @@ function clearUI() {
 // **********           A D D S            **********
 // **************************************************
 function removeAdds() {
+    document.querySelectorAll(':scope div script[async="async"]').forEach((e) => { e.parentElement.parentElement.style.display = "none"; })
     document.querySelectorAll('iframe').forEach((i) => { i.parentNode.style.display = "none" });
     //document.querySelectorAll('iframe').forEach((i)=>{i.parentNode.remove()});
 }
