@@ -19,6 +19,10 @@
 
 ## Amazon tweaks
 
+### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js)
+
+- Auto loot free games.
+
 ### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
