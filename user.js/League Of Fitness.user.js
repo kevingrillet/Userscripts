@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/League%20Of%20Fitness.user.js
 
 // @match         *://matchhistory.euw.leagueoflegends.com/*/*
+// @icon          https://www.google.com/s2/favicons?domain=leagueoflegends.com
 // @run-at        document-end
 // ==/UserScript==
 

@@ -14,6 +14,7 @@
 
 // @include       /^https:\/\/www\.psthc\.fr\/unjeu\/.*\/guide-trophees\.htm/
 // @include       /^https:\/\/www\.psthc\.fr\/unjeu\/.*\/liste-trophees\.htm/
+// @icon          https://www.google.com/s2/favicons?domain=psthc.fr
 // @run-at        document-end
 // ==/UserScript==
 

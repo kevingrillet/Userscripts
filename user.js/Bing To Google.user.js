@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Bing%20To%20Google.user.js
 
 // @match         *://*.bing.com/search?*
+// @icon          https://www.google.com/s2/favicons?domain=bing.fr
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @run-at        document-start

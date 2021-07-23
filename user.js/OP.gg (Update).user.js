@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/OP.gg%20(Update).user.js
 
 // @match         *://euw.op.gg/summoner/userName=*
+// @icon          https://www.google.com/s2/favicons?domain=op.gg
 // @run-at        document-end
 // ==/UserScript==
 

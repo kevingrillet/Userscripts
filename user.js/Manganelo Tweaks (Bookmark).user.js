@@ -14,6 +14,7 @@
 
 // @match         *://manganelo.com/bookmark*
 // @match         *://manganato.com/bookmark*
+// @icon          https://www.google.com/s2/favicons?domain=manganato.com
 // @grant         GM_deleteValue
 // @grant         GM_download
 // @grant         GM_getValue

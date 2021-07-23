@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Google%20Search%20Ad%20Remover.user.js
 
 // @match         *://www.google.tld/search?*
+// @icon          https://www.google.com/s2/favicons?domain=google.com
 // @run-at        document-end
 // ==/UserScript==
 

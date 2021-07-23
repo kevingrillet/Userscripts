@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Tweaks%20(Whishlist).user.js
 
 // @match         *://www.amazon.fr/hz/wishlist/genericItemsPage/*
+// @icon          https://www.google.com/s2/favicons?domain=amazon.fr
 // @run-at        document-end
 // ==/UserScript==
 

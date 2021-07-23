@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Tweaks%20(Cart).user.js
 
 // @match         *://www.amazon.fr/gp/cart/view.html*
+// @icon          https://www.google.com/s2/favicons?domain=amazon.fr
 // @run-at        document-end
 // ==/UserScript==
 

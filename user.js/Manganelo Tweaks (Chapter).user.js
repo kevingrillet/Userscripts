@@ -14,6 +14,7 @@
 
 // @match         *://manganelo.com/chapter/*/*
 // @match         *://readmanganato.com/manga-*/*
+// @icon          https://www.google.com/s2/favicons?domain=manganato.com
 // @grant         GM_download
 // @grant         GM_getValue
 // @grant         GM_setValue

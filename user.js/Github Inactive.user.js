@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20Inactive.user.js
 
 // @match         *://github.com/*/*
+// @icon          https://www.google.com/s2/favicons?domain=github.com
 // @run-at        document-end
 // ==/UserScript==
 

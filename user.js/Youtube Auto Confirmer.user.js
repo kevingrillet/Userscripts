@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Auto%20Confirmer.user.js
 
 // @match         https://www.youtube.com/*
+// @icon          https://www.google.com/s2/favicons?domain=youtube.com
 // @run-at        document-end
 // ==/UserScript==
 

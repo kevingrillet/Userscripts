@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Google%20Incognito.user.js
 
 // @match         *
+// @icon          https://www.google.com/s2/favicons?domain=google.com
 // @run-at        document-end
 // ==/UserScript==
 

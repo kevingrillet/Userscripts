@@ -13,6 +13,7 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Manganelo%20Tweaks%20(Manga).user.js
 
 // @match         *://manganelo.com/manga*
+// @icon          https://www.google.com/s2/favicons?domain=manganelo.com
 // @grant         GM_getValue
 // @grant         GM_info
 // @grant         GM_setValue
