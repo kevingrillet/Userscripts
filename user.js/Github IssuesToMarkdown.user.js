@@ -5,7 +5,7 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -18,7 +18,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-'use strict';
+"use strict";
 
 var repo;
 
@@ -37,29 +37,29 @@ function init() {
 }
 
 function jsonToMarkdown() {
-    console.log(repo);
     let md = "";
 
     md += `# [${repo.full_name}](${repo.html_url})\n\n`;
     md += `> number of open issues: ${repo.open_issues_count}\n\n`;
 
-    for(let i in repo.issues) {
+    for (let i in repo.issues) {
         let issue = repo.issues[i];
         md += `## ${issue.is_pr?"PR":"Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
-        md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`
-            md += `${issue.body}\n\n`
+        md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`;
+        md += `${issue.body}\n\n`;
 
-            if (issue.comments_count > 0) {
-                md += `### Comments\n\n`
+        if (issue.comments_count > 0) {
+            md += `### Comments\n\n`;
 
-                for(let c in issue.comments) {
-                    let comment = issue.comments[c];
-                    md += `---\n\n`
-                    md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`
-                    md += `${comment.body}\n\n`
-                }
+            for (let c in issue.comments) {
+                let comment = issue.comments[c];
+                md += `---\n\n`;
+                md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`;
+                md += `${comment.body}\n\n`;
             }
         }
+        md += `---\n\n`;
+    }
 
     return md;
 }
@@ -74,15 +74,20 @@ function run() {
     repo = {
         full_name: `${GH_OWNER}/${GH_REPO}`,
         html_url: `https://github.com/${GH_OWNER}/${GH_REPO}`
-        };
+    };
 
     function afterFetch() {
         //console.debug(repo);
         // Dev Export Json
         //let blobjson = new Blob([JSON.stringify(repo)], {type: "application/json"});
         //window.saveAs(blobjson, `${GH_OWNER}_${GH_REPO}_issues.json`);
-        let blobmd = new Blob([jsonToMarkdown()], {type: "text/plain;charset=utf-8"});
+        let md = jsonToMarkdown();
+        let blobmd = new Blob([md], {
+            type: "text/plain;charset=utf-8"
+        });
         window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
+
+        render(md);
     }
 
     function fetchComments(issue_number, current_page = 1) {
@@ -161,6 +166,30 @@ function run() {
             }
         })
             .catch(error => console.error(error))
+    }
+
+    function render(markdown) {
+        let fetch_init = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "mode": "markdown",
+                "text": markdown
+            })
+        };
+        fetch(`https://api.github.com/markdown`, fetch_init)
+            .then(response => response.text())
+            .then(data => {
+            let blobrend = new Blob([data], {
+                type: "text/plain;charset=utf-8"
+            });
+            window.saveAs(blobrend, `${GH_OWNER}_${GH_REPO}_issues_rendered.html`);
+        })
+            .catch(err => {
+            alert(err);
+        });
     }
 
     fetchRepo();
