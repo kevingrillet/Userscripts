@@ -1,20 +1,23 @@
 // ==UserScript==
-// @name          Github IssuesToMarkdown
+// @name          Github IssuesExport
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesToMarkdown.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesToMarkdown.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesExport.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesExport.user.js
 
 // @match         https://github.com/*/*/issues
+
 // @icon          https://www.google.com/s2/favicons?domain=github.com
+// @grant         GM_getResourceText
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
+// @resource      PRIMER_CSS https://unpkg.com/@primer/css/dist/primer.css
 // @run-at        document-end
 // ==/UserScript==
 
@@ -36,34 +39,6 @@ function init() {
     e.innerText = "Export";
 }
 
-function jsonToMarkdown() {
-    let md = "";
-
-    md += `# [${repo.full_name}](${repo.html_url})\n\n`;
-    md += `> number of open issues: ${repo.open_issues_count}\n\n`;
-
-    for (let i in repo.issues) {
-        let issue = repo.issues[i];
-        md += `## ${issue.is_pr?"PR":"Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
-        md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`;
-        md += `${issue.body}\n\n`;
-
-        if (issue.comments_count > 0) {
-            md += `### Comments\n\n`;
-
-            for (let c in issue.comments) {
-                let comment = issue.comments[c];
-                md += `---\n\n`;
-                md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`;
-                md += `${comment.body}\n\n`;
-            }
-        }
-        md += `---\n\n`;
-    }
-
-    return md;
-}
-
 function run() {
     const GH_OWNER = window.location.pathname.split("/")[1];
     const GH_REPO = window.location.pathname.split("/")[2];
@@ -78,15 +53,22 @@ function run() {
 
     function afterFetch() {
         //console.debug(repo);
-        // Dev Export Json
-        //let blobjson = new Blob([JSON.stringify(repo)], {type: "application/json"});
+        // Download Json
+        //let blobjson = new Blob([JSON.stringify(repo)], {
+        //    type: "application/json"
+        //});
         //window.saveAs(blobjson, `${GH_OWNER}_${GH_REPO}_issues.json`);
-        let md = jsonToMarkdown();
-        let blobmd = new Blob([md], {
-            type: "text/plain;charset=utf-8"
-        });
-        window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
 
+        // Convert Json to Markdown
+        let md = jsonToMarkdown();
+
+        // Download Json
+        //let blobmd = new Blob([md], {
+        //    type: "text/plain;charset=utf-8"
+        //});
+        //window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
+
+        // Render & Download HTML
         render(md);
     }
 
@@ -168,7 +150,57 @@ function run() {
             .catch(error => console.error(error))
     }
 
+    function jsonToMarkdown() {
+        let md = "";
+
+        md += `# [${repo.full_name}](${repo.html_url})\n\n`;
+        md += `> number of open issues: ${repo.open_issues_count}\n\n`;
+
+        for (let i in repo.issues) {
+            let issue = repo.issues[i];
+            md += `## ${issue.is_pr?"PR":"Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
+            md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`;
+            md += `${issue.body}\n\n`;
+
+            if (issue.comments_count > 0) {
+                md += `### Comments\n\n`;
+
+                for (let c in issue.comments) {
+                    let comment = issue.comments[c];
+                    md += `---\n\n`;
+                    md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`;
+                    md += `${comment.body}\n\n`;
+                }
+            }
+            md += `---\n\n---\n\n`;
+        }
+
+        return md;
+    }
+
     function render(markdown) {
+        const HTML5_BEGIN = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>${GM_getResourceText("PRIMER_CSS")}</style>
+    <title>Issues - ${repo.full_name}</title>
+</head>
+<body>
+    <div id="readme" class="Box md js-code-block-container Box--responsive">
+		<div data-target="readme-toc.content" class="Box-body px-5 pb-5">
+	    	<article class="markdown-body entry-content container-lg" itemprop="text">
+        `
+        const HTML5_END = `
+            </article>
+        </div>
+    </div>
+</body>
+</html>
+        `
         let fetch_init = {
             method: "POST",
             headers: {
@@ -179,10 +211,11 @@ function run() {
                 "text": markdown
             })
         };
+
         fetch(`https://api.github.com/markdown`, fetch_init)
             .then(response => response.text())
             .then(data => {
-            let blobrend = new Blob([data], {
+            let blobrend = new Blob([`${HTML5_BEGIN}\n${data}\n${HTML5_END}`], {
                 type: "text/plain;charset=utf-8"
             });
             window.saveAs(blobrend, `${GH_OWNER}_${GH_REPO}_issues_rendered.html`);
