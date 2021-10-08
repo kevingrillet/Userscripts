@@ -5,7 +5,7 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.3
+// @version       0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -23,7 +23,10 @@
 
 "use strict";
 
-var repo;
+var export_md = false,
+    export_json = false,
+    repo,
+    theme_light = false;
 
 function init() {
     // Create parent div in bar
@@ -32,11 +35,53 @@ function init() {
     // Create btn
     e = e.appendChild(document.createElement("div"));
     e.className = "btn btn-primary";
-    e.onclick = run;
+    e.onclick = prepare;
     // Create span in btn
     e = e.appendChild(document.createElement("span"));
     e.className = "d-none d-md-block";
     e.innerText = "Export";
+}
+
+function prepare() {
+    if (document.querySelector('#my_dialog')) {
+        document.querySelector('#my_dialog').remove();
+    }
+    var dial = document.body.appendChild(document.createElement('dialog'));
+    dial.id = 'my_dialog';
+    dial.innerHTML = `
+        <form method="dialog">
+            <p>Output type:</p>
+            <div>
+                <input type="radio" id="my_dialog_html_dark" name="my_dialog_output" value="html_dark" checked>
+                <label for="my_dialog_html_dark">HTML Dark</label>
+            </div>
+            <div>
+                <input type="radio" id="my_dialog_html_light" name="my_dialog_output" value="html_light">
+                <label for="my_dialog_html_light">HTML Light</label>
+            </div>
+            <div>
+                <input type="radio" id="my_dialog_markdown" name="my_dialog_output" value="markdown">
+                <label for="my_dialog_markdown">Markdown</label>
+            </div>
+            <div>
+                <input type="radio" id="my_dialog_json" name="my_dialog_output" value="json">
+                <label for="my_dialog_json">JSON</label>
+            </div>
+            <menu>
+                <button id="confirmBtn" value="default">Confirm</button>
+                <button value="cancel">Cancel</button>
+            </menu>
+        </form>`;
+
+    dial.showModal();
+
+    document.querySelector('#confirmBtn').onclick = function () {
+        export_json = document.querySelector('#my_dialog_json').checked;
+        export_md = document.querySelector('#my_dialog_markdown').checked;
+        theme_light = document.querySelector('#my_dialog_html_light').checked;
+
+        run();
+    };
 }
 
 function run() {
@@ -53,23 +98,25 @@ function run() {
 
     function afterFetch() {
         //console.debug(repo);
-        // Download Json
-        //let blobjson = new Blob([JSON.stringify(repo)], {
-        //    type: "application/json"
-        //});
-        //window.saveAs(blobjson, `${GH_OWNER}_${GH_REPO}_issues.json`);
+        if (export_json) {
+            let blobjson = new Blob([JSON.stringify(repo)], {
+                type: "application/json"
+            });
+            window.saveAs(blobjson, `${GH_OWNER}_${GH_REPO}_issues.json`);
 
-        // Convert Json to Markdown
-        let md = jsonToMarkdown();
+        } else {
+            // Convert Json to Markdown
+            let md = jsonToMarkdown();
 
-        // Download Json
-        //let blobmd = new Blob([md], {
-        //    type: "text/plain;charset=utf-8"
-        //});
-        //window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
-
-        // Render & Download HTML
-        render(md);
+            if (export_md) {
+                let blobmd = new Blob([md], {
+                    type: "text/plain;charset=utf-8"
+                });
+                window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
+            } else {
+                render(md);
+            }
+        }
     }
 
     function fetchComments(issue_number, current_page = 1) {
@@ -181,7 +228,7 @@ function run() {
     function render(markdown) {
         const HTML5_BEGIN = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-color-mode="dark" data-light-theme="light" data-dark-theme="${theme_light?"light":"dark"}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
