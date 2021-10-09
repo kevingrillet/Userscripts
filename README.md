@@ -52,7 +52,7 @@
 
 Add warning to to repos without updates for more than 1/2 year.
 
-### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-0.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20IssuesExport.user.js)
+### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-0.5-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20IssuesExport.user.js)
 
 Export Issues.
 

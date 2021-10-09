@@ -5,7 +5,7 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.4
+// @version       0.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -18,6 +18,8 @@
 // @grant         GM_getResourceText
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
 // @resource      PRIMER_CSS https://unpkg.com/@primer/css/dist/primer.css
+// @resource      PRIMER_CSS_SYNTAX_LIGHT https://raw.githubusercontent.com/primer/github-syntax-light/master/lib/github-light.css
+// @resource      PRIMER_CSS_SYNTAX_DARK https://raw.githubusercontent.com/primer/github-syntax-dark/master/lib/github-dark.css
 // @run-at        document-end
 // ==/UserScript==
 
@@ -234,6 +236,7 @@ function run() {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>${GM_getResourceText("PRIMER_CSS")}</style>
+    <style>${GM_getResourceText(theme_light?"PRIMER_CSS_SYNTAX_LIGHT":"PRIMER_CSS_SYNTAX_DARK")}</style>
     <title>Issues - ${repo.full_name}</title>
 </head>
 <body>
@@ -250,6 +253,9 @@ function run() {
         `
         let fetch_init = {
             method: "POST",
+            header: {
+                "accept" : "application/vnd.github.v3+json"
+            },
             headers: {
                 "Content-Type": "application/json"
             },
