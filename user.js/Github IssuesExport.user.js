@@ -5,7 +5,7 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5
+// @version       0.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -121,25 +121,80 @@ function run() {
         }
     }
 
-    function fetchComments(issue_number, current_page = 1) {
-        //console.debug(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}&page=${current_page}`);
-        fetch(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}&page=${current_page}`)
+    function fetchReviewsComments(pull_number, review_id, current_page = 1) {
+        //console.debug(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews/${review_id}/comments?per_page=${PER_PAGE}&page=${current_page}`);
+        fetch(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews/${review_id}/comments?per_page=${PER_PAGE}&page=${current_page}`)
             .then(response => response.json())
             .then(data => {
-            //console.debug(data); // Prints result from `response.json()` in getRequest
-            for (let i = 0; i < data.length; i++) {
-                let comment = {
-                    body: data[i].body,
-                    created_at: data[i].created_at,
-                    user_login: data[i].user?.login
-                };
-                repo.issues.find(e => e.number == issue_number).comments.push(comment);
-            }
-            fetch_count--;
-            if (fetch_count == 0) {
-                afterFetch();
-            }
-        })
+                //console.debug(data); // Prints result from `response.json()` in getRequest
+                for (let i = 0; i < data.length; i++) {
+                    let comment = {
+                        body: data[i].body,
+                        created_at: data[i].created_at,
+                        user_login: data[i].user?.login
+                    };
+                    repo
+                        .issues.find(e => e.number == pull_number)
+                        .reviews.find(e => e.id == review_id)
+                        .comments.push(comment);
+                }
+                fetch_count--;
+                if (fetch_count == 0) {
+                    afterFetch();
+                }
+            })
+            .catch(error => console.error(error));
+    }
+
+    function fetchReviews(pull_number, current_page = 1) {
+        //console.debug(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`);
+        fetch(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`)
+            .then(response => response.json())
+            .then(data => {
+                //console.debug(data); // Prints result from `response.json()` in getRequest
+                for (let i = 0; i < data.length; i++) {
+                    let review = {
+                        body: data[i].body,
+                        comments: [],
+                        id: data[i].id,
+                        submitted_at: data[i].submitted_at,
+                        user_login: data[i].user?.login
+                    };
+                    repo
+                        .issues.find(e => e.number == pull_number)
+                        .reviews.push(review);
+                    fetch_count++;
+                    fetchReviewsComments(pull_number, review.id)
+                }
+                fetch_count--;
+                if (fetch_count == 0) {
+                    afterFetch();
+                }
+            })
+            .catch(error => console.error(error));
+    }
+
+    function fetchComments(issue_number) {
+        //console.debug(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}`);
+        fetch(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}`)
+            .then(response => response.json())
+            .then(data => {
+                //console.debug(data); // Prints result from `response.json()` in getRequest
+                for (let i = 0; i < data.length; i++) {
+                    let comment = {
+                        body: data[i].body,
+                        created_at: data[i].created_at,
+                        user_login: data[i].user?.login
+                    };
+                    repo
+                        .issues.find(e => e.number == issue_number)
+                        .comments.push(comment);
+                }
+                fetch_count--;
+                if (fetch_count == 0) {
+                    afterFetch();
+                }
+            })
             .catch(error => console.error(error));
     }
 
@@ -148,33 +203,38 @@ function run() {
         fetch(`https://api.github.com/repos/${repo.full_name}/issues?per_page=${PER_PAGE}&page=${current_page}`)
             .then(response => response.json())
             .then(data => {
-            //console.debug(data); // Prints result from `response.json()` in getRequest
-            for (let i = 0; i < data.length; i++) {
-                let issue = {
-                    body: data[i].body,
-                    comments_count: data[i].comments,
-                    created_at: data[i].created_at,
-                    html_url: data[i].html_url,
-                    is_pr: (typeof data[i].pull_request !== "undefined"),
-                    number: data[i].number,
-                    state: data[i].state,
-                    title: data[i].title,
-                    user_login: data[i].user?.login
-                };
-                if (issue.comments_count > 0) {
-                    issue.comments = [];
-                    for (let page = 1; page <= Math.floor(issue.comments_count / PER_PAGE) + 1; page++) {
+                //console.debug(data); // Prints result from `response.json()` in getRequest
+                for (let i = 0; i < data.length; i++) {
+                    let issue = {
+                        body: data[i].body,
+                        comments_count: data[i].comments,
+                        created_at: data[i].created_at,
+                        html_url: data[i].html_url,
+                        is_pr: (typeof data[i].pull_request !== "undefined"),
+                        number: data[i].number,
+                        state: data[i].state,
+                        title: data[i].title,
+                        user_login: data[i].user?.login
+                    };
+                    if (issue.is_pr == true) {
+                        issue.reviews = [];
                         fetch_count++;
-                        fetchComments(issue.number, page);
+                        fetchReviews(issue.number);
                     }
+                    if (issue.comments_count > 0) {
+                        issue.comments = [];
+                        for (let page = 1; page <= Math.floor(issue.comments_count / PER_PAGE) + 1; page++) {
+                            fetch_count++;
+                            fetchComments(issue.number, page);
+                        }
+                    }
+                    repo.issues.push(issue);
                 }
-                repo.issues.push(issue);
-            }
-            fetch_count--;
-            if (repo.open_issues_count = repo.issues.length && fetch_count == 0) {
-                afterFetch();
-            }
-        })
+                fetch_count--;
+                if (repo.open_issues_count == Object.keys(repo.issues).length && fetch_count == 0) {
+                    afterFetch();
+                }
+            })
             .catch(error => console.error(error))
     }
 
@@ -183,19 +243,19 @@ function run() {
         fetch(`https://api.github.com/repos/${repo.full_name}`)
             .then(response => response.json())
             .then(data => {
-            //console.debug(data) // Prints result from `response.json()` in getRequest
-            repo.has_issues = data.has_issues;
-            repo.open_issues_count = data.open_issues_count;
-            if (repo.has_issues) {
-                repo.issues = [];
-                for (let page = 1; page <= Math.floor(repo.open_issues_count / PER_PAGE) + 1; page++) {
-                    fetch_count++;
-                    fetchIssues(page);
+                //console.debug(data) // Prints result from `response.json()` in getRequest
+                repo.has_issues = data.has_issues;
+                repo.open_issues_count = data.open_issues_count;
+                if (repo.has_issues) {
+                    repo.issues = [];
+                    for (let page = 1; page <= Math.floor(repo.open_issues_count / PER_PAGE) + 1; page++) {
+                        fetch_count++;
+                        fetchIssues(page);
+                    }
+                } else {
+                    afterFetch();
                 }
-            } else {
-                afterFetch();
-            }
-        })
+            })
             .catch(error => console.error(error))
     }
 
@@ -207,21 +267,41 @@ function run() {
 
         for (let i in repo.issues) {
             let issue = repo.issues[i];
-            md += `## ${issue.is_pr?"PR":"Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
+            md += `## ${issue.is_pr ? "PR" : "Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
             md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`;
             md += `${issue.body}\n\n`;
+
+            if (issue.reviews?.length) {
+                md += `### Reviews\n\n`;
+
+                for (let r in issue.reviews) {
+                    let review = issue.reviews[r];
+                    md += `> from: ${review.user_login} on: ${review.submitted_at}\n\n`;
+                    md += `${review.body}\n\n`;
+
+                    if (review.comments?.length) {
+                        md += `#### Comments\n\n`;
+
+                        for (let c in issue.comments) {
+                            let comment = issue.comments[c];
+                            md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`;
+                            md += `${comment.body}\n\n`;
+                        }
+                    }
+                }
+
+            }
 
             if (issue.comments_count > 0) {
                 md += `### Comments\n\n`;
 
                 for (let c in issue.comments) {
                     let comment = issue.comments[c];
-                    md += `---\n\n`;
                     md += `> from: ${comment.user_login} on: ${comment.created_at}\n\n`;
                     md += `${comment.body}\n\n`;
                 }
             }
-            md += `---\n\n---\n\n`;
+            md += `---\n\n`;
         }
 
         return md;
@@ -230,13 +310,13 @@ function run() {
     function render(markdown) {
         const HTML5_BEGIN = `
 <!DOCTYPE html>
-<html lang="en" data-color-mode="dark" data-light-theme="light" data-dark-theme="${theme_light?"light":"dark"}">
+<html lang="en" data-color-mode="dark" data-light-theme="light" data-dark-theme="${theme_light ? "light" : "dark"}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>${GM_getResourceText("PRIMER_CSS")}</style>
-    <style>${GM_getResourceText(theme_light?"PRIMER_CSS_SYNTAX_LIGHT":"PRIMER_CSS_SYNTAX_DARK")}</style>
+    <style>${GM_getResourceText(theme_light ? "PRIMER_CSS_SYNTAX_LIGHT" : "PRIMER_CSS_SYNTAX_DARK")}</style>
     <title>Issues - ${repo.full_name}</title>
 </head>
 <body>
@@ -254,7 +334,7 @@ function run() {
         let fetch_init = {
             method: "POST",
             header: {
-                "accept" : "application/vnd.github.v3+json"
+                "accept": "application/vnd.github.v3+json"
             },
             headers: {
                 "Content-Type": "application/json"
@@ -268,14 +348,14 @@ function run() {
         fetch(`https://api.github.com/markdown`, fetch_init)
             .then(response => response.text())
             .then(data => {
-            let blobrend = new Blob([`${HTML5_BEGIN}\n${data}\n${HTML5_END}`], {
-                type: "text/plain;charset=utf-8"
-            });
-            window.saveAs(blobrend, `${GH_OWNER}_${GH_REPO}_issues_rendered.html`);
-        })
+                let blobrend = new Blob([`${HTML5_BEGIN}\n${data}\n${HTML5_END}`], {
+                    type: "text/plain;charset=utf-8"
+                });
+                window.saveAs(blobrend, `${GH_OWNER}_${GH_REPO}_issues_rendered.html`);
+            })
             .catch(err => {
-            alert(err);
-        });
+                alert(err);
+            });
     }
 
     fetchRepo();
