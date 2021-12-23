@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.21
+// @version       1.22
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -466,6 +466,37 @@ function downloadImages(value) {
 
 
 // **************************************************
+// **********    P R O G R E S S   B A R   **********
+// **************************************************
+// https://webdesign.tutsplus.com/tutorials/reading-progress-bar-css-javascript--cms-36635
+let processScroll = () => {
+    let docElem = document.documentElement,
+        docBody = document.body,
+        scrollTop = docElem['scrollTop'] || docBody['scrollTop'],
+        scrollBottom = (docElem['scrollHeight'] || docBody['scrollHeight']) - window.innerHeight,
+        scrollPercent = scrollTop / scrollBottom * 100 + '%';
+    document.getElementById("my_progress_bar").style.setProperty("--scrollAmount", scrollPercent);
+}
+
+function addProgressBar(){
+    let elDiv = document.body.appendChild(document.createElement('div'));
+    elDiv.id = 'my_progress_bar';
+
+    addStyles(`
+#my_progress_bar {
+    --scrollAmount: 0%;
+    bottom: 0;
+    height: 5px;
+    position: fixed;
+    background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
+    width: var(--scrollAmount);
+}`);
+
+    document.addEventListener('scroll', processScroll);
+}
+
+
+// **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
 function run() {
@@ -475,6 +506,8 @@ function run() {
     doDuplicated(); // need to be done before addMenu()
     // Menu
     addMenu();
+    // Progress bar
+    addProgressBar();
     // Adds
     removeAdds();
     // Images
