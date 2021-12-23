@@ -490,6 +490,15 @@ function addProgressBar(){
     position: fixed;
     background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
     width: var(--scrollAmount);
+}
+#my_progress_bar:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 0px;
+    width: 100%;
+    border-bottom: 2px solid rgba(0, 0, 0, .33);
 }`);
 
     document.addEventListener('scroll', processScroll);
