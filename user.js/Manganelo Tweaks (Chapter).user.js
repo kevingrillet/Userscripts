@@ -472,10 +472,11 @@ function downloadImages(value) {
 let processScroll = () => {
     let docElem = document.documentElement,
         docBody = document.body,
-        scrollTop = docElem['scrollTop'] || docBody['scrollTop'],
-        scrollBottom = (docElem['scrollHeight'] || docBody['scrollHeight']) - window.innerHeight,
+        scrollTop = docElem.scrollTop || docBody.scrollTop,
+        scrollBottom = (docElem.scrollHeight || docBody.scrollHeight) - window.innerHeight,
         scrollPercent = scrollTop / scrollBottom * 100 + '%';
     document.getElementById("my_progress_bar").style.setProperty("--scrollAmount", scrollPercent);
+    document.getElementById("my_progress_bar").innerHTML = Math.round(scrollTop / scrollBottom * 100) + '%';
 }
 
 function addProgressBar(){
@@ -485,11 +486,15 @@ function addProgressBar(){
     addStyles(`
 #my_progress_bar {
     --scrollAmount: 0%;
+    color: rgba(0,0,0,0);
+    font-size: .75rem;
+    text-align: right;
     bottom: 0;
     height: 5px;
     position: fixed;
     background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
     width: var(--scrollAmount);
+    transition:height 100ms, color 100ms;
 }
 #my_progress_bar:before {
     content: "";
@@ -500,6 +505,10 @@ function addProgressBar(){
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, .75);
     border-right: 1px solid rgba(0, 0, 0, .75);
+}
+#my_progress_bar:hover {
+    color: black;
+    height: 1rem;
 }`);
 
     document.addEventListener('scroll', processScroll);
