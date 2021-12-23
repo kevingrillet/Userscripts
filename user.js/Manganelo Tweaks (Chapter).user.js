@@ -496,9 +496,9 @@ function addProgressBar(){
     position: absolute;
     left: 0;
     top: 0;
-    height: 0px;
+    height: 100%;
     width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, .75);
+    border-top: 1px solid rgba(0, 0, 0, .75);
     border-right: 1px solid rgba(0, 0, 0, .75);
 }`);
 
