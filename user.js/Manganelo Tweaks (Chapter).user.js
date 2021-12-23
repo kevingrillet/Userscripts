@@ -498,7 +498,7 @@ function addProgressBar(){
     top: 0;
     height: 0px;
     width: 100%;
-    border-bottom: 2px solid rgba(0, 0, 0, .33);
+    border-bottom: 1px solid rgba(0, 0, 0, .33);
 }`);
 
     document.addEventListener('scroll', processScroll);
