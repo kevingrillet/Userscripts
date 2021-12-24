@@ -490,8 +490,9 @@ function addProgressBar(){
     font-size: .75rem;
     text-align: right;
     bottom: 0;
-    height: 5px;
+    height: .5rem;
     position: fixed;
+    vertical-align: middle;
     background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
     width: var(--scrollAmount);
     transition:height 100ms, color 100ms;
@@ -503,8 +504,8 @@ function addProgressBar(){
     top: 0;
     height: 100%;
     width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, .75);
-    border-right: 1px solid rgba(0, 0, 0, .75);
+    border: 1px solid rgba(0, 0, 0, .75);
+    border-left: 0;
 }
 #my_progress_bar:hover {
     color: black;
