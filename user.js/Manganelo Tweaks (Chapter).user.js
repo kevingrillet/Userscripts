@@ -504,6 +504,7 @@ function addProgressBar(){
         top: 0;
         height: 100%;
         width: 100%;
+        box-sizing: border-box;
         border: 1px solid rgba(0, 0, 0, .75);
         border-left: 0;
     }
