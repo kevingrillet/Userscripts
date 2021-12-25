@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.22
+// @version       1.23
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -141,64 +141,64 @@ function addStyles(css) {
 
 function addMenu() {
     addStyles(`
-#my_footer { text-align: center; position: fixed; bottom: 5px; left: 5px; opacity: 0; transition:opacity 100ms;}
-#my_footer:hover { opacity: 1}
-#my_footer a { color: inherit; }
-#my_footer a:link { text-decoration: none; }
-#my_footer a:visited { text-decoration: none; color: PaleTurquoise; }
-#my_footer a:hover { text-decoration: underline; }
-#my_footer a:active { text-decoration: underline; }
-#my_footer p { font-family: consolas; font-size: 1em; color: GhostWhite; }
-#my_footer span { cursor: pointer; font-size: 1em; color: GhostWhite; }
-`);
+    #my_footer { text-align: center; position: fixed; bottom: 5px; left: 5px; opacity: 0; transition:opacity 100ms;}
+    #my_footer:hover { opacity: 1}
+    #my_footer a { color: inherit; }
+    #my_footer a:link { text-decoration: none; }
+    #my_footer a:visited { text-decoration: none; color: PaleTurquoise; }
+    #my_footer a:hover { text-decoration: underline; }
+    #my_footer a:active { text-decoration: underline; }
+    #my_footer p { font-family: consolas; font-size: 1em; color: GhostWhite; }
+    #my_footer span { cursor: pointer; font-size: 1em; color: GhostWhite; }
+    `);
 
     let elDiv = document.body.appendChild(document.createElement('div'));
     elDiv.id = 'my_footer';
     elDiv.innerHTML = `
-  <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
-  <span class="export" title="Export (Shift + E)">
+    <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
+    <span class="export" title="Export (Shift + E)">
     <a><i class="fas fa-fw fa-file-download" ></i></a>
-  </span>
-  </br>
-  <span>
+    </span>
+    </br>
+    <span>
     <a class="goManga" href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
-  </span>
-  <span>
+    </span>
+    <span>
     <a class="my_search" href="https://www.google.com/search?q=${encodeURI(document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText)}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
-  </span>
-  </br>
-  <span class="home">
+    </span>
+    </br>
+    <span class="home">
     <a class="goHome" href="${CST_HOME}" title="Homepage (H)"><i class="fas fa-fw fa-home" ></i></a>
-  </span>
-  <span class="bookmark">
+    </span>
+    <span class="bookmark">
     <a class="goBookmark" href="${CST_HOME + CST_BOOKMARK}" title="Bookmark (B)"><i class="fas fa-fw fa-bell" ></i></a>
-  </span>
-  <br/>
-  <span class="unzoom">
+    </span>
+    <br/>
+    <span class="unzoom">
     <i class="fas fa-fw fa-search-minus" ></i>
-  </span>
-  <span class="zoom">
+    </span>
+    <span class="zoom">
     <i class="fas fa-fw fa-search-plus" ></i>
-  </span>
-  <br/>
-  <span class="goUp" title="Scroll up (↑/W/Z)" >
+    </span>
+    <br/>
+    <span class="goUp" title="Scroll up (↑/W/Z)" >
     <i class="fas fa-fw fa-angle-up" ></i>
-  </span>
-  <span class="goDown" title="Scroll down (↓/S)">
+    </span>
+    <span class="goDown" title="Scroll down (↓/S)">
     <i class="fas fa-fw fa-angle-down" ></i>
-  </span>
-  <br/>
-  <span class="goPrevious" title="Not found (←/A/Q)">
+    </span>
+    <br/>
+    <span class="goPrevious" title="Not found (←/A/Q)">
     <a><i class="fas fa-fw fa-angle-double-left" ></i></a>
-  </span>
-  <span class="goNext" title="Not found (→/D)">
+    </span>
+    <span class="goNext" title="Not found (→/D)">
     <a><i class="fas fa-fw fa-angle-double-right" ></i></a>
-  </span>
-  <br/>
-  <p class="load" style="font-size: .7em;">
+    </span>
+    <br/>
+    <p class="load" style="font-size: .7em;">
     <i class="fas fa-fw fa-spinner fa-pulse"></i>
-  </p>
-`;
+    </p>
+    `;
 
     if (chapterMax - chapterCurrent == 0) {
         document.querySelector('.chap').style.color = 'PaleGreen';
@@ -484,33 +484,33 @@ function addProgressBar(){
     elDiv.id = 'my_progress_bar';
 
     addStyles(`
-#my_progress_bar {
-    --scrollAmount: 0%;
-    color: rgba(0,0,0,0);
-    font-size: .75rem;
-    text-align: right;
-    bottom: 0;
-    height: .5rem;
-    position: fixed;
-    vertical-align: middle;
-    background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
-    width: var(--scrollAmount);
-    transition:height 100ms, color 100ms;
-}
-#my_progress_bar:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, .75);
-    border-left: 0;
-}
-#my_progress_bar:hover {
-    color: black;
-    height: 1rem;
-}`);
+    #my_progress_bar {
+        --scrollAmount: 0%;
+        color: rgba(0,0,0,0);
+        font-size: .75rem;
+        text-align: right;
+        top: 0;
+        height: .5rem;
+        position: fixed;
+        vertical-align: middle;
+        background-image: linear-gradient(120deg, #7EC5C9 0%, #EF5C53 100%);
+        width: var(--scrollAmount);
+        transition: height 100ms, color 100ms;
+    }
+    #my_progress_bar:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, .75);
+        border-left: 0;
+    }
+    #my_progress_bar:hover {
+        color: black;
+        height: 1rem;
+    }`);
 
     document.addEventListener('scroll', processScroll);
 }
