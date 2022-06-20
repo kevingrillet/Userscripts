@@ -14,6 +14,7 @@
 - [Google](#Google)
 - [League of Legends](#League-of-Legends)
 - [Manganelo](#Manganelo-tweaks)
+- [MapGenie](#MapGenie)
 - [PSTHC](#PSTHC)
 - [Youtube](#Youtube)
 
@@ -332,6 +333,10 @@ Add many functions:
 Experiment to update value everytime i look at a manga page, but gm_values are script specific :/
 
 And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
+
+## MapGenie [![MapGenie](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/MapGenie.user.js)
+
+Hide premium message.
 
 ## PSTHC
 
