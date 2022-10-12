@@ -14,9 +14,10 @@
 - [Google](#google)
 - [League of Legends](#league-of-legends)
 - [Manganelo](#manganelo-tweaks)
-- [MapGenie](#mapgenie-mapgenie)
-- [Pokeclicker](#pokeclicker-pokeclicker---tweaks)
-- [PSTHC](#psthc-psthc---trophy-settings)
+- [MapGenie](#mapgenie-)
+- [Prusa](#prusa-)
+- [Pokeclicker](#pokeclicker-)
+- [PSTHC](#psthc-)
 - [Youtube](#youtube)
 
 ## Amazon tweaks
