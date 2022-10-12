@@ -8,15 +8,16 @@
 
 ## Summary
 
-- [Amazon](#Amazon-tweaks)
-- [Bing](#Bing)
-- [Github](#Github)
-- [Google](#Google)
-- [League of Legends](#League-of-Legends)
-- [Manganelo](#Manganelo-tweaks)
-- [MapGenie](#MapGenie)
-- [PSTHC](#PSTHC)
-- [Youtube](#Youtube)
+- [Amazon](#amazon-tweaks)
+- [Bing](#bing)
+- [Github](#github)
+- [Google](#google)
+- [League of Legends](#league-of-legends)
+- [Manganelo](#manganelo-tweaks)
+- [MapGenie](#mapgenie-mapgenie)
+- [Pokeclicker](#pokeclicker-pokeclicker---tweaks)
+- [PSTHC](#psthc-psthc---trophy-settings)
+- [Youtube](#youtube)
 
 ## Amazon tweaks
 
@@ -75,6 +76,10 @@ Remove the add at the beginig of some searches.
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
+### LoLEsports - AutoDrop[![LoLEsports - AutoDrop](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js)
+
+### LoLEsports - GoToLiveWorld [![LoLEsports - GoToLiveWorld](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20GoToLiveWorld.user.js)
+
 ### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/OP.gg%20(Update).user.js)
 
 - Auto update
@@ -89,7 +94,7 @@ Inspired by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.15-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.16-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 
@@ -338,9 +343,11 @@ And i don't want to work with things like `unsafeWindow.myFunction();` api in a 
 
 Hide premium message.
 
-## PSTHC
+## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js)
 
-### PSTHC - Trophy Settings [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/PSTHC%20Trophy%20Settings.user.js)
+## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js)
+
+## PSTHC [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/PSTHC%20Trophy%20Settings.user.js)
 
 Automatically set trophy settings:
 
