@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.23
+// @version       1.24
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -14,6 +14,7 @@
 
 // @match         *://manganelo.com/chapter/*/*
 // @match         *://readmanganato.com/manga-*/*
+// @match         *://chapmanganato.com/manga-*/*
 // @icon          https://www.google.com/s2/favicons?domain=manganato.com
 // @grant         GM_download
 // @grant         GM_getValue
@@ -54,6 +55,21 @@ var autoNextSpeed = .5 * 1000, // .5 s
         {
             name: 'Readmanganato', // Name
             match: '^.*:\/\/readmanganato.com\/manga-.*\/.*', // Match needed to know we are here
+            url_home: 'https://manganato.com/', // Url to homepage
+            url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
+            class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
+            class_btn_next: 'navi-change-chapter-btn-next a-h', // class to find the button next
+            class_btn_previous: 'navi-change-chapter-btn-prev a-h', // class to find the button previous
+            class_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            class_img: 'container-chapter-reader', // class to find the pages (images)
+            class_img_srv_warn: 'server-image-caption', // class to find the red line crap
+            class_logo: 'panel-logo-chapter', // class to find the banner
+            class_margin: 'server-cbb-content-margin', // class to find the combo margin
+            class_title: 'panel-chapter-info-top' // class to find the title for google search
+        },
+        {
+            name: 'Chapmanganato', // Name
+            match: '^.*:\/\/chapmanganato.com\/manga-.*\/.*', // Match needed to know we are here
             url_home: 'https://manganato.com/', // Url to homepage
             url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
             class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
