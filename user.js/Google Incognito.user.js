@@ -17,6 +17,8 @@
 // @run-at        document-end
 // ==/UserScript==
 
+"use strict";
+
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create
 // Will not work :(
 

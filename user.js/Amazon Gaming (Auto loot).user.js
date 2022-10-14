@@ -17,6 +17,8 @@
 // @run-at        document-end
 // ==/UserScript==
 
+"use strict";
+
 window.addEventListener('load', function () {
     //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').scrollIntoView();
     //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').click();

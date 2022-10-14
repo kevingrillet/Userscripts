@@ -19,6 +19,8 @@
 // @run-at        document-start
 // ==/UserScript==
 
+"use strict";
+
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********

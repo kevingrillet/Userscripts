@@ -23,6 +23,8 @@
 // @run-at        document-end
 // ==/UserScript==
 
+"use strict";
+
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********

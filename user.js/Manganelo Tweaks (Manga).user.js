@@ -22,6 +22,8 @@
 // @run-at        document-end
 // ==/UserScript==
 
+"use strict";
+
 // Can't work :(
 // gm_values are like cookies for specific script, so you can't access them with another script...
 // could be possible with unsafeWindow.myFunction(); with a third script with data storage... but meh
