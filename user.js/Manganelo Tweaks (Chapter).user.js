@@ -122,7 +122,8 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
     images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
-    scroll = null,
+    // eslint-disable-next-line no-unused-vars
+    scrollInterval,
     timerStart = Date.now();
 
 
@@ -427,13 +428,13 @@ function unzoom() {
 // **********      S C R O L L I N G       **********
 // **************************************************
 function startScrolling(value) {
-    scroll = setInterval(function () {
+    scrollInterval = setInterval(function () {
         window.scrollBy(0, value);
     }, scrollSpeed)
 }
 function stopScrolling() {
     clearInterval(scroll);
-    scroll = null;
+    scrollInterval = null;
 }
 
 

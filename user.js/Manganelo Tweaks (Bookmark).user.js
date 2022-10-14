@@ -164,7 +164,8 @@ env.some(function (e) {
 var domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
-    scroll = null,
+    // eslint-disable-next-line no-unused-vars
+    scrollInterval,
     // sortStyleInjected = false,
     timerStart = Date.now();
 
@@ -242,13 +243,13 @@ function addMenuOnBookmark() {
 // **********      S C R O L L I N G       **********
 // **************************************************
 function startScrolling(value) {
-    scroll = setInterval(function () {
+    scrollInterval = setInterval(function () {
         window.scrollBy(0, value);
     }, scrollSpeed)
 }
 function stopScrolling() {
     clearInterval(scroll);
-    scroll = null;
+    scrollInterval = null;
 }
 
 
@@ -362,6 +363,7 @@ function saveFile(saveData) {
         time = d.getFullYear() + '.' + ('0' + parseInt(d.getMonth() + 1)).slice(-2) + '.' + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + '.' + ('0' + d.getMinutes()).slice(-2),
         fileData = new Blob([saveData], { type: 'application/octet-stream' });
 
+    /* global saveAs */
     saveAs(fileData, 'manga_bookmark_' + time + '.csv')
 }
 
