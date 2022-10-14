@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.18
+// @version       1.19
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -272,12 +272,12 @@ function stopScrolling() {
 //             <p>Chapters to download:</p>
 //         </form>`;
 
-//     let request = new XMLHttpRequest();
-//     request.responseType = 'document';
-//     request.open('GET', e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
-//     request.onload = function () {
-//         if (request.status >= 200 && request.status < 400) {
-//             let resp = request.responseXML,
+//     let xhr = new XMLHttpRequest();
+//     xhr.responseType = 'document';
+//     xhr.open('GET', e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
+//     xhr.onload = function () {
+//         if (xhr.status >= 200 && xhr.status < 400) {
+//             let resp = xhr.responseXML,
 //                 chapters = resp.querySelector(`:scope ${CST_CLASS_MANGA_CHANGE_CHAPTER}`).querySelectorAll('option');
 
 //             for (let chapter of chapters) {
@@ -310,7 +310,7 @@ function stopScrolling() {
 //             }
 //         }
 //     };
-//     request.send();
+//     xhr.send();
 // }
 
 // function doBookmarkDownload(url) {
@@ -318,27 +318,27 @@ function stopScrolling() {
 //         doChapterDownload(`https://${domain}/chapter/${url.split("/")[CST_CHAPTER_URL_SPLIT_MANGA]}/${CST_CHAPTER_URL}${checkboxe.value}`);
 //     }
 //     if (!downloadedChaptersAsRead) {
-//         let request = new XMLHttpRequest();
-//         request.responseType = 'document';
-//         request.open('GET', url);
-//         request.send();
+//         let xhr = new XMLHttpRequest();
+//         xhr.responseType = 'document';
+//         xhr.open('GET', url);
+//         xhr.send();
 //     }
 // }
 
 // function doChapterDownload(url) {
-//     let request = new XMLHttpRequest();
-//     request.responseType = 'document';
-//     request.open('GET', url);
-//     request.onload = function () {
-//         if (request.status >= 200 && request.status < 400) {
-//             let resp = request.responseXML,
+//     let xhr = new XMLHttpRequest();
+//     xhr.responseType = 'document';
+//     xhr.open('GET', url);
+//     xhr.onload = function () {
+//         if (xhr.status >= 200 && xhr.status < 400) {
+//             let resp = xhr.responseXML,
 //                 title = resp.querySelector(CST_CLASS_CHAPTER_TITLE).firstElementChild.innerText,
 //                 images = resp.querySelectorAll(`:scope ${CST_CLASS_CHAPTER_IMG} img`);
 
 //             downloadImages(title, images);
 //         }
 //     };
-//     request.send();
+//     xhr.send();
 // }
 
 // function downloadImages(title, images, value) {
@@ -386,48 +386,52 @@ function exportBookmark() {
     //toSave += `;Chapter Current`;
     toSave += `\n`;
 
-    for (let i = 0; i < pageCount; i++) {
+    for (let i = 0; i < 1; i++) {
         // Prepare divs for info (useless but easier to debug)
         let elDivPage = elDivTemp.appendChild(document.createElement('div'));
         elDivPage.id = `page${i + 1}`;
 
-        let request = new XMLHttpRequest();
-        request.responseType = 'document';
-        request.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
-        request.onload = function () {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'document';
+        xhr.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) {
+                return
+            }
             // Let's add info into the pages div
-            if (request.status >= 200 && request.status < 400) {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                console.log(xhr.responseXML)
                 pageSuccess++;
-                let resp = request.responseXML,
+                let resp = xhr.responseXML,
                     p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
                 document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
-            }
 
-            // Last page is load, let's save
-            if (pageSuccess === pageCount) {
-                let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
-                for (let j = 0; j < bm.length; j++) {
-                    let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
-                    if (bookmarkTitle) {
-                        let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
-                            current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+                // Last page is load, let's save
+                if (pageSuccess === pageCount) {
+                    let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
+                    for (let j = 0; j < bm.length; j++) {
+                        let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
+                        if (bookmarkTitle) {
+                            let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
+                                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
-                        toSave += bookmarkTitle.text;
-                        toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
-                        toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
-                        toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
-                        toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
-                        //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-                        //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-                        toSave += ` \n`;
+                            toSave += bookmarkTitle.text;
+                            toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
+                            toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
+                            toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
+                            toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
+                            //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
+                            //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+                            //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+                            toSave += ` \n`;
+                        }
                     }
+                    saveFile(toSave);
+                    deleteTemp();
                 }
-                saveFile(toSave);
-                deleteTemp();
             }
         };
-        request.send();
+        xhr.send();
     }
 }
 
@@ -563,15 +567,15 @@ ${CST_CLASS_BOOKMARK} {
 // **********     U S E R   N O T I F      **********
 // **************************************************
 // function getUserNotif() {
-//     let request = new XMLHttpRequest();
-//     request.responseType = 'document';
-//     request.open('GET', `https://${domain}/`);
-//     request.onload = function () {
-//         if (request.status >= 200 && request.status < 400) {
-//             document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = request.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
+//     let xhr = new XMLHttpRequest();
+//     xhr.responseType = 'document';
+//     xhr.open('GET', `https://${domain}/`);
+//     xhr.onload = function () {
+//         if (xhr.status >= 200 && xhr.status < 400) {
+//             document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = xhr.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
 //         }
 //     };
-//     request.send();
+//     xhr.send();
 // }
 
 
@@ -596,12 +600,12 @@ function deleteValues(force) {
 }
 
 function doRequestData(url) {
-    let request = new XMLHttpRequest();
-    request.responseType = 'document';
-    request.open('GET', url);
-    request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-            let resp = request.responseXML,
+    let xhr = new XMLHttpRequest();
+    xhr.responseType = 'document';
+    xhr.open('GET', url);
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            let resp = xhr.responseXML,
                 tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
                 value = {
                     date: new Date(),
@@ -619,7 +623,7 @@ function doRequestData(url) {
             console.debug(value);
         }
     };
-    request.send();
+    xhr.send();
 }
 
 function getData(elTmp) {
@@ -755,10 +759,10 @@ function addHype() {
 
 function setHype(tag, value) {
     if (value && value !== "" && value !== "img-loading") {
-        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
+        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
             el = document.createElement('em');
         el.classList.add(`${value}`);
-        elImg.appendChild(el);
+        elImg?.appendChild(el);
     }
 }
 
@@ -781,8 +785,8 @@ function addAdult() {
 
 function setAdult(tag, value) {
     if (value > 0) {
-        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
-            elDiv = elImg.appendChild(document.createElement('div'));
+        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
+            elDiv = elImg?.appendChild(document.createElement('div'));
         elDiv.innerHTML = `
         <span class="adult" title="Adult">
             <a><i style="font-size: 1.5em" class="fas fa-fw fa-ban" ></i></a>
