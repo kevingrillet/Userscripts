@@ -5,7 +5,7 @@
 // @description   PSTHC Trophy Settings
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -41,21 +41,21 @@ var CST_tcOptions = ["Afficher", "Masquer"],
 function doTropheeCaches() {
     var tc = document.querySelector(':scope #filter5 .dropdown-menu');
     tc.querySelectorAll('.dropdown-item').forEach(e => {
-        if (e.text == CST_tcOptions[tcOption || 0]) e.click();
+        if (e.text === CST_tcOptions[tcOption || 0]) e.click();
     });
 }
 
 function doTropheeObtenus() {
     var to = document.querySelector(':scope #filter6 .dropdown-menu');
     to.querySelectorAll('.dropdown-item').forEach(e => {
-        if (e.text == CST_toOptions[toOption || 0]) e.click();
+        if (e.text === CST_toOptions[toOption || 0]) e.click();
     });
 }
 
 function doOrdre() {
     var o = document.querySelector(':scope #filter3 .dropdown-menu');
     o.querySelectorAll('.dropdown-item').forEach(e => {
-        if (e.text == CST_oOptions[oOption || 0]) e.click();
+        if (e.text === CST_oOptions[oOption || 0]) e.click();
     });
 }
 
@@ -64,7 +64,7 @@ function doOrdre() {
 // **********       L I S T E N E R        **********
 // **************************************************
 window.addEventListener('load', function () {
-    if (tcOption != 0) doTropheeCaches();
-    if (toOption != 0) doTropheeObtenus();
-    if (oOption != 0) doOrdre();
+    if (tcOption !== 0) doTropheeCaches();
+    if (toOption !== 0) doTropheeObtenus();
+    if (oOption !== 0) doOrdre();
 });

@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.17
+// @version       1.18
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -33,7 +33,7 @@
 var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     moveContainerTop = true, // Move top to bottom, need right to be active
     hideCrap = true, // Hide Top, Right, Bottom Containers
-    downloadedChaptersAsRead = false, // downloadChapter will open every chapter so they will be marked as read...
+    // downloadedChaptersAsRead = false, // downloadChapter will open every chapter so they will be marked as read...
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
     scrollSpeed = 1000 / 60, // 1/60 s
     scrollValue = 48, // px
@@ -44,7 +44,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
     env = [
         {
             name: 'Manganelo', // Name
-            match: '^.*:\/\/manganelo.com\/bookmark.*', // Match needed to know we are here
+            match: '^.*://manganelo.com/bookmark.*', // Match needed to know we are here
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '5', // position in the href
             chapter_url_split_manga: '4', // position in the href
@@ -72,7 +72,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
         },
         {
             name: 'Manganato', // Name
-            match: '^.*:\/\/manganato.com\/bookmark.*', // Match needed to know we are here
+            match: '^.*://manganato.com/bookmark.*', // Match needed to know we are here
             chapter_url: 'chapter-', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '4', // position in the href
             chapter_url_split_manga: '3', // position in the href
@@ -115,19 +115,19 @@ var CST_APP_VERSION = GM_info.script.version,
     CST_CLASS_BTN = null,
     CST_CLASS_CONTAINER_LEFT = null,
     CST_CLASS_CONTAINER_RIGHT = null,
-    CST_CLASS_IMG = null,
-    CST_CLASS_CHAPTER_IMG = null,
-    CST_CLASS_CHAPTER_TITLE = null,
+    // CST_CLASS_IMG = null,
+    // CST_CLASS_CHAPTER_IMG = null,
+    // CST_CLASS_CHAPTER_TITLE = null,
     CST_CLASS_MANGA_ADULT = null,
-    CST_CLASS_MANGA_CHANGE_CHAPTER = null,
-    CST_CLASS_MANGA_CHAPTER = null,
+    // CST_CLASS_MANGA_CHANGE_CHAPTER = null,
+    // CST_CLASS_MANGA_CHAPTER = null,
     CST_CLASS_MANGA_HYPE = null,
     CST_CLASS_NAME = null,
     CST_CLASS_PAGE = null,
     CST_CLASS_SEARCH = null,
     CST_CLASS_SLIDER = null,
     CST_CLASS_TITLE = null,
-    CST_CLASS_USER_NOTIF = null,
+    // CST_CLASS_USER_NOTIF = null,
     CST_FULL_MANGA_URL = null,
     CST_TAG_MANGA_RANK = null;
 
@@ -143,19 +143,19 @@ env.some(function (e) {
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
         CST_CLASS_CONTAINER_LEFT = '.' + e.class_container_left.replace(' ', '.');
         CST_CLASS_CONTAINER_RIGHT = '.' + e.class_container_right.replace(' ', '.');
-        CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
-        CST_CLASS_CHAPTER_IMG = '.' + e.class_chapter_img.replace(' ', '.');
-        CST_CLASS_CHAPTER_TITLE = '.' + e.class_chapter_title.replace(' ', '.');
+        // CST_CLASS_IMG = '.' + e.class_img.replace(' ', '.');
+        // CST_CLASS_CHAPTER_IMG = '.' + e.class_chapter_img.replace(' ', '.');
+        // CST_CLASS_CHAPTER_TITLE = '.' + e.class_chapter_title.replace(' ', '.');
         CST_CLASS_MANGA_ADULT = '.' + e.class_manga_adult.replace(' ', '.');
-        CST_CLASS_MANGA_CHANGE_CHAPTER = '.' + e.class_manga_change_chapter.replace(' ', '.');
-        CST_CLASS_MANGA_CHAPTER = '.' + e.class_manga_chapter.replace(' ', '.');
+        // CST_CLASS_MANGA_CHANGE_CHAPTER = '.' + e.class_manga_change_chapter.replace(' ', '.');
+        // CST_CLASS_MANGA_CHAPTER = '.' + e.class_manga_chapter.replace(' ', '.');
         CST_CLASS_MANGA_HYPE = '.' + e.class_manga_hype.replace(' ', '.');
         CST_CLASS_NAME = '.' + e.class_name.replace(' ', '.') + ' a';
         CST_CLASS_PAGE = '.' + e.class_page.replace(' ', '.');
         CST_CLASS_SEARCH = '.' + e.class_search.replace(' ', '.');
         CST_CLASS_SLIDER = '.' + e.class_slider.replace(' ', '.');
         CST_CLASS_TITLE = '.' + e.class_title.replace(' ', '.') + ' span';
-        CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
+        // CST_CLASS_USER_NOTIF = '.' + e.class_user_notif.replace(' ', '.');
         CST_FULL_MANGA_URL = e.full_manga_url;
         CST_TAG_MANGA_RANK = e.tag_manga_rank;
     }
@@ -165,7 +165,7 @@ var domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
     scroll = null,
-    sortStyleInjected = false,
+    // sortStyleInjected = false,
     timerStart = Date.now();
 
 
@@ -255,96 +255,96 @@ function stopScrolling() {
 // **************************************************
 // **********       D O W N L O A D        **********
 // **************************************************
-function prepareBookmarkDownload(e) {
-    if (document.querySelector('#my_dialog')) {
-        document.querySelector('#my_dialog').remove();
-    }
+// function prepareBookmarkDownload(e) {
+//     if (document.querySelector('#my_dialog')) {
+//         document.querySelector('#my_dialog').remove();
+//     }
 
-    var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, ''),
-        myDialog = document.body.appendChild(document.createElement('dialog'));
+//     var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, ''),
+//         myDialog = document.body.appendChild(document.createElement('dialog'));
 
-    myDialog.id = 'my_dialog';
-    myDialog.innerHTML = `
-        <form method="dialog">
-            <p>Chapters to download:</p>
-        </form>`;
+//     myDialog.id = 'my_dialog';
+//     myDialog.innerHTML = `
+//         <form method="dialog">
+//             <p>Chapters to download:</p>
+//         </form>`;
 
-    let request = new XMLHttpRequest();
-    request.responseType = 'document';
-    request.open('GET', e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
-    request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-            let resp = request.responseXML,
-                chapters = resp.querySelector(`:scope ${CST_CLASS_MANGA_CHANGE_CHAPTER}`).querySelectorAll('option');
+//     let request = new XMLHttpRequest();
+//     request.responseType = 'document';
+//     request.open('GET', e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
+//     request.onload = function () {
+//         if (request.status >= 200 && request.status < 400) {
+//             let resp = request.responseXML,
+//                 chapters = resp.querySelector(`:scope ${CST_CLASS_MANGA_CHANGE_CHAPTER}`).querySelectorAll('option');
 
-            for (let chapter of chapters) {
-                if (Number(chapter.getAttribute('data-c')) <= Number(currentChapter)) break;
+//             for (let chapter of chapters) {
+//                 if (Number(chapter.getAttribute('data-c')) <= Number(currentChapter)) break;
 
-                let chapter_name = chapter.innerText,
-                    chapter_id = chapter.getAttribute('data-c'), // Do not work :/
-                    myCB = myDialog.firstElementChild.appendChild(document.createElement('div'));
+//                 let chapter_name = chapter.innerText,
+//                     chapter_id = chapter.getAttribute('data-c'), // Do not work :/
+//                     myCB = myDialog.firstElementChild.appendChild(document.createElement('div'));
 
-                myCB.innerHTML = `
-                <input type="checkbox" id="my_dialog_${chapter_id}" value="${chapter_id}" checked>
-                <label for="my_dialog_${chapter_id}">${chapter_name}</label>`;
-            }
+//                 myCB.innerHTML = `
+//                 <input type="checkbox" id="my_dialog_${chapter_id}" value="${chapter_id}" checked>
+//                 <label for="my_dialog_${chapter_id}">${chapter_name}</label>`;
+//             }
 
-            let myMenu = myDialog.firstElementChild.appendChild(document.createElement('menu'));
-            myMenu.innerHTML = `
-                <menu>
-                    <button id="confirmBtn" value="default">Confirm</button>
-                    <button value="cancel">Cancel</button>
-                </menu>`;
-            myDialog.querySelector('#confirmBtn').onclick = function () {
-                doBookmarkDownload(e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
-            };
+//             let myMenu = myDialog.firstElementChild.appendChild(document.createElement('menu'));
+//             myMenu.innerHTML = `
+//                 <menu>
+//                     <button id="confirmBtn" value="default">Confirm</button>
+//                     <button value="cancel">Cancel</button>
+//                 </menu>`;
+//             myDialog.querySelector('#confirmBtn').onclick = function () {
+//                 doBookmarkDownload(e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
+//             };
 
-            if (myDialog.querySelector('input')) {
-                myDialog.showModal();
-            }
-            else {
-                alert('No chapter found.')
-            }
-        }
-    };
-    request.send();
-}
+//             if (myDialog.querySelector('input')) {
+//                 myDialog.showModal();
+//             }
+//             else {
+//                 alert('No chapter found.')
+//             }
+//         }
+//     };
+//     request.send();
+// }
 
-function doBookmarkDownload(url) {
-    for (let checkboxe of document.querySelectorAll(':scope #my_dialog input[type=checkbox]:checked')) {
-        doChapterDownload(`https://${domain}/chapter/${url.split("/")[CST_CHAPTER_URL_SPLIT_MANGA]}/${CST_CHAPTER_URL}${checkboxe.value}`);
-    }
-    if (!downloadedChaptersAsRead) {
-        let request = new XMLHttpRequest();
-        request.responseType = 'document';
-        request.open('GET', url);
-        request.send();
-    }
-}
+// function doBookmarkDownload(url) {
+//     for (let checkboxe of document.querySelectorAll(':scope #my_dialog input[type=checkbox]:checked')) {
+//         doChapterDownload(`https://${domain}/chapter/${url.split("/")[CST_CHAPTER_URL_SPLIT_MANGA]}/${CST_CHAPTER_URL}${checkboxe.value}`);
+//     }
+//     if (!downloadedChaptersAsRead) {
+//         let request = new XMLHttpRequest();
+//         request.responseType = 'document';
+//         request.open('GET', url);
+//         request.send();
+//     }
+// }
 
-function doChapterDownload(url) {
-    let request = new XMLHttpRequest();
-    request.responseType = 'document';
-    request.open('GET', url);
-    request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-            let resp = request.responseXML,
-                title = resp.querySelector(CST_CLASS_CHAPTER_TITLE).firstElementChild.innerText,
-                images = resp.querySelectorAll(`:scope ${CST_CLASS_CHAPTER_IMG} img`);
+// function doChapterDownload(url) {
+//     let request = new XMLHttpRequest();
+//     request.responseType = 'document';
+//     request.open('GET', url);
+//     request.onload = function () {
+//         if (request.status >= 200 && request.status < 400) {
+//             let resp = request.responseXML,
+//                 title = resp.querySelector(CST_CLASS_CHAPTER_TITLE).firstElementChild.innerText,
+//                 images = resp.querySelectorAll(`:scope ${CST_CLASS_CHAPTER_IMG} img`);
 
-            downloadImages(title, images);
-        }
-    };
-    request.send();
-}
+//             downloadImages(title, images);
+//         }
+//     };
+//     request.send();
+// }
 
-function downloadImages(title, images, value) {
-    value = value || 0;
-    setTimeout(function () {
-        GM_download(images[value].src, `${title}_${++value}`);
-        if (value < images.length) downloadImages(title, images, value);
-    }, .5 * 1000);
-}
+// function downloadImages(title, images, value) {
+//     value = value || 0;
+//     setTimeout(function () {
+//         GM_download(images[value].src, `${title}_${++value}`);
+//         if (value < images.length) downloadImages(title, images, value);
+//     }, .5 * 1000);
+// }
 
 
 // **************************************************
@@ -400,7 +400,7 @@ function exportBookmark() {
             }
 
             // Last page is load, let's save
-            if (pageSuccess == pageCount) {
+            if (pageSuccess === pageCount) {
                 let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
                 for (let j = 0; j < bm.length; j++) {
                     let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
@@ -467,7 +467,7 @@ function doHideCrap() {
 // and instead of destroying on 2nd click, just swap between the 2.
 function letsSort() {
     if (document.querySelector('#my_sort')) {
-        if (document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display == 'none') {
+        if (document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display === 'none') {
             document.querySelector('#my_sort').style.display = 'none';
             document.querySelector(CST_CLASS_BOOKMARK_PANEL).style.display = 'block';
         } else {
@@ -497,7 +497,7 @@ function sortTable() {
             shouldSwitch = false;
             x = Number(rows[i].querySelector('.to-read').innerText) || 0;
             y = Number(rows[i + 1].querySelector('.to-read').innerText) || 0;
-            if (!(x != 0 && y == 0) && x > y) {
+            if (!(x !== 0 && y === 0) && x > y) {
                 shouldSwitch = true;
                 break;
             }
@@ -558,17 +558,17 @@ ${CST_CLASS_BOOKMARK} {
 // **************************************************
 // **********     U S E R   N O T I F      **********
 // **************************************************
-function getUserNotif() {
-    let request = new XMLHttpRequest();
-    request.responseType = 'document';
-    request.open('GET', `https://${domain}/`);
-    request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-            document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = request.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
-        }
-    };
-    request.send();
-}
+// function getUserNotif() {
+//     let request = new XMLHttpRequest();
+//     request.responseType = 'document';
+//     request.open('GET', `https://${domain}/`);
+//     request.onload = function () {
+//         if (request.status >= 200 && request.status < 400) {
+//             document.querySelector(CST_CLASS_USER_NOTIF).innerHTML = request.responseXML.querySelector(CST_CLASS_USER_NOTIF).innerHTML;
+//         }
+//     };
+//     request.send();
+// }
 
 
 // **************************************************
@@ -642,7 +642,7 @@ function loadData() {
 
     let bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
-    if (GM_getValue('app_version', 0) != CST_APP_VERSION) {
+    if (GM_getValue('app_version', 0) !== CST_APP_VERSION) {
         deleteValues(true);
         GM_setValue('app_version', CST_APP_VERSION)
     }
@@ -750,7 +750,7 @@ function addHype() {
 }
 
 function setHype(tag, value) {
-    if (value && value != "" && value != "img-loading") {
+    if (value && value !== "" && value !== "img-loading") {
         let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="https://${domain}/manga/${tag}"]`).parentElement.parentElement.parentElement,
             el = document.createElement('em');
         el.classList.add(`${value}`);
@@ -818,27 +818,27 @@ function run() {
     if (showAdult || showHype || showRank) loadData();
 
     document.addEventListener('keydown', event => {
-        if (document.activeElement != document.querySelector(CST_CLASS_SEARCH)) {
-            if (event.ctrlKey || event.code == 'Meta') {
+        if (document.activeElement !== document.querySelector(CST_CLASS_SEARCH)) {
+            if (event.ctrlKey || event.code === 'Meta') {
                 return;
             }
-            if (event.code == 'KeyE' && event.shiftKey) {
+            if (event.code === 'KeyE' && event.shiftKey) {
                 exportBookmark();
             }
-            else if (event.code == 'KeyS' && event.shiftKey) {
+            else if (event.code === 'KeyS' && event.shiftKey) {
                 letsSort();
             }
-            else if (event.code == 'KeyT' && event.shiftKey) {
+            else if (event.code === 'KeyT' && event.shiftKey) {
                 doForceRefresh();
             }
-            else if (event.code == 'Delete') {
+            else if (event.code === 'Delete') {
                 deleteValues();
             }
-            else if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ') {
+            else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
                 stopScrolling();
                 startScrolling(-scrollValue);
             }
-            else if (event.code == 'ArrowDown' || event.code == 'KeyS') {
+            else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
                 stopScrolling();
                 startScrolling(scrollValue);
             }
@@ -846,7 +846,7 @@ function run() {
     });
 
     document.addEventListener('keyup', event => {
-        if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS') {
+        if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ' || event.code === 'ArrowDown' || event.code === 'KeyS') {
             stopScrolling();
         }
     });

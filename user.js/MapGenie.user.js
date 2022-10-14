@@ -5,7 +5,7 @@
 // @description   Tweak MapGenie
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.4
+// @version       1.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues

@@ -15,6 +15,7 @@
 - [League of Legends](#league-of-legends)
 - [Manganelo](#manganelo-tweaks)
 - [MapGenie](#mapgenie-)
+- [OP.gg](#opgg-)
 - [Prusa](#prusa-)
 - [Pokeclicker](#pokeclicker-)
 - [PSTHC](#psthc-)
@@ -22,17 +23,17 @@
 
 ## Amazon tweaks
 
-### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js)
+### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js)
 
 - Auto loot free games.
 
-### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Cart).user.js)
+### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
 - Save for later all
 - Remove crap
 
-### Amazon tweaks - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Wishlist).user.js)
+### Amazon tweaks - Wishlist [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
@@ -44,18 +45,18 @@
 
 ## Bing
 
-### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Bing%20To%20Google.user.js)
+### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Bing%20To%20Google.user.js)
 
 - Auto switch to google when doing a search on bing.
 - Do the 30 required search for the points on the first search of the day.
 
 ## Github
 
-### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20Inactive.user.js)
+### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20Inactive.user.js)
 
 Add warning to to repos without updates for more than 1/2 year.
 
-### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-0.6-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20IssuesExport.user.js)
+### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-0.7-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Github%20IssuesExport.user.js)
 
 Export Issues.
 
@@ -67,24 +68,19 @@ Export Issues.
 
 :warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
-### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Google%20Search%20Ad%20Remover.user.js)
+### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Google%20Search%20Ad%20Remover.user.js)
 
 Remove the add at the beginig of some searches.
 
 ## League Of Legends
 
-### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/League%20Of%20Fitness.user.js)
+### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/League%20Of%20Fitness.user.js)
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
-### LoLEsports - AutoDrop[![LoLEsports - AutoDrop](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js)
+### LoLEsports - AutoDrop[![LoLEsports - AutoDrop](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js)
 
-### LoLEsports - GoToLiveWorld [![LoLEsports - GoToLiveWorld](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20GoToLiveWorld.user.js)
-
-### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/OP.gg%20(Update).user.js)
-
-- Auto update
-- Remove crap
+### LoLEsports - GoToLiveWorld [![LoLEsports - GoToLiveWorld](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20GoToLiveWorld.user.js)
 
 ## Manganelo tweaks
 
@@ -95,7 +91,7 @@ Inspired by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.17-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js)
+### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.18-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 
@@ -107,7 +103,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.24-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Chapter).user.js)
+### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.25-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Manganelo%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 
@@ -340,15 +336,20 @@ Experiment to update value everytime i look at a manga page, but gm_values are s
 
 And i don't want to work with things like `unsafeWindow.myFunction();` api in a third script...
 
-## MapGenie [![MapGenie](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/MapGenie.user.js)
+## MapGenie [![MapGenie](https://img.shields.io/badge/Install-1.5-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/MapGenie.user.js)
 
 Hide premium message.
 
-## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js)
+### OP.gg - Update [![OP.gg - Update](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/OP.gg%20(Update).user.js)
 
-## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-0.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js)
+- Auto update
+- Remove crap
 
-## PSTHC [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.0-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/PSTHC%20Trophy%20Settings.user.js)
+## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js)
+
+## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-1.24-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js)
+
+## PSTHC [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/PSTHC%20Trophy%20Settings.user.js)
 
 Automatically set trophy settings:
 
@@ -358,12 +359,12 @@ Automatically set trophy settings:
 
 ## YouTube
 
-### YouTube - Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Youtube%20Auto%20Confirmer.user.js)
+### YouTube - Auto Confirmer [![YouTube - Auto Confirmer](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Youtube%20Auto%20Confirmer.user.js)
 
 Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 
 **Need to be the active tab.**
 
-### YouTube - Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Youtube%20Downloader.user.js)
+### YouTube - Downloader (Yout.com) [![YouTube - Downloader](https://img.shields.io/badge/Install-1.5-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Youtube%20Downloader.user.js)
 
 Add button near subscribe to go to Yout.com to download the video/mp3.

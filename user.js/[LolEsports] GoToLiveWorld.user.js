@@ -5,7 +5,7 @@
 // @description   Et on se sort les doigts du C.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -33,7 +33,7 @@
         }
     };
 
-    var onMutate = function(mutationsList) {
+    var onMutate = function() {
         goLive();
     };
 

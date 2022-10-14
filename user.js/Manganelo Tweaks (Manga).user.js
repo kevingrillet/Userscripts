@@ -29,13 +29,14 @@
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
-    moveContinerTop = true, // Move top to bottom, need right to be active
+var
+    // moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
+    // moveContinerTop = true, // Move top to bottom, need right to be active
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
     env = [
         {
             name: 'Manganelo', // Name
-            match: '^.*:\/\/manganelo.com\/manga.*', // Match needed to know we are here
+            match: '^.*://manganelo.com/manga.*', // Match needed to know we are here
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
             class_adult: 'panel-story-info', // class location of adult tag
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -49,7 +50,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
 // **********      V A R I A B L E S       **********
 // **************************************************
 var CST_APP_VERSION = GM_getValue('app_version', GM_info.script.version),
-    CST_CHAPTER_URL = null,
+    // CST_CHAPTER_URL = null,
     CST_CLASS_ADULT = null,
     CST_CLASS_BTN = null,
     CST_CLASS_HYPE = null,
@@ -57,7 +58,7 @@ var CST_APP_VERSION = GM_getValue('app_version', GM_info.script.version),
 
 env.some(function (e) {
     if (e.match && new RegExp(e.match, 'i').test(window.location.href)) {
-        CST_CHAPTER_URL = e.chapter_url;
+        // CST_CHAPTER_URL = e.chapter_url;
         CST_CLASS_ADULT = '.' + e.class_adult.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
         CST_CLASS_HYPE = '.' + e.class_hype.replace(' ', '.');
@@ -69,7 +70,7 @@ env.some(function (e) {
 // **************************************************
 // **********        S T O R A G E         **********
 // **************************************************
-function refreshData(elTmp) {
+function refreshData() {
     let tag = document.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4],
         value = GM_getValue(tag, null),
         local_value = {
@@ -82,9 +83,9 @@ function refreshData(elTmp) {
 
     if (forceRefresh ||
         !(value
-            && value.adult == local_value.adult
-            && value.hype == local_value.hype
-            && value.rank == local_value.rank
+            && value.adult === local_value.adult
+            && value.hype === local_value.hype
+            && value.rank === local_value.rank
         )) {
         GM_setValue(tag, local_value);
 

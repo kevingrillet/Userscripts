@@ -5,7 +5,7 @@
 // @description   Replace name of the page with status.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.23
+// @version       1.24
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -40,9 +40,9 @@
             bPrinting = true;
         } else if ( aStatusIdle.includes(elStatus.innerText.trim())
                    && (elBedTemp.innerText.includes('°C') ? parseInt(elBedTemp.innerText.slice(0, -3)) > 30 : false)) {
-            document.title = (document.title == '🔥 Prusa - Waiting temp' ? '\u200E' : '🔥 Prusa - Waiting temp');
+            document.title = (document.title === '🔥 Prusa - Waiting temp' ? '\u200E' : '🔥 Prusa - Waiting temp');
             refreshSpeed = 1;
-            if (bPrinting == true){
+            if (bPrinting === true){
                 bPrinting = false;
                 elPlayer.play();
             }

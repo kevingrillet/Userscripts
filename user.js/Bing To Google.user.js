@@ -5,7 +5,7 @@
 // @description   Redirect the search to google
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.2
+// @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -29,16 +29,16 @@ var doReward = false; //Launch 30 consecutives searches for easy 90Points / day
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-if (doReward && (GM_getValue('dayDone', null) != new Date().getDay())) {
+if (doReward && (GM_getValue('dayDone', null) !== new Date().getDay())) {
     GM_setValue('dayDone', new Date().getDay());
     GM_setValue('search', 0);
-    GM_setValue('toSearch', document.URL.match(/q\=[^&]*/));
+    GM_setValue('toSearch', document.URL.match(/q=[^&]*/));
 }
 
 if (!doReward || GM_getValue('search', 31) > 30) {
-    window.location.assign(`https://google.com/search?${document.URL.match(/q\=[^&]*/)}`)
+    window.location.assign(`https://google.com/search?${document.URL.match(/q=[^&]*/)}`)
 } else {
-    if (GM_getValue('search') == 30) {
+    if (GM_getValue('search') === 30) {
         window.location.assign(`https://www.bing.com/search?${GM_getValue('toSearch')}`);
     } else {
         window.location.assign(`https://www.bing.com/search?q=Reward${GM_getValue('search')}`);

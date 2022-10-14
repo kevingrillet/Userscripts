@@ -1,0 +1,21 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"greasemonkey": true,
+		"jquery": true
+	},
+	"extends": "eslint:recommended",
+	"parserOptions": {
+		"ecmaVersion": 11,
+		"sourceType": "script",
+		"ecmaFeatures": {
+			"globalReturn ": true,
+			"impliedStrict": true
+		}
+	},
+	"rules": {
+		"eqeqeq": "warn",
+		"linebreak-style": ["warn","unix"]
+	}
+}

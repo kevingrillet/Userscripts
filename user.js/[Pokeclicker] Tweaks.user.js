@@ -5,7 +5,7 @@
 // @description   Less animations, achievement tracker sound notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -33,9 +33,9 @@
     elPlayer.src = 'https://notificationsounds.com/storage/sounds/file-sounds-1229-my-work-is-done.mp3';
 
     var onMutate = function(mutationsList) {
-        mutationsList.forEach(mutation => {
+        mutationsList.forEach(() => {
             //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)));
-            if (Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) == 100){
+            if (Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) === 100){
                 //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) + " DING!");
                 elPlayer.play();
             }

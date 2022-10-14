@@ -5,7 +5,7 @@
 // @description   https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -44,13 +44,7 @@ const KILL = 0,
     EINHIBITOR = 11,
     EBARON = 12,
     EDRAGON = 13,
-    ERIFT = 14,
-    CST = [
-        "Kill", "Death", "Assist",
-        "Victory", "Defeat",
-        "Turret", "Inhibitor", "Baron", "Dragon", "Rift",
-        "Turret", "Inhibitor", "Baron", "Dragon", "Rift"
-    ];
+    ERIFT = 14;
 
 var fpu = 0,
     fsu = 0,
@@ -61,9 +55,11 @@ var fpu = 0,
 // **********         S C R I P T          **********
 // **************************************************
 function fitness(doc) {
-    let fpu = fsu = fs = 0,
+    fpu = 0;
+    fsu = 0;
+    fs = 0;
         // KI, DE, AS, VI, DEF, TU, IN, BA, DR, RI, ETU, EIN, EBA, EDR, ERI
-        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
         docCurrentUser = doc.querySelector(".current-user.player"),
 
@@ -101,7 +97,7 @@ function fitness(doc) {
     // ENEMY
     let docTeam = docTeamHeader.parentNode.parentNode,
         docEnemy = docTeam.nextElementSibling;
-    if (docEnemy == null) {
+    if (docEnemy === null) {
         docEnemy = docTeam.previousElementSibling;
     }
     let docEnemyFooter = docEnemy.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild;

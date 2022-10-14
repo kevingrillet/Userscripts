@@ -5,7 +5,7 @@
 // @description   Delete / Save for later All.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.1
+// @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -88,7 +88,7 @@ function removeCrap() {
 // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
 
 // Callback function to execute when mutations are observed
-const callback = function(mutationsList, observer) {
+const callback = function(mutationsList) {
     // Use traditional 'for loops' for IE 11
     for(const mutation of mutationsList) {
         for(const node of mutation.addedNodes) {

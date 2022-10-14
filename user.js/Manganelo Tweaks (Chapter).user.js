@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.24
+// @version       1.25
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -39,7 +39,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
     env = [
         {
             name: 'Manganelo', // Name
-            match: '^.*:\/\/manganelo.com\/chapter\/.*\/.*', // Match needed to know we are here
+            match: '^.*://manganelo.com/chapter/.*/.*', // Match needed to know we are here
             url_home: 'https://manganelo.com/', // Url to homepage
             url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
             class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
@@ -54,7 +54,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
         },
         {
             name: 'Readmanganato', // Name
-            match: '^.*:\/\/readmanganato.com\/manga-.*\/.*', // Match needed to know we are here
+            match: '^.*://readmanganato.com/manga-.*/.*', // Match needed to know we are here
             url_home: 'https://manganato.com/', // Url to homepage
             url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
             class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
@@ -69,7 +69,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
         },
         {
             name: 'Chapmanganato', // Name
-            match: '^.*:\/\/chapmanganato.com\/manga-.*\/.*', // Match needed to know we are here
+            match: '^.*://chapmanganato.com/manga-.*/.*', // Match needed to know we are here
             url_home: 'https://manganato.com/', // Url to homepage
             url_bookmark: 'bookmark', // page needed after url_home to go to bookmark
             class_breadcrumb: 'panel-breadcrumb', // class to find breadcrumb
@@ -130,7 +130,7 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
 // **********     D U P L I C A T E D      **********
 // **************************************************
 function doDuplicated() {
-    if ((buttonNext ? buttonNext.href : null) == window.location.href) {
+    if ((buttonNext ? buttonNext.href : null) === window.location.href) {
         console.debug('Duplicated chapter :(');
         // If the button next Exists & in the combo there is a Selected-2 element, there is a next chapter :)
         let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
@@ -216,7 +216,7 @@ function addMenu() {
     </p>
     `;
 
-    if (chapterMax - chapterCurrent == 0) {
+    if (chapterMax - chapterCurrent === 0) {
         document.querySelector('.chap').style.color = 'PaleGreen';
     }
     document.querySelector('.export').onclick = function () { downloadImages(); };
@@ -302,7 +302,7 @@ function prerender(force) {
     if (!doRel) return;
     force = force || false;
     if (buttonNext && buttonNext !== undefined) {
-        if (buttonNext.rel == 'nofollow') {
+        if (buttonNext.rel === 'nofollow') {
             if (force || Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
                 let link = head.appendChild(document.createElement('link'));
                 link.setAttribute('rel', rel);
@@ -326,7 +326,6 @@ function reloadImage(pThis) {
             pThis.removeAttribute('onerror');
         } else {
             console.debug('Failed to load (' + pThis.getAttribute('try') + '): ' + pThis.src);
-            pThis.src = pThis.src;
         }
     }
 }
@@ -555,49 +554,49 @@ function run() {
 }
 run();
 
-window.onscroll = function (ev) {
+window.onscroll = function () {
     autoNext();
     prerender();
 };
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 document.addEventListener('keydown', event => {
-    if (event.ctrlKey || event.code == 'MetaLeft' || event.code == 'MetaRight') {
+    if (event.ctrlKey || event.code === 'MetaLeft' || event.code === 'MetaRight') {
         return;
     }
-    if (event.code == 'ArrowLeft' || event.code == 'KeyA' || event.code == 'KeyQ') {
+    if (event.code === 'ArrowLeft' || event.code === 'KeyA' || event.code === 'KeyQ') {
         goPrevious();
     }
-    else if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ') {
+    else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
         stopScrolling();
         startScrolling(-scrollValue);
     }
-    else if (event.code == 'ArrowRight' || event.code == 'KeyD') {
+    else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
         goNext();
     }
-    else if (event.code == 'ArrowDown' || event.code == 'KeyS') {
+    else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
         stopScrolling();
         startScrolling(scrollValue);
     }
-    else if (event.code == 'KeyB') {
+    else if (event.code === 'KeyB') {
         goBookmark();
     }
-    else if (event.code == 'KeyH') {
+    else if (event.code === 'KeyH') {
         goHome();
     }
-    else if (event.code == 'KeyM') {
+    else if (event.code === 'KeyM') {
         goManga();
     }
-    else if (event.code == 'KeyF') {
+    else if (event.code === 'KeyF') {
         document.querySelector('.my_search').click();
     }
-    else if (event.code == 'KeyE' && event.shiftKey) {
+    else if (event.code === 'KeyE' && event.shiftKey) {
         downloadImages();
     }
 });
 
 document.addEventListener('keyup', event => {
-    if (event.code == 'ArrowUp' || event.code == 'KeyW' || event.code == 'KeyZ' || event.code == 'ArrowDown' || event.code == 'KeyS') {
+    if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ' || event.code === 'ArrowDown' || event.code === 'KeyS') {
         stopScrolling();
     }
 });

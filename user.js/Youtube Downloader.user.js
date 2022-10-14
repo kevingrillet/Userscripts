@@ -5,7 +5,7 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.4
+// @version       1.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -71,7 +71,7 @@ window.addEventListener('load', function () {
 // **********         S C R I P T          **********
 // **************************************************
 function launchDl() {
-    if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#\&\?]*/)) {
+    if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#&?]*/)) {
         window.open(window.location.href.replace('youtube.com', 'yout.com'), "_blank");
     }
 }

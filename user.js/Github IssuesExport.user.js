@@ -5,7 +5,7 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.6
+// @version       0.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -134,19 +134,19 @@ function run() {
                         user_login: data[i].user?.login
                     };
                     repo
-                        .issues.find(e => e.number == pull_number)
-                        .reviews.find(e => e.id == review_id)
+                        .issues.find(e => e.number === pull_number)
+                        .reviews.find(e => e.id === review_id)
                         .comments.push(comment);
                 }
                 fetch_count--;
-                if (fetch_count == 0) {
+                if (fetch_count === 0) {
                     afterFetch();
                 }
             })
             .catch(error => console.error(error));
     }
 
-    function fetchReviews(pull_number, current_page = 1) {
+    function fetchReviews(pull_number/*, current_page = 1*/) {
         //console.debug(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`);
         fetch(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`)
             .then(response => response.json())
@@ -161,13 +161,13 @@ function run() {
                         user_login: data[i].user?.login
                     };
                     repo
-                        .issues.find(e => e.number == pull_number)
+                        .issues.find(e => e.number === pull_number)
                         .reviews.push(review);
                     fetch_count++;
                     fetchReviewsComments(pull_number, review.id)
                 }
                 fetch_count--;
-                if (fetch_count == 0) {
+                if (fetch_count === 0) {
                     afterFetch();
                 }
             })
@@ -187,11 +187,11 @@ function run() {
                         user_login: data[i].user?.login
                     };
                     repo
-                        .issues.find(e => e.number == issue_number)
+                        .issues.find(e => e.number === issue_number)
                         .comments.push(comment);
                 }
                 fetch_count--;
-                if (fetch_count == 0) {
+                if (fetch_count === 0) {
                     afterFetch();
                 }
             })
@@ -216,7 +216,7 @@ function run() {
                         title: data[i].title,
                         user_login: data[i].user?.login
                     };
-                    if (issue.is_pr == true) {
+                    if (issue.is_pr === true) {
                         issue.reviews = [];
                         fetch_count++;
                         fetchReviews(issue.number);
@@ -231,7 +231,7 @@ function run() {
                     repo.issues.push(issue);
                 }
                 fetch_count--;
-                if (repo.open_issues_count == Object.keys(repo.issues).length && fetch_count == 0) {
+                if (repo.open_issues_count === Object.keys(repo.issues).length && fetch_count === 0) {
                     afterFetch();
                 }
             })

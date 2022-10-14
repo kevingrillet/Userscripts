@@ -5,7 +5,7 @@
 // @description   Auto loot free games.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -21,4 +21,4 @@ window.addEventListener('load', function () {
     //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').scrollIntoView();
     //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').click();
     document.querySelectorAll(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').forEach((e) => { e.click() });
-});
+})

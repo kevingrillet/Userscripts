@@ -31,7 +31,7 @@ var browser = chrome || null;
 // **************************************************
 window.addEventListener('load', function () {
     document.querySelectorAll('a').forEach(el => {
-        if (el.href.match('.*docs\.google\.com.*') != null) {
+        if (el.href.match('.*docs.google.com.*') !== null) {
             el.setAttribute('onclick', `javascript:${browser}.windows.create({"url": ${el.href}, "incognito": true});`);
         }
     });
