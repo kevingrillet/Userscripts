@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run ESLint
-        run: eslint .
+        run: yarn run eslint .
 
 # jobs:
 #   eslint:
