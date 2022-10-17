@@ -5,7 +5,7 @@
 // @description   Less animations, achievement tracker sound notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -30,7 +30,8 @@
     var observer,
         elAchievementTrackerProgressBar = document.querySelector("#achivementTrackerContainer .progress-bar"),
         elPlayer = document.createElement('audio');
-    elPlayer.src = 'https://notificationsounds.com/storage/sounds/file-sounds-1229-my-work-is-done.mp3';
+    // elPlayer.src = 'https://notificationsounds.com/storage/sounds/file-sounds-1229-my-work-is-done.mp3';
+    elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
 
     var onMutate = function(mutationsList) {
         mutationsList.forEach(() => {

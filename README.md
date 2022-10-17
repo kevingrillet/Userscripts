@@ -345,7 +345,7 @@ Hide premium message.
 - Auto update
 - Remove crap
 
-## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js)
+## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.3-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js)
 
 ## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-1.24-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js)
 
