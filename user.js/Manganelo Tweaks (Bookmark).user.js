@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.19
+// @version       1.20
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -627,6 +627,12 @@ function doRequestData(url) {
 }
 
 function getData(elTmp) {
+    // 404 / CORS
+    if (!elTmp.querySelector(CST_CLASS_NAME).href.includes(`${CST_FULL_MANGA_URL}`)){
+        console.debug(`Value skiped for ${elTmp.querySelector(CST_CLASS_NAME).href}`);
+        return
+    }
+
     let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
         value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
