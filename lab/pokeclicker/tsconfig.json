@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "lib": ["DOM", "ES6"],
+        "outDir": "dist",
+        "sourceMap": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        ".poc",
+        "node_modules"
+    ]
+}
