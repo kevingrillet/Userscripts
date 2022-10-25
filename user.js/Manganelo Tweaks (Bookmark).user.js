@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.21
+// @version       1.22
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -14,6 +14,7 @@
 
 // @match         *://manganelo.com/bookmark*
 // @match         *://manganato.com/bookmark*
+// @match         *://m.manganelo.com/bookmark*
 // @icon          https://www.google.com/s2/favicons?domain=manganato.com
 // @grant         GM_deleteValue
 // @grant         GM_download
@@ -56,19 +57,19 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_btn: 'panel-breadcrumb', // class to add icon
             class_container_left: 'container-main-left', // class container bookmark
             class_container_right: 'container-main-right', // class container popular / by genre
-            class_img: 'img-loading', // class to get image cover
-            class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
-            class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
+            // class_img: 'img-loading', // class to get image cover
+            // class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
+            // class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
             class_manga_adult: 'panel-story-info', // to find adult tag on manga page
-            class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
-            class_manga_chapter: 'chapter-name', // to find chapter on manga page
+            // class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            // class_manga_chapter: 'chapter-name', // to find chapter on manga page
             class_manga_hype: 'info-image', // to find hype on manga page
             class_name: 'item-story-name', // class manga title
             class_page: 'group-page', // class div pages
             class_search: 'search-story', // class search bar
             class_slider: 'container container-silder', // class containing the top slider
             class_title: 'item-title', // class for Viewed / Current row
-            class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            // class_user_notif: 'user-notification', // class to copy number of notifs from home page
             full_manga_url: 'https://manganelo.com/manga/', // to complete
             tag_manga_rank: '[property="v:average"]' // to find rate on manga page
         },
@@ -84,22 +85,50 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_btn: 'panel-breadcrumb', // class to add icon
             class_container_left: 'container-main-left', // class container bookmark
             class_container_right: 'container-main-right', // class container popular / by genre
-            class_img: 'img-loading', // class to get image cover
-            class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
-            class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
+            // class_img: 'img-loading', // class to get image cover
+            // class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
+            // class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
             class_manga_adult: 'variations-tableInfo', // to find adult tag on manga page
-            class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
-            class_manga_chapter: 'chapter-name', // to find chapter on manga page
+            // class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            // class_manga_chapter: 'chapter-name', // to find chapter on manga page
             class_manga_hype: 'info-image', // to find hype on manga page
             class_name: 'bm-title', // class manga title
             class_page: 'group-page', // class div pages
             class_search: 'search-story', // class search bar
             class_slider: 'container container-silder', // class containing the top slider
             class_title: 'user-bookmark-item-right', // class for Viewed / Current row
-            class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            // class_user_notif: 'user-notification', // class to copy number of notifs from home page
             full_manga_url: 'https://manganato.com/', // to complete
             tag_manga_rank: '[property="v:average"]' // to find rate on manga page
-        }
+        },
+        {
+            name: 'M.Manganelo', // Name
+            match: '^.*://m.manganelo.com/bookmark.*', // Match needed to know we are here
+            chapter_url: 'chapter-', // to remove chapter from link to do proper count
+            chapter_url_split_chapter: '4', // position in the href
+            chapter_url_split_manga: '3', // position in the href
+            class_blue: 'page-blue', // class to find active page
+            class_bookmark: 'user-bookmark-item', // class bookmark
+            class_bookmark_panel: 'user-bookmark-content', // class contain all bookmarks
+            class_btn: 'panel-breadcrumb', // class to add icon
+            class_container_left: 'container-main-left', // class container bookmark
+            class_container_right: 'container-main-right', // class container popular / by genre
+            // class_img: 'img-loading', // class to get image cover
+            // class_chapter_img: 'container-chapter-reader', // class to find the pages on chapter page
+            // class_chapter_title: 'panel-chapter-info-top', // class to find the title on chapter page
+            class_manga_adult: 'variations-tableInfo', // to find adult tag on manga page
+            // class_manga_change_chapter: 'navi-change-chapter', // class to find the combo chapter
+            // class_manga_chapter: 'chapter-name', // to find chapter on manga page
+            class_manga_hype: 'info-image', // to find hype on manga page
+            class_name: 'bm-title', // class manga title
+            class_page: 'group-page', // class div pages
+            class_search: 'search-story', // class search bar
+            class_slider: 'container container-silder', // class containing the top slider
+            class_title: 'user-bookmark-item-right', // class for Viewed / Current row
+            // class_user_notif: 'user-notification', // class to copy number of notifs from home page
+            full_manga_url: 'https://m.manganelo.com/', // to complete
+            tag_manga_rank: '[property="v:average"]' // to find rate on manga page
+        },
     ];
 
 
