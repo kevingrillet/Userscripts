@@ -10,6 +10,17 @@
  * @tutorial:     var ad = new AreaDestroyer.AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
  */
 
+import { App, PartyPokemon } from "./definitions/App";
+import { dungeonList, DungeonRunner } from "./definitions/Dungeon";
+import { GameConstants } from "./definitions/GameConstants";
+import { player, pokemonMap } from "./definitions/Globals";
+import { Champion, Gym, GymList } from "./definitions/Gym";
+import { MapHelper } from "./definitions/Map";
+import { PokemonHelper } from "./definitions/PokemonHelper";
+import { pokemonList } from "./definitions/PokemonList";
+import { PokemonNameType } from "./definitions/PokemonNameType";
+import { RegionRoute, Routes } from "./definitions/Route";
+
 namespace AreaDestroyer {
     export enum Mode {
         defeat = 0,
@@ -122,9 +133,9 @@ namespace AreaDestroyer {
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
 
-        concatPkmListFromRoute(route, special: boolean = this.options.road.special) {
-            let pkmList = [];
-            if (special === true) route.pokemon.special.forEach((e) => (pkmList = [...new Set([...pkmList, ...e.pokemon])]));
+        concatPkmListFromRoute(route: RegionRoute, special: boolean = this.options.road.special): Array<PokemonNameType> {
+            let pkmList = Array<PokemonNameType>();
+            if (special === true) route.pokemon.special.forEach((e) => (pkmList = [...new Set<PokemonNameType>([...pkmList, ...e.pokemon])]));
             return [...new Set([...pkmList, ...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water])];
         }
 
@@ -188,7 +199,7 @@ namespace AreaDestroyer {
         calcRoad(allOpt: boolean = this.options.road.all, specOpt: boolean = this.options.road.special) {
             let max = 0;
             let best = "";
-            let pkmListTotal = [];
+            let pkmListTotal = Array<String>();
             let output = `Region; Road; Id; Pokemon; Shiny; EVs \n`;
             if (allOpt === true) {
                 for (let i = 0; i <= player.highestRegion(); i++) {
@@ -211,7 +222,7 @@ namespace AreaDestroyer {
                                     ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
                                 ) {
                                     pkmListTotal.push(pkm);
-                                    output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                                    output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                                     if (++nb > max) {
                                         max = nb;
                                         best = `${rg} > ${rt.routeName} => ${max}`;
@@ -242,7 +253,7 @@ namespace AreaDestroyer {
                                 ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
                             ) {
                                 pkmListTotal.push(pkm);
-                                output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                                output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                                 if (++nb > max) {
                                     max = nb;
                                     best = `${rg} > ${rt.routeName} => ${max}`;
@@ -278,7 +289,7 @@ namespace AreaDestroyer {
         calcDungeon(allOpt: boolean = this.options.dungeon.all) {
             let max = 0;
             let best = "";
-            let pkmListTotal = [];
+            let pkmListTotal = Array<String>();
             let output = `Region; Road; Id; Pokemon; Shiny; EVs \n`;
             if (allOpt === true) {
                 for (let i = 0; i <= player.highestRegion(); i++) {
@@ -301,7 +312,7 @@ namespace AreaDestroyer {
                                     ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
                                 ) {
                                     pkmListTotal.push(pkm);
-                                    output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                                    output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                                     if (++nb > max) {
                                         max = nb;
                                         best = `${rg} > ${dgs[j]} => ${max}`;
@@ -332,7 +343,7 @@ namespace AreaDestroyer {
                                 ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
                             ) {
                                 pkmListTotal.push(pkm);
-                                output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                                output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                                 if (++nb > max) {
                                     max = nb;
                                     best = `${rg} > ${dgs[j]} => ${max}`;
@@ -396,7 +407,7 @@ namespace AreaDestroyer {
             return true;
         }
 
-        getEfficiency(p) {
+        getEfficiency(p: PartyPokemon) {
             const BREEDING_ATTACK_BONUS = 25;
             return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles;
         }
@@ -430,7 +441,7 @@ namespace AreaDestroyer {
                 let rg = this.capitalize(GameConstants.Region[i]);
                 Routes.getRoutesByRegion(i).forEach((rt) => {
                     let nb = 0;
-                    let pkmListEv = [];
+                    let pkmListEv = Array<String>();
                     this.concatPkmListFromRoute(rt).forEach((pkm) => {
                         if (lst.find((e) => e[1] === pkm)) {
                             pkmListEv.push(pkm);
@@ -524,8 +535,10 @@ namespace AreaDestroyer {
                 if (this.areaToFarm.type === Type.gym) {
                     if (player.town().name === this.areaToFarm.town) {
                         for (const gym of player.town().content) {
-                            if (gym.town === this.areaToFarm.gym && App.game.gameState !== GameConstants.GameState.gym) {
-                                gym.protectedOnclick();
+                            if (gym instanceof Champion || gym instanceof Gym){
+                                if (gym.town === this.areaToFarm.gym && App.game.gameState !== GameConstants.GameState.gym) {
+                                    gym.protectedOnclick();
+                                }
                             }
                         }
                     }

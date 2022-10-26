@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
+        "noImplicitAny": true,
         "target": "ES6",
-        "lib": ["ES2017", "DOM", "ES2019"],
+        "lib": ["DOM", "ES6"],
         "outDir": "dist",
         "sourceMap": false
     },
