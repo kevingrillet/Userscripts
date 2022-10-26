@@ -1,9 +1,11 @@
 {
   "name": "pokeclicker",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "",
   "main": "AreaDestroyer.js",
   "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

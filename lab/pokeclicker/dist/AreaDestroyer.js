@@ -9,59 +9,39 @@
  *
  * @tutorial:     var ad = new AreaDestroyer.AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
  */
-
-namespace AreaDestroyer {
-    export enum Mode {
-        defeat = 0,
-        shiny,
-        pokerus,
-    }
-    export enum ShowDebug {
-        debug = 0,
-        log,
-        warn,
-        err,
-    }
-    enum Type {
-        none = 0,
-        road,
-        dungeon,
-        gym,
-    }
+var AreaDestroyer;
+(function (AreaDestroyer_1) {
+    let Mode;
+    (function (Mode) {
+        Mode[Mode["defeat"] = 0] = "defeat";
+        Mode[Mode["shiny"] = 1] = "shiny";
+        Mode[Mode["pokerus"] = 2] = "pokerus";
+    })(Mode = AreaDestroyer_1.Mode || (AreaDestroyer_1.Mode = {}));
+    let ShowDebug;
+    (function (ShowDebug) {
+        ShowDebug[ShowDebug["debug"] = 0] = "debug";
+        ShowDebug[ShowDebug["log"] = 1] = "log";
+        ShowDebug[ShowDebug["warn"] = 2] = "warn";
+        ShowDebug[ShowDebug["err"] = 3] = "err";
+    })(ShowDebug = AreaDestroyer_1.ShowDebug || (AreaDestroyer_1.ShowDebug = {}));
+    let Type;
+    (function (Type) {
+        Type[Type["none"] = 0] = "none";
+        Type[Type["road"] = 1] = "road";
+        Type[Type["dungeon"] = 2] = "dungeon";
+        Type[Type["gym"] = 3] = "gym";
+    })(Type || (Type = {}));
     class AreaToFarm {
-        region: number;
-        route: number;
-        subregion: number;
-        type: Type;
-        town: string;
-        gym: string;
-        until: number;
     }
-
     class AreaOptions {
-        all: boolean;
-        defeat: number;
-        skip: boolean;
-        special: boolean;
-
-        constructor(defeat: number = 0, all: boolean = true, skip: boolean = false, special: boolean = false) {
+        constructor(defeat = 0, all = true, skip = false, special = false) {
             this.all = all;
             this.defeat = defeat;
             this.skip = skip;
             this.special = special;
         }
     }
-
     class Options {
-        both: boolean;
-        dungeon: AreaOptions;
-        end: boolean;
-        gym: AreaOptions;
-        mode: Mode;
-        road: AreaOptions;
-        showDebug: ShowDebug;
-        timeout: number;
-
         constructor() {
             this.both = false;
             this.dungeon = new AreaOptions(10);
@@ -73,27 +53,19 @@ namespace AreaDestroyer {
             this.timeout = 60;
         }
     }
-
-    export class AreaDestroyer {
-        areaToFarm: AreaToFarm;
-        options: Options;
-        stop: boolean;
-        elPlayer: HTMLAudioElement;
-
+    class AreaDestroyer {
         constructor() {
             this.stop = false;
             this.options = new Options();
             this.areaToFarm = new AreaToFarm();
-
-            this.elPlayer = (document.getElementById("AreaDestroyerAudio") as HTMLAudioElement) || document.createElement("audio");
+            this.elPlayer = document.getElementById("AreaDestroyerAudio") || document.createElement("audio");
             this.elPlayer.setAttribute("id", "AreaDestroyerAudio");
             this.elPlayer.src = "https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3";
         }
-
-        print(text: string, debugLevel: ShowDebug = ShowDebug.debug) {
-            if (!text || debugLevel < this.options.showDebug) return;
-
-            let date: string = new Date().toLocaleString();
+        print(text, debugLevel = ShowDebug.debug) {
+            if (!text || debugLevel < this.options.showDebug)
+                return;
+            let date = new Date().toLocaleString();
             switch (debugLevel) {
                 case ShowDebug.debug:
                     console.debug(date);
@@ -112,31 +84,21 @@ namespace AreaDestroyer {
                     break;
             }
         }
-
-        printArr(arr: any[], debugLevel: ShowDebug = ShowDebug.debug) {
-            if (!arr || debugLevel < this.options.showDebug) return;
-            console.table(arr)
+        printArr(arr, debugLevel = ShowDebug.debug) {
+            if (!arr || debugLevel < this.options.showDebug)
+                return;
+            console.table(arr);
         }
-
-        capitalize(text: string) {
+        capitalize(text) {
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
-
-        concatPkmListFromRoute(route, special: boolean = this.options.road.special) {
+        concatPkmListFromRoute(route, special = this.options.road.special) {
             let pkmList = [];
-            if (special === true) route.pokemon.special.forEach((e) => (pkmList = [...new Set([...pkmList, ...e.pokemon])]));
+            if (special === true)
+                route.pokemon.special.forEach((e) => (pkmList = [...new Set([...pkmList, ...e.pokemon])]));
             return [...new Set([...pkmList, ...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water])];
         }
-
-        setAreaToFarm(
-            type: Type = Type.none,
-            region: number = 0,
-            subregion: number = 0,
-            route: number = 0,
-            town: string = "",
-            gym: string = "",
-            until: number = 0
-        ) {
+        setAreaToFarm(type = Type.none, region = 0, subregion = 0, route = 0, town = "", gym = "", until = 0) {
             this.areaToFarm = {
                 type: type,
                 region: region,
@@ -147,13 +109,13 @@ namespace AreaDestroyer {
                 until: until,
             };
         }
-
         updateMode() {
             switch (this.options.mode) {
                 case Mode.defeat:
                     if (this.options.road.skip === false && this.options.road.defeat < 10000) {
                         this.options.road.defeat *= 10;
-                    } else if (this.options.dungeon.skip === false && this.options.dungeon.defeat < 500) {
+                    }
+                    else if (this.options.dungeon.skip === false && this.options.dungeon.defeat < 500) {
                         switch (this.options.dungeon.defeat) {
                             case 10:
                                 this.options.dungeon.defeat = 100;
@@ -165,9 +127,11 @@ namespace AreaDestroyer {
                                 this.options.dungeon.defeat = 500;
                                 break;
                         }
-                    } else if (this.options.gym.skip === false && this.options.gym.defeat < 1000) {
+                    }
+                    else if (this.options.gym.skip === false && this.options.gym.defeat < 1000) {
                         this.options.gym.defeat *= 10;
-                    } else {
+                    }
+                    else {
                         this.options.mode = Mode.shiny;
                     }
                     break;
@@ -179,13 +143,9 @@ namespace AreaDestroyer {
                     this.options.end = true;
                     break;
             }
-            this.print(
-                `AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`,
-                1
-            );
+            this.print(`AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`, 1);
         }
-
-        calcRoad(allOpt: boolean = this.options.road.all, specOpt: boolean = this.options.road.special) {
+        calcRoad(allOpt = this.options.road.all, specOpt = this.options.road.special) {
             let max = 0;
             let best = "";
             let pkmListTotal = [];
@@ -201,15 +161,14 @@ namespace AreaDestroyer {
                                 best = `${rg} > ${rt.routeName}`;
                                 return true;
                             }
-                        } else {
+                        }
+                        else {
                             let nb = 0;
                             this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
-                                if (
-                                    ppkm &&
-                                    ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
-                                ) {
+                                if (ppkm &&
+                                    ((this.options.mode === Mode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) || (this.options.mode === Mode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === 2))) {
                                     pkmListTotal.push(pkm);
                                     output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
                                     if (++nb > max) {
@@ -222,7 +181,8 @@ namespace AreaDestroyer {
                         }
                     });
                 }
-            } else {
+            }
+            else {
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 Routes.getRoutesByRegion(player.region).forEach((rt) => {
                     if (this.options.mode === Mode.defeat) {
@@ -232,15 +192,14 @@ namespace AreaDestroyer {
                             best = `${rg} > ${rt.routeName}`;
                             return true;
                         }
-                    } else {
+                    }
+                    else {
                         let nb = 0;
                         this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
-                            if (
-                                ppkm &&
-                                ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
-                            ) {
+                            if (ppkm &&
+                                ((this.options.mode === Mode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) || (this.options.mode === Mode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === 2))) {
                                 pkmListTotal.push(pkm);
                                 output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
                                 if (++nb > max) {
@@ -254,7 +213,8 @@ namespace AreaDestroyer {
                 });
             }
             pkmListTotal = [...new Set(pkmListTotal)];
-            if (pkmListTotal.length === 0 && this.areaToFarm.until === 0) return false;
+            if (pkmListTotal.length === 0 && this.areaToFarm.until === 0)
+                return false;
             let curMax = 10000;
             switch (this.options.mode) {
                 case Mode.pokerus:
@@ -274,8 +234,8 @@ namespace AreaDestroyer {
             this.print(`${best} (${this.areaToFarm.until}[${curMax}])`, 1);
             return true;
         }
-
-        calcDungeon(allOpt: boolean = this.options.dungeon.all) {
+        calcDungeon(allOpt = this.options.dungeon.all) {
+            var _a, _b;
             let max = 0;
             let best = "";
             let pkmListTotal = [];
@@ -291,15 +251,14 @@ namespace AreaDestroyer {
                                 best = `${rg} > ${dgs[j]}`;
                                 break;
                             }
-                        } else {
+                        }
+                        else {
                             let nb = 0;
-                            dungeonList[dgs[j]]?.pokemonList.forEach((pkm) => {
+                            (_a = dungeonList[dgs[j]]) === null || _a === void 0 ? void 0 : _a.pokemonList.forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
-                                if (
-                                    ppkm &&
-                                    ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
-                                ) {
+                                if (ppkm &&
+                                    ((this.options.mode === Mode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) || (this.options.mode === Mode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === 2))) {
                                     pkmListTotal.push(pkm);
                                     output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
                                     if (++nb > max) {
@@ -312,7 +271,8 @@ namespace AreaDestroyer {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let dgs = GameConstants.RegionDungeons[player.region];
                 for (let j = 0; j < dgs.length; j++) {
@@ -322,15 +282,14 @@ namespace AreaDestroyer {
                             best = `${rg} > ${dgs[j]}`;
                             break;
                         }
-                    } else {
+                    }
+                    else {
                         let nb = 0;
-                        dungeonList[dgs[j]]?.pokemonList.forEach((pkm) => {
+                        (_b = dungeonList[dgs[j]]) === null || _b === void 0 ? void 0 : _b.pokemonList.forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
-                            if (
-                                ppkm &&
-                                ((this.options.mode === Mode.shiny && ppkm?.shiny === false) || (this.options.mode === Mode.pokerus && ppkm?.pokerus === 2))
-                            ) {
+                            if (ppkm &&
+                                ((this.options.mode === Mode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) || (this.options.mode === Mode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === 2))) {
                                 pkmListTotal.push(pkm);
                                 output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
                                 if (++nb > max) {
@@ -344,7 +303,8 @@ namespace AreaDestroyer {
                 }
             }
             pkmListTotal = [...new Set(pkmListTotal)];
-            if (pkmListTotal.length === 0 && this.areaToFarm.until === 0) return false;
+            if (pkmListTotal.length === 0 && this.areaToFarm.until === 0)
+                return false;
             let curMax = 500;
             switch (this.options.mode) {
                 case Mode.pokerus:
@@ -364,8 +324,8 @@ namespace AreaDestroyer {
             this.print(`${best} (${this.areaToFarm.until}[${curMax}])`, 1);
             return true;
         }
-
-        calcGym(allOpt: boolean = this.options.gym.all) {
+        calcGym(allOpt = this.options.gym.all) {
+            var _a, _b, _c, _d;
             let best = "";
             if (allOpt === true) {
                 for (let i = 0; i <= player.highestRegion(); i++) {
@@ -373,46 +333,48 @@ namespace AreaDestroyer {
                     let gym = GameConstants.RegionGyms[i];
                     for (let j = 0; j < gym.length; j++) {
                         if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
-                            this.setAreaToFarm(Type.gym, i, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.options.gym.defeat);
+                            this.setAreaToFarm(Type.gym, i, 0, 0, ((_b = (_a = GymList[gym[j]]) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name) || gym[j], gym[j], this.options.gym.defeat);
                             best = `${rg} > ${gym[j]}`;
                             break;
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let gym = GameConstants.RegionGyms[player.region];
                 for (let j = 0; j < gym.length; j++) {
                     if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
-                        this.setAreaToFarm(Type.gym, player.region, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.options.gym.defeat);
+                        this.setAreaToFarm(Type.gym, player.region, 0, 0, ((_d = (_c = GymList[gym[j]]) === null || _c === void 0 ? void 0 : _c.parent) === null || _d === void 0 ? void 0 : _d.name) || gym[j], gym[j], this.options.gym.defeat);
                         best = `${rg} > ${gym[j]}`;
                         break;
                     }
                 }
             }
-            if (this.areaToFarm.until === 0) return false;
+            if (this.areaToFarm.until === 0)
+                return false;
             let curMax = 1000;
             this.print(`${best} (${this.areaToFarm.until}[${curMax}])`, 1);
             return true;
         }
-
         getEfficiency(p) {
             const BREEDING_ATTACK_BONUS = 25;
             return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles;
         }
-
-        pkdxTopEff(topOpt: number) {
+        pkdxTopEff(topOpt) {
             let listPkm = [];
             for (const pokemon of pokemonList) {
                 if (pokemon.nativeRegion <= player.highestRegion()) {
                     let lpkm = App.game.party.getPokemon(pokemon.id);
-                    if (lpkm) listPkm.push([lpkm.id, lpkm.name, this.getEfficiency(lpkm)]);
+                    if (lpkm)
+                        listPkm.push([lpkm.id, lpkm.name, this.getEfficiency(lpkm)]);
                 }
             }
             listPkm.sort(function sortFn(a, b) {
                 if (a[2] === b[2]) {
                     return 0;
-                } else {
+                }
+                else {
                     return a[2] > b[2] ? -1 : 1;
                 }
             });
@@ -420,8 +382,7 @@ namespace AreaDestroyer {
             this.printArr(listPkm, ShowDebug.log);
             return listPkm;
         }
-
-        bestEvsFarm(topOpt: number = 10) {
+        bestEvsFarm(topOpt = 10) {
             this.setAreaToFarm();
             let lst = this.pkdxTopEff(topOpt);
             let max = 0;
@@ -447,7 +408,6 @@ namespace AreaDestroyer {
             }
             return best;
         }
-
         startAutoGym() {
             let autoGym = document.getElementById("auto-gym-start");
             if (autoGym && !autoGym.classList.contains("btn-success")) {
@@ -455,7 +415,6 @@ namespace AreaDestroyer {
             }
             return false;
         }
-
         stopAutoGym() {
             let autoGym = document.getElementById("auto-gym-start");
             if (autoGym && !autoGym.classList.contains("btn-danger")) {
@@ -464,7 +423,6 @@ namespace AreaDestroyer {
             }
             return false;
         }
-
         startAutoDungeon() {
             let autoDungeon = document.getElementById("auto-dungeon-start");
             if (autoDungeon && !autoDungeon.classList.contains("btn-success")) {
@@ -473,7 +431,6 @@ namespace AreaDestroyer {
             }
             return false;
         }
-
         stopAutoDungeon() {
             let autoDungeon = document.getElementById("auto-dungeon-start");
             if (autoDungeon && !autoDungeon.classList.contains("btn-danger")) {
@@ -487,8 +444,7 @@ namespace AreaDestroyer {
             }
             return false;
         }
-
-        check(bothOpt: boolean = this.options.both) {
+        check(bothOpt = this.options.both) {
             if (this.options.end === true) {
                 this.bestEvsFarm();
                 this.moveTo();
@@ -511,14 +467,14 @@ namespace AreaDestroyer {
             }
             return Type.none;
         }
-
         moveTo() {
             if (this.areaToFarm.region === 6) {
                 player.subregion = this.areaToFarm.subregion;
             }
             if (this.areaToFarm.route !== 0) {
                 MapHelper.moveToRoute(this.areaToFarm.route, this.areaToFarm.region);
-            } else if (this.areaToFarm.town !== "") {
+            }
+            else if (this.areaToFarm.town !== "") {
                 player.region = this.areaToFarm.region;
                 MapHelper.moveToTown(this.areaToFarm.town);
                 if (this.areaToFarm.type === Type.gym) {
@@ -532,21 +488,23 @@ namespace AreaDestroyer {
                 }
             }
         }
-
         auto() {
             setTimeout(() => {
                 if (this.stop === true) {
                     this.stop = false;
                     this.print(`AreaDestroyer stopped`, 1);
-                } else {
+                }
+                else {
                     let curMax = 0;
                     switch (this.options.mode) {
                         case Mode.defeat:
                             if (this.areaToFarm.type === Type.road && this.areaToFarm.route !== 0) {
                                 curMax = App.game.statistics.routeKills[this.areaToFarm.region][this.areaToFarm.route]();
-                            } else if (this.areaToFarm.type === Type.dungeon && this.areaToFarm.town !== "") {
+                            }
+                            else if (this.areaToFarm.type === Type.dungeon && this.areaToFarm.town !== "") {
                                 curMax = App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(this.areaToFarm.town)]();
-                            } else if (this.areaToFarm.type === Type.gym && this.areaToFarm.town !== "") {
+                            }
+                            else if (this.areaToFarm.type === Type.gym && this.areaToFarm.town !== "") {
                                 curMax = App.game.statistics.gymsDefeated[GameConstants.getGymIndex(this.areaToFarm.town)]();
                             }
                             break;
@@ -572,51 +530,60 @@ namespace AreaDestroyer {
                             this.moveTo();
                             this.print(`AreaDestroyer NextArea`, 1);
                             this.auto();
-                        } else if (chkRes === Type.dungeon) {
+                        }
+                        else if (chkRes === Type.dungeon) {
                             this.moveTo();
                             if (this.startAutoDungeon() === true) {
                                 this.print(`AreaDestroyer NextArea`, 1);
                                 this.auto();
-                            } else {
+                            }
+                            else {
                                 this.print(`AreaDestroyer Failed to auto dungeon`, 2);
                             }
-                        } else if (chkRes === Type.gym) {
+                        }
+                        else if (chkRes === Type.gym) {
                             this.moveTo();
                             if (this.startAutoGym() === true) {
                                 this.print(`AreaDestroyer NextArea`, 1);
                                 this.auto();
-                            } else {
+                            }
+                            else {
                                 this.print(`AreaDestroyer Failed to auto dungeon`, 2);
                             }
-                        } else {
+                        }
+                        else {
                             this.print(`AreaDestroyer DONE`, 1);
                             this.elPlayer.play();
                             this.updateMode();
                             this.run();
                         }
-                    } else {
+                    }
+                    else {
                         this.print(`AreaDestroyer IDLE ${curMax}/${this.areaToFarm.until}`);
                         this.auto();
                     }
                 }
             }, this.options.timeout * 1000);
         }
-
-        run(bothOpt: boolean = this.options.both) {
+        run(bothOpt = this.options.both) {
             this.setAreaToFarm();
             var res = this.check(bothOpt);
             while (res === Type.none) {
                 this.updateMode();
                 res = this.check(bothOpt);
             }
-            if (res !== Type.none) this.moveTo();
-            if (res === Type.dungeon) this.startAutoDungeon();
-            if (res === Type.gym) this.startAutoGym();
-            if (res > Type.none) this.auto();
+            if (res !== Type.none)
+                this.moveTo();
+            if (res === Type.dungeon)
+                this.startAutoDungeon();
+            if (res === Type.gym)
+                this.startAutoGym();
+            if (res > Type.none)
+                this.auto();
         }
     }
-}
-
+    AreaDestroyer_1.AreaDestroyer = AreaDestroyer;
+})(AreaDestroyer || (AreaDestroyer = {}));
 var ad = new AreaDestroyer.AreaDestroyer();
 // ad.options.dungeon.skip = true;
 ad.options.gym.skip = true;

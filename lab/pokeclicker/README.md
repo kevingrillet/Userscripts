@@ -22,3 +22,8 @@ Complete every achievements of grinding:
 Require <https://github.com/Ephenia/Pokeclicker-Scripts> (Enhanced Auto Clicker) with AutoClick [ON]
 
 For more info on pokeclicker source code: <https://github.com/pokeclicker/pokeclicker>
+
+## ToDo - `AreaDestroyer.ts`
+
+- Fix Auto Clicker for broken gyms
+- Complete `globals.d.ts` to remove all `any`

@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      0.1
+ * @version:      0.2
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  *
@@ -11,21 +11,6 @@
  *
  * @todo:         Fix Gym (some town doesn't work); JS -> TS + ESLint
  */
-
-// TODO
-// Replace .unique() with           let merge = [...new Set([...a, ...b])];
-// Replace this.lprint(csv) with    console.table(arr)
-
-Array.prototype.unique = function () {
-  let a = this.concat();
-  for (let i = 0; i < a.length; ++i) {
-    for (let j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j])
-        a.splice(j--, 1);
-    }
-  }
-  return a;
-}
 
 // eslint-disable-next-line no-unused-vars
 class AreaDestroyer {
@@ -90,21 +75,31 @@ class AreaDestroyer {
     this.elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
   }
 
-  // Internal crap
-  lPrint(msg, type) {
-    if ((!msg) || ((type || 0) < this.opt.showDebug))
+  print(msg, type) {
+    if ((!msg) || ((type || this.enums.showDebug.debug) < this.opt.showDebug))
       return;
     let date = new Date().toLocaleString();
-    if ((type || 0) === 0) {
-      console.debug(date);
-      console.debug(msg);
-    } else {
-      if ((type || 0) === 1) {
+    switch (type || 0) {
+      case this.enums.showDebug.debug:
+        console.debug(date);
+        console.debug(msg);
+        break;
+      case this.enums.showDebug.log:
         console.log(`${date} - ${msg}`);
-      } else if ((type || 0) === 2) {
+        break;
+      case this.enums.showDebug.warn:
         console.warn(`${date} - ${msg}`);
-      }
+        break;
+      case this.enums.showDebug.err:
+        console.error(`${date} - ${msg}`);
+        break;
     }
+  }
+
+  printArr(arr, type){
+    if ((!arr) || ((type || this.enums.showDebug.debug) < this.opt.showDebug))
+      return;
+    console.table(arr);
   }
 
   capitalize(msg) {
@@ -113,12 +108,9 @@ class AreaDestroyer {
 
   concatPkmListFromRoute(route, specOpt) {
     let pkmList = [];
-    pkmList = pkmList.concat(route.pokemon.headbutt);
-    pkmList = pkmList.concat(route.pokemon.land);
     if ((specOpt || this.opt.road.spec) === true)
       route.pokemon.special.forEach((e) => pkmList = pkmList.concat(e.pokemon));
-    pkmList = pkmList.concat(route.pokemon.water);
-    return pkmList.unique();
+    return [...new Set([...pkmList, ...route.pokemon.headbutt, route.pokemon.land, route.pokemon.water])];
   }
 
   setAreaToFarm(type, region, subregion, route, town, gym, until) {
@@ -164,10 +156,9 @@ class AreaDestroyer {
         this.opt.end = true;
         break;
     }
-    this.lPrint(`AreaDestroyer updateMode > mode:${this.opt.mode}; road.defeat:${this.opt.road.defeat}; dungeon.defeat:${this.opt.dungeon.defeat}; end:${this.opt.end}`, 1)
+    this.print(`AreaDestroyer updateMode > mode:${this.opt.mode}; road.defeat:${this.opt.road.defeat}; dungeon.defeat:${this.opt.dungeon.defeat}; gym.defeat:${this.opt.gym.defeat}; end:${this.opt.end}`, 1)
   }
 
-  // Complete achievements!
   calcRoad(allOpt, specOpt) {
     let max = 0;
     let best = "";
@@ -230,25 +221,26 @@ class AreaDestroyer {
         }
       });
     }
+    pkmListTotal = [...new Set([...pkmListTotal])];
     if (pkmListTotal.length === 0 && this.AreaToFarm.until === 0)
       return false;
     let curMax = 10000;
     switch (this.opt.mode) {
       case this.enums.mode.pokerus:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + max;
-        curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.unique().length;
+        curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.length;
         break;
       case this.enums.mode.shiny:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + max;
-        curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.unique().length;
+        curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.length;
         break;
       default:
         this.AreaToFarm.until = this.opt.road.defeat;
         break;
     }
-    this.lPrint(output);
-    this.lPrint(pkmListTotal.unique());
-    this.lPrint(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
+    this.print(output);
+    this.printArr(pkmListTotal);
+    this.print(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
     return true;
   }
 
@@ -314,25 +306,26 @@ class AreaDestroyer {
         }
       }
     }
+    pkmListTotal = [...new Set([...pkmListTotal])];
     if (pkmListTotal.length === 0 && this.AreaToFarm.until === 0)
       return false;
     let curMax = 500;
     switch (this.opt.mode) {
       case this.enums.mode.pokerus:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + max;
-        curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.unique().length;
+        curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.length;
         break;
       case this.enums.mode.shiny:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + max;
-        curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.unique().length;
+        curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.length;
         break;
       default:
         this.AreaToFarm.until = this.opt.dungeon.defeat;
         break;
     }
-    this.lPrint(output);
-    this.lPrint(pkmListTotal.unique());
-    this.lPrint(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
+    this.print(output);
+    this.printArr(pkmListTotal);
+    this.print(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
     return true;
   }
 
@@ -364,11 +357,10 @@ class AreaDestroyer {
     if (this.AreaToFarm.until === 0)
       return false;
     let curMax = 1000;
-    this.lPrint(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
+    this.print(`${best} (${this.AreaToFarm.until}[${curMax}])`, 1);
     return true;
   }
 
-  // Farm best effeciency late
   getEfficiency(p) {
     const BREEDING_ATTACK_BONUS = 25;
     return ((p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles);
@@ -391,6 +383,7 @@ class AreaDestroyer {
       }
     });
     listPkm = listPkm.slice(0, (topOpt || 10));
+    this.printArr(listPkm, this.enums.showDebug.log);
     return listPkm;
   }
 
@@ -420,8 +413,6 @@ class AreaDestroyer {
     }
     return best;
   }
-
-  // Loop auto, everything usable
 
   startAutoGym() {
     let autoGym = document.getElementById("auto-gym-start");
@@ -505,7 +496,7 @@ class AreaDestroyer {
     setTimeout(() => {
       if (this.stop === true) {
         this.stop = false;
-        this.lPrint(`AreaDestroyer stopped`, 1);
+        this.print(`AreaDestroyer stopped`, 1);
       } else {
         let curMax = 0;
         switch (this.opt.mode) {
@@ -537,32 +528,32 @@ class AreaDestroyer {
           let chkRes = this.check();
           if (chkRes === this.enums.type.road) {
             this.moveTo();
-            this.lPrint(`AreaDestroyer NextArea`, 1);
+            this.print(`AreaDestroyer NextArea`, 1);
             this.auto();
           } else if (chkRes === this.enums.type.dungeon) {
             this.moveTo();
             if (this.startAutoDungeon() === true) {
-              this.lPrint(`AreaDestroyer NextArea`, 1);
+              this.print(`AreaDestroyer NextArea`, 1);
               this.auto();
             } else {
-              this.lPrint(`AreaDestroyer Failed to auto dungeon`, 2);
+              this.print(`AreaDestroyer Failed to auto dungeon`, 2);
             }
           } else if (chkRes === this.enums.type.gym) {
             this.moveTo();
             if (this.startAutoGym() === true) {
-              this.lPrint(`AreaDestroyer NextArea`, 1);
+              this.print(`AreaDestroyer NextArea`, 1);
               this.auto();
             } else {
-              this.lPrint(`AreaDestroyer Failed to auto dungeon`, 2);
+              this.print(`AreaDestroyer Failed to auto dungeon`, 2);
             }
           } else {
-            this.lPrint(`AreaDestroyer DONE`, 1);
+            this.print(`AreaDestroyer DONE`, 1);
             this.elPlayer.play();
             this.updateMode();
             this.run();
           }
         } else {
-          this.lPrint(`AreaDestroyer IDLE ${curMax}/${this.AreaToFarm.until}`);
+          this.print(`AreaDestroyer IDLE ${curMax}/${this.AreaToFarm.until}`);
           this.auto();
         }
       }
