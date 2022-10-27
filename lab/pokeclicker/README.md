@@ -8,13 +8,13 @@ POC working, rewrite in progress.
 var ad = new AreaDestroyer();
 // ad.options.dungeon.skip = true;
 ad.options.gym.skip = true;
-// ad.options.showDebug = ad.enums.showDebug.debug
-// ad.options.mode = ad.enums.mode.pokerus
-// ad.calcRoad()
-// ad.calcDungeon()
-// ad.calcGym()
-ad.run()
-// ad.stop = true
+// ad.options.showDebug = ad.enums.showDebug.debug;
+// ad.options.mode = ad.enums.mode.pokerus;
+// ad.calcRoad();
+// ad.calcDungeon();
+// ad.calcGym();
+ad.run();
+// ad.stop = true;
 ```
 
 Complete every achievements of grinding:

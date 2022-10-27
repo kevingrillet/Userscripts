@@ -1,4 +1,4 @@
-import { RoutePokemon } from "./RoutePokemon";
+import { RoutePokemon } from './RoutePokemon';
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/modules/routes/RegionRoute.ts
 export class RegionRoute {

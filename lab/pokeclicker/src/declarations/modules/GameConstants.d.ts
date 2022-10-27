@@ -12,7 +12,7 @@ export namespace GameConstants {
         town,
         shop,
         battleFrontier,
-        temporaryBattle
+        temporaryBattle,
     }
     enum Pokerus {
         'Uninfected',

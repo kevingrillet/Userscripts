@@ -13,8 +13,8 @@ Replace the everything in this file (except for this comment) with what was copi
 Change the type of `PokemonListData -> name` back to `PokemonNameType`
 */
 
-export type PokemonNameType
-    = 'Bulbasaur'
+export type PokemonNameType =
+    | 'Bulbasaur'
     | 'Bulbasaur (Rose)'
     | 'Ivysaur'
     | 'Venusaur'
@@ -125,8 +125,8 @@ export type PokemonNameType
     | 'Galarian Slowbro'
     | 'Magnemite'
     | 'Magneton'
-    | 'Farfetch\'d'
-    | 'Galarian Farfetch\'d'
+    | "Farfetch'd"
+    | "Galarian Farfetch'd"
     | 'Doduo'
     | 'Dodrio'
     | 'Seel'
@@ -930,7 +930,7 @@ export type PokemonNameType
     | 'Crabominable'
     | 'Oricorio (Baile)'
     | 'Oricorio (Pom-pom)'
-    | 'Oricorio (Pa\'u)'
+    | "Oricorio (Pa'u)"
     | 'Oricorio (Sensu)'
     | 'Cutiefly'
     | 'Ribombee'
@@ -1078,7 +1078,7 @@ export type PokemonNameType
     | 'Obstagoon'
     | 'Perrserker'
     | 'Cursola'
-    | 'Sirfetch\'d'
+    | "Sirfetch'd"
     | 'Mr. Rime'
     | 'Runerigus'
     | 'Milcery'
@@ -1190,8 +1190,8 @@ export type PokemonNameType
     | 'Surprise Togepi'
     | 'Spooky Bulbasaur'
     | 'Pikachu (Gengar)'
-    | 'Let\'s Go Pikachu'
-    | 'Let\'s Go Eevee'
+    | "Let's Go Pikachu"
+    | "Let's Go Eevee"
     | 'Bulbasaur (clone)'
     | 'Ivysaur (clone)'
     | 'Venusaur (clone)'

@@ -6,10 +6,6 @@
  * @version:      0.3
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
- *
- * @tutorial:     var ad = new AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
- *
- * @todo:         Fix Gym (some town doesn't work); JS -> TS + ESLint
  */
 
 // eslint-disable-next-line no-unused-vars
@@ -578,10 +574,10 @@ class AreaDestroyer {
 var ad = new AreaDestroyer();
 // ad.options.dungeon.skip = true;
 ad.options.gym.skip = true;
-// ad.options.showDebug = ad.enums.showDebug.debug
-// ad.options.mode = ad.enums.mode.pokerus
-// ad.calcRoad()
-// ad.calcDungeon()
-// ad.calcGym()
-ad.run()
-// ad.stop = true
+// ad.options.showDebug = ad.enums.showDebug.debug;
+// ad.options.mode = ad.enums.mode.pokerus;
+// ad.calcRoad();
+// ad.calcDungeon();
+// ad.calcGym();
+ad.run();
+// ad.stop = true;

@@ -1,4 +1,4 @@
-import { Dungeon } from "./Dungeon";
+import { Dungeon } from './Dungeon';
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/dungeons/DungeonRunner.ts
 export class DungeonRunner {

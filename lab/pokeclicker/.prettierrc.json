@@ -1,1 +1,7 @@
-{}
+{
+    "printWidth": 160,
+    "tabWidth": 4,
+
+    "singleAttributePerLine": true,
+    "singleQuote": true
+}
