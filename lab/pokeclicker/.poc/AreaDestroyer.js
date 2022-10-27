@@ -3,11 +3,11 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      0.2
+ * @version:      0.3
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  *
- * @tutorial:     var ad = new AreaDestroyer(); ad.opt.gym.skip = true; ad.run() //ad.stop = true
+ * @tutorial:     var ad = new AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
  *
  * @todo:         Fix Gym (some town doesn't work); JS -> TS + ESLint
  */
@@ -37,7 +37,7 @@ class AreaDestroyer {
 
     this.stop = false;
 
-    this.opt = {
+    this.options = {
       both: false,
       dungeon: {
         all: true,
@@ -76,8 +76,7 @@ class AreaDestroyer {
   }
 
   print(msg, type) {
-    if ((!msg) || ((type || this.enums.showDebug.debug) < this.opt.showDebug))
-      return;
+    if ((!msg) || ((type || this.enums.showDebug.debug) < this.options.showDebug)) return;
     let date = new Date().toLocaleString();
     switch (type || 0) {
       case this.enums.showDebug.debug:
@@ -97,8 +96,7 @@ class AreaDestroyer {
   }
 
   printArr(arr, type){
-    if ((!arr) || ((type || this.enums.showDebug.debug) < this.opt.showDebug))
-      return;
+    if ((!arr) || ((type || this.enums.showDebug.debug) < this.options.showDebug)) return;
     console.table(arr);
   }
 
@@ -107,10 +105,9 @@ class AreaDestroyer {
   }
 
   concatPkmListFromRoute(route, specOpt) {
-    let pkmList = [];
-    if ((specOpt || this.opt.road.spec) === true)
-      route.pokemon.special.forEach((e) => pkmList = pkmList.concat(e.pokemon));
-    return [...new Set([...pkmList, ...route.pokemon.headbutt, route.pokemon.land, route.pokemon.water])];
+    let pkmList = [...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water];
+    if ((specOpt || this.options.road.spec) === true) route.pokemon.special.forEach((srp) => pkmList = pkmList.concat(srp.pokemon));
+    return [...new Set([...pkmList])];
   }
 
   setAreaToFarm(type, region, subregion, route, town, gym, until) {
@@ -126,37 +123,37 @@ class AreaDestroyer {
   }
 
   updateMode() {
-    switch (this.opt.mode) {
+    switch (this.options.mode) {
       case this.enums.mode.defeat:
-        if (this.opt.road.skip === false && this.opt.road.defeat < 10000){
-          this.opt.road.defeat *= 10;
-        } else if (this.opt.dungeon.skip === false && this.opt.dungeon.defeat < 500){
-          switch (this.opt.dungeon.defeat) {
+        if (this.options.road.skip === false && this.options.road.defeat < 10000){
+          this.options.road.defeat *= 10;
+        } else if (this.options.dungeon.skip === false && this.options.dungeon.defeat < 500){
+          switch (this.options.dungeon.defeat) {
             case 10:
-              this.opt.dungeon.defeat = 100;
+              this.options.dungeon.defeat = 100;
               break;
             case 100:
-              this.opt.dungeon.defeat = 250;
+              this.options.dungeon.defeat = 250;
               break;
             case 250:
-              this.opt.dungeon.defeat = 500;
+              this.options.dungeon.defeat = 500;
               break;
           }
-        } else if (this.opt.gym.skip === false && this.opt.gym.defeat < 1000){
-          this.opt.gym.defeat *= 10;
+        } else if (this.options.gym.skip === false && this.options.gym.defeat < 1000){
+          this.options.gym.defeat *= 10;
         } else {
-          this.opt.mode = this.enums.mode.shiny;
+          this.options.mode = this.enums.mode.shiny;
         }
         break;
       case this.enums.mode.shiny:
-        this.opt.mode = this.enums.mode.pokerus;
+        this.options.mode = this.enums.mode.pokerus;
         break;
       case this.enums.mode.pokerus:
       default:
-        this.opt.end = true;
+        this.options.end = true;
         break;
     }
-    this.print(`AreaDestroyer updateMode > mode:${this.opt.mode}; road.defeat:${this.opt.road.defeat}; dungeon.defeat:${this.opt.dungeon.defeat}; gym.defeat:${this.opt.gym.defeat}; end:${this.opt.end}`, 1)
+    this.print(`AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`, 1)
   }
 
   calcRoad(allOpt, specOpt) {
@@ -164,13 +161,13 @@ class AreaDestroyer {
     let best = "";
     let pkmListTotal = [];
     let output = `Region; Road; Id; Pokemon; Shiny; EVs \n`;
-    if ((allOpt || this.opt.road.all) === true) {
+    if ((allOpt || this.options.road.all) === true) {
       for (let i = 0; i <= player.highestRegion(); i++) {
         let rg = this.capitalize(GameConstants.Region[i]);
         Routes.getRoutesByRegion(i).some((rt) => {
-          if (this.opt.mode === this.enums.mode.defeat) {
-            if (App.game.statistics.routeKills[i][rt.number]() < this.opt.road.defeat) {
-              this.setAreaToFarm(this.enums.type.road, i, rt.subRegion, rt.number, 0, 0, this.opt.road.defeat)
+          if (this.options.mode === this.enums.mode.defeat) {
+            if (App.game.statistics.routeKills[i][rt.number]() < this.options.road.defeat) {
+              this.setAreaToFarm(this.enums.type.road, i, rt.subRegion, rt.number, 0, 0, this.options.road.defeat)
               output += `${rg}; ${rt.routeName}; ; ; ;\n`;
               best = `${rg} > ${rt.routeName}`;
               return true
@@ -180,9 +177,9 @@ class AreaDestroyer {
             this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
               let hpkm = PokemonHelper.getPokemonByName(pkm);
               let ppkm = App.game.party.getPokemon(hpkm.id);
-              if (ppkm && ((this.opt.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.opt.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
+              if (ppkm && ((this.options.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.options.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
                 pkmListTotal.push(pkm);
-                output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                 if (++nb > max) {
                   max = nb;
                   best = `${rg} > ${rt.routeName} => ${max}`;
@@ -196,9 +193,9 @@ class AreaDestroyer {
     } else {
       let rg = this.capitalize(GameConstants.Region[player.region]);
       Routes.getRoutesByRegion(player.region).forEach((rt) => {
-        if (this.opt.mode === this.enums.mode.defeat) {
-          if (App.game.statistics.routeKills[player.region][rt.number]() < this.opt.road.defeat) {
-            this.setAreaToFarm(this.enums.type.road, player.region, rt.subRegion, rt.number, 0, 0, this.opt.road.defeat)
+        if (this.options.mode === this.enums.mode.defeat) {
+          if (App.game.statistics.routeKills[player.region][rt.number]() < this.options.road.defeat) {
+            this.setAreaToFarm(this.enums.type.road, player.region, rt.subRegion, rt.number, 0, 0, this.options.road.defeat)
             output += `${rg}; ${rt.routeName}; ; ; ;\n`;
             best = `${rg} > ${rt.routeName}`;
             return true;
@@ -208,9 +205,9 @@ class AreaDestroyer {
           this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
             let hpkm = PokemonHelper.getPokemonByName(pkm);
             let ppkm = App.game.party.getPokemon(hpkm.id);
-            if (ppkm && ((this.opt.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.opt.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
+            if (ppkm && ((this.options.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.options.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
               pkmListTotal.push(pkm);
-              output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+              output += `${rg}; ${rt.routeName}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
               if (++nb > max) {
                 max = nb;
                 best = `${rg} > ${rt.routeName} => ${max}`;
@@ -225,7 +222,7 @@ class AreaDestroyer {
     if (pkmListTotal.length === 0 && this.AreaToFarm.until === 0)
       return false;
     let curMax = 10000;
-    switch (this.opt.mode) {
+    switch (this.options.mode) {
       case this.enums.mode.pokerus:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + max;
         curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.length;
@@ -235,7 +232,7 @@ class AreaDestroyer {
         curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.length;
         break;
       default:
-        this.AreaToFarm.until = this.opt.road.defeat;
+        this.AreaToFarm.until = this.options.road.defeat;
         break;
     }
     this.print(output);
@@ -249,14 +246,14 @@ class AreaDestroyer {
     let best = "";
     let pkmListTotal = [];
     let output = `Region; Road; Id; Pokemon; Shiny; EVs \n`;
-    if ((allOpt || this.opt.dungeon.all) === true) {
+    if ((allOpt || this.options.dungeon.all) === true) {
       for (let i = 0; i <= player.highestRegion(); i++) {
         let rg = this.capitalize(GameConstants.Region[i]);
         let dgs = GameConstants.RegionDungeons[i];
         for (let j = 0; j < dgs.length; j++) {
-          if (this.opt.mode === this.enums.mode.defeat) {
-            if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.opt.dungeon.defeat) {
-              this.setAreaToFarm(this.enums.type.dungeon, i, 0, 0, dgs[j], 0, this.opt.dungeon.defeat);
+          if (this.options.mode === this.enums.mode.defeat) {
+            if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.options.dungeon.defeat) {
+              this.setAreaToFarm(this.enums.type.dungeon, i, 0, 0, dgs[j], 0, this.options.dungeon.defeat);
               best = `${rg} > ${dgs[j]}`;
               break;
             }
@@ -265,9 +262,9 @@ class AreaDestroyer {
             dungeonList[dgs[j]]?.pokemonList.forEach((pkm) => {
               let hpkm = PokemonHelper.getPokemonByName(pkm);
               let ppkm = App.game.party.getPokemon(hpkm.id);
-              if (ppkm && ((this.opt.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.opt.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
+              if (ppkm && ((this.options.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.options.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
                 pkmListTotal.push(pkm);
-                output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+                output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
                 if (++nb > max) {
                   max = nb;
                   best = `${rg} > ${dgs[j]} => ${max}`;
@@ -282,9 +279,9 @@ class AreaDestroyer {
       let rg = this.capitalize(GameConstants.Region[player.region]);
       let dgs = GameConstants.RegionDungeons[player.region];
       for (let j = 0; j < dgs.length; j++) {
-        if (this.opt.mode === this.enums.mode.defeat) {
-          if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.opt.dungeon.defeat) {
-            this.setAreaToFarm(this.enums.type.dungeon, player.region, 0, 0, dgs[j], 0, this.opt.dungeon.defeat)
+        if (this.options.mode === this.enums.mode.defeat) {
+          if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.options.dungeon.defeat) {
+            this.setAreaToFarm(this.enums.type.dungeon, player.region, 0, 0, dgs[j], 0, this.options.dungeon.defeat)
             best = `${rg} > ${dgs[j]}`;
             break;
           }
@@ -293,9 +290,9 @@ class AreaDestroyer {
           dungeonList[dgs[j]]?.pokemonList.forEach((pkm) => {
             let hpkm = PokemonHelper.getPokemonByName(pkm);
             let ppkm = App.game.party.getPokemon(hpkm.id);
-            if (ppkm && ((this.opt.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.opt.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
+            if (ppkm && ((this.options.mode === this.enums.mode.shiny && ppkm?.shiny === false) || (this.options.mode === this.enums.mode.pokerus && ppkm?.pokerus === 2))) {
               pkmListTotal.push(pkm);
-              output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${pkm.shiny}; ${ppkm.evs()}\n`;
+              output += `${rg}; ${dgs[j]}; ${hpkm.id}; ${pkm}; ${ppkm.shiny}; ${ppkm.evs()}\n`;
               if (++nb > max) {
                 max = nb;
                 best = `${rg} > ${dgs[j]} => ${max}`;
@@ -310,7 +307,7 @@ class AreaDestroyer {
     if (pkmListTotal.length === 0 && this.AreaToFarm.until === 0)
       return false;
     let curMax = 500;
-    switch (this.opt.mode) {
+    switch (this.options.mode) {
       case this.enums.mode.pokerus:
         this.AreaToFarm.until = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + max;
         curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length + pkmListTotal.length;
@@ -320,7 +317,7 @@ class AreaDestroyer {
         curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length + pkmListTotal.length;
         break;
       default:
-        this.AreaToFarm.until = this.opt.dungeon.defeat;
+        this.AreaToFarm.until = this.options.dungeon.defeat;
         break;
     }
     this.print(output);
@@ -331,13 +328,13 @@ class AreaDestroyer {
 
   calcGym(allOpt) {
     let best = "";
-    if ((allOpt || this.opt.gym.all) === true) {
+    if ((allOpt || this.options.gym.all) === true) {
       for (let i = 0; i <= player.highestRegion(); i++) {
         let rg = this.capitalize(GameConstants.Region[i]);
         let gym = GameConstants.RegionGyms[i];
         for (let j = 0; j < gym.length; j++) {
-          if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.opt.gym.defeat) {
-            this.setAreaToFarm(this.enums.type.gym, i, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.opt.gym.defeat);
+          if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
+            this.setAreaToFarm(this.enums.type.gym, i, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.options.gym.defeat);
             best = `${rg} > ${gym[j]}`;
             break;
           }
@@ -347,8 +344,8 @@ class AreaDestroyer {
       let rg = this.capitalize(GameConstants.Region[player.region]);
       let gym = GameConstants.RegionGyms[player.region];
       for (let j = 0; j < gym.length; j++) {
-        if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.opt.gym.defeat) {
-          this.setAreaToFarm(this.enums.type.gym, player.region, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.opt.gym.defeat)
+        if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
+          this.setAreaToFarm(this.enums.type.gym, player.region, 0, 0, GymList[gym[j]]?.parent?.name || gym[j], gym[j], this.options.gym.defeat)
           best = `${rg} > ${gym[j]}`;
           break;
         }
@@ -455,18 +452,18 @@ class AreaDestroyer {
   }
 
   check(bothOpt) {
-    if (this.opt.end === true ) {
+    if (this.options.end === true ) {
       this.bestEvsFarm();
       this.moveTo();
       return -1
     }
-    if (this.opt.road.skip === false)
-      if ((this.calcRoad() === true) && !((bothOpt || this.opt.both) === true))
+    if (this.options.road.skip === false)
+      if ((this.calcRoad() === true) && !((bothOpt || this.options.both) === true))
         return this.enums.type.road;
-    if (this.opt.dungeon.skip === false)
+    if (this.options.dungeon.skip === false)
       if (this.calcDungeon() === true)
         return this.enums.type.dungeon;
-    if ((this.opt.mode === this.enums.mode.defeat) && (this.opt.gym.skip === false))
+    if ((this.options.mode === this.enums.mode.defeat) && (this.options.gym.skip === false))
       if (this.calcGym() === true)
         return this.enums.type.gym;
     return this.enums.type.none;
@@ -499,7 +496,7 @@ class AreaDestroyer {
         this.print(`AreaDestroyer stopped`, 1);
       } else {
         let curMax = 0;
-        switch (this.opt.mode) {
+        switch (this.options.mode) {
           case this.enums.mode.defeat:
             if (this.AreaToFarm.type === this.enums.type.road && this.AreaToFarm.route !== 0)
               curMax = App.game.statistics.routeKills[this.AreaToFarm.region][this.AreaToFarm.route]()
@@ -557,7 +554,7 @@ class AreaDestroyer {
           this.auto();
         }
       }
-    }, this.opt.timeout * 1000);
+    }, this.options.timeout * 1000);
   }
 
   run(bothOpt) {
@@ -579,8 +576,12 @@ class AreaDestroyer {
 }
 
 var ad = new AreaDestroyer();
-// ad.opt.dungeon.skip = true;
-ad.opt.gym.skip = true;
-// ad.opt.showDebug = ad.enums.showDebug.debug
+// ad.options.dungeon.skip = true;
+ad.options.gym.skip = true;
+// ad.options.showDebug = ad.enums.showDebug.debug
+// ad.options.mode = ad.enums.mode.pokerus
+// ad.calcRoad()
+// ad.calcDungeon()
+// ad.calcGym()
 ad.run()
 // ad.stop = true

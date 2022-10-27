@@ -6,9 +6,13 @@ POC working, rewrite in progress.
 
 ```js
 var ad = new AreaDestroyer();
-// ad.opt.dungeon.skip = true;
-ad.opt.gym.skip = true;
-// ad.opt.showDebug = ad.enums.showDebug.debug
+// ad.options.dungeon.skip = true;
+ad.options.gym.skip = true;
+// ad.options.showDebug = ad.enums.showDebug.debug
+// ad.options.mode = ad.enums.mode.pokerus
+// ad.calcRoad()
+// ad.calcDungeon()
+// ad.calcGym()
 ad.run()
 // ad.stop = true
 ```
@@ -26,4 +30,3 @@ For more info on pokeclicker source code: <https://github.com/pokeclicker/pokecl
 ## ToDo - `AreaDestroyer.ts`
 
 - Fix Auto Clicker for broken gyms
-- Complete `globals.d.ts` to remove all `any`

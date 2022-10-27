@@ -1,4 +1,4 @@
-import { GameConstants } from "./GameConstants";
+import { GameConstants } from "../../modules/GameConstants";
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/worldmap/MapHelper.ts
 export class MapHelper{

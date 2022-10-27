@@ -3,23 +3,28 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      0.2
+ * @version:      0.3
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  *
  * @tutorial:     var ad = new AreaDestroyer.AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
  */
 
-import { App, PartyPokemon } from "./definitions/App";
-import { dungeonList, DungeonRunner } from "./definitions/Dungeon";
-import { GameConstants } from "./definitions/GameConstants";
-import { player, pokemonMap } from "./definitions/Globals";
-import { Champion, Gym, GymList } from "./definitions/Gym";
-import { MapHelper } from "./definitions/Map";
-import { PokemonHelper } from "./definitions/PokemonHelper";
-import { pokemonList } from "./definitions/PokemonList";
-import { PokemonNameType } from "./definitions/PokemonNameType";
-import { RegionRoute, Routes } from "./definitions/Route";
+import { GameConstants } from "./definitions/modules/GameConstants";
+import { player, pokemonMap } from "./definitions/modules/globals";
+import { PokemonNameType } from "./definitions/modules/pokemons/PokemonNameType";
+import { RegionRoute } from "./definitions/modules/routes/RegionRoute";
+import { Routes } from "./definitions/modules/routes/Routes";
+import { App } from "./definitions/scripts/App";
+import { dungeonList } from "./definitions/scripts/dungeons/Dungeon";
+import { DungeonRunner } from "./definitions/scripts/dungeons/DungeonRunner";
+import { Champion } from "./definitions/scripts/gym/Champion";
+import { Gym } from "./definitions/scripts/gym/Gym";
+import { GymList } from "./definitions/scripts/gym/GymList";
+import { PartyPokemon } from "./definitions/scripts/party/PartyPokemon";
+import { PokemonHelper } from "./definitions/scripts/pokemons/PokemonHelper";
+import { pokemonList } from "./definitions/scripts/pokemons/PokemonList";
+import { MapHelper } from "./definitions/scripts/worldmap/Map";
 
 namespace AreaDestroyer {
     export enum Mode {
@@ -134,9 +139,9 @@ namespace AreaDestroyer {
         }
 
         concatPkmListFromRoute(route: RegionRoute, special: boolean = this.options.road.special): Array<PokemonNameType> {
-            let pkmList = Array<PokemonNameType>();
-            if (special === true) route.pokemon.special.forEach((e) => (pkmList = [...new Set<PokemonNameType>([...pkmList, ...e.pokemon])]));
-            return [...new Set([...pkmList, ...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water])];
+            let pkmList = [...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water];
+            if (special === true) route.pokemon.special.forEach((srp) => pkmList = pkmList.concat(srp.pokemon));
+            return [...new Set([...pkmList])];
         }
 
         setAreaToFarm(
@@ -630,9 +635,14 @@ namespace AreaDestroyer {
     }
 }
 
+
 var ad = new AreaDestroyer.AreaDestroyer();
 // ad.options.dungeon.skip = true;
 ad.options.gym.skip = true;
-// ad.options.showDebug = AreaDestroyer.ShowDebug.debug
-ad.run();
+// ad.options.showDebug = ad.enums.showDebug.debug
+// ad.options.mode = ad.enums.mode.pokerus
+// ad.calcRoad()
+// ad.calcDungeon()
+// ad.calcGym()
+ad.run()
 // ad.stop = true

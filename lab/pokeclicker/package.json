@@ -1,11 +1,13 @@
 {
   "name": "pokeclicker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "AreaDestroyer.js",
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
+    "lint": "eslint -c .eslintrc.json .",
+    "pretty": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

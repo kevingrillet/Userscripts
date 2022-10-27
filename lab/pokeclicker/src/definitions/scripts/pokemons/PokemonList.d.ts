@@ -1,4 +1,4 @@
-import { GameConstants } from "./GameConstants";
+import { GameConstants } from "../../modules/GameConstants";
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/pokemons/PokemonList.ts
 type PokemonListData = {
