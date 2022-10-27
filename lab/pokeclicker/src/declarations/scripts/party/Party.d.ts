@@ -4,4 +4,5 @@ import { PartyPokemon } from './PartyPokemon';
 export class Party {
     caughtPokemon: Array<PartyPokemon>;
     getPokemon(id: number): PartyPokemon | undefined;
+    calculateClickAttack(useItem?: boolean): number;
 }

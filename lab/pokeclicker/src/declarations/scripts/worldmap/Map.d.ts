@@ -4,4 +4,5 @@ import { GameConstants } from '../../modules/GameConstants';
 export class MapHelper {
     static moveToRoute(route: number, region: GameConstants.Region): void;
     static moveToTown(townName: string): void;
+    static normalizeRoute(route: number, region: GameConstants.Region, skipIgnoredRoutes?: boolean): number;
 }

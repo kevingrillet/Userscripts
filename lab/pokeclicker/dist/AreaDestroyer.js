@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.1
+ * @version:      1.0.2
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -16,6 +16,7 @@
 // import { Champion } from './declarations/scripts/gym/Champion';
 // import { Gym } from './declarations/scripts/gym/Gym';
 // import { GymList } from './declarations/scripts/gym/GymList';
+// import { PokemonFactory } from './declarations/scripts/pokemons/PokemonFactory';
 // import { PokemonHelper } from './declarations/scripts/pokemons/PokemonHelper';
 // import { pokemonList } from './declarations/scripts/pokemons/PokemonList';
 // import { MapHelper } from './declarations/scripts/worldmap/Map';
@@ -401,9 +402,9 @@ var AreaDestroyer;
             let listPkm = [];
             for (const pokemon of pokemonList) {
                 if ((pokemon.nativeRegion || GameConstants.Region.none) <= player.highestRegion()) {
-                    let lpkm = App.game.party.getPokemon(pokemon.id);
-                    if (lpkm)
-                        listPkm.push({ id: lpkm.id, name: lpkm.name, efficiency: this.getEfficiency(lpkm) });
+                    let ppkm = App.game.party.getPokemon(pokemon.id);
+                    if (ppkm)
+                        listPkm.push({ id: ppkm.id, name: ppkm.name, efficiency: this.getEfficiency(ppkm), evs: ppkm.evs() });
                 }
             }
             listPkm.sort(function sortFn(a, b) {
@@ -442,7 +443,43 @@ var AreaDestroyer;
                     });
                 });
             }
-            return best;
+            this.print(`${best}`, 1);
+        }
+        routeMaxHP(route) {
+            var result = -1;
+            var pkmList = this.concatPkmListFromRoute(route);
+            var totalBaseHp = 0;
+            this.concatPkmListFromRoute(route).forEach((pnt) => {
+                totalBaseHp += pokemonMap[pnt].base.hitpoints;
+            });
+            var avgHP = totalBaseHp / pkmList.length;
+            var routeHP = PokemonFactory.routeHealth(route.number, route.region);
+            pkmList.forEach((pnt) => {
+                let maxHealth = Math.round(routeHP - routeHP / 10 + (routeHP / 10 / avgHP) * PokemonHelper.getPokemonByName(pnt).hitpoints);
+                if (maxHealth > result)
+                    result = maxHealth;
+            });
+            return result;
+        }
+        bestRoadEggsBattle() {
+            let max = 0;
+            let best = '';
+            var clickAttack = App.game.party.calculateClickAttack(true);
+            for (let i = 0; i <= player.highestRegion(); i++) {
+                let rg = this.capitalize(GameConstants.Region[i]);
+                Routes.getRoutesByRegion(i).forEach((rt) => {
+                    let amount = Number(Math.sqrt(MapHelper.normalizeRoute(rt.number, rt.region)).toFixed(2));
+                    let maxHp = this.routeMaxHP(rt);
+                    if (amount > max && maxHp < clickAttack) {
+                        max = amount;
+                        best = `${rg} > ${rt.routeName} => ${max}`;
+                        this.areaToFarm.region = i;
+                        this.areaToFarm.route = rt.number;
+                        this.areaToFarm.subregion = (rt === null || rt === void 0 ? void 0 : rt.subRegion) || 0;
+                    }
+                });
+            }
+            this.print(`${best}`, 1);
         }
         startAutoGym() {
             let autoGym = document.getElementById('auto-gym-start');
