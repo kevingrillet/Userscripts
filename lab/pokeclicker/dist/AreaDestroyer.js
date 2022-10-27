@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      0.4
+ * @version:      0.5
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -40,7 +40,7 @@ var AreaDestroyer;
         Type[Type["road"] = 1] = "road";
         Type[Type["dungeon"] = 2] = "dungeon";
         Type[Type["gym"] = 3] = "gym";
-    })(Type || (Type = {}));
+    })(Type = AreaDestroyer_1.Type || (AreaDestroyer_1.Type = {}));
     class AreaToFarm {
         constructor() {
             this.region = 0;
@@ -364,8 +364,7 @@ var AreaDestroyer;
                     let rg = this.capitalize(GameConstants.Region[i]);
                     let gym = GameConstants.RegionGyms[i];
                     for (let j = 0; j < gym.length; j++) {
-                        if (GymList[gym[j]].isUnlocked() === false)
-                            continue;
+                        // if (GymList[gym[j]].isUnlocked() === false) continue;
                         if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
                             this.setAreaToFarm(Type.gym, i, 0, 0, ((_b = (_a = GymList[gym[j]]) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name) || gym[j], gym[j], this.options.gym.defeat);
                             best = `${rg} > ${gym[j]}`;
@@ -378,8 +377,7 @@ var AreaDestroyer;
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let gym = GameConstants.RegionGyms[player.region];
                 for (let j = 0; j < gym.length; j++) {
-                    if (GymList[gym[j]].isUnlocked() === false)
-                        continue;
+                    // if (GymList[gym[j]].isUnlocked() === false) continue;
                     if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
                         this.setAreaToFarm(Type.gym, player.region, 0, 0, ((_d = (_c = GymList[gym[j]]) === null || _c === void 0 ? void 0 : _c.parent) === null || _d === void 0 ? void 0 : _d.name) || gym[j], gym[j], this.options.gym.defeat);
                         best = `${rg} > ${gym[j]}`;
@@ -447,6 +445,7 @@ var AreaDestroyer;
         startAutoGym() {
             let autoGym = document.getElementById('auto-gym-start');
             if (autoGym && !autoGym.classList.contains('btn-success')) {
+                autoGym.click();
                 return true;
             }
             return false;
@@ -542,8 +541,8 @@ var AreaDestroyer;
                             else if (this.areaToFarm.type === Type.dungeon && this.areaToFarm.town !== '') {
                                 curMax = App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(this.areaToFarm.town)]();
                             }
-                            else if (this.areaToFarm.type === Type.gym && this.areaToFarm.town !== '') {
-                                curMax = App.game.statistics.gymsDefeated[GameConstants.getGymIndex(this.areaToFarm.town)]();
+                            else if (this.areaToFarm.type === Type.gym && this.areaToFarm.gym !== '') {
+                                curMax = App.game.statistics.gymsDefeated[GameConstants.getGymIndex(this.areaToFarm.gym)]();
                             }
                             break;
                         case Mode.pokerus:
@@ -624,11 +623,11 @@ var AreaDestroyer;
 })(AreaDestroyer || (AreaDestroyer = {}));
 var ad = new AreaDestroyer.AreaDestroyer();
 // ad.options.dungeon.skip = true;
-ad.options.gym.skip = true;
-// ad.options.showDebug = ad.enums.showDebug.debug
-// ad.options.mode = ad.enums.mode.pokerus
-// ad.calcRoad()
-// ad.calcDungeon()
-// ad.calcGym()
+// ad.options.gym.skip = true;
+// ad.options.showDebug = AreaDestroyer.ShowDebug.debug;
+// ad.options.mode = AreaDestroyer.Mode.pokerus;
+// ad.calcRoad();
+// ad.calcDungeon();
+// ad.calcGym();
 ad.run();
-// ad.stop = true
+// ad.stop = true;
