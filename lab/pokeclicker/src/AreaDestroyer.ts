@@ -10,21 +10,21 @@
  * @tutorial:     var ad = new AreaDestroyer.AreaDestroyer(); ad.options.gym.skip = true; ad.run() //ad.stop = true
  */
 
-import { GameConstants } from "./definitions/modules/GameConstants";
-import { player, pokemonMap } from "./definitions/modules/globals";
-import { PokemonNameType } from "./definitions/modules/pokemons/PokemonNameType";
-import { RegionRoute } from "./definitions/modules/routes/RegionRoute";
-import { Routes } from "./definitions/modules/routes/Routes";
-import { App } from "./definitions/scripts/App";
-import { dungeonList } from "./definitions/scripts/dungeons/Dungeon";
-import { DungeonRunner } from "./definitions/scripts/dungeons/DungeonRunner";
-import { Champion } from "./definitions/scripts/gym/Champion";
-import { Gym } from "./definitions/scripts/gym/Gym";
-import { GymList } from "./definitions/scripts/gym/GymList";
-import { PartyPokemon } from "./definitions/scripts/party/PartyPokemon";
-import { PokemonHelper } from "./definitions/scripts/pokemons/PokemonHelper";
-import { pokemonList } from "./definitions/scripts/pokemons/PokemonList";
-import { MapHelper } from "./definitions/scripts/worldmap/Map";
+import { GameConstants } from "./declarations/modules/GameConstants";
+import { player, pokemonMap } from "./declarations/modules/globals";
+import { PokemonNameType } from "./declarations/modules/pokemons/PokemonNameType";
+import { RegionRoute } from "./declarations/modules/routes/RegionRoute";
+import { Routes } from "./declarations/modules/routes/Routes";
+import { App } from "./declarations/scripts/App";
+import { dungeonList } from "./declarations/scripts/dungeons/Dungeon";
+import { DungeonRunner } from "./declarations/scripts/dungeons/DungeonRunner";
+import { Champion } from "./declarations/scripts/gym/Champion";
+import { Gym } from "./declarations/scripts/gym/Gym";
+import { GymList } from "./declarations/scripts/gym/GymList";
+import { PartyPokemon } from "./declarations/scripts/party/PartyPokemon";
+import { PokemonHelper } from "./declarations/scripts/pokemons/PokemonHelper";
+import { pokemonList } from "./declarations/scripts/pokemons/PokemonList";
+import { MapHelper } from "./declarations/scripts/worldmap/Map";
 
 namespace AreaDestroyer {
     export enum Mode {
