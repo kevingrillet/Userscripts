@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.0
+ * @version:      1.0.1
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -448,7 +448,7 @@ namespace AreaDestroyer {
             }
             listPkm.sort(function sortFn(a, b) {
                 if (a.efficiency === b.efficiency) {
-                    return 0;
+                    return a.id > b.id ? -1 : 1;
                 } else {
                     return a.efficiency > b.efficiency ? -1 : 1;
                 }
