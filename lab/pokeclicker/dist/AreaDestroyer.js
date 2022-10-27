@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      0.5
+ * @version:      1.0.0
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -364,9 +364,10 @@ var AreaDestroyer;
                     let rg = this.capitalize(GameConstants.Region[i]);
                     let gym = GameConstants.RegionGyms[i];
                     for (let j = 0; j < gym.length; j++) {
-                        // if (GymList[gym[j]].isUnlocked() === false) continue;
+                        if (GymList[gym[j]].isUnlocked() === false || !((_b = (_a = GymList[gym[j]]) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name))
+                            continue;
                         if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
-                            this.setAreaToFarm(Type.gym, i, 0, 0, ((_b = (_a = GymList[gym[j]]) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name) || gym[j], gym[j], this.options.gym.defeat);
+                            this.setAreaToFarm(Type.gym, i, 0, 0, GymList[gym[j]].parent.name, gym[j], this.options.gym.defeat);
                             best = `${rg} > ${gym[j]}`;
                             break;
                         }
@@ -377,9 +378,10 @@ var AreaDestroyer;
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let gym = GameConstants.RegionGyms[player.region];
                 for (let j = 0; j < gym.length; j++) {
-                    // if (GymList[gym[j]].isUnlocked() === false) continue;
+                    if (GymList[gym[j]].isUnlocked() === false || !((_d = (_c = GymList[gym[j]]) === null || _c === void 0 ? void 0 : _c.parent) === null || _d === void 0 ? void 0 : _d.name))
+                        continue;
                     if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
-                        this.setAreaToFarm(Type.gym, player.region, 0, 0, ((_d = (_c = GymList[gym[j]]) === null || _c === void 0 ? void 0 : _c.parent) === null || _d === void 0 ? void 0 : _d.name) || gym[j], gym[j], this.options.gym.defeat);
+                        this.setAreaToFarm(Type.gym, player.region, 0, 0, GymList[gym[j]].parent.name, gym[j], this.options.gym.defeat);
                         best = `${rg} > ${gym[j]}`;
                         break;
                     }
@@ -401,15 +403,15 @@ var AreaDestroyer;
                 if ((pokemon.nativeRegion || GameConstants.Region.none) <= player.highestRegion()) {
                     let lpkm = App.game.party.getPokemon(pokemon.id);
                     if (lpkm)
-                        listPkm.push([lpkm.id, lpkm.name, this.getEfficiency(lpkm)]);
+                        listPkm.push({ id: lpkm.id, name: lpkm.name, efficiency: this.getEfficiency(lpkm) });
                 }
             }
             listPkm.sort(function sortFn(a, b) {
-                if (a[2] === b[2]) {
+                if (a.efficiency === b.efficiency) {
                     return 0;
                 }
                 else {
-                    return a[2] > b[2] ? -1 : 1;
+                    return a.efficiency > b.efficiency ? -1 : 1;
                 }
             });
             listPkm = listPkm.slice(0, topOpt || 10);
@@ -427,9 +429,9 @@ var AreaDestroyer;
                     let nb = 0;
                     let pkmListEv = Array();
                     this.concatPkmListFromRoute(rt).forEach((pkm) => {
-                        if (lst.find((e) => e[1] === pkm)) {
+                        if (lst.find((e) => e.name === pkm)) {
                             pkmListEv.push(pkm);
-                            if (nb >= max) {
+                            if (++nb >= max) {
                                 max = nb;
                                 best = `${rg} > ${rt.routeName} => ${max} ${pkmListEv}`;
                                 this.areaToFarm.region = i;

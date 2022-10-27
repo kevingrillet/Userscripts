@@ -1,15 +1,14 @@
 {
     "name": "pokeclicker",
-    "version": "0.5.0",
+    "version": "1.0.0",
     "description": "",
     "main": "AreaDestroyer.js",
     "scripts": {
+        "dev": "npm run clean && npm run pretty && npm run build",
         "build": "tsc --build",
         "clean": "tsc --build --clean",
         "lint": "eslint -c .eslintrc.json .",
-        "prettyc": "prettier --check .",
-        "prettyw": "prettier --write .",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "pretty": "prettier --write ."
     },
     "keywords": [],
     "author": "",
