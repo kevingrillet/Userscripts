@@ -4,6 +4,7 @@ import { PokemonNameType } from '../../modules/pokemons/PokemonNameType';
 export class Dungeon {
     name: string;
     get bossPokemonList(): PokemonNameType[];
+    isUnlocked(): boolean;
     get pokemonList(): PokemonNameType[];
 }
 

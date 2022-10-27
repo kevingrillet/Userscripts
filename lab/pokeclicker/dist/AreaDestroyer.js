@@ -177,6 +177,8 @@ var AreaDestroyer;
                 for (let i = 0; i <= player.highestRegion(); i++) {
                     let rg = this.capitalize(GameConstants.Region[i]);
                     Routes.getRoutesByRegion(i).some((rt) => {
+                        if (rt.isUnlocked() === false)
+                            return false;
                         if (this.options.mode === Mode.defeat) {
                             if (App.game.statistics.routeKills[i][rt.number]() < this.options.road.defeat) {
                                 this.setAreaToFarm(Type.road, i, rt.subRegion, rt.number, '', '', this.options.road.defeat);
@@ -209,6 +211,8 @@ var AreaDestroyer;
             else {
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 Routes.getRoutesByRegion(player.region).forEach((rt) => {
+                    if (rt.isUnlocked() === false)
+                        return false;
                     if (this.options.mode === Mode.defeat) {
                         if (App.game.statistics.routeKills[player.region][rt.number]() < this.options.road.defeat) {
                             this.setAreaToFarm(Type.road, player.region, rt.subRegion, rt.number, '', '', this.options.road.defeat);
@@ -269,6 +273,8 @@ var AreaDestroyer;
                     let rg = this.capitalize(GameConstants.Region[i]);
                     let dgs = GameConstants.RegionDungeons[i];
                     for (let j = 0; j < dgs.length; j++) {
+                        if (dungeonList[dgs[j]].isUnlocked() === false)
+                            continue;
                         if (this.options.mode === Mode.defeat) {
                             if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.options.dungeon.defeat) {
                                 this.setAreaToFarm(Type.dungeon, i, 0, 0, dgs[j], '', this.options.dungeon.defeat);
@@ -300,6 +306,8 @@ var AreaDestroyer;
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let dgs = GameConstants.RegionDungeons[player.region];
                 for (let j = 0; j < dgs.length; j++) {
+                    if (dungeonList[dgs[j]].isUnlocked() === false)
+                        continue;
                     if (this.options.mode === Mode.defeat) {
                         if (App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dgs[j])]() < this.options.dungeon.defeat) {
                             this.setAreaToFarm(Type.dungeon, player.region, 0, 0, dgs[j], '', this.options.dungeon.defeat);
@@ -356,6 +364,8 @@ var AreaDestroyer;
                     let rg = this.capitalize(GameConstants.Region[i]);
                     let gym = GameConstants.RegionGyms[i];
                     for (let j = 0; j < gym.length; j++) {
+                        if (GymList[gym[j]].isUnlocked() === false)
+                            continue;
                         if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
                             this.setAreaToFarm(Type.gym, i, 0, 0, ((_b = (_a = GymList[gym[j]]) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name) || gym[j], gym[j], this.options.gym.defeat);
                             best = `${rg} > ${gym[j]}`;
@@ -368,6 +378,8 @@ var AreaDestroyer;
                 let rg = this.capitalize(GameConstants.Region[player.region]);
                 let gym = GameConstants.RegionGyms[player.region];
                 for (let j = 0; j < gym.length; j++) {
+                    if (GymList[gym[j]].isUnlocked() === false)
+                        continue;
                     if (App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym[j])]() < this.options.gym.defeat) {
                         this.setAreaToFarm(Type.gym, player.region, 0, 0, ((_d = (_c = GymList[gym[j]]) === null || _c === void 0 ? void 0 : _c.parent) === null || _d === void 0 ? void 0 : _d.name) || gym[j], gym[j], this.options.gym.defeat);
                         best = `${rg} > ${gym[j]}`;
