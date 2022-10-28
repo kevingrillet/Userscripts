@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.6
+ * @version:      1.0.7
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -368,7 +368,13 @@ namespace AreaDestroyer {
                             }
                         } else {
                             let nb = 0;
-                            this.concatPkmListFromDungeon(dungeonList[dgs[j]]).forEach((pkm) => {
+                            let pkmList = this.concatPkmListFromDungeon(dungeonList[dgs[j]]);
+                            if (
+                                (this.options.mode === Mode.shiny && DungeonRunner.dungeonCompleted(dungeonList[dgs[j]], true) === true) ||
+                                (this.options.mode === Mode.pokerus && RouteHelper.minPokerus(pkmList) === 3)
+                            )
+                                continue;
+                            pkmList.forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (
@@ -400,7 +406,13 @@ namespace AreaDestroyer {
                         }
                     } else {
                         let nb = 0;
-                        this.concatPkmListFromDungeon(dungeonList[dgs[j]]).forEach((pkm) => {
+                        let pkmList = this.concatPkmListFromDungeon(dungeonList[dgs[j]]);
+                        if (
+                            (this.options.mode === Mode.shiny && DungeonRunner.dungeonCompleted(dungeonList[dgs[j]], true) === true) ||
+                            (this.options.mode === Mode.pokerus && RouteHelper.minPokerus(pkmList) === 3)
+                        )
+                            continue;
+                        pkmList.forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (
@@ -493,7 +505,13 @@ namespace AreaDestroyer {
                             }
                         } else {
                             let nb = 0;
-                            this.concatPkmListFromRoute(rt).forEach((pkm) => {
+                            let pkmList = this.concatPkmListFromRoute(rt);
+                            if (
+                                (this.options.mode === Mode.shiny && RouteHelper.routeCompleted(rt.number, i, true) === true) ||
+                                (this.options.mode === Mode.pokerus && RouteHelper.minPokerus(pkmList) === 3)
+                            )
+                                return false;
+                            pkmList.forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (
@@ -515,7 +533,7 @@ namespace AreaDestroyer {
                 }
             } else {
                 let rg = this.capitalize(GameConstants.Region[player.region]);
-                Routes.getRoutesByRegion(player.region).forEach((rt) => {
+                Routes.getRoutesByRegion(player.region).some((rt) => {
                     if (rt.isUnlocked() === false) return false;
                     if (this.options.mode === Mode.defeat) {
                         if (App.game.statistics.routeKills[player.region][rt.number]() < this.options.road.defeat) {
@@ -526,7 +544,13 @@ namespace AreaDestroyer {
                         }
                     } else {
                         let nb = 0;
-                        this.concatPkmListFromRoute(rt).forEach((pkm) => {
+                        let pkmList = this.concatPkmListFromRoute(rt);
+                        if (
+                            (this.options.mode === Mode.shiny && RouteHelper.routeCompleted(rt.number, player.region, true) === true) ||
+                            (this.options.mode === Mode.pokerus && RouteHelper.minPokerus(pkmList) === 3)
+                        )
+                            return false;
+                        pkmList.forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (
