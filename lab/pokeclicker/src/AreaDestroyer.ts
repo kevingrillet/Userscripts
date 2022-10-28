@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.3
+ * @version:      1.0.4
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -70,12 +70,14 @@ namespace AreaDestroyer {
 
     class AreaOptions {
         all: boolean;
+        boss: boolean;
         defeat: number;
         skip: boolean;
         special: boolean;
 
-        constructor(defeat: number = 0, all: boolean = true, skip: boolean = false, special: boolean = false) {
+        constructor(defeat: number = 0, all: boolean = true, boss: boolean = false, skip: boolean = false, special: boolean = false) {
             this.all = all;
+            this.boss = boss;
             this.defeat = defeat;
             this.skip = skip;
             this.special = special;
@@ -159,7 +161,8 @@ namespace AreaDestroyer {
         }
 
         concatPkmListFromDungeon(dungeon: Dungeon): Array<PokemonNameType> {
-            let pkmList = [...dungeon?.pokemonList, ...dungeon?.bossPokemonList];
+            let pkmList = dungeon.pokemonList;
+            if (this.options.dungeon.boss === true) pkmList = [...pkmList, ...dungeon?.bossPokemonList];
             return [...new Set([...pkmList])];
         }
 
