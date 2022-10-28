@@ -2,9 +2,7 @@
 
 ## AreaDestroyer
 
-Dist is working. If you campile it yourself just remove imports from output file.
-
-*Poc will not be updated anymore.*
+Dist is working. To compile run: `npm run dev`.
 
 ### Usage
 

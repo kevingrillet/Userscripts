@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.2
+ * @version:      1.0.3
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -42,6 +42,12 @@ var AreaDestroyer;
         Type[Type["dungeon"] = 2] = "dungeon";
         Type[Type["gym"] = 3] = "gym";
     })(Type = AreaDestroyer_1.Type || (AreaDestroyer_1.Type = {}));
+    let EndType;
+    (function (EndType) {
+        EndType[EndType["none"] = 0] = "none";
+        EndType[EndType["evs"] = 1] = "evs";
+        EndType[EndType["steps"] = 2] = "steps";
+    })(EndType = AreaDestroyer_1.EndType || (AreaDestroyer_1.EndType = {}));
     class AreaToFarm {
         constructor() {
             this.region = 0;
@@ -65,7 +71,7 @@ var AreaDestroyer;
         constructor() {
             this.both = false;
             this.dungeon = new AreaOptions(10);
-            this.end = false;
+            this.end = EndType.none;
             this.gym = new AreaOptions(10);
             this.mode = Mode.defeat;
             this.road = new AreaOptions(100);
@@ -164,7 +170,7 @@ var AreaDestroyer;
                     break;
                 case Mode.pokerus:
                 default:
-                    this.options.end = true;
+                    this.options.end = EndType.evs;
                     break;
             }
             this.print(`AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`, 1);
@@ -461,16 +467,16 @@ var AreaDestroyer;
             });
             return result;
         }
-        bestRoadEggsBattle() {
+        bestRoadEggsBattle(attack) {
             let max = 0;
             let best = '';
-            var clickAttack = App.game.party.calculateClickAttack(true);
+            var atk = attack || App.game.party.calculateClickAttack(true);
             for (let i = 0; i <= player.highestRegion(); i++) {
                 let rg = this.capitalize(GameConstants.Region[i]);
                 Routes.getRoutesByRegion(i).forEach((rt) => {
                     let amount = Number(Math.sqrt(MapHelper.normalizeRoute(rt.number, rt.region)).toFixed(2));
                     let maxHp = this.routeMaxHP(rt);
-                    if (amount > max && maxHp < clickAttack) {
+                    if (amount > max && maxHp < atk) {
                         max = amount;
                         best = `${rg} > ${rt.routeName} => ${max}`;
                         this.areaToFarm.region = i;
@@ -519,8 +525,13 @@ var AreaDestroyer;
             return false;
         }
         check(bothOpt = this.options.both) {
-            if (this.options.end === true) {
+            if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();
+                this.moveTo();
+                return -1;
+            }
+            if (this.options.end === EndType.steps) {
+                this.bestRoadEggsBattle();
                 this.moveTo();
                 return -1;
             }

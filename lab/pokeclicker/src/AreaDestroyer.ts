@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.2
+ * @version:      1.0.3
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -43,6 +43,11 @@ namespace AreaDestroyer {
         dungeon,
         gym,
     }
+    export enum EndType {
+        none = 0,
+        evs,
+        steps,
+    }
     class AreaToFarm {
         region: number;
         route: number;
@@ -80,7 +85,7 @@ namespace AreaDestroyer {
     class Options {
         both: boolean;
         dungeon: AreaOptions;
-        end: boolean;
+        end: EndType;
         gym: AreaOptions;
         mode: Mode;
         road: AreaOptions;
@@ -90,7 +95,7 @@ namespace AreaDestroyer {
         constructor() {
             this.both = false;
             this.dungeon = new AreaOptions(10);
-            this.end = false;
+            this.end = EndType.none;
             this.gym = new AreaOptions(10);
             this.mode = Mode.defeat;
             this.road = new AreaOptions(100);
@@ -206,7 +211,7 @@ namespace AreaDestroyer {
                     break;
                 case Mode.pokerus:
                 default:
-                    this.options.end = true;
+                    this.options.end = EndType.evs;
                     break;
             }
             this.print(
@@ -506,16 +511,16 @@ namespace AreaDestroyer {
             return result;
         }
 
-        bestRoadEggsBattle(): void {
+        bestRoadEggsBattle(attack?: number): void {
             let max = 0;
             let best = '';
-            var clickAttack = App.game.party.calculateClickAttack(true);
+            var atk = attack || App.game.party.calculateClickAttack(true);
             for (let i = 0; i <= player.highestRegion(); i++) {
                 let rg = this.capitalize(GameConstants.Region[i]);
                 Routes.getRoutesByRegion(i).forEach((rt) => {
                     let amount = Number(Math.sqrt(MapHelper.normalizeRoute(rt.number, rt.region)).toFixed(2));
                     let maxHp: number = this.routeMaxHP(rt);
-                    if (amount > max && maxHp < clickAttack) {
+                    if (amount > max && maxHp < atk) {
                         max = amount;
                         best = `${rg} > ${rt.routeName} => ${max}`;
                         this.areaToFarm.region = i;
@@ -569,8 +574,13 @@ namespace AreaDestroyer {
         }
 
         check(bothOpt: boolean = this.options.both): number {
-            if (this.options.end === true) {
+            if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();
+                this.moveTo();
+                return -1;
+            }
+            if (this.options.end === EndType.steps) {
+                this.bestRoadEggsBattle();
                 this.moveTo();
                 return -1;
             }

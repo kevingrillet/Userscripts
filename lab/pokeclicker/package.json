@@ -1,14 +1,15 @@
 {
     "name": "pokeclicker",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "",
     "main": "AreaDestroyer.js",
     "scripts": {
-        "dev": "npm run clean && npm run pretty && npm run build",
+        "dev": "npm run clean && npm run pretty && npm run build && npm run sed",
         "build": "tsc --build",
         "clean": "tsc --build --clean",
         "lint": "eslint -c .eslintrc.json .",
-        "pretty": "prettier --write ."
+        "pretty": "prettier --write .",
+        "sed": "sed -i \"s/^import/\\/\\/ import/\" dist/*.js"
     },
     "keywords": [],
     "author": "",
