@@ -3,23 +3,10 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.4
+ * @version:      1.0.5
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
-// import { GameConstants } from './declarations/modules/GameConstants';
-// import { player, pokemonMap } from './declarations/modules/globals';
-// import { Routes } from './declarations/modules/routes/Routes';
-// import { App } from './declarations/scripts/App';
-// import { dungeonList } from './declarations/scripts/dungeons/Dungeon';
-// import { DungeonRunner } from './declarations/scripts/dungeons/DungeonRunner';
-// import { Champion } from './declarations/scripts/gym/Champion';
-// import { Gym } from './declarations/scripts/gym/Gym';
-// import { GymList } from './declarations/scripts/gym/GymList';
-// import { PokemonFactory } from './declarations/scripts/pokemons/PokemonFactory';
-// import { PokemonHelper } from './declarations/scripts/pokemons/PokemonHelper';
-// import { pokemonList } from './declarations/scripts/pokemons/PokemonList';
-// import { MapHelper } from './declarations/scripts/worldmap/Map';
 var AreaDestroyer;
 (function (AreaDestroyer_1) {
     let Mode;
@@ -60,12 +47,11 @@ var AreaDestroyer;
         }
     }
     class AreaOptions {
-        constructor(defeat = 0, all = true, boss = false, skip = false, special = false) {
+        constructor(defeat = 0, all = true, boss = false, skip = false) {
             this.all = all;
             this.boss = boss;
             this.defeat = defeat;
             this.skip = skip;
-            this.special = special;
         }
     }
     class Options {
@@ -119,17 +105,11 @@ var AreaDestroyer;
         capitalize(text) {
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
-        concatPkmListFromRoute(route, special = this.options.road.special) {
-            let pkmList = [...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water];
-            if (special === true)
-                route.pokemon.special.forEach((srp) => (pkmList = pkmList.concat(srp.pokemon)));
-            return [...new Set([...pkmList])];
+        concatPkmListFromRoute(route) {
+            return RouteHelper.getAvailablePokemonList(route.number, route.region);
         }
         concatPkmListFromDungeon(dungeon) {
-            let pkmList = dungeon.pokemonList;
-            if (this.options.dungeon.boss === true)
-                pkmList = [...pkmList, ...dungeon === null || dungeon === void 0 ? void 0 : dungeon.bossPokemonList];
-            return [...new Set([...pkmList])];
+            return dungeon.allAvailablePokemon();
         }
         setAreaToFarm(type = Type.none, region = 0, subregion = 0, route = 0, town = '', gym = '', until = 0) {
             this.areaToFarm = {
@@ -178,7 +158,7 @@ var AreaDestroyer;
             }
             this.print(`AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`, 1);
         }
-        calcRoad(allOpt = this.options.road.all, specOpt = this.options.road.special) {
+        calcRoad(allOpt = this.options.road.all) {
             let max = 0;
             let best = '';
             let pkmListTotal = Array();
@@ -199,7 +179,7 @@ var AreaDestroyer;
                         }
                         else {
                             let nb = 0;
-                            this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
+                            this.concatPkmListFromRoute(rt).forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (ppkm &&
@@ -233,7 +213,7 @@ var AreaDestroyer;
                     }
                     else {
                         let nb = 0;
-                        this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
+                        this.concatPkmListFromRoute(rt).forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (ppkm &&

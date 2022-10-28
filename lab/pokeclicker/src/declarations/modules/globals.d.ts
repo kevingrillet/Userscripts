@@ -11,4 +11,3 @@ type TmpPokemonListData = {
 
 declare var player: Player;
 declare var pokemonMap: Record<PokemonNameType | number, TmpPokemonListData>;
-// Hein?? https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/pokemons/PokemonList.ts#L25883

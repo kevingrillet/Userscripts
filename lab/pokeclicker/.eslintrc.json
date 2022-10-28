@@ -47,6 +47,7 @@
         "RedeemableCodeController": true,
         "RoamingPokemon": true,
         "RoamingPokemonList": true,
+        "RouteHelper": true,
         "Routes": true,
         "SeededRand": true,
         "Settings": true,

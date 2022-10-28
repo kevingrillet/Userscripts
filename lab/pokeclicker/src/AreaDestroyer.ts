@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.4
+ * @version:      1.0.5
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -12,6 +12,7 @@ import { GameConstants } from './declarations/modules/GameConstants';
 import { player, pokemonMap } from './declarations/modules/globals';
 import { PokemonNameType } from './declarations/modules/pokemons/PokemonNameType';
 import { RegionRoute } from './declarations/modules/routes/RegionRoute';
+import { RouteHelper } from './declarations/modules/routes/RouteHelper';
 import { Routes } from './declarations/modules/routes/Routes';
 import { App } from './declarations/scripts/App';
 import { Dungeon, dungeonList } from './declarations/scripts/dungeons/Dungeon';
@@ -73,14 +74,12 @@ namespace AreaDestroyer {
         boss: boolean;
         defeat: number;
         skip: boolean;
-        special: boolean;
 
-        constructor(defeat: number = 0, all: boolean = true, boss: boolean = false, skip: boolean = false, special: boolean = false) {
+        constructor(defeat: number = 0, all: boolean = true, boss: boolean = false, skip: boolean = false) {
             this.all = all;
             this.boss = boss;
             this.defeat = defeat;
             this.skip = skip;
-            this.special = special;
         }
     }
 
@@ -154,16 +153,12 @@ namespace AreaDestroyer {
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
 
-        concatPkmListFromRoute(route: RegionRoute, special: boolean = this.options.road.special): Array<PokemonNameType> {
-            let pkmList = [...route.pokemon.headbutt, ...route.pokemon.land, ...route.pokemon.water];
-            if (special === true) route.pokemon.special.forEach((srp) => (pkmList = pkmList.concat(srp.pokemon)));
-            return [...new Set([...pkmList])];
+        concatPkmListFromRoute(route: RegionRoute): Array<PokemonNameType> {
+            return RouteHelper.getAvailablePokemonList(route.number, route.region);
         }
 
         concatPkmListFromDungeon(dungeon: Dungeon): Array<PokemonNameType> {
-            let pkmList = dungeon.pokemonList;
-            if (this.options.dungeon.boss === true) pkmList = [...pkmList, ...dungeon?.bossPokemonList];
-            return [...new Set([...pkmList])];
+            return dungeon.allAvailablePokemon();
         }
 
         setAreaToFarm(
@@ -223,7 +218,7 @@ namespace AreaDestroyer {
             );
         }
 
-        calcRoad(allOpt: boolean = this.options.road.all, specOpt: boolean = this.options.road.special): boolean {
+        calcRoad(allOpt: boolean = this.options.road.all): boolean {
             let max = 0;
             let best = '';
             let pkmListTotal = Array<String>();
@@ -242,7 +237,7 @@ namespace AreaDestroyer {
                             }
                         } else {
                             let nb = 0;
-                            this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
+                            this.concatPkmListFromRoute(rt).forEach((pkm) => {
                                 let hpkm = PokemonHelper.getPokemonByName(pkm);
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (
@@ -275,7 +270,7 @@ namespace AreaDestroyer {
                         }
                     } else {
                         let nb = 0;
-                        this.concatPkmListFromRoute(rt, specOpt).forEach((pkm) => {
+                        this.concatPkmListFromRoute(rt).forEach((pkm) => {
                             let hpkm = PokemonHelper.getPokemonByName(pkm);
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (

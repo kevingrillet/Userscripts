@@ -4,8 +4,9 @@ import { PokemonNameType } from '../../modules/pokemons/PokemonNameType';
 export class Dungeon {
     name: string;
     get bossPokemonList(): PokemonNameType[];
-    isUnlocked(): boolean;
     get pokemonList(): PokemonNameType[];
+    allAvailablePokemon(): PokemonNameType[];
+    isUnlocked(): boolean;
 }
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/dungeons/Dungeon.ts#L386
