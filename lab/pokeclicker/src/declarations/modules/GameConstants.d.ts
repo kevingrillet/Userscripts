@@ -1,7 +1,7 @@
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/GameConstants.d.ts
 export namespace GameConstants {
-    function getDungeonIndex(dungeon: string): number;
-    function getGymIndex(gym: string): number;
+    const RegionDungeons: string[][];
+    const RegionGyms: string[][];
     enum GameState {
         idle,
         paused,
@@ -32,6 +32,6 @@ export namespace GameConstants {
         galar,
         final,
     }
-    const RegionDungeons: string[][];
-    const RegionGyms: string[][];
+    function getDungeonIndex(dungeon: string): number;
+    function getGymIndex(gym: string): number;
 }
