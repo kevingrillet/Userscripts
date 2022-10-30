@@ -770,3 +770,8 @@ var ad = new AreaDestroyer.AreaDestroyer();
 // ad.calcGym();
 ad.run();
 // ad.stop = true;
+
+// var ad2 = new AreaDestroyer.AreaDestroyer();
+// ad2.options.showDebug = AreaDestroyer.ShowDebug.debug;
+// ad2.options.mode = AreaDestroyer.Mode.pokerus;
+// ad2.calcRoad();
