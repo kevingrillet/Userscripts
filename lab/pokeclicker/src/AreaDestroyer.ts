@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.0.8
+ * @version:      1.0.9
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -84,7 +84,6 @@ namespace AreaDestroyer {
     }
 
     class Options {
-        both: boolean;
         dungeon: AreaOptions;
         end: EndType;
         gym: AreaOptions;
@@ -92,9 +91,10 @@ namespace AreaDestroyer {
         road: AreaOptions;
         showDebug: ShowDebug;
         timeout: number;
+        outputArr: boolean;
+        outputCSV: boolean;
 
         constructor() {
-            this.both = false;
             this.dungeon = new AreaOptions(10);
             this.end = EndType.none;
             this.gym = new AreaOptions(10);
@@ -102,6 +102,8 @@ namespace AreaDestroyer {
             this.road = new AreaOptions(100);
             this.showDebug = ShowDebug.log;
             this.timeout = 60;
+            this.outputArr = true;
+            this.outputCSV = true;
         }
     }
 
@@ -121,242 +123,125 @@ namespace AreaDestroyer {
             this.elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
         }
 
-        capitalize(text: string): string {
-            return text.charAt(0).toUpperCase() + text.slice(1);
-        }
-
-        chekDone(): boolean {
-            switch (this.options.mode) {
-                case Mode.pokerus:
-                    switch (this.areaToFarm.type) {
-                        case Type.dungeon:
-                            return RouteHelper.minPokerus(player.town().dungeon?.allAvailablePokemon() || []) === 3;
-                        case Type.road:
-                            return RouteHelper.minPokerus(RouteHelper.getAvailablePokemonList(player.route(), player.region, true)) === 3;
+        auto(): void {
+            setTimeout(() => {
+                if (this.stop === true) {
+                    this.stop = false;
+                    this.print(`AreaDestroyer stopped`, 1);
+                } else {
+                    let curMax = 0;
+                    switch (this.options.mode) {
+                        case Mode.defeat:
+                            if (this.areaToFarm.type === Type.road && this.areaToFarm.route !== 0) {
+                                curMax = App.game.statistics.routeKills[this.areaToFarm.region][this.areaToFarm.route]();
+                            } else if (this.areaToFarm.type === Type.dungeon && this.areaToFarm.town !== '') {
+                                curMax = App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(this.areaToFarm.town)]();
+                            } else if (this.areaToFarm.type === Type.gym && this.areaToFarm.gym !== '') {
+                                curMax = App.game.statistics.gymsDefeated[GameConstants.getGymIndex(this.areaToFarm.gym)]();
+                            }
+                            break;
+                        case Mode.pokerus:
+                            curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length;
+                            break;
+                        case Mode.shiny:
+                            curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length;
+                            break;
                     }
-                    break;
-                case Mode.shiny:
-                    switch (this.areaToFarm.type) {
-                        case Type.dungeon:
-                            return DungeonRunner.dungeonCompleted(player.town().dungeon as Dungeon, true);
-                        case Type.road:
-                            return RouteHelper.routeCompleted(player.route(), player.region, true);
+                    if (this.areaToFarm.until === 0 || curMax >= this.areaToFarm.until || this.chekDone() === true) {
+                        if (this.areaToFarm.type === Type.dungeon) {
+                            this.stopAutoDungeon();
+                            this.moveTo();
+                        }
+                        if (this.areaToFarm.type === Type.gym) {
+                            this.stopAutoGym();
+                            this.moveTo();
+                        }
+                        this.setAreaToFarm();
+                        let chkRes = this.check();
+                        if (chkRes === Type.road) {
+                            this.moveTo();
+                            this.print(`AreaDestroyer NextArea`, 1);
+                            this.auto();
+                        } else if (chkRes === Type.dungeon) {
+                            this.moveTo();
+                            if (this.startAutoDungeon() === true) {
+                                this.print(`AreaDestroyer NextArea`, 1);
+                                this.auto();
+                            } else {
+                                this.print(`AreaDestroyer Failed to auto dungeon`, 2);
+                            }
+                        } else if (chkRes === Type.gym) {
+                            this.moveTo();
+                            if (this.startAutoGym() === true) {
+                                this.print(`AreaDestroyer NextArea`, 1);
+                                this.auto();
+                            } else {
+                                this.print(`AreaDestroyer Failed to auto dungeon`, 2);
+                            }
+                        } else {
+                            this.print(`AreaDestroyer DONE`, 1);
+                            this.elPlayer.play();
+                            this.updateMode();
+                            this.run();
+                        }
+                    } else {
+                        this.print(`AreaDestroyer IDLE ${curMax}/${this.areaToFarm.until}`);
+                        this.auto();
                     }
-                    break;
-            }
-            return false;
+                }
+            }, this.options.timeout * 1000);
         }
 
-        concatPkmListFromDungeon(dungeon: Dungeon): Array<PokemonNameType> {
-            return dungeon.allAvailablePokemon();
-        }
-
-        concatPkmListFromRoute(route: RegionRoute): Array<PokemonNameType> {
-            return RouteHelper.getAvailablePokemonList(route.number, route.region);
-        }
-
-        getEfficiency(p: PartyPokemon): number {
-            const BREEDING_ATTACK_BONUS = 25;
-            return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles;
-        }
-
-        moveTo(): void {
-            if (this.areaToFarm.region === 6) {
-                player.subregion = this.areaToFarm.subregion;
-            }
-            if (this.areaToFarm.route !== 0) {
-                MapHelper.moveToRoute(this.areaToFarm.route, this.areaToFarm.region);
-            } else if (this.areaToFarm.town !== '') {
-                player.region = this.areaToFarm.region;
-                MapHelper.moveToTown(this.areaToFarm.town);
-                if (this.areaToFarm.type === Type.gym) {
-                    if (player.town().name === this.areaToFarm.town) {
-                        for (const gym of player.town().content) {
-                            if (gym instanceof Champion || gym instanceof Gym) {
-                                if (gym.town === this.areaToFarm.gym && App.game.gameState !== GameConstants.GameState.gym) {
-                                    gym.protectedOnclick();
-                                }
+        bestEvsFarm(topOpt: number = 20): void {
+            this.setAreaToFarm();
+            let lst = this.pkdxTopEff(topOpt);
+            let max = 0;
+            let best = '';
+            for (let i = 0; i <= player.highestRegion(); i++) {
+                let rg = this.capitalize(GameConstants.Region[i]);
+                Routes.getRoutesByRegion(i).forEach((rt) => {
+                    let nb = 0;
+                    let pkmListEv = Array<String>();
+                    this.concatPkmListFromRoute(rt).forEach((pkm) => {
+                        if (lst.find((e) => e.name === pkm)) {
+                            pkmListEv.push(pkm);
+                            if (++nb >= max) {
+                                max = nb;
+                                best = `${rg} > ${rt.routeName} => ${max} ${pkmListEv}`;
+                                this.areaToFarm.region = i;
+                                this.areaToFarm.route = rt.number;
+                                this.areaToFarm.subregion = rt?.subRegion || 0;
                             }
                         }
+                    });
+                });
+            }
+            this.print(`${best}`, 1);
+        }
+
+        bestRoadEggsBattle(attack?: number): void {
+            let max = 0;
+            let best = '';
+            var atk = attack || App.game.party.calculateClickAttack(true);
+            for (let i = 0; i <= player.highestRegion(); i++) {
+                let rg = this.capitalize(GameConstants.Region[i]);
+                Routes.getRoutesByRegion(i).forEach((rt) => {
+                    let amount = Number(Math.sqrt(MapHelper.normalizeRoute(rt.number, rt.region)).toFixed(2));
+                    let maxHp: number = this.routeMaxHP(rt);
+                    if (amount > max && maxHp < atk) {
+                        max = amount;
+                        best = `${rg} > ${rt.routeName} => ${max}`;
+                        this.areaToFarm.region = i;
+                        this.areaToFarm.route = rt.number;
+                        this.areaToFarm.subregion = rt?.subRegion || 0;
                     }
-                }
+                });
             }
-        }
-
-        pkdxTopEff(topOpt: number): { id: number; name: PokemonNameType; efficiency: number; evs: number; evdmg: number }[] {
-            let listPkm = [];
-            for (const pokemon of pokemonList) {
-                if ((pokemon.nativeRegion || GameConstants.Region.none) <= player.highestRegion()) {
-                    let ppkm = App.game.party.getPokemon(pokemon.id);
-                    if (ppkm)
-                        listPkm.push({
-                            id: ppkm.id,
-                            name: ppkm.name,
-                            efficiency: this.getEfficiency(ppkm),
-                            evs: ppkm.evs(),
-                            evdmg: ppkm.calculateEVAttackBonus(),
-                        });
-                }
-            }
-            listPkm.sort(function sortFn(a, b) {
-                if (a.efficiency === b.efficiency) {
-                    return a.id > b.id ? -1 : 1;
-                } else {
-                    return a.efficiency > b.efficiency ? -1 : 1;
-                }
-            });
-            listPkm = listPkm.slice(0, topOpt || 10);
-            this.printArr(listPkm, ShowDebug.log);
-            return listPkm;
-        }
-
-        print(text: string, debugLevel: ShowDebug = ShowDebug.debug): void {
-            if (!text || debugLevel < this.options.showDebug) return;
-
-            let date: string = new Date().toLocaleString();
-            switch (debugLevel) {
-                case ShowDebug.debug:
-                    console.debug(date);
-                    console.debug(text);
-                    break;
-                case ShowDebug.log:
-                    console.log(`${date} - ${text}`);
-                    break;
-                case ShowDebug.warn:
-                    console.warn(`${date} - ${text}`);
-                    break;
-                case ShowDebug.err:
-                    console.error(`${date} - ${text}`);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        printArr(arr: any[], debugLevel: ShowDebug = ShowDebug.debug): void {
-            if (!arr || debugLevel < this.options.showDebug) return;
-            console.table(arr);
-        }
-
-        routeMaxHP(route: RegionRoute): number {
-            var result: number = -1;
-            var pkmList = this.concatPkmListFromRoute(route);
-
-            var totalBaseHp = 0;
-            this.concatPkmListFromRoute(route).forEach((pnt) => {
-                totalBaseHp += pokemonMap[pnt].base.hitpoints;
-            });
-            var avgHP = totalBaseHp / pkmList.length;
-
-            var routeHP = PokemonFactory.routeHealth(route.number, route.region);
-
-            pkmList.forEach((pnt) => {
-                let maxHealth: number = Math.round(routeHP - routeHP / 10 + (routeHP / 10 / avgHP) * PokemonHelper.getPokemonByName(pnt).hitpoints);
-                if (maxHealth > result) result = maxHealth;
-            });
-
-            return result;
-        }
-
-        setAreaToFarm(
-            type: Type = Type.none,
-            region: number = 0,
-            subregion: number = 0,
-            route: number = 0,
-            town: string = '',
-            gym: string = '',
-            until: number = 0
-        ): void {
-            this.areaToFarm = {
-                type: type,
-                region: region,
-                route: route,
-                subregion: subregion,
-                town: town,
-                gym: gym,
-                until: until,
-            };
-        }
-
-        startAutoDungeon(): boolean {
-            let autoDungeon = document.getElementById('auto-dungeon-start');
-            if (autoDungeon && !autoDungeon.classList.contains('btn-success')) {
-                autoDungeon.click();
-                return true;
-            }
-            return false;
-        }
-
-        startAutoGym(): boolean {
-            let autoGym = document.getElementById('auto-gym-start');
-            if (autoGym && !autoGym.classList.contains('btn-success')) {
-                autoGym.click();
-                return true;
-            }
-            return false;
-        }
-
-        stopAutoDungeon(): boolean {
-            let autoDungeon = document.getElementById('auto-dungeon-start');
-            if (autoDungeon && !autoDungeon.classList.contains('btn-danger')) {
-                autoDungeon.click();
-                // DungeonRunner.dungeonLeave()
-                DungeonRunner.dungeonFinished(true);
-                DungeonRunner.fighting(false);
-                DungeonRunner.fightingBoss(false);
-                MapHelper.moveToTown(DungeonRunner.dungeon.name);
-                return true;
-            }
-            return false;
-        }
-
-        stopAutoGym(): boolean {
-            let autoGym = document.getElementById('auto-gym-start');
-            if (autoGym && !autoGym.classList.contains('btn-danger')) {
-                autoGym.click();
-                return true;
-            }
-            return false;
-        }
-
-        updateMode(): void {
-            switch (this.options.mode) {
-                case Mode.defeat:
-                    if (this.options.road.skip === false && this.options.road.defeat < 10000) {
-                        this.options.road.defeat *= 10;
-                    } else if (this.options.dungeon.skip === false && this.options.dungeon.defeat < 500) {
-                        switch (this.options.dungeon.defeat) {
-                            case 10:
-                                this.options.dungeon.defeat = 100;
-                                break;
-                            case 100:
-                                this.options.dungeon.defeat = 250;
-                                break;
-                            case 250:
-                                this.options.dungeon.defeat = 500;
-                                break;
-                        }
-                    } else if (this.options.gym.skip === false && this.options.gym.defeat < 1000) {
-                        this.options.gym.defeat *= 10;
-                    } else {
-                        this.options.mode = Mode.shiny;
-                    }
-                    break;
-                case Mode.shiny:
-                    this.options.mode = Mode.pokerus;
-                    break;
-                case Mode.pokerus:
-                default:
-                    this.options.end = EndType.evs;
-                    break;
-            }
-            this.print(
-                `AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`,
-                1
-            );
+            this.print(`${best}`, 1);
         }
 
         calcDungeon(allOpt: boolean = this.options.dungeon.all): boolean {
+            this.setAreaToFarm();
             let max = 0;
             let best = '';
             let pkmListTotal = Array<String>();
@@ -454,13 +339,14 @@ namespace AreaDestroyer {
                     this.areaToFarm.until = this.options.dungeon.defeat;
                     break;
             }
-            this.print(output);
-            this.printArr(pkmListTotal);
+            if (this.options.outputCSV === true) this.print(output);
+            if (this.options.outputArr === true) this.printArr(pkmListTotal);
             this.print(`${best} (${this.areaToFarm.until}[${curMax}])`, 1);
             return true;
         }
 
         calcGym(allOpt: boolean = this.options.gym.all): boolean {
+            this.setAreaToFarm();
             let best = '';
             if (allOpt === true) {
                 for (let i = 0; i <= player.highestRegion(); i++) {
@@ -494,6 +380,7 @@ namespace AreaDestroyer {
         }
 
         calcRoad(allOpt: boolean = this.options.road.all): boolean {
+            this.setAreaToFarm();
             let max = 0;
             let best = '';
             let pkmListTotal = Array<String>();
@@ -593,61 +480,33 @@ namespace AreaDestroyer {
                     this.areaToFarm.until = this.options.road.defeat;
                     break;
             }
-            this.print(output);
-            this.printArr(pkmListTotal);
+            if (this.options.outputCSV === true) this.print(output);
+            if (this.options.outputArr === true) this.printArr(pkmListTotal);
             this.print(`${best} (${this.areaToFarm.until}[${curMax}])`, 1);
             return true;
         }
 
-        bestEvsFarm(topOpt: number = 10): void {
+        capitalize(text: string): string {
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
+
+        check(allDungeon: boolean = this.options.dungeon.all, allGym: boolean = this.options.gym.all, allRoad: boolean = this.options.road.all): number {
             this.setAreaToFarm();
-            let lst = this.pkdxTopEff(topOpt);
-            let max = 0;
-            let best = '';
-            for (let i = 0; i <= player.highestRegion(); i++) {
-                let rg = this.capitalize(GameConstants.Region[i]);
-                Routes.getRoutesByRegion(i).forEach((rt) => {
-                    let nb = 0;
-                    let pkmListEv = Array<String>();
-                    this.concatPkmListFromRoute(rt).forEach((pkm) => {
-                        if (lst.find((e) => e.name === pkm)) {
-                            pkmListEv.push(pkm);
-                            if (++nb >= max) {
-                                max = nb;
-                                best = `${rg} > ${rt.routeName} => ${max} ${pkmListEv}`;
-                                this.areaToFarm.region = i;
-                                this.areaToFarm.route = rt.number;
-                                this.areaToFarm.subregion = rt?.subRegion || 0;
-                            }
-                        }
-                    });
-                });
+            if (this.options.road.skip === false) {
+                if (this.calcRoad(allRoad) === true) {
+                    return Type.road;
+                }
             }
-            this.print(`${best}`, 1);
-        }
-
-        bestRoadEggsBattle(attack?: number): void {
-            let max = 0;
-            let best = '';
-            var atk = attack || App.game.party.calculateClickAttack(true);
-            for (let i = 0; i <= player.highestRegion(); i++) {
-                let rg = this.capitalize(GameConstants.Region[i]);
-                Routes.getRoutesByRegion(i).forEach((rt) => {
-                    let amount = Number(Math.sqrt(MapHelper.normalizeRoute(rt.number, rt.region)).toFixed(2));
-                    let maxHp: number = this.routeMaxHP(rt);
-                    if (amount > max && maxHp < atk) {
-                        max = amount;
-                        best = `${rg} > ${rt.routeName} => ${max}`;
-                        this.areaToFarm.region = i;
-                        this.areaToFarm.route = rt.number;
-                        this.areaToFarm.subregion = rt?.subRegion || 0;
-                    }
-                });
+            if (this.options.dungeon.skip === false) {
+                if (this.calcDungeon(allDungeon) === true) {
+                    return Type.dungeon;
+                }
             }
-            this.print(`${best}`, 1);
-        }
-
-        check(bothOpt: boolean = this.options.both): number {
+            if (this.options.mode === Mode.defeat && this.options.gym.skip === false) {
+                if (this.calcGym(allGym) === true) {
+                    return Type.gym;
+                }
+            }
             if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();
                 this.moveTo();
@@ -658,120 +517,264 @@ namespace AreaDestroyer {
                 this.moveTo();
                 return -1;
             }
-            if (this.options.road.skip === false) {
-                if (this.calcRoad() === true && !(bothOpt === true)) {
-                    return Type.road;
-                }
-            }
-            if (this.options.dungeon.skip === false) {
-                if (this.calcDungeon() === true) {
-                    return Type.dungeon;
-                }
-            }
-            if (this.options.mode === Mode.defeat && this.options.gym.skip === false) {
-                if (this.calcGym() === true) {
-                    return Type.gym;
-                }
-            }
             return Type.none;
         }
 
-        auto(): void {
-            setTimeout(() => {
-                if (this.stop === true) {
-                    this.stop = false;
-                    this.print(`AreaDestroyer stopped`, 1);
-                } else {
-                    let curMax = 0;
-                    switch (this.options.mode) {
-                        case Mode.defeat:
-                            if (this.areaToFarm.type === Type.road && this.areaToFarm.route !== 0) {
-                                curMax = App.game.statistics.routeKills[this.areaToFarm.region][this.areaToFarm.route]();
-                            } else if (this.areaToFarm.type === Type.dungeon && this.areaToFarm.town !== '') {
-                                curMax = App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(this.areaToFarm.town)]();
-                            } else if (this.areaToFarm.type === Type.gym && this.areaToFarm.gym !== '') {
-                                curMax = App.game.statistics.gymsDefeated[GameConstants.getGymIndex(this.areaToFarm.gym)]();
-                            }
-                            break;
-                        case Mode.pokerus:
-                            curMax = App.game.party.caughtPokemon.filter((p) => p.pokerus >= GameConstants.Pokerus.Resistant).length;
-                            break;
-                        case Mode.shiny:
-                            curMax = App.game.party.caughtPokemon.filter((p) => p.shiny === true).length;
-                            break;
+        chekDone(): boolean {
+            switch (this.options.mode) {
+                case Mode.pokerus:
+                    switch (this.areaToFarm.type) {
+                        case Type.dungeon:
+                            return RouteHelper.minPokerus(player.town().dungeon?.allAvailablePokemon() || []) === 3;
+                        case Type.road:
+                            return RouteHelper.minPokerus(RouteHelper.getAvailablePokemonList(player.route(), player.region, true)) === 3;
                     }
-                    if (this.areaToFarm.until === 0 || curMax >= this.areaToFarm.until || this.chekDone() === true) {
-                        if (this.areaToFarm.type === Type.dungeon) {
-                            this.stopAutoDungeon();
-                            this.moveTo();
-                        }
-                        if (this.areaToFarm.type === Type.gym) {
-                            this.stopAutoGym();
-                            this.moveTo();
-                        }
-                        this.setAreaToFarm();
-                        let chkRes = this.check();
-                        if (chkRes === Type.road) {
-                            this.moveTo();
-                            this.print(`AreaDestroyer NextArea`, 1);
-                            this.auto();
-                        } else if (chkRes === Type.dungeon) {
-                            this.moveTo();
-                            if (this.startAutoDungeon() === true) {
-                                this.print(`AreaDestroyer NextArea`, 1);
-                                this.auto();
-                            } else {
-                                this.print(`AreaDestroyer Failed to auto dungeon`, 2);
-                            }
-                        } else if (chkRes === Type.gym) {
-                            this.moveTo();
-                            if (this.startAutoGym() === true) {
-                                this.print(`AreaDestroyer NextArea`, 1);
-                                this.auto();
-                            } else {
-                                this.print(`AreaDestroyer Failed to auto dungeon`, 2);
-                            }
-                        } else {
-                            this.print(`AreaDestroyer DONE`, 1);
-                            this.elPlayer.play();
-                            this.updateMode();
-                            this.run();
-                        }
-                    } else {
-                        this.print(`AreaDestroyer IDLE ${curMax}/${this.areaToFarm.until}`);
-                        this.auto();
+                    break;
+                case Mode.shiny:
+                    switch (this.areaToFarm.type) {
+                        case Type.dungeon:
+                            return DungeonRunner.dungeonCompleted(player.town().dungeon as Dungeon, true);
+                        case Type.road:
+                            return RouteHelper.routeCompleted(player.route(), player.region, true);
                     }
-                }
-            }, this.options.timeout * 1000);
+                    break;
+            }
+            return false;
         }
 
-        run(bothOpt: boolean = this.options.both): void {
+        concatPkmListFromDungeon(dungeon: Dungeon): Array<PokemonNameType> {
+            return dungeon.allAvailablePokemon();
+        }
+
+        concatPkmListFromRoute(route: RegionRoute): Array<PokemonNameType> {
+            return RouteHelper.getAvailablePokemonList(route.number, route.region);
+        }
+
+        getEfficiency(p: PartyPokemon): number {
+            const BREEDING_ATTACK_BONUS = 25;
+            return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles;
+        }
+
+        moveTo(): void {
+            if (this.areaToFarm.region === 6) {
+                player.subregion = this.areaToFarm.subregion;
+            }
+            if (this.areaToFarm.route !== 0) {
+                MapHelper.moveToRoute(this.areaToFarm.route, this.areaToFarm.region);
+            } else if (this.areaToFarm.town !== '') {
+                player.region = this.areaToFarm.region;
+                MapHelper.moveToTown(this.areaToFarm.town);
+                if (this.areaToFarm.type === Type.gym) {
+                    if (player.town().name === this.areaToFarm.town) {
+                        for (const gym of player.town().content) {
+                            if (gym instanceof Champion || gym instanceof Gym) {
+                                if (gym.town === this.areaToFarm.gym && App.game.gameState !== GameConstants.GameState.gym) {
+                                    gym.protectedOnclick();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        pkdxTopEff(topOpt: number): { id: number; name: PokemonNameType; efficiency: number; evs: number; evdmg: number; hatched: number }[] {
+            let listPkm = [];
+            for (const pokemon of pokemonList) {
+                if ((pokemon.nativeRegion || GameConstants.Region.none) <= player.highestRegion()) {
+                    let ppkm = App.game.party.getPokemon(pokemon.id);
+                    if (ppkm)
+                        listPkm.push({
+                            id: ppkm.id,
+                            name: ppkm.name,
+                            efficiency: this.getEfficiency(ppkm),
+                            evs: ppkm.evs(),
+                            evdmg: ppkm.calculateEVAttackBonus(),
+                            hatched: App.game.statistics.pokemonHatched[ppkm.id]() || 0,
+                        });
+                }
+            }
+            listPkm.sort(function sortFn(a, b) {
+                if (a.efficiency === b.efficiency) {
+                    return a.id > b.id ? -1 : 1;
+                } else {
+                    return a.efficiency > b.efficiency ? -1 : 1;
+                }
+            });
+            listPkm = listPkm.slice(0, topOpt || 10);
+            if (this.options.outputArr === true) this.printArr(listPkm, ShowDebug.log);
+            return listPkm;
+        }
+
+        print(text: string, debugLevel: ShowDebug = ShowDebug.debug): void {
+            if (!text || debugLevel < this.options.showDebug) return;
+
+            let date: string = new Date().toLocaleString();
+            switch (debugLevel) {
+                case ShowDebug.debug:
+                    console.debug(date);
+                    console.debug(text);
+                    break;
+                case ShowDebug.log:
+                    console.log(`${date} - ${text}`);
+                    break;
+                case ShowDebug.warn:
+                    console.warn(`${date} - ${text}`);
+                    break;
+                case ShowDebug.err:
+                    console.error(`${date} - ${text}`);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        printArr(arr: any[], debugLevel: ShowDebug = ShowDebug.debug): void {
+            if (!arr || debugLevel < this.options.showDebug) return;
+            console.table(arr);
+        }
+
+        routeMaxHP(route: RegionRoute): number {
+            var result: number = -1;
+            var pkmList = this.concatPkmListFromRoute(route);
+
+            var totalBaseHp = 0;
+            this.concatPkmListFromRoute(route).forEach((pnt) => {
+                totalBaseHp += pokemonMap[pnt].base.hitpoints;
+            });
+            var avgHP = totalBaseHp / pkmList.length;
+
+            var routeHP = PokemonFactory.routeHealth(route.number, route.region);
+
+            pkmList.forEach((pnt) => {
+                let maxHealth: number = Math.round(routeHP - routeHP / 10 + (routeHP / 10 / avgHP) * PokemonHelper.getPokemonByName(pnt).hitpoints);
+                if (maxHealth > result) result = maxHealth;
+            });
+
+            return result;
+        }
+
+        run(): void {
             this.setAreaToFarm();
-            var res = this.check(bothOpt);
+            var res = this.check();
             while (res === Type.none) {
                 this.updateMode();
-                res = this.check(bothOpt);
+                res = this.check();
             }
             if (res !== Type.none) this.moveTo();
             if (res === Type.dungeon) this.startAutoDungeon();
             if (res === Type.gym) this.startAutoGym();
             if (res > Type.none) this.auto();
         }
+
+        setAreaToFarm(
+            type: Type = Type.none,
+            region: number = 0,
+            subregion: number = 0,
+            route: number = 0,
+            town: string = '',
+            gym: string = '',
+            until: number = 0
+        ): void {
+            this.areaToFarm = {
+                type: type,
+                region: region,
+                route: route,
+                subregion: subregion,
+                town: town,
+                gym: gym,
+                until: until,
+            };
+        }
+
+        startAutoDungeon(): boolean {
+            let autoDungeon = document.getElementById('auto-dungeon-start');
+            if (autoDungeon && !autoDungeon.classList.contains('btn-success')) {
+                autoDungeon.click();
+                return true;
+            }
+            return false;
+        }
+
+        startAutoGym(): boolean {
+            let autoGym = document.getElementById('auto-gym-start');
+            if (autoGym && !autoGym.classList.contains('btn-success')) {
+                autoGym.click();
+                return true;
+            }
+            return false;
+        }
+
+        stopAutoDungeon(): boolean {
+            let autoDungeon = document.getElementById('auto-dungeon-start');
+            if (autoDungeon && !autoDungeon.classList.contains('btn-danger')) {
+                autoDungeon.click();
+                // DungeonRunner.dungeonLeave()
+                DungeonRunner.dungeonFinished(true);
+                DungeonRunner.fighting(false);
+                DungeonRunner.fightingBoss(false);
+                MapHelper.moveToTown(DungeonRunner.dungeon.name);
+                return true;
+            }
+            return false;
+        }
+
+        stopAutoGym(): boolean {
+            let autoGym = document.getElementById('auto-gym-start');
+            if (autoGym && !autoGym.classList.contains('btn-danger')) {
+                autoGym.click();
+                return true;
+            }
+            return false;
+        }
+
+        updateMode(): void {
+            switch (this.options.mode) {
+                case Mode.defeat:
+                    if (this.options.road.skip === false && this.options.road.defeat < 10000) {
+                        this.options.road.defeat *= 10;
+                    } else if (this.options.dungeon.skip === false && this.options.dungeon.defeat < 500) {
+                        switch (this.options.dungeon.defeat) {
+                            case 10:
+                                this.options.dungeon.defeat = 100;
+                                break;
+                            case 100:
+                                this.options.dungeon.defeat = 250;
+                                break;
+                            case 250:
+                                this.options.dungeon.defeat = 500;
+                                break;
+                        }
+                    } else if (this.options.gym.skip === false && this.options.gym.defeat < 1000) {
+                        this.options.gym.defeat *= 10;
+                    } else {
+                        this.options.mode = Mode.shiny;
+                    }
+                    break;
+                case Mode.shiny:
+                    this.options.mode = Mode.pokerus;
+                    break;
+                case Mode.pokerus:
+                default:
+                    this.options.end = EndType.evs;
+                    break;
+            }
+            this.print(
+                `AreaDestroyer updateMode > mode:${this.options.mode}; road.defeat:${this.options.road.defeat}; dungeon.defeat:${this.options.dungeon.defeat}; gym.defeat:${this.options.gym.defeat}; end:${this.options.end}`,
+                1
+            );
+        }
     }
 }
 
 var ad = new AreaDestroyer.AreaDestroyer();
-// ad.options.dungeon.skip = true;
-// ad.options.gym.skip = true;
-// ad.options.showDebug = AreaDestroyer.ShowDebug.debug;
-// ad.options.mode = AreaDestroyer.Mode.pokerus;
-// ad.calcRoad();
-// ad.calcDungeon();
-// ad.calcGym();
 ad.run();
 // ad.stop = true;
 
-// var ad2 = new AreaDestroyer.AreaDestroyer();
-// ad2.options.showDebug = AreaDestroyer.ShowDebug.debug;
-// ad2.options.mode = AreaDestroyer.Mode.pokerus;
-// ad2.calcRoad();
+var ad2 = new AreaDestroyer.AreaDestroyer();
+ad2.options.outputArr = false;
+ad2.options.dungeon.all = false;
+ad2.options.gym.all = false;
+ad2.options.road.all = false;
+ad2.options.showDebug = AreaDestroyer.ShowDebug.debug;
+ad2.options.mode = AreaDestroyer.Mode.pokerus;

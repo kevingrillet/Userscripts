@@ -2,5 +2,6 @@
 export class Statistics {
     dungeonsCleared: Array<() => number>;
     gymsDefeated: Array<() => number>;
+    pokemonHatched: Array<() => number>;
     routeKills: Record<string, Record<string, () => number>>;
 }

@@ -1,18 +1,13 @@
 {
     "name": "pokeclicker",
-    "version": "1.0.8",
-    "description": "",
-    "main": "AreaDestroyer.js",
+    "version": "1.0.9",
     "scripts": {
         "dev": "npm run clean && npm run pretty && npm run build && npm run sed",
         "build": "tsc --build",
         "clean": "tsc --build --clean",
-        "lint": "eslint -c .eslintrc.json .",
         "pretty": "prettier --write .",
         "sed": "sed -i \"/^import/d\" dist/*.js"
     },
-    "keywords": [],
-    "author": "",
     "license": "GNU3",
     "devDependencies": {
         "prettier": "2.7.1",
