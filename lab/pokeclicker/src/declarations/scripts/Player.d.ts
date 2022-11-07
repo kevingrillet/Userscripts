@@ -1,4 +1,3 @@
-import { Routes } from '../modules/routes/Routes';
 import { Town } from './towns/Town';
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/scripts/Player.ts

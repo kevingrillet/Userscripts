@@ -1,8 +1,8 @@
 import { PokemonNameType } from '../pokemons/PokemonNameType';
-import { SpecialRoutePokemon } from './SpecialRoutePokemon';
+import SpecialRoutePokemon from './SpecialRoutePokemon';
 
 // https://github.com/pokeclicker/pokeclicker/blob/develop/src/modules/routes/RoutePokemon.ts
-export class RoutePokemon {
+export default class RoutePokemon {
     headbutt: PokemonNameType[];
     land: PokemonNameType[];
     special: SpecialRoutePokemon[];

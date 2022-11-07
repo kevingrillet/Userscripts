@@ -3,17 +3,16 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.1.0
+ * @version:      1.1.1
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
 
 import { GameConstants } from './declarations/modules/GameConstants';
-import { player, pokemonMap } from './declarations/modules/globals';
 import { PokemonNameType } from './declarations/modules/pokemons/PokemonNameType';
-import { RegionRoute } from './declarations/modules/routes/RegionRoute';
+import RegionRoute from './declarations/modules/routes/RegionRoute';
 import { RouteHelper } from './declarations/modules/routes/RouteHelper';
-import { Routes } from './declarations/modules/routes/Routes';
+import Routes from './declarations/modules/routes/Routes';
 import { App } from './declarations/scripts/App';
 import { Dungeon, dungeonList } from './declarations/scripts/dungeons/Dungeon';
 import { DungeonRunner } from './declarations/scripts/dungeons/DungeonRunner';
@@ -111,7 +110,6 @@ namespace AreaDestroyer {
 
     export class AreaDestroyer {
         areaToFarm: AreaToFarm;
-        elPlayer: HTMLAudioElement;
         options: Options;
         stop: boolean;
 
@@ -119,10 +117,6 @@ namespace AreaDestroyer {
             this.stop = false;
             this.options = new Options();
             this.areaToFarm = new AreaToFarm();
-
-            this.elPlayer = (document.getElementById('AreaDestroyerAudio') as HTMLAudioElement) || document.createElement('audio');
-            this.elPlayer.setAttribute('id', 'AreaDestroyerAudio');
-            this.elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
         }
 
         auto(): void {
@@ -180,11 +174,6 @@ namespace AreaDestroyer {
                             } else {
                                 this.print(`AreaDestroyer Failed to auto gym`, DebugLevel.warn);
                             }
-                        } else {
-                            this.print(`AreaDestroyer DONE`, DebugLevel.log);
-                            this.elPlayer.play();
-                            this.updateMode();
-                            this.run();
                         }
                     } else {
                         this.print(`AreaDestroyer IDLE ${curMax}/${this.areaToFarm.until}`);
@@ -264,7 +253,7 @@ namespace AreaDestroyer {
                     return AreaType.gym;
                 }
             }
-            this.options.timeout = 10;
+            this.options.timeout = 15;
             if (this.options.resetQuests === true) App.game.quests.refreshQuests(true, false);
             if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();

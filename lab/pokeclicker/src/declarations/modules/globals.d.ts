@@ -9,5 +9,7 @@ type TmpPokemonListData = {
     eggCycles: number;
 };
 
-declare var player: Player;
-declare var pokemonMap: Record<PokemonNameType | number, TmpPokemonListData>;
+declare global {
+    const player: Player;
+    const pokemonMap: Record<PokemonNameType | number, TmpPokemonListData>;
+}

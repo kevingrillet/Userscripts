@@ -1,4 +1,4 @@
-import { Statistics } from '../modules/DataStore/StatisticsStore/index';
+import Statistics from '../modules/DataStore/StatisticsStore/index';
 import { GameConstants } from '../modules/GameConstants';
 import { Party } from './party/Party';
 import { Quests } from './quests/Quests';

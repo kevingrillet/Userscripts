@@ -26,6 +26,7 @@ ad2.options.mode = AreaDestroyer.ScriptMode.pokerus;
 - Defeat every road, dungeon, gym (until max achievement)
 - Catch every shiny available in road & dungeon
 - Grind every pokemon from pkrs contagious to pkrs resistant in road & dungeon
+- When done, reset quests, then farm best evs (loop every 15 min)
 
 ### Require
 
