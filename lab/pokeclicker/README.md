@@ -2,21 +2,23 @@
 
 ## AreaDestroyer
 
-Dist is working. To compile run: `npm run dev`.
+`dist\AreaDestroyer.js` is working. To compile run: `npm run dev`.
 
 ### Usage
 
 ```js
 var ad = new AreaDestroyer.AreaDestroyer();
-// ad.options.dungeon.skip = true;
-// ad.options.gym.skip = true;
-// ad.options.showDebug = AreaDestroyer.ShowDebug.debug;
-// ad.options.mode = AreaDestroyer.Mode.pokerus;
-// ad.calcRoad();
-// ad.calcDungeon();
-// ad.calcGym();
 ad.run();
 // ad.stop = true;
+
+var ad2 = new AreaDestroyer.AreaDestroyer();
+ad2.options.outputListPkm = false;
+// ad2.options.dungeon.all = false;
+// ad2.options.gym.all = false;
+// ad2.options.road.all = false;
+ad2.options.debugLevel = AreaDestroyer.DebugLevel.debug;
+ad2.options.mode = AreaDestroyer.ScriptMode.pokerus;
+// ad2.checkRoad(); ad2.checkDungeon()
 ```
 
 ### Does
@@ -27,7 +29,8 @@ ad.run();
 
 ### Require
 
-- <https://github.com/Ephenia/Pokeclicker-Scripts> (Enhanced Auto Clicker) with AutoClick [ON]
+- [Enhanced Auto Clicker](<https://github.com/Ephenia/Pokeclicker-Scripts#enhanced-auto-clicker-enhancedautoclickeruserjs-one-click-install>) with AutoClick [ON]
+- [[Custom] Simple Weather Changer](<https://github.com/Ephenia/Pokeclicker-Scripts#custom-simple-weather-changer-simpleweatherchangeruserjs-one-click-install>)
 
 ### More info
 
