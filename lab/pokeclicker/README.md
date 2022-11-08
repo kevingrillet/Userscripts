@@ -8,7 +8,7 @@
 
 ```js
 var ad = new AreaDestroyer.AreaDestroyer();
-ad.run();
+ad.start();
 // ad.stop = true;
 
 var ad2 = new AreaDestroyer.AreaDestroyer();
