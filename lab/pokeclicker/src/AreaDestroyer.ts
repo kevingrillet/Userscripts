@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.1.3
+ * @version:      1.1.4
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -27,24 +27,24 @@ import { MapHelper } from './declarations/scripts/worldmap/Map';
 
 namespace AreaDestroyer {
     export enum AreaType {
-        none = 0,
+        none,
         road,
         dungeon,
         gym,
     }
     export enum DebugLevel {
-        debug = 0,
+        debug,
         log,
         warn,
         err,
     }
     export enum EndType {
-        none = 0,
+        none,
         evs,
         steps,
     }
     export enum ScriptMode {
-        defeat = 0,
+        defeat,
         shiny,
         pokerus,
     }
@@ -83,25 +83,30 @@ namespace AreaDestroyer {
     }
 
     class Options {
+        defaultEnd: EndType;
+        defaultTimeout: number;
+        defaultTimeoutEnd: number;
         dungeon: AreaOptions;
         end: EndType;
         gym: AreaOptions;
         mode: ScriptMode;
         road: AreaOptions;
         debugLevel: DebugLevel;
-        timeout: number;
         outputAreas: boolean;
         outputListPkm: boolean;
         resetQuests: boolean;
 
         constructor() {
+            this.defaultEnd = EndType.evs;
+            this.defaultTimeout = 1;
+            this.defaultTimeoutEnd = 10;
             this.dungeon = new AreaOptions(10);
             this.end = EndType.none;
             this.gym = new AreaOptions(10);
             this.mode = ScriptMode.defeat;
             this.road = new AreaOptions(100);
             this.debugLevel = DebugLevel.log;
-            this.timeout = 1;
+            this.defaultTimeout = 1;
             this.outputAreas = true;
             this.outputListPkm = true;
             this.resetQuests = true;
@@ -109,19 +114,20 @@ namespace AreaDestroyer {
     }
 
     export class AreaDestroyer {
-        readonly timeoutEnd: number = 15;
         readonly defaultDigits: number = 2;
         readonly defaultNumberPkdxEff: number = 20;
         areaToFarm: AreaToFarm;
         areaToFarmOld: AreaToFarm;
         options: Options;
         stop: boolean;
+        timeout: number;
 
         constructor() {
-            this.stop = false;
-            this.options = new Options();
             this.areaToFarm = new AreaToFarm();
             this.areaToFarmOld = this.areaToFarm;
+            this.options = new Options();
+            this.stop = false;
+            this.timeout = this.options.defaultTimeout;
         }
 
         auto(): void {
@@ -189,7 +195,7 @@ namespace AreaDestroyer {
                         this.auto();
                     }
                 }
-            }, this.options.timeout * 60 * 1000);
+            }, this.timeout * 60 * 1000);
         }
 
         bestEvsFarm(topOpt: number = this.defaultNumberPkdxEff): void {
@@ -246,7 +252,7 @@ namespace AreaDestroyer {
 
         check(allDungeon: boolean = this.options.dungeon.all, allGym: boolean = this.options.gym.all, allRoad: boolean = this.options.road.all): number {
             this.setAreaToFarm();
-            this.options.timeout = 1;
+            this.timeout = this.options.defaultTimeout;
             if (this.options.road.skip === false) {
                 if (this.checkRoad(allRoad) === true) {
                     return AreaType.road;
@@ -262,7 +268,7 @@ namespace AreaDestroyer {
                     return AreaType.gym;
                 }
             }
-            this.options.timeout = this.timeoutEnd;
+            this.timeout = this.options.defaultTimeoutEnd;
             if (this.options.resetQuests === true) App.game.quests.refreshQuests(true, false);
             if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();
@@ -323,6 +329,7 @@ namespace AreaDestroyer {
                         } else {
                             let nb = 0;
                             let pkmList = this.concatPkmListFromDungeon(dungeonList[dgs[j]]);
+                            let pkmListFarm = Array<String>();
                             if (
                                 (this.options.mode === ScriptMode.shiny && DungeonRunner.dungeonCompleted(dungeonList[dgs[j]], true) === true) ||
                                 (this.options.mode === ScriptMode.pokerus && RouteHelper.minPokerus(pkmList) === GameConstants.Pokerus.Resistant)
@@ -337,10 +344,11 @@ namespace AreaDestroyer {
                                         (this.options.mode === ScriptMode.pokerus && ppkm?.pokerus === GameConstants.Pokerus.Infected))
                                 ) {
                                     pkmListTotal.push(pkm);
+                                    pkmListFarm.push(pkm);
                                     output.push({ region: rg, dungeon: dgs[j], id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                     if (++nb > max) {
                                         max = nb;
-                                        best = `${rg} > ${dgs[j]} => ${max}`;
+                                        best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm}]`;
                                         this.setAreaToFarm(AreaType.dungeon, i, 0, 0, dgs[j]);
                                     }
                                 }
@@ -362,6 +370,7 @@ namespace AreaDestroyer {
                     } else {
                         let nb = 0;
                         let pkmList = this.concatPkmListFromDungeon(dungeonList[dgs[j]]);
+                        let pkmListFarm = Array<String>();
                         if (
                             (this.options.mode === ScriptMode.shiny && DungeonRunner.dungeonCompleted(dungeonList[dgs[j]], true) === true) ||
                             (this.options.mode === ScriptMode.pokerus && RouteHelper.minPokerus(pkmList) === GameConstants.Pokerus.Resistant)
@@ -376,10 +385,11 @@ namespace AreaDestroyer {
                                     (this.options.mode === ScriptMode.pokerus && ppkm?.pokerus === GameConstants.Pokerus.Infected))
                             ) {
                                 pkmListTotal.push(pkm);
+                                pkmListFarm.push(pkm);
                                 output.push({ region: rg, dungeon: dgs[j], id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                 if (++nb > max) {
                                     max = nb;
-                                    best = `${rg} > ${dgs[j]} => ${max}`;
+                                    best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm}]`;
                                     this.setAreaToFarm(AreaType.dungeon, player.region, 0, 0, dgs[j]);
                                 }
                             }
@@ -463,6 +473,7 @@ namespace AreaDestroyer {
                         } else {
                             let nb = 0;
                             let pkmList = this.concatPkmListFromRoute(rt);
+                            let pkmListFarm = Array<String>();
                             if (
                                 (this.options.mode === ScriptMode.shiny && RouteHelper.routeCompleted(rt.number, i, true) === true) ||
                                 (this.options.mode === ScriptMode.pokerus && RouteHelper.minPokerus(pkmList) === GameConstants.Pokerus.Resistant)
@@ -477,10 +488,11 @@ namespace AreaDestroyer {
                                         (this.options.mode === ScriptMode.pokerus && ppkm?.pokerus === GameConstants.Pokerus.Infected))
                                 ) {
                                     pkmListTotal.push(pkm);
+                                    pkmListFarm.push(pkm);
                                     output.push({ region: rg, road: rt.routeName, id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                     if (++nb > max) {
                                         max = nb;
-                                        best = `${rg} > ${rt.routeName} => ${max}`;
+                                        best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm}]`;
                                         this.setAreaToFarm(AreaType.road, i, rt.subRegion, rt.number);
                                     }
                                 }
@@ -502,6 +514,7 @@ namespace AreaDestroyer {
                     } else {
                         let nb = 0;
                         let pkmList = this.concatPkmListFromRoute(rt);
+                        let pkmListFarm = Array<String>();
                         if (
                             (this.options.mode === ScriptMode.shiny && RouteHelper.routeCompleted(rt.number, player.region, true) === true) ||
                             (this.options.mode === ScriptMode.pokerus && RouteHelper.minPokerus(pkmList) === GameConstants.Pokerus.Resistant)
@@ -516,10 +529,11 @@ namespace AreaDestroyer {
                                     (this.options.mode === ScriptMode.pokerus && ppkm?.pokerus === GameConstants.Pokerus.Infected))
                             ) {
                                 pkmListTotal.push(pkm);
+                                pkmListFarm.push(pkm);
                                 output.push({ region: rg, road: rt.routeName, id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                 if (++nb > max) {
                                     max = nb;
-                                    best = `${rg} > ${rt.routeName} => ${max}`;
+                                    best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm}]`;
                                     this.setAreaToFarm(AreaType.road, player.region, rt.subRegion, rt.number);
                                 }
                             }
@@ -787,7 +801,7 @@ namespace AreaDestroyer {
                 case ScriptMode.pokerus:
                 default:
                     // if (this.updateWeather() === false)
-                    this.options.end = EndType.evs;
+                    this.options.end = this.options.defaultEnd;
                     break;
             }
             this.print(
