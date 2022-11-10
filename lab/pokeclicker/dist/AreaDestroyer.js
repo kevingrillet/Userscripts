@@ -3,7 +3,7 @@
  * @author:       kevingrillet
  * @description:  Clear areas (roads/dungeons/gym) by doing Achievements, Catch Shiny, farm Evs (need PRKS ofc). Story need to be complete for every regions you want to farm.
  * @license:      GPL-3.0 License
- * @version:      1.1.4
+ * @version:      1.1.5
  *
  * @required:     https://github.com/Ephenia/Pokeclicker-Scripts (Enhanced Auto Clicker) with AutoClick [ON]
  */
@@ -77,12 +77,14 @@ var AreaDestroyer;
             this.defaultNumberPkdxEff = 20;
             this.areaToFarm = new AreaToFarm();
             this.areaToFarmOld = this.areaToFarm;
+            this.lastLoop = new Date();
             this.options = new Options();
             this.stop = false;
             this.timeout = this.options.defaultTimeout;
         }
         auto() {
             setTimeout(() => {
+                this.lastLoop = new Date();
                 if (this.stop === true) {
                     this.stop = false;
                     this.print(`AreaDestroyer stopped`, DebugLevel.log);
@@ -230,7 +232,7 @@ var AreaDestroyer;
                 }
             }
             this.timeout = this.options.defaultTimeoutEnd;
-            if (this.options.resetQuests === true)
+            if (this.options.end !== EndType.none && this.options.resetQuests === true)
                 App.game.quests.refreshQuests(true, false);
             if (this.options.end === EndType.evs) {
                 this.bestEvsFarm();
