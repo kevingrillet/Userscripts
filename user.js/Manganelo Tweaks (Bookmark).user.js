@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.22
+// @version       1.23
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -51,7 +51,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '5', // position in the href
             chapter_url_split_manga: '4', // position in the href
-            class_blue: 'page-blue', // class to find active page
+            // class_blue: 'page-blue', // class to find active page
             class_bookmark: 'bookmark-item', // class bookmark
             class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -79,7 +79,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter-', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '4', // position in the href
             chapter_url_split_manga: '3', // position in the href
-            class_blue: 'page-blue', // class to find active page
+            // class_blue: 'page-blue', // class to find active page
             class_bookmark: 'user-bookmark-item', // class bookmark
             class_bookmark_panel: 'user-bookmark-content', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -107,7 +107,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter-', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '4', // position in the href
             chapter_url_split_manga: '3', // position in the href
-            class_blue: 'page-blue', // class to find active page
+            // class_blue: 'page-blue', // class to find active page
             class_bookmark: 'user-bookmark-item', // class bookmark
             class_bookmark_panel: 'user-bookmark-content', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -140,7 +140,7 @@ var CST_APP_VERSION = GM_info.script.version,
     CST_CHAPTER_URL = null,
     CST_CHAPTER_URL_SPLIT_CHAPTER = null,
     CST_CHAPTER_URL_SPLIT_MANGA = null,
-    CST_CLASS_BLUE = null,
+    // CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
@@ -168,7 +168,7 @@ env.some(function (e) {
         CST_CHAPTER_URL = e.chapter_url;
         CST_CHAPTER_URL_SPLIT_CHAPTER = e.chapter_url_split_chapter;
         CST_CHAPTER_URL_SPLIT_MANGA = e.chapter_url_split_manga;
-        CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
+        // CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
@@ -192,7 +192,8 @@ env.some(function (e) {
     }
 });
 
-var domain = window.location.hostname,
+var
+	// domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
     // eslint-disable-next-line no-unused-vars
@@ -219,22 +220,26 @@ function addMenu() {
 
     let elDiv = document.querySelector(CST_CLASS_BTN).appendChild(document.createElement('div'));
     elDiv.id = 'my_export';
-    elDiv.innerHTML = `
-    <span class="export" title="Export (Shift + E)">
-        <a><i class="fas fa-fw fa-file-download" ></i></a>
-    </span>
+    // elDiv.innerHTML = `
+    // <span class="export" title="Export (Shift + E)">
+    //     <a><i class="fas fa-fw fa-file-download" ></i></a>
+    // </span>
+    // `;
+    elDiv.innerHTML += `
     <span class="sort" title="Sort (Shift + S)">
         <a><i class="fas fa-fw fa-sort" ></i></a>
-    </span>
+    </span>`;
+    elDiv.innerHTML += `
     <span class="refresh" title="Refresh tags (Shift + T)">
         <a><i class="fas fa-fw fa-redo" ></i></a>
-    </span>
+    </span>`;
+    elDiv.innerHTML += `
     <span class="delete" title="Delete cache (Delete)">
         <a><i class="fas fa-fw fa-trash" ></i></a>
     </span>
     `;
 
-    document.querySelector('.export').onclick = function () { exportBookmark(); };
+    // document.querySelector('.export').onclick = function () { exportBookmark(); };
     document.querySelector('.sort').onclick = function () { letsSort(); };
     document.querySelector('.refresh').onclick = function () { doForceRefresh(); };
     document.querySelector('.delete').onclick = function () { deleteValues(); };
@@ -383,86 +388,86 @@ function stopScrolling() {
 // **********         E X P O R T          **********
 // **************************************************
 // require: https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
-function deleteTemp() {
-    if (document.querySelector('#temp_data')) {
-        document.querySelector('#temp_data').remove();
-    }
-}
+// function deleteTemp() {
+//     if (document.querySelector('#temp_data')) {
+//         document.querySelector('#temp_data').remove();
+//     }
+// }
 
-function saveFile(saveData) {
-    let d = new Date(),
-        time = d.getFullYear() + '.' + ('0' + parseInt(d.getMonth() + 1)).slice(-2) + '.' + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + '.' + ('0' + d.getMinutes()).slice(-2),
-        fileData = new Blob([saveData], { type: 'application/octet-stream' });
+// function saveFile(saveData) {
+//     let d = new Date(),
+//         time = d.getFullYear() + '.' + ('0' + parseInt(d.getMonth() + 1)).slice(-2) + '.' + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + '.' + ('0' + d.getMinutes()).slice(-2),
+//         fileData = new Blob([saveData], { type: 'application/octet-stream' });
 
-    /* global saveAs */
-    saveAs(fileData, 'manga_bookmark_' + time + '.csv')
-}
+//     /* global saveAs */
+//     saveAs(fileData, 'manga_bookmark_' + time + '.csv')
+// }
 
-function exportBookmark() {
-    deleteTemp();
+// function exportBookmark() {
+//     deleteTemp();
 
-    let elDivTemp = document.body.appendChild(document.createElement('div'));
-    elDivTemp.id = 'temp_data';
+//     let elDivTemp = document.body.appendChild(document.createElement('div'));
+//     elDivTemp.id = 'temp_data';
 
-    let pageSuccess = 0,
-        toSave = `${domain} Bookmark`;
-    toSave += `;To Read`;
-    toSave += `;Title Viewed`;
-    toSave += `;Title Current`;
-    toSave += `;Link Viewed`;
-    //toSave += `;Link Current`;
-    //toSave += `;Chapter Viewed`;
-    //toSave += `;Chapter Current`;
-    toSave += `\n`;
+//     let pageSuccess = 0,
+//         toSave = `${domain} Bookmark`;
+//     toSave += `;To Read`;
+//     toSave += `;Title Viewed`;
+//     toSave += `;Title Current`;
+//     toSave += `;Link Viewed`;
+//     //toSave += `;Link Current`;
+//     //toSave += `;Chapter Viewed`;
+//     //toSave += `;Chapter Current`;
+//     toSave += `\n`;
 
-    for (let i = 0; i < 1; i++) {
-        // Prepare divs for info (useless but easier to debug)
-        let elDivPage = elDivTemp.appendChild(document.createElement('div'));
-        elDivPage.id = `page${i + 1}`;
+//     for (let i = 0; i < 1; i++) {
+//         // Prepare divs for info (useless but easier to debug)
+//         let elDivPage = elDivTemp.appendChild(document.createElement('div'));
+//         elDivPage.id = `page${i + 1}`;
 
-        let xhr = new XMLHttpRequest();
-        xhr.responseType = 'document';
-        xhr.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState !== 4) {
-                return
-            }
-            // Let's add info into the pages div
-            if (xhr.status >= 200 && xhr.status < 400) {
-                console.log(xhr.responseXML)
-                pageSuccess++;
-                let resp = xhr.responseXML,
-                    p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
-                document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
+//         let xhr = new XMLHttpRequest();
+//         xhr.responseType = 'document';
+//         xhr.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
+//         xhr.onreadystatechange = function () {
+//             if (xhr.readyState !== 4) {
+//                 return
+//             }
+//             // Let's add info into the pages div
+//             if (xhr.status >= 200 && xhr.status < 400) {
+//                 console.log(xhr.responseXML)
+//                 pageSuccess++;
+//                 let resp = xhr.responseXML,
+//                     p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
+//                 document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
 
-                // Last page is load, let's save
-                if (pageSuccess === pageCount) {
-                    let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
-                    for (let j = 0; j < bm.length; j++) {
-                        let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
-                        if (bookmarkTitle) {
-                            let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
-                                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+//                 // Last page is load, let's save
+//                 if (pageSuccess === pageCount) {
+//                     let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
+//                     for (let j = 0; j < bm.length; j++) {
+//                         let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
+//                         if (bookmarkTitle) {
+//                             let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
+//                                 current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
 
-                            toSave += bookmarkTitle.text;
-                            toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
-                            toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
-                            toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
-                            toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
-                            //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
-                            //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-                            //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-                            toSave += ` \n`;
-                        }
-                    }
-                    saveFile(toSave);
-                    deleteTemp();
-                }
-            }
-        };
-        xhr.send();
-    }
-}
+//                             toSave += bookmarkTitle.text;
+//                             toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
+//                             toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
+//                             toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
+//                             toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
+//                             //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
+//                             //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+//                             //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
+//                             toSave += ` \n`;
+//                         }
+//                     }
+//                     saveFile(toSave);
+//                     deleteTemp();
+//                 }
+//             }
+//         };
+//         xhr.send();
+//     }
+// }
 
 
 // **************************************************
@@ -865,9 +870,9 @@ function run() {
             if (event.ctrlKey || event.code === 'Meta') {
                 return;
             }
-            if (event.code === 'KeyE' && event.shiftKey) {
-                exportBookmark();
-            }
+            // if (event.code === 'KeyE' && event.shiftKey) {
+            //     exportBookmark();
+            // }
             else if (event.code === 'KeyS' && event.shiftKey) {
                 letsSort();
             }

@@ -5,7 +5,7 @@
 // @description   Auto next, Duplicate chapter, Export, Reloading on error, Margin, Prerender, Removes Add div, Scrolling, Shortcuts ←/A/Q (previous), →/D (previous), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.26
+// @version       1.27
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -143,7 +143,6 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     // eslint-disable-next-line no-unused-vars
     scrollInterval,
     timerStart = Date.now();
-
 
 // **************************************************
 // **********     D U P L I C A T E D      **********
@@ -451,7 +450,7 @@ function startScrolling(value) {
     }, scrollSpeed)
 }
 function stopScrolling() {
-    clearInterval(scroll);
+    clearInterval(scrollInterval);
     scrollInterval = null;
 }
 
