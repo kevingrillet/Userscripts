@@ -78,9 +78,7 @@ Remove the add at the beginig of some searches.
 
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
-### LoLEsports - AutoDrop[![LoLEsports - AutoDrop](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js)
-
-### LoLEsports - GoToLiveWorld [![LoLEsports - GoToLiveWorld](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20GoToLiveWorld.user.js)
+### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-0.2-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20CapsuleFarmer.user.js)
 
 ## Manganelo tweaks
 
