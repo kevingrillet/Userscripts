@@ -301,13 +301,13 @@ var AreaDestroyer;
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (ppkm &&
                                     ((this.options.mode === ScriptMode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) ||
-                                        (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Infected))) {
+                                        (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Contagious))) {
                                     pkmListTotal.push(pkm);
                                     pkmListFarm.push(pkm);
                                     output.push({ region: rg, dungeon: dgs[j], id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                     if (++nb > max) {
                                         max = nb;
-                                        best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm}]`;
+                                        best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm.join(', ')}]`;
                                         this.setAreaToFarm(AreaType.dungeon, i, 0, 0, dgs[j]);
                                     }
                                 }
@@ -341,13 +341,13 @@ var AreaDestroyer;
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (ppkm &&
                                 ((this.options.mode === ScriptMode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) ||
-                                    (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Infected))) {
+                                    (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Contagious))) {
                                 pkmListTotal.push(pkm);
                                 pkmListFarm.push(pkm);
                                 output.push({ region: rg, dungeon: dgs[j], id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                 if (++nb > max) {
                                     max = nb;
-                                    best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm}]`;
+                                    best = `${rg} > ${dgs[j]} => ${max} [${pkmListFarm.join(', ')}]`;
                                     this.setAreaToFarm(AreaType.dungeon, player.region, 0, 0, dgs[j]);
                                 }
                             }
@@ -450,13 +450,13 @@ var AreaDestroyer;
                                 let ppkm = App.game.party.getPokemon(hpkm.id);
                                 if (ppkm &&
                                     ((this.options.mode === ScriptMode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) ||
-                                        (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Infected))) {
+                                        (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Contagious))) {
                                     pkmListTotal.push(pkm);
                                     pkmListFarm.push(pkm);
                                     output.push({ region: rg, road: rt.routeName, id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                     if (++nb > max) {
                                         max = nb;
-                                        best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm}]`;
+                                        best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm.join(', ')}]`;
                                         this.setAreaToFarm(AreaType.road, i, rt.subRegion, rt.number);
                                     }
                                 }
@@ -490,13 +490,13 @@ var AreaDestroyer;
                             let ppkm = App.game.party.getPokemon(hpkm.id);
                             if (ppkm &&
                                 ((this.options.mode === ScriptMode.shiny && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.shiny) === false) ||
-                                    (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Infected))) {
+                                    (this.options.mode === ScriptMode.pokerus && (ppkm === null || ppkm === void 0 ? void 0 : ppkm.pokerus) === GameConstants.Pokerus.Contagious))) {
                                 pkmListTotal.push(pkm);
                                 pkmListFarm.push(pkm);
                                 output.push({ region: rg, road: rt.routeName, id: hpkm.id, name: pkm, shiny: ppkm.shiny, evs: ppkm.evs() });
                                 if (++nb > max) {
                                     max = nb;
-                                    best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm}]`;
+                                    best = `${rg} > ${rt.routeName} => ${max} [${pkmListFarm.join(', ')}]`;
                                     this.setAreaToFarm(AreaType.road, player.region, rt.subRegion, rt.number);
                                 }
                             }
@@ -538,7 +538,7 @@ var AreaDestroyer;
         }
         getEfficiency(p) {
             const BREEDING_ATTACK_BONUS = 25;
-            return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.proteinsUsed()) / pokemonMap[p.name].eggCycles;
+            return (p.baseAttack * (BREEDING_ATTACK_BONUS / 100) + p.totalVitaminsUsed()) / pokemonMap[p.name].eggCycles;
         }
         moveTo() {
             if (this.areaToFarm.region === 6) {

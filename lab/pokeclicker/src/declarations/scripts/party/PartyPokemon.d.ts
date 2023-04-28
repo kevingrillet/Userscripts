@@ -9,6 +9,6 @@ export class PartyPokemon {
     id: number;
     name: PokemonNameType;
     pokerus: GameConstants.Pokerus;
-    proteinsUsed: () => number;
+    totalVitaminsUsed: () => number;
     shiny: boolean;
 }
