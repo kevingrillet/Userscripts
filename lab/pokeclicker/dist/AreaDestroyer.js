@@ -65,7 +65,6 @@ var AreaDestroyer;
             this.mode = ScriptMode.defeat;
             this.road = new AreaOptions(100);
             this.debugLevel = DebugLevel.log;
-            this.defaultTimeout = 1;
             this.outputAreas = true;
             this.outputListPkm = true;
             this.resetQuests = true;
@@ -74,7 +73,7 @@ var AreaDestroyer;
     class AreaDestroyer {
         constructor() {
             this.defaultDigits = 2;
-            this.defaultNumberPkdxEff = 20;
+            this.defaultNumberPkdxEff = 50;
             this.areaToFarm = new AreaToFarm();
             this.areaToFarmOld = this.areaToFarm;
             this.lastLoop = new Date();

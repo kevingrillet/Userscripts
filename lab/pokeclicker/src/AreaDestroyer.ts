@@ -106,7 +106,6 @@ namespace AreaDestroyer {
             this.mode = ScriptMode.defeat;
             this.road = new AreaOptions(100);
             this.debugLevel = DebugLevel.log;
-            this.defaultTimeout = 1;
             this.outputAreas = true;
             this.outputListPkm = true;
             this.resetQuests = true;
@@ -115,7 +114,7 @@ namespace AreaDestroyer {
 
     export class AreaDestroyer {
         readonly defaultDigits: number = 2;
-        readonly defaultNumberPkdxEff: number = 20;
+        readonly defaultNumberPkdxEff: number = 50;
         areaToFarm: AreaToFarm;
         areaToFarmOld: AreaToFarm;
         lastLoop: Date;
