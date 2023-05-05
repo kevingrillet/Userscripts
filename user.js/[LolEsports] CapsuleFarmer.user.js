@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -20,12 +20,30 @@
 
 (function() {
     'use strict';
+    let tryLookForDrop = 0;
+
+    function formatConsoleDate (date) {
+        var hour = date.getHours();
+        var minutes = date.getMinutes();
+        // var seconds = date.getSeconds();
+        // var milliseconds = date.getMilliseconds();
+
+        return '[' +
+               ((hour < 10) ? '0' + hour: hour) +
+               ':' +
+               ((minutes < 10) ? '0' + minutes: minutes) +
+               // ':' +
+               // ((seconds < 10) ? '0' + seconds: seconds) +
+               // '.' +
+               // ('00' + milliseconds).slice(-3) +
+               '] ';
+    }
 
     // CapsuleFarmer part
     var closeRewardDrop = function (){
         setTimeout(function () {
             if (document.querySelector('.RewardsDropsOverlay .close')){
-                console.debug('%c Drop overlay closed! ', 'background: GhostWhite; color: DarkRed');
+                console.debug(`${formatConsoleDate(new Date())}- %c Drop overlay closed! `, 'background: GhostWhite; color: DarkRed');
                 document.querySelector('.RewardsDropsOverlay .close').click();
                 lookForDrop();
             }else{
@@ -36,16 +54,27 @@
 
     var lookForDrop = function() {
         setTimeout(function () {
+            if (document.querySelector('.message') && document.querySelector('.message').innerHTML === 'Les récompenses ont rencontré un problème.') {
+                console.debug(`${formatConsoleDate(new Date())}- %c Bug? - Les récompenses ont rencontré un problème. `, 'background: GhostWhite; color: DarkRed');
+                tryLookForDrop += 1;
+                if (tryLookForDrop > 3){
+                    tryLookForDrop = 0;
+                    window.location = 'https://lolesports.com/schedule';
+                }
+            } else {
+                tryLookForDrop = 0;
+            }
+
             if (document.querySelector('.InformNotifications .drops-fulfilled')){
-                console.debug('%c Drop collected! ', 'background: GhostWhite; color: DarkGreen');
+                console.debug(`${formatConsoleDate(new Date())}- %c Drop collected! `, 'background: GhostWhite; color: DarkGreen');
                 document.querySelector('.InformNotifications .drops-fulfilled .text').click();
                 closeRewardDrop();
-            } else if(window.location.href.includes('https://lolesports.com/vods')) {
+            } else if(window.location.href.includes('https://lolesports.com/vods') || document.querySelector('.html5-endscreen')) {
                 // if live did end, get back to schedule
-                console.debug('%c Live ended! ', 'background: GhostWhite; color: DarkBlue');
+                console.debug(`${formatConsoleDate(new Date())}- %c Live ended! `, 'background: GhostWhite; color: DarkBlue');
                 window.location = 'https://lolesports.com/schedule';
             } else{
-                // console.debug('%c No drop! ', 'background: GhostWhite; color: DarkBlue');
+                console.debug(`%c No drop! `, 'background: GhostWhite; color: DarkBlue');
                 lookForDrop();
             }
         }, 10 * 1000);
@@ -54,15 +83,26 @@
     // Open Live
     var observer;
     var elToObserve;
+    var classEvents = [
+        'mondial',
+        'msi',
+        'emea-masters',
+        'tft-rising-legends',
+        'lco'
+    ];
 
     var goLive = function() {
-        if (document.querySelector('.EventShow a')) {
-            // mondial
-            // tft-rising-legends
+        if (document.querySelector('a.live')) {
+            let allLives = Array.from(document.querySelectorAll('a.live'));
+            let firstMatch = classEvents.filter(cls => allLives.some(lv => lv.classList.contains(cls)))[0] || '';
+            if (firstMatch !== '') firstMatch = '.' + firstMatch;
+
             if (observer) {
                 observer.disconnect();
+                console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
             }
-            window.location = document.querySelector('.EventShow a').href;
+            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : document.querySelector('a.live').classList.value}] `, 'background: GhostWhite; color: DarkGreen');
+            window.location = document.querySelector(`a.live${firstMatch}`).href;
         }
     };
 
@@ -77,7 +117,7 @@
                 elToObserve = document.querySelector('.Event');
                 observer = new MutationObserver(onMutate);
                 observer.observe(elToObserve, {attributes: true, childList: true});
-                console.debug('%c Observer added! ', 'background: GhostWhite; color: DarkGreen');
+                console.debug(`${formatConsoleDate(new Date())}- %c Observer added!`, 'background: GhostWhite; color: DarkGreen');
                 // console.log(observer);
             } else{
                 findElement();
@@ -86,17 +126,16 @@
     };
 
     var whereAmI = function() {
-        console.debug(`%c WhereAmI? => ${window.location.href}`, 'background: DarkBlue; color: GhostWhite');
         if(window.location.href.includes('https://lolesports.com/schedule')) {
-            console.debug(`%c WhereAmI? => Observe For Live`, 'background: DarkBlue; color: GhostWhite');
+            console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
             findElement();
         } else if(window.location.href.includes('https://lolesports.com/live')) {
-            console.debug(`%c WhereAmI? => Wait for Capsule`, 'background: DarkBlue; color: GhostWhite');
+            console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
             lookForDrop();
-        } else if(window.location.href.includes('https://lolesports.com/vods')) {
-            window.location = 'https://lolesports.com/schedule';
+        // } else if(window.location.href.includes('https://lolesports.com/vods')) {
+        //     window.location = 'https://lolesports.com/schedule';
         } else {
-            console.error('Unknown location:', window.location)
+            console.error(`${formatConsoleDate(new Date())}- Unknown location: ${window.location}`)
         }
     }
 
