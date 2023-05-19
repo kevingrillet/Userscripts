@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.4
+// @version       0.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -14,7 +14,8 @@
 
 // @match         https://lolesports.com/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=lolesports.com
-// @grant         none
+// @grant         GM_getValue
+// @grant         GM_setValue
 // @run-at        document-end
 // ==/UserScript==
 
@@ -26,7 +27,10 @@
      ****************************************************************************************************/
     var errLookForDrop = 0;
     var tryLookForDrop = 0;
+    var nbLoot = 0;
+    var totalNbLoot = GM_getValue("totalNbLoot", 0);
     var waitLookForDrop = 10; // s
+    var waitResetLookForDrop = 3600; // s => 1h
 
     var observer;
     var elToObserve;
@@ -34,8 +38,8 @@
         'mondial',
         'msi',
         'emea-masters',
-        'tft-rising-legends',
-        'lco'
+        'lco',
+        'tft-rising-legends'
     ];
 
     /****************************************************************************************************
@@ -70,16 +74,20 @@
                     console.debug(`${formatConsoleDate(new Date())}- %c Drop collected! `, 'background: GhostWhite; color: DarkGreen');
                     document.querySelector('.InformNotifications .drops-fulfilled .text').click();
                     tryLookForDrop = 0;
+                    nbLoot += 1;
+                    totalNbLoot += 1;
+                    GM_setValue("totalNbLoot", totalNbLoot);
                     closeRewardDrop();
                 } else if (window.location.href.includes('https://lolesports.com/vods')) {
                     // if live did end, get back to schedule
                     console.debug(`${formatConsoleDate(new Date())}- %c Live ended! `, 'background: GhostWhite; color: DarkBlue');
                     window.location = 'https://lolesports.com/schedule';
-                } else if (tryLookForDrop > 3600 / waitLookForDrop) {
+                } else if (tryLookForDrop > waitResetLookForDrop / waitLookForDrop) {
                     console.debug(`${formatConsoleDate(new Date())}- %c Long time without drops ! [1h] `, 'background: GhostWhite; color: DarkBlue');
-                    window.location = 'https://lolesports.com/schedule';
+                    // window.location = 'https://lolesports.com/schedule';
+                    location.reload();
                 } else {
-                    console.debug(`%c No drop! `, 'background: GhostWhite; color: DarkBlue');
+                    console.debug(`%c [${nbLoot} / ${totalNbLoot}] No drop! `, 'background: GhostWhite; color: DarkBlue');
                     tryLookForDrop += 1;
                     lookForDrop();
                 }
@@ -113,12 +121,12 @@
     var findElement = function () {
         setTimeout(function () {
             if (document.querySelector('.Event')) {
-                goLive();
                 elToObserve = document.querySelector('.Event');
                 observer = new MutationObserver(onMutate);
                 observer.observe(elToObserve, { attributes: true, childList: true });
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer added!`, 'background: GhostWhite; color: DarkGreen');
                 // console.log(observer);
+                goLive();
             } else {
                 findElement();
             }
