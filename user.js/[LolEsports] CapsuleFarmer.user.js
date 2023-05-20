@@ -39,7 +39,8 @@
         'msi',
         'emea-masters',
         'lco',
-        'tft-rising-legends'
+        'tft-rising-legends',
+        'tft-western-lcq'
     ];
 
     /****************************************************************************************************
