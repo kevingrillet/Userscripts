@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5
+// @version       0.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -35,12 +35,21 @@
     var observer;
     var elToObserve;
     var classEvents = [
+        // Worlds
         'mondial',
         'msi',
-        'emea-masters',
-        'lco',
-        'tft-rising-legends',
-        'tft-western-lcq'
+
+        // League 1
+        // lcs, lec, pcs
+
+        // League 2
+        'emea-masters', // EU Masters (uniting EU, TR, CIS, and MENA)
+        'lco', // League of Legends Circuit Oceania
+
+        // TFT
+        'tft-monsters-attack', // World top 32
+        'tft-rising-legends', // EMEA
+        'tft-western-lcq', // LATAM, Brazil, NA, and EMEA
     ];
 
     /****************************************************************************************************
@@ -110,7 +119,7 @@
                 observer.disconnect();
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
             }
-            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : document.querySelector('a.live').classList.value}] `, 'background: GhostWhite; color: DarkGreen');
+            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : Array.from(document.querySelector('a.live').classList).filter(cls => !['single', 'live', 'event'].includes(cls)).toString()}] `, 'background: GhostWhite; color: DarkGreen');
             window.location = document.querySelector(`a.live${firstMatch}`).href;
         }
     };
