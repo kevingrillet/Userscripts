@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.6
+// @version       0.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -34,22 +34,97 @@
 
     var observer;
     var elToObserve;
+
+    // var filt = [];
+    // document.querySelectorAll(':scope .button.league .label').forEach(e =>
+    //     filt.push(`[${e.querySelector('.region').innerText}] ${e.querySelector('.name').innerText}`)
+    // );
+    // filt.sort();
+    // console.debug(filt.join('\n'));
+    // console.debug(filt.length);
+
+    // [BRAZIL] CBLOL
+    // [BRAZIL] CBLOL Academy
+    // [CHINA] LPL
+    // [COMMONWEALTH OF INDEPENDENT STATES] LCL
+    // [EMEA] Arabian League
+    // [EMEA] EMEA Masters
+    // [EMEA] Elite Series
+    // [EMEA] Esports Balkan League
+    // [EMEA] Greek Legends League
+    // [EMEA] Hitpoint Masters
+    // [EMEA] LEC
+    // [EMEA] La Ligue Française
+    // [EMEA] Liga Portuguesa
+    // [EMEA] NLC
+    // [EMEA] PG Nationals
+    // [EMEA] Prime League
+    // [EMEA] SuperLiga
+    // [EMEA] TCL
+    // [EMEA] Ultraliga
+    // [HONG KONG, MACAU, TAIWAN] PCS
+    // [INTERNATIONAL] All-Star Event
+    // [INTERNATIONAL] MSI
+    // [INTERNATIONAL] TFT Monsters Attack!
+    // [INTERNATIONAL] Worlds
+    // [JAPAN] LJL
+    // [KOREA] LCK
+    // [KOREA] LCK Academy
+    // [KOREA] LCK Challengers
+    // [LATIN AMERICA NORTH] North Regional League
+    // [LATIN AMERICA SOUTH] South Regional League
+    // [LATIN AMERICA] LLA
+    // [NORTH AMERICA] College Championship
+    // [NORTH AMERICA] LCS
+    // [NORTH AMERICA] LCS Challengers
+    // [NORTH AMERICA] LCS Challengers Qualifiers
+    // [OCEANIA] LCO
+    // [VIETNAM] VCS
+    // 37
+
     var classEvents = [
-        // Worlds
-        'mondial',
-        'msi',
+        /* LOL */
+        // [INTERNATIONAL] All-Star Event
+        'mondial', // [INTERNATIONAL] MSI
+        'msi', // [INTERNATIONAL] Worlds
 
-        // League 1
-        // lcs, lec, pcs
+        'lck', // [KOREA] LCK
+        'lpl', // [CHINA] LPL
+        'emea-masters', // [EMEA] EMEA Masters
+        'lec', // [EMEA] LEC
+        'lcs', // [NORTH AMERICA] LCS
 
-        // League 2
-        'emea-masters', // EU Masters (uniting EU, TR, CIS, and MENA)
-        'lco', // League of Legends Circuit Oceania
+        'cblol', // [BRAZIL] CBLOL
+        // [BRAZIL] CBLOL Academy
+        'lcl', // [COMMONWEALTH OF INDEPENDENT STATES] LCL
+        // [EMEA] Arabian League
+        // [EMEA] Elite Series
+        // [EMEA] Esports Balkan League
+        // [EMEA] Greek Legends League
+        // [EMEA] Hitpoint Masters
+        // [EMEA] La Ligue Française
+        // [EMEA] Liga Portuguesa
+        'nlc', // [EMEA] NLC
+        // [EMEA] PG Nationals
+        // [EMEA] Prime League
+        'superliga', // [EMEA] SuperLiga
+        'tcl', // [EMEA] TCL
+        'ultraliga', // [EMEA] Ultraliga
+        'pcs', // [HONG KONG, MACAU, TAIWAN] PCS
+        'ljl', // [JAPAN] LJL
+        // [KOREA] LCK Academy
+        // [KOREA] LCK Challengers
+        'lla', // [LATIN AMERICA] LLA
+        'north-regional-league', // [LATIN AMERICA NORTH] North Regional League
+        'south-regional-league', // [LATIN AMERICA SOUTH] South Regional League
+        // [NORTH AMERICA] College Championship
+        // [NORTH AMERICA] LCS Challengers
+        // [NORTH AMERICA] LCS Challengers Qualifiers
+        'lco', // [OCEANIA] LCO
+        'vcs', // [VIETNAM] VCS
 
-        // TFT
-        'tft-monsters-attack', // World top 32
-        'tft-rising-legends', // EMEA
-        'tft-western-lcq', // LATAM, Brazil, NA, and EMEA
+        /* TFT */
+        'tft-monsters-attack', // [INTERNATIONAL] TFT Monsters Attack!
     ];
 
     /****************************************************************************************************
