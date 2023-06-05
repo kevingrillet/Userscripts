@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.7
+// @version       0.8
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -21,6 +21,8 @@
 
 (function () {
     'use strict';
+    const cls_filter = ['single', 'live', 'event', 'first', 'middle', 'last', 'link']
+    const loot_err = ['Les récompenses ont rencontré un problème.', 'Something went wrong with Rewards']
 
     /****************************************************************************************************
      ******************************************** VARIABLES *********************************************
@@ -102,11 +104,11 @@
         // [EMEA] Esports Balkan League
         // [EMEA] Greek Legends League
         // [EMEA] Hitpoint Masters
-        // [EMEA] La Ligue Française
+        'la-ligue-franaise', // [EMEA] La Ligue Française
         // [EMEA] Liga Portuguesa
         'nlc', // [EMEA] NLC
         // [EMEA] PG Nationals
-        // [EMEA] Prime League
+        'prime-league', // [EMEA] Prime League
         'superliga', // [EMEA] SuperLiga
         'tcl', // [EMEA] TCL
         'ultraliga', // [EMEA] Ultraliga
@@ -144,7 +146,7 @@
 
     var lookForDrop = function () {
         setTimeout(function () {
-            if (document.querySelector('.message') && document.querySelector('.message').innerHTML === 'Les récompenses ont rencontré un problème.') {
+            if (document.querySelector('.message') && loot_err.includes(document.querySelector('.message').innerHTML)) {
                 console.debug(`${formatConsoleDate(new Date())}- %c Fin? - Les récompenses ont rencontré un problème. `, 'background: GhostWhite; color: DarkRed');
                 errLookForDrop += 1;
                 if (errLookForDrop > 3) {
@@ -194,7 +196,7 @@
                 observer.disconnect();
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
             }
-            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : Array.from(document.querySelector('a.live').classList).filter(cls => !['single', 'live', 'event'].includes(cls)).toString()}] `, 'background: GhostWhite; color: DarkGreen');
+            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : Array.from(document.querySelector('a.live').classList).filter(cls => !cls_filter.includes(cls)).toString()}] `, 'background: GhostWhite; color: DarkGreen');
             window.location = document.querySelector(`a.live${firstMatch}`).href;
         }
     };
