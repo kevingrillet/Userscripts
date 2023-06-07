@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.8
+// @version       0.9
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -70,6 +70,7 @@
     // [INTERNATIONAL] TFT Monsters Attack!
     // [INTERNATIONAL] Worlds
     // [JAPAN] LJL
+    // [JAPAN] LJL Academy
     // [KOREA] LCK
     // [KOREA] LCK Academy
     // [KOREA] LCK Challengers
@@ -82,7 +83,7 @@
     // [NORTH AMERICA] LCS Challengers Qualifiers
     // [OCEANIA] LCO
     // [VIETNAM] VCS
-    // 37
+    // 38
 
     var classEvents = [
         /* LOL */
@@ -100,12 +101,12 @@
         // [BRAZIL] CBLOL Academy
         'lcl', // [COMMONWEALTH OF INDEPENDENT STATES] LCL
         // [EMEA] Arabian League
-        // [EMEA] Elite Series
+        'elite-series', // [EMEA] Elite Series
         // [EMEA] Esports Balkan League
-        // [EMEA] Greek Legends League
+        'greek-legends-league', // [EMEA] Greek Legends League
         // [EMEA] Hitpoint Masters
         'la-ligue-franaise', // [EMEA] La Ligue Française
-        // [EMEA] Liga Portuguesa
+        'liga-portuguesa', // [EMEA] Liga Portuguesa
         'nlc', // [EMEA] NLC
         // [EMEA] PG Nationals
         'prime-league', // [EMEA] Prime League
@@ -114,6 +115,7 @@
         'ultraliga', // [EMEA] Ultraliga
         'pcs', // [HONG KONG, MACAU, TAIWAN] PCS
         'ljl', // [JAPAN] LJL
+        // [JAPAN] LJL Academy
         // [KOREA] LCK Academy
         // [KOREA] LCK Challengers
         'lla', // [LATIN AMERICA] LLA
@@ -147,7 +149,7 @@
     var lookForDrop = function () {
         setTimeout(function () {
             if (document.querySelector('.message') && loot_err.includes(document.querySelector('.message').innerHTML)) {
-                console.debug(`${formatConsoleDate(new Date())}- %c Fin? - Les récompenses ont rencontré un problème. `, 'background: GhostWhite; color: DarkRed');
+                console.debug(`${formatConsoleDate(new Date())}- %c End?`, 'background: GhostWhite; color: DarkRed');
                 errLookForDrop += 1;
                 if (errLookForDrop > 3) {
                     errLookForDrop = 0;
