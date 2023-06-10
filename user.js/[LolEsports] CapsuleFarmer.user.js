@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.9
+// @version       0.10
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -29,6 +29,7 @@
      ****************************************************************************************************/
     var errLookForDrop = 0;
     var tryLookForDrop = 0;
+    var map = GM_getValue("map", new Map());
     var nbLoot = 0;
     var totalNbLoot = GM_getValue("totalNbLoot", 0);
     var waitLookForDrop = 10; // s
@@ -139,6 +140,7 @@
             if (document.querySelector('.RewardsDropsOverlay .close')) {
                 console.debug(`${formatConsoleDate(new Date())}- %c Drop overlay closed! `, 'background: GhostWhite; color: DarkRed');
                 document.querySelector('.RewardsDropsOverlay .close').click();
+                mapAdd();
                 lookForDrop();
             } else {
                 closeRewardDrop();
@@ -242,6 +244,28 @@
             '] ';
     }
 
+    function mapAdd() {
+        let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
+        if (uuid) {
+            map.set(uuid, (map.get(uuid) ?? 0) + 1);
+            GM_setValue("map", map);
+        }
+    }
+
+    function mapInit() {
+        let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
+        if (uuid) {
+            map.set(uuid, (map.get(uuid) ?? 0));
+            GM_setValue("map", map);
+        }
+    }
+
+    function mapPrint() {
+        let arr = [];
+        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
+        console.table(arr);
+    }
+
     var whereAmI = function () {
         if (window.location.href.includes('https://lolesports.com/schedule')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
@@ -249,6 +273,7 @@
         } else if (window.location.href.includes('https://lolesports.com/live')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
             lookForDrop();
+            mapInit();
             // } else if(window.location.href.includes('https://lolesports.com/vods')) {
             //     window.location = 'https://lolesports.com/schedule';
         } else {
@@ -258,5 +283,11 @@
 
     window.addEventListener('load', function () {
         whereAmI();
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.code === 'KeyM') {
+            mapPrint();
+        }
     });
 })();
