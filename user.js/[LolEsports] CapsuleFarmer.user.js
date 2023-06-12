@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.10
+// @version       0.11
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -29,7 +29,8 @@
      ****************************************************************************************************/
     var errLookForDrop = 0;
     var tryLookForDrop = 0;
-    var map = GM_getValue("map", new Map());
+    var map;
+    mapLoad();
     var nbLoot = 0;
     var totalNbLoot = GM_getValue("totalNbLoot", 0);
     var waitLookForDrop = 10; // s
@@ -118,7 +119,7 @@
         'ljl', // [JAPAN] LJL
         // [JAPAN] LJL Academy
         // [KOREA] LCK Academy
-        // [KOREA] LCK Challengers
+        'lck-challengers', // [KOREA] LCK Challengers
         'lla', // [LATIN AMERICA] LLA
         'north-regional-league', // [LATIN AMERICA NORTH] North Regional League
         'south-regional-league', // [LATIN AMERICA SOUTH] South Regional League
@@ -244,19 +245,11 @@
             '] ';
     }
 
-    function mapAdd() {
+    function mapAdd(value = 1) {
         let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
         if (uuid) {
-            map.set(uuid, (map.get(uuid) ?? 0) + 1);
-            GM_setValue("map", map);
-        }
-    }
-
-    function mapInit() {
-        let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
-        if (uuid) {
-            map.set(uuid, (map.get(uuid) ?? 0));
-            GM_setValue("map", map);
+            map.set(uuid, (map.get(uuid) ?? 0) + value);
+            mapSave();
         }
     }
 
@@ -266,6 +259,17 @@
         console.table(arr);
     }
 
+    function mapLoad() {
+        let arr = GM_getValue("arr", new Array());
+        map = new Map(arr.map((obj) => [obj.tournament, obj.drop]));
+    }
+
+    function mapSave() {
+        let arr = [];
+        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
+        GM_setValue("arr", arr);
+    }
+
     var whereAmI = function () {
         if (window.location.href.includes('https://lolesports.com/schedule')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
@@ -273,7 +277,7 @@
         } else if (window.location.href.includes('https://lolesports.com/live')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
             lookForDrop();
-            mapInit();
+            mapAdd(0);
             // } else if(window.location.href.includes('https://lolesports.com/vods')) {
             //     window.location = 'https://lolesports.com/schedule';
         } else {
