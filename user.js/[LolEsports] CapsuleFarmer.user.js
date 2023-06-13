@@ -255,7 +255,7 @@
 
     function mapAdd(value = 1) {
         // let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
-        let uuid = document.location;
+        let uuid = document.location.href;
         if (uuid) {
             map.set(uuid, (map.get(uuid) ?? 0) + value);
             console.debug(`${formatConsoleDate(new Date())}- %c Set value: ${uuid} ${map.get(uuid)}`, 'background: GhostWhite; color: DarkBlue');
