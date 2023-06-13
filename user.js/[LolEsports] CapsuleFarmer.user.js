@@ -277,8 +277,10 @@
             findElement();
         } else if (window.location.href.includes('https://lolesports.com/live')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
-            lookForDrop();
-            mapAdd(0);
+            setTimeout(function () {
+                mapAdd(0);
+                lookForDrop();
+            }, .5 * 1000);
             // } else if(window.location.href.includes('https://lolesports.com/vods')) {
             //     window.location = 'https://lolesports.com/schedule';
         } else {
