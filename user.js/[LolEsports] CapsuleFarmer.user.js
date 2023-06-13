@@ -277,6 +277,7 @@
 
     function mapPrint() {
         arrayUpdate();
+        console.debug(map);
         console.table(arr);
     }
 
