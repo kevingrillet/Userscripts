@@ -229,7 +229,7 @@
      *********************************************** TOOLS **********************************************
      ****************************************************************************************************/
     function arrayUpdate() {
-        let arr = new Array();
+        arr = new Array();
         map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
         arr.sort(function(a,b) {
             return b.drop-a.drop
