@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.11
+// @version       0.12
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -280,7 +280,7 @@
             setTimeout(function () {
                 mapAdd(0);
                 lookForDrop();
-            }, .5 * 1000);
+            }, 5 * 1000);
             // } else if(window.location.href.includes('https://lolesports.com/vods')) {
             //     window.location = 'https://lolesports.com/schedule';
         } else {
