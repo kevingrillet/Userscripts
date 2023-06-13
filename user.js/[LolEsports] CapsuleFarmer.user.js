@@ -249,6 +249,7 @@
         let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
         if (uuid) {
             map.set(uuid, (map.get(uuid) ?? 0) + value);
+            console.debug(`${formatConsoleDate(new Date())}- %c Set value: ${uuid} ${map.get(uuid)}`, 'background: GhostWhite; color: DarkBlue');
             mapSave();
         }
     }
