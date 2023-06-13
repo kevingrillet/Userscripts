@@ -254,7 +254,8 @@
     }
 
     function mapAdd(value = 1) {
-        let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
+        // let uuid = document.querySelector('#video-player-placeholder')?.getAttribute('uuid');
+        let uuid = document.location;
         if (uuid) {
             map.set(uuid, (map.get(uuid) ?? 0) + value);
             console.debug(`${formatConsoleDate(new Date())}- %c Set value: ${uuid} ${map.get(uuid)}`, 'background: GhostWhite; color: DarkBlue');
@@ -262,11 +263,15 @@
         }
     }
 
-    function mapClean() {
-        map = new Map(
-            // eslint-disable-next-line no-unused-vars
-            [...map].filter(([_, value]) => value > 0 )
-        );
+    function mapClean(full = false) {
+        if (full === true) {
+            map = new Map();
+        } else {
+            map = new Map(
+                // eslint-disable-next-line no-unused-vars
+                [...map].filter(([_, value]) => value > 0 )
+            );
+        }
         mapSave();
     }
 
@@ -304,8 +309,8 @@
     document.addEventListener('keydown', event => {
         if (event.code === 'KeyM') {
             mapPrint();
-        } else if (event.code === 'KeyI' && event.ctrlKey) {
-            mapClean();
+        } else if (event.code === 'KeyI') {
+            mapClean(event.ctrlKey);
         }
     });
 })();
