@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.12
+// @version       0.13
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -27,15 +27,15 @@
     /****************************************************************************************************
      ******************************************** VARIABLES *********************************************
      ****************************************************************************************************/
-    var errLookForDrop = 0;
-    var tryLookForDrop = 0;
-    var map;
-    mapLoad();
-    var nbLoot = 0;
-    var totalNbLoot = GM_getValue("totalNbLoot", 0);
     var waitLookForDrop = 10; // s
     var waitResetLookForDrop = 3600; // s => 1h
 
+    var errLookForDrop = 0;
+    var tryLookForDrop = 0;
+    var nbLoot = 0;
+    var arr = GM_getValue("arr", new Array());
+    var map = new Map(arr.map((obj) => [obj.tournament, obj.drop]));
+    var totalNbLoot = GM_getValue("totalNbLoot", 0);
     var observer;
     var elToObserve;
 
@@ -106,7 +106,7 @@
         'elite-series', // [EMEA] Elite Series
         // [EMEA] Esports Balkan League
         'greek-legends-league', // [EMEA] Greek Legends League
-        // [EMEA] Hitpoint Masters
+        'hitpoint-masters', // [EMEA] Hitpoint Masters
         'la-ligue-franaise', // [EMEA] La Ligue Française
         'liga-portuguesa', // [EMEA] Liga Portuguesa
         'nlc', // [EMEA] NLC
@@ -136,7 +136,7 @@
     /****************************************************************************************************
      *************************** https://lolesports.com/live => CAPSULEFARMER ***************************
      ****************************************************************************************************/
-    var closeRewardDrop = function () {
+    function closeRewardDrop() {
         setTimeout(function () {
             if (document.querySelector('.RewardsDropsOverlay .close')) {
                 console.debug(`${formatConsoleDate(new Date())}- %c Drop overlay closed! `, 'background: GhostWhite; color: DarkRed');
@@ -147,9 +147,9 @@
                 closeRewardDrop();
             }
         }, .5 * 1000);
-    };
+    }
 
-    var lookForDrop = function () {
+    function lookForDrop() {
         setTimeout(function () {
             if (document.querySelector('.message') && loot_err.includes(document.querySelector('.message').innerHTML)) {
                 console.debug(`${formatConsoleDate(new Date())}- %c End?`, 'background: GhostWhite; color: DarkRed');
@@ -185,7 +185,7 @@
                 }
             }
         }, waitLookForDrop * 1000);
-    };
+    }
 
     /****************************************************************************************************
      ************************** https://lolesports.com/schedule => WAITFORLIVE **************************
@@ -206,11 +206,11 @@
         }
     };
 
-    var onMutate = function () {
+    function onMutate() {
         goLive();
-    };
+    }
 
-    var findElement = function () {
+    function findElement() {
         setTimeout(function () {
             if (document.querySelector('.Event')) {
                 elToObserve = document.querySelector('.Event');
@@ -223,11 +223,19 @@
                 findElement();
             }
         }, .5 * 1000);
-    };
+    }
 
     /****************************************************************************************************
      *********************************************** TOOLS **********************************************
      ****************************************************************************************************/
+    function arrayUpdate() {
+        let arr = new Array();
+        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
+        arr.sort(function(a,b) {
+            return b.drop-a.drop
+        });
+    }
+
     function formatConsoleDate(date) {
         var hour = date.getHours();
         var minutes = date.getMinutes();
@@ -254,24 +262,25 @@
         }
     }
 
+    function mapClean() {
+        map = new Map(
+            // eslint-disable-next-line no-unused-vars
+            [...map].filter(([_, value]) => value > 0 )
+        );
+        mapSave();
+    }
+
     function mapPrint() {
-        let arr = [];
-        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
+        arrayUpdate();
         console.table(arr);
     }
 
-    function mapLoad() {
-        let arr = GM_getValue("arr", new Array());
-        map = new Map(arr.map((obj) => [obj.tournament, obj.drop]));
-    }
-
     function mapSave() {
-        let arr = [];
-        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
+        arrayUpdate();
         GM_setValue("arr", arr);
     }
 
-    var whereAmI = function () {
+    function whereAmI() {
         if (window.location.href.includes('https://lolesports.com/schedule')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
             findElement();
@@ -295,6 +304,8 @@
     document.addEventListener('keydown', event => {
         if (event.code === 'KeyM') {
             mapPrint();
+        } else if (event.code === 'KeyI' && event.ctrlKey) {
+            mapClean();
         }
     });
 })();
