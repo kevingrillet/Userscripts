@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LolEsports]%20AutoDrop.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[LolEsports]%20AutoDrop.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[LolEsports]%20AutoDrop.user.js
 
 // @match         https://lolesports.com/live/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=lolesports.com/

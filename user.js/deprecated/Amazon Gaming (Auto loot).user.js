@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Amazon%20Gaming%20(Auto%20loot).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Amazon%20Gaming%20(Auto%20loot).user.js
 
 // @match         https://gaming.amazon.com/home
 // @icon          https://www.google.com/s2/favicons?domain=twitch.tv

@@ -35,7 +35,7 @@ Hide premium message.
 - Auto update
 - Remove crap
 
-## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-1.24-red.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js)
+## Prusa [![Prusa Mini Connect](https://img.shields.io/badge/Install-1.24-red.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Prusa%20Mini%20Connect.user.js)
 
 ## PSTHC [![PSTHC - Trophy Settings](https://img.shields.io/badge/Install-1.1-red.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/deprecated/PSTHC%20Trophy%20Settings.user.js)
 

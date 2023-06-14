@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Downloader.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Youtube%20Downloader.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Youtube%20Downloader.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Youtube%20Downloader.user.js
 
 // @match         https://www.youtube.com/*
 // @icon          https://www.google.com/s2/favicons?domain=youtube.com

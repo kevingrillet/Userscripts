@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Prusa%20Mini%20Connect.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Prusa%20Mini%20Connect.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Prusa%20Mini%20Connect.user.js
 
 // @match         http://192.168.1.59/
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=https://www.prusa3d.com/fr/
