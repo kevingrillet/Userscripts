@@ -17,14 +17,13 @@
 // @run-at        document-idle
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     const aStatusPrinting = ['Impression'],
-          aStatusIdle = ['Repos'];
+        aStatusIdle = ['Repos'];
 
-    var
-        bPrinting = false,
+    var bPrinting = false,
         refreshSpeed = 60,
         elBedTemp = document.querySelector('.title.is-size-2.is-size-5-desktop.has-text-white'),
         elDateEnd = document.querySelectorAll('.columns.is-desktop.is-centered')[3].querySelectorAll('.title.is-size-2.is-size-5-desktop.has-text-white')[3],
@@ -33,16 +32,18 @@
         elPlayer = document.createElement('audio');
     elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/file_s_done.mp3';
 
-    function refreshTitle(){
-        if (aStatusPrinting.includes(elStatus.innerText.trim())){
-            document.title = elPercent.innerText + " - " + elDateEnd.innerText;
+    function refreshTitle() {
+        if (aStatusPrinting.includes(elStatus.innerText.trim())) {
+            document.title = elPercent.innerText + ' - ' + elDateEnd.innerText;
             refreshSpeed = 60;
             bPrinting = true;
-        } else if ( aStatusIdle.includes(elStatus.innerText.trim())
-                   && (elBedTemp.innerText.includes('°C') ? parseInt(elBedTemp.innerText.slice(0, -3)) > 30 : false)) {
-            document.title = (document.title === '🔥 Prusa - Waiting temp' ? '\u200E' : '🔥 Prusa - Waiting temp');
+        } else if (
+            aStatusIdle.includes(elStatus.innerText.trim()) &&
+            (elBedTemp.innerText.includes('°C') ? parseInt(elBedTemp.innerText.slice(0, -3)) > 30 : false)
+        ) {
+            document.title = document.title === '🔥 Prusa - Waiting temp' ? '\u200E' : '🔥 Prusa - Waiting temp';
             refreshSpeed = 1;
-            if (bPrinting === true){
+            if (bPrinting === true) {
                 bPrinting = false;
                 elPlayer.play();
             }
@@ -56,5 +57,4 @@
     setInterval(function () {
         refreshTitle();
     }, refreshSpeed * 1000);
-
 })();

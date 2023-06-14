@@ -24,13 +24,12 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var autoNextSpeed = .5 * 1000, // .5 s
+var autoNextSpeed = 0.5 * 1000, // .5 s
     autoNextBookmarkSpeed = 1 * 1000, // +1 s
     imagesMargin = 0, // px
     maxWidth = GM_getValue('maxWidth', document.body.offsetWidth > 1280 ? 80 : 90), // %
@@ -53,7 +52,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_img_srv_warn: 'server-image-caption', // class to find the red line crap
             class_logo: 'panel-logo-chapter', // class to find the banner
             class_margin: 'server-cbb-content-margin', // class to find the combo margin
-            class_title: 'panel-chapter-info-top' // class to find the title for google search
+            class_title: 'panel-chapter-info-top', // class to find the title for google search
         },
         {
             name: 'Readmanganato', // Name
@@ -68,7 +67,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_img_srv_warn: 'server-image-caption', // class to find the red line crap
             class_logo: 'panel-logo-chapter', // class to find the banner
             class_margin: 'server-cbb-content-margin', // class to find the combo margin
-            class_title: 'panel-chapter-info-top' // class to find the title for google search
+            class_title: 'panel-chapter-info-top', // class to find the title for google search
         },
         {
             name: 'Chapmanganato', // Name
@@ -83,7 +82,7 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_img_srv_warn: 'server-image-caption', // class to find the red line crap
             class_logo: 'panel-logo-chapter', // class to find the banner
             class_margin: 'server-cbb-content-margin', // class to find the combo margin
-            class_title: 'panel-chapter-info-top' // class to find the title for google search
+            class_title: 'panel-chapter-info-top', // class to find the title for google search
         },
         {
             name: 'Chapmanganelo', // Name
@@ -98,10 +97,9 @@ var autoNextSpeed = .5 * 1000, // .5 s
             class_img_srv_warn: 'server-image-caption', // class to find the red line crap
             class_logo: 'panel-logo-chapter', // class to find the banner
             class_margin: 'server-cbb-content-margin', // class to find the combo margin
-            class_title: 'panel-chapter-info-top' // class to find the title for google search
+            class_title: 'panel-chapter-info-top', // class to find the title for google search
         },
     ];
-
 
 // **************************************************
 // **********      V A R I A B L E S       **********
@@ -154,14 +152,17 @@ function doDuplicated() {
         let tmp = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 2];
         if (buttonNext && tmp) {
             let url = buttonNext.href.replace(/\d+(?:\.\d+)?$/, tmp.getAttribute('data-c'));
-            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => { e.href = url });
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {
+                e.href = url;
+            });
         } else {
             buttonNext = null;
-            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => { e.remove(); });
+            document.querySelectorAll(CST_CLASS_BTN_NEXT).forEach((e) => {
+                e.remove();
+            });
         }
     }
 }
-
 
 // **************************************************
 // **********           M E N U            **********
@@ -189,7 +190,7 @@ function addMenu() {
     let elDiv = document.body.appendChild(document.createElement('div'));
     elDiv.id = 'my_footer';
     elDiv.innerHTML = `
-    <p class="chap" title="${chapterCurrent.toString() + " / " + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
+    <p class="chap" title="${chapterCurrent.toString() + ' / ' + chapterMax.toString()}">${(chapterMax - chapterCurrent).toFixed(0).toString()}</p>
     <span class="export" title="Export (Shift + E)">
     <a><i class="fas fa-fw fa-file-download" ></i></a>
     </span>
@@ -198,7 +199,9 @@ function addMenu() {
     <a class="goManga" href="${document.querySelectorAll(`:scope ${CST_CLASS_BREADCRUMB} a`)[1].href}" title="Manga (M)" ><i class="fas fa-fw fa-book" ></i></a>
     </span>
     <span>
-    <a class="my_search" href="https://www.google.com/search?q=${encodeURI(document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText)}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
+    <a class="my_search" href="https://www.google.com/search?q=${encodeURI(
+        document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText
+    )}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
     </span>
     </br>
     <span class="home">
@@ -237,27 +240,36 @@ function addMenu() {
     if (chapterMax - chapterCurrent === 0) {
         document.querySelector('.chap').style.color = 'PaleGreen';
     }
-    document.querySelector('.export').onclick = function () { downloadImages(); };
-    document.querySelector('.goUp').onclick = function () { window.scrollBy({ top: 5 * -scrollValue, left: 0, behavior: 'smooth' }); };
-    document.querySelector('.goDown').onclick = function () { window.scrollBy({ top: 5 * scrollValue, left: 0, behavior: 'smooth' }); };
-    document.querySelector('.unzoom').onclick = function () { unzoom(); };
-    document.querySelector('.zoom').onclick = function () { zoom(); };
+    document.querySelector('.export').onclick = function () {
+        downloadImages();
+    };
+    document.querySelector('.goUp').onclick = function () {
+        window.scrollBy({ top: 5 * -scrollValue, left: 0, behavior: 'smooth' });
+    };
+    document.querySelector('.goDown').onclick = function () {
+        window.scrollBy({ top: 5 * scrollValue, left: 0, behavior: 'smooth' });
+    };
+    document.querySelector('.unzoom').onclick = function () {
+        unzoom();
+    };
+    document.querySelector('.zoom').onclick = function () {
+        zoom();
+    };
     if (buttonPrevious) {
         document.querySelector('.goPrevious').firstElementChild.href = buttonPrevious.href;
-        document.querySelector('.goPrevious').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex + 1].value + ' (←/A/Q)';
-    }
-    else {
+        document.querySelector('.goPrevious').firstElementChild.title =
+            document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex + 1].value + ' (←/A/Q)';
+    } else {
         document.querySelector('.goPrevious').style.color = 'Tomato';
     }
     if (buttonNext) {
         document.querySelector('.goNext').firstElementChild.href = buttonNext.href;
-        document.querySelector('.goNext').firstElementChild.title = document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 1].value + ' (→/D)';
-    }
-    else {
+        document.querySelector('.goNext').firstElementChild.title =
+            document.querySelector(CST_CLASS_CHANGE_CHAPTER).options[document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedIndex - 1].value + ' (→/D)';
+    } else {
         document.querySelector('.goNext').style.color = 'Tomato';
     }
 }
-
 
 // **************************************************
 // **********             U I              **********
@@ -279,17 +291,18 @@ function clearUI() {
     document.querySelector(CST_CLASS_IMG).nextElementSibling.style.display = 'none';
 }
 
-
 // **************************************************
 // **********           A D D S            **********
 // **************************************************
 function removeAdds() {
-    document.querySelectorAll(':scope div script[async="async"]').forEach((e) => { e.parentElement.parentElement.style.display = "none"; })
-    document.querySelectorAll('iframe').forEach((i) => { i.parentNode.style.display = "none" });
-    document.body.style.display = "block";
+    document.querySelectorAll(':scope div script[async="async"]').forEach((e) => {
+        e.parentElement.parentElement.style.display = 'none';
+    });
+    document.querySelectorAll('iframe').forEach((i) => {
+        i.parentNode.style.display = 'none';
+    });
+    document.body.style.display = 'block';
 }
-
-
 
 // **************************************************
 // **********      A U T O   N E X T       **********
@@ -301,8 +314,7 @@ function autoNext() {
             if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
                 if (buttonNext && buttonNext !== undefined) {
                     goNext();
-                }
-                else {
+                } else {
                     setTimeout(function () {
                         goBookmark();
                     }, autoNextBookmarkSpeed); // wait 4 secs
@@ -312,7 +324,6 @@ function autoNext() {
     }
 }
 
-
 // **************************************************
 // **********      P R E R E N D E R       **********
 // **************************************************
@@ -321,17 +332,16 @@ function prerender(force) {
     force = force || false;
     if (buttonNext && buttonNext !== undefined) {
         if (buttonNext.rel === 'nofollow') {
-            if (force || Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * .75) {
+            if (force || Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * 0.75) {
                 let link = head.appendChild(document.createElement('link'));
                 link.setAttribute('rel', rel);
                 link.setAttribute('href', buttonNext.href);
                 buttonNext.setAttribute('rel', rel);
-                console.debug('Prerender added.')
+                console.debug('Prerender added.');
             }
         }
     }
 }
-
 
 // **************************************************
 // **********         R E L O A D          **********
@@ -359,7 +369,6 @@ function setReload() {
     }
 }
 
-
 // **************************************************
 // **********      G R A Y S C A L E       **********
 // **************************************************
@@ -368,7 +377,7 @@ function toogleGrayscale(pThis) {
         if (pThis.style.filter) {
             pThis.style.removeProperty('filter');
         } else {
-            pThis.style.filter = "grayscale(1)";
+            pThis.style.filter = 'grayscale(1)';
         }
     }
 }
@@ -382,7 +391,6 @@ function setGrayscale() {
         }
     }
 }
-
 
 // **************************************************
 // **********         M A R G I N          **********
@@ -402,18 +410,19 @@ function doSetMargin() {
     }
 }
 
-
 // **************************************************
 // **********      M A X   W I D T H       **********
 // **************************************************
 function setMaxWidth(value) {
-    GM_setValue('maxWidth', value)
+    GM_setValue('maxWidth', value);
     if (value <= 10) {
         document.querySelector('.unzoom').onclick = null;
         document.querySelector('.unzoom').style.color = 'Tomato';
         document.querySelector('.unzoom').title = 'Min';
     } else {
-        document.querySelector('.unzoom').onclick = function () { unzoom(); };
+        document.querySelector('.unzoom').onclick = function () {
+            unzoom();
+        };
         document.querySelector('.unzoom').style.color = 'GhostWhite';
         document.querySelector('.unzoom').title = (value - zoomW).toString() + '%';
     }
@@ -422,7 +431,9 @@ function setMaxWidth(value) {
         document.querySelector('.zoom').style.color = 'Tomato';
         document.querySelector('.zoom').title = 'Max';
     } else {
-        document.querySelector('.zoom').onclick = function () { zoom(); };
+        document.querySelector('.zoom').onclick = function () {
+            zoom();
+        };
         document.querySelector('.zoom').title = (value + zoomW).toString() + '%';
         document.querySelector('.zoom').style.color = 'GhostWhite';
     }
@@ -440,20 +451,18 @@ function unzoom() {
     setMaxWidth(maxWidth);
 }
 
-
 // **************************************************
 // **********      S C R O L L I N G       **********
 // **************************************************
 function startScrolling(value) {
     scrollInterval = setInterval(function () {
         window.scrollBy(0, value);
-    }, scrollSpeed)
+    }, scrollSpeed);
 }
 function stopScrolling() {
     clearInterval(scrollInterval);
     scrollInterval = null;
 }
-
 
 // **************************************************
 // **********     N A V I G A T I O N      **********
@@ -478,7 +487,6 @@ function goPrevious() {
     }
 }
 
-
 // **************************************************
 // **********       D O W N L O A D        **********
 // **************************************************
@@ -494,9 +502,8 @@ function downloadImages(value) {
     setTimeout(function () {
         GM_download(images[value].src, `${document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText}_${++value}`);
         if (value < images.length) downloadImages(value);
-    }, .5 * 1000);
+    }, 0.5 * 1000);
 }
-
 
 // **************************************************
 // **********    P R O G R E S S   B A R   **********
@@ -507,12 +514,12 @@ let processScroll = () => {
         docBody = document.body,
         scrollTop = docElem.scrollTop || docBody.scrollTop,
         scrollBottom = (docElem.scrollHeight || docBody.scrollHeight) - window.innerHeight,
-        scrollPercent = scrollTop / scrollBottom * 100 + '%';
-    document.getElementById("my_progress_bar").style.setProperty("--scrollAmount", scrollPercent);
-    document.getElementById("my_progress_bar").innerHTML = Math.round(scrollTop / scrollBottom * 100) + '%';
-}
+        scrollPercent = (scrollTop / scrollBottom) * 100 + '%';
+    document.getElementById('my_progress_bar').style.setProperty('--scrollAmount', scrollPercent);
+    document.getElementById('my_progress_bar').innerHTML = Math.round((scrollTop / scrollBottom) * 100) + '%';
+};
 
-function addProgressBar(){
+function addProgressBar() {
     let elDiv = document.body.appendChild(document.createElement('div'));
     elDiv.id = 'my_progress_bar';
 
@@ -549,7 +556,6 @@ function addProgressBar(){
     document.addEventListener('scroll', processScroll);
 }
 
-
 // **************************************************
 // **********       L I S T E N E R        **********
 // **************************************************
@@ -578,42 +584,34 @@ window.onscroll = function () {
 };
 
 // Shortcuts ←/A/Q (previous), →/D (next), ↑/W/Z (scroll up), ↓/S (scroll down) B (bookmark page), H (home page)
-document.addEventListener('keydown', event => {
+document.addEventListener('keydown', (event) => {
     if (event.ctrlKey || event.code === 'MetaLeft' || event.code === 'MetaRight') {
         return;
     }
     if (event.code === 'ArrowLeft' || event.code === 'KeyA' || event.code === 'KeyQ') {
         goPrevious();
-    }
-    else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
+    } else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
         stopScrolling();
         startScrolling(-scrollValue);
-    }
-    else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
+    } else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
         goNext();
-    }
-    else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
+    } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
         stopScrolling();
         startScrolling(scrollValue);
-    }
-    else if (event.code === 'KeyB') {
+    } else if (event.code === 'KeyB') {
         goBookmark();
-    }
-    else if (event.code === 'KeyH') {
+    } else if (event.code === 'KeyH') {
         goHome();
-    }
-    else if (event.code === 'KeyM') {
+    } else if (event.code === 'KeyM') {
         goManga();
-    }
-    else if (event.code === 'KeyF') {
+    } else if (event.code === 'KeyF') {
         document.querySelector('.my_search').click();
-    }
-    else if (event.code === 'KeyE' && event.shiftKey) {
+    } else if (event.code === 'KeyE' && event.shiftKey) {
         downloadImages();
     }
 });
 
-document.addEventListener('keyup', event => {
+document.addEventListener('keyup', (event) => {
     if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ' || event.code === 'ArrowDown' || event.code === 'KeyS') {
         stopScrolling();
     }
@@ -627,11 +625,9 @@ window.addEventListener('load', function () {
     document.querySelector('.load').title = 'Time until everything loaded';
     if (loadTime > 1000) {
         document.querySelector('.load').style.color = 'Tomato';
-    }
-    else if (loadTime > 200) {
+    } else if (loadTime > 200) {
         document.querySelector('.load').style.color = 'PaleGoldenRod';
-    }
-    else {
+    } else {
         document.querySelector('.load').style.color = 'PaleGreen';
     }
 

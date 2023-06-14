@@ -18,14 +18,12 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********      V A R I A B L E S       **********
 // **************************************************
 var CST_ID_METACONTENT = '#meta-contents #subscribe-button ytd-subscribe-button-renderer';
-
 
 // **************************************************
 // **********           M E N U            **********
@@ -51,9 +49,10 @@ function addMenu() {
     <a><i class="fas fa-fw fa-file-download" ></i></a>
   </span>
 `;
-    elDiv.onclick = function () { launchDl(); };
+    elDiv.onclick = function () {
+        launchDl();
+    };
 }
-
 
 // **************************************************
 // **********       L I S T E N E R        **********
@@ -65,15 +64,14 @@ window.addEventListener('load', function () {
             clearInterval(myInterval);
             myInterval = null;
         }
-    }, .5 * 1000);
+    }, 0.5 * 1000);
 });
-
 
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
 function launchDl() {
     if (window.location.href.match(/.*\.youtube.com\/watch\?.*v=[^#&?]*/)) {
-        window.open(window.location.href.replace('youtube.com', 'yout.com'), "_blank");
+        window.open(window.location.href.replace('youtube.com', 'yout.com'), '_blank');
     }
 }

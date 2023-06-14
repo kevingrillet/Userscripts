@@ -22,7 +22,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
+'use strict';
 
 // Can't work :(
 // gm_values are like cookies for specific script, so you can't access them with another script...
@@ -31,8 +31,7 @@
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var
-    // moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
+var // moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to bottom
     // moveContinerTop = true, // Move top to bottom, need right to be active
     forceRefresh = false, // IDK if we can be ban for this, it will ask so many requests...
     env = [
@@ -43,10 +42,9 @@ var
             class_adult: 'panel-story-info', // class location of adult tag
             class_btn: 'panel-breadcrumb', // class to add icon
             class_hype: 'info-image', // class location of hype tag
-            tag_rank: '[property="v:average"]' // tag of rank
-        }
+            tag_rank: '[property="v:average"]', // tag of rank
+        },
     ];
-
 
 // **************************************************
 // **********      V A R I A B L E S       **********
@@ -68,30 +66,24 @@ env.some(function (e) {
     }
 });
 
-
 // **************************************************
 // **********        S T O R A G E         **********
 // **************************************************
 function refreshData() {
-    let tag = document.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[4],
+    let tag = document.querySelectorAll(CST_CLASS_BTN + ' a')[1].href.split('/')[4],
         value = GM_getValue(tag, null),
         local_value = {
             version: CST_APP_VERSION,
             date: new Date(),
             adult: (document.querySelector(CST_CLASS_ADULT).innerHTML.match(/Adult/gm) || []).length,
             hype: document.querySelector(`:scope ${CST_CLASS_HYPE} em`) ? document.querySelector(`:scope ${CST_CLASS_HYPE} em`).classList[0] : null,
-            rank: document.querySelector(`em${CST_TAG_RANK}`).textContent
+            rank: document.querySelector(`em${CST_TAG_RANK}`).textContent,
         };
 
-    if (forceRefresh ||
-        !(value
-            && value.adult === local_value.adult
-            && value.hype === local_value.hype
-            && value.rank === local_value.rank
-        )) {
+    if (forceRefresh || !(value && value.adult === local_value.adult && value.hype === local_value.hype && value.rank === local_value.rank)) {
         GM_setValue(tag, local_value);
 
-        console.debug(`Value updated for ${document.querySelectorAll(CST_CLASS_BTN + " a")[1].text}`);
+        console.debug(`Value updated for ${document.querySelectorAll(CST_CLASS_BTN + ' a')[1].text}`);
         console.debug(local_value);
     }
 }

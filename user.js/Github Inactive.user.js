@@ -17,8 +17,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
@@ -26,18 +25,20 @@
 var days = 365 / 2,
     bLightMode = true;
 
-
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-function addDiv(){
+function addDiv() {
     let elDiv = document.createElement('div');
     if (bLightMode) {
         // could use flash-warn instead, but less flashy.
         elDiv.classList.add('flash', 'flash-error', 'flash-full', 'border-top-0', 'text-center', 'text-bold', 'py-2');
         elDiv.innerHTML = 'WARNING: This repo is pretty old ;)';
     } else {
-        elDiv.setAttribute('style', 'display: flex; height: 50px; width: 100%; background-color: tomato; color: white; font-size: 2rem; font-family: consolas; text-align: center;');
+        elDiv.setAttribute(
+            'style',
+            'display: flex; height: 50px; width: 100%; background-color: tomato; color: white; font-size: 2rem; font-family: consolas; text-align: center;'
+        );
         elDiv.innerHTML = '<p style="width: 100%">WARNING: This repo is pretty old ;) </p>';
     }
     document.querySelector('#js-repo-pjax-container').prepend(elDiv);
@@ -46,11 +47,11 @@ function addDiv(){
 window.addEventListener('load', function () {
     let myInterval = setInterval(function () {
         if (document.querySelector('relative-time')) {
-            if (Date.now() - new Date(document.querySelector('relative-time').date) > (days * 1000 * 60 * 60 * 24)) {
+            if (Date.now() - new Date(document.querySelector('relative-time').date) > days * 1000 * 60 * 60 * 24) {
                 addDiv();
             }
             clearInterval(myInterval);
             myInterval = null;
         }
-    }, .5 * 1000);
+    }, 0.5 * 1000);
 });

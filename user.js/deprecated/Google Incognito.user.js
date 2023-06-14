@@ -17,7 +17,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
+'use strict';
 
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create
 // Will not work :(
@@ -33,7 +33,7 @@ var browser = chrome || null;
 // **********       L I S T E N E R        **********
 // **************************************************
 window.addEventListener('load', function () {
-    document.querySelectorAll('a').forEach(el => {
+    document.querySelectorAll('a').forEach((el) => {
         if (el.href.match('.*docs.google.com.*') !== null) {
             el.setAttribute('onclick', `javascript:${browser}.windows.create({"url": ${el.href}, "incognito": true});`);
         }

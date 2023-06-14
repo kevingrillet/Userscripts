@@ -23,7 +23,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
+'use strict';
 
 var export_md = false,
     export_json = false,
@@ -32,16 +32,16 @@ var export_md = false,
 
 function init() {
     // Create parent div in bar
-    var e = document.querySelector(".js-check-all-container").firstElementChild.appendChild(document.createElement("div"));
-    e.className = "ml-3 d-flex flex-justify-between width-full width-md-auto";
+    var e = document.querySelector('.js-check-all-container').firstElementChild.appendChild(document.createElement('div'));
+    e.className = 'ml-3 d-flex flex-justify-between width-full width-md-auto';
     // Create btn
-    e = e.appendChild(document.createElement("div"));
-    e.className = "btn btn-primary";
+    e = e.appendChild(document.createElement('div'));
+    e.className = 'btn btn-primary';
     e.onclick = prepare;
     // Create span in btn
-    e = e.appendChild(document.createElement("span"));
-    e.className = "d-none d-md-block";
-    e.innerText = "Export";
+    e = e.appendChild(document.createElement('span'));
+    e.className = 'd-none d-md-block';
+    e.innerText = 'Export';
 }
 
 function prepare() {
@@ -87,32 +87,31 @@ function prepare() {
 }
 
 function run() {
-    const GH_OWNER = window.location.pathname.split("/")[1];
-    const GH_REPO = window.location.pathname.split("/")[2];
+    const GH_OWNER = window.location.pathname.split('/')[1];
+    const GH_REPO = window.location.pathname.split('/')[2];
     const PER_PAGE = 100;
 
     var fetch_count = 0;
 
     repo = {
         full_name: `${GH_OWNER}/${GH_REPO}`,
-        html_url: `https://github.com/${GH_OWNER}/${GH_REPO}`
+        html_url: `https://github.com/${GH_OWNER}/${GH_REPO}`,
     };
 
     function afterFetch() {
         //console.debug(repo);
         if (export_json) {
             let blobjson = new Blob([JSON.stringify(repo)], {
-                type: "application/json"
+                type: 'application/json',
             });
             window.saveAs(blobjson, `${GH_OWNER}_${GH_REPO}_issues.json`);
-
         } else {
             // Convert Json to Markdown
             let md = jsonToMarkdown();
 
             if (export_md) {
                 let blobmd = new Blob([md], {
-                    type: "text/plain;charset=utf-8"
+                    type: 'text/plain;charset=utf-8',
                 });
                 window.saveAs(blobmd, `${GH_OWNER}_${GH_REPO}_issues.md`);
             } else {
@@ -124,18 +123,18 @@ function run() {
     function fetchReviewsComments(pull_number, review_id, current_page = 1) {
         //console.debug(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews/${review_id}/comments?per_page=${PER_PAGE}&page=${current_page}`);
         fetch(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews/${review_id}/comments?per_page=${PER_PAGE}&page=${current_page}`)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 //console.debug(data); // Prints result from `response.json()` in getRequest
                 for (let i = 0; i < data.length; i++) {
                     let comment = {
                         body: data[i].body,
                         created_at: data[i].created_at,
-                        user_login: data[i].user?.login
+                        user_login: data[i].user?.login,
                     };
-                    repo
-                        .issues.find(e => e.number === pull_number)
-                        .reviews.find(e => e.id === review_id)
+                    repo.issues
+                        .find((e) => e.number === pull_number)
+                        .reviews.find((e) => e.id === review_id)
                         .comments.push(comment);
                 }
                 fetch_count--;
@@ -143,14 +142,14 @@ function run() {
                     afterFetch();
                 }
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
     }
 
-    function fetchReviews(pull_number/*, current_page = 1*/) {
+    function fetchReviews(pull_number /*, current_page = 1*/) {
         //console.debug(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`);
         fetch(`https://api.github.com/repos/${repo.full_name}/pulls/${pull_number}/reviews?per_page=${PER_PAGE}`)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 //console.debug(data); // Prints result from `response.json()` in getRequest
                 for (let i = 0; i < data.length; i++) {
                     let review = {
@@ -158,51 +157,47 @@ function run() {
                         comments: [],
                         id: data[i].id,
                         submitted_at: data[i].submitted_at,
-                        user_login: data[i].user?.login
+                        user_login: data[i].user?.login,
                     };
-                    repo
-                        .issues.find(e => e.number === pull_number)
-                        .reviews.push(review);
+                    repo.issues.find((e) => e.number === pull_number).reviews.push(review);
                     fetch_count++;
-                    fetchReviewsComments(pull_number, review.id)
+                    fetchReviewsComments(pull_number, review.id);
                 }
                 fetch_count--;
                 if (fetch_count === 0) {
                     afterFetch();
                 }
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
     }
 
     function fetchComments(issue_number) {
         //console.debug(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}`);
         fetch(`https://api.github.com/repos/${repo.full_name}/issues/${issue_number}/comments?per_page=${PER_PAGE}`)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 //console.debug(data); // Prints result from `response.json()` in getRequest
                 for (let i = 0; i < data.length; i++) {
                     let comment = {
                         body: data[i].body,
                         created_at: data[i].created_at,
-                        user_login: data[i].user?.login
+                        user_login: data[i].user?.login,
                     };
-                    repo
-                        .issues.find(e => e.number === issue_number)
-                        .comments.push(comment);
+                    repo.issues.find((e) => e.number === issue_number).comments.push(comment);
                 }
                 fetch_count--;
                 if (fetch_count === 0) {
                     afterFetch();
                 }
             })
-            .catch(error => console.error(error));
+            .catch((error) => console.error(error));
     }
 
     function fetchIssues(current_page = 1) {
         //console.debug(`https://api.github.com/repos/${repo.full_name}/issues?per_page=${PER_PAGE}&page=${current_page}`);
         fetch(`https://api.github.com/repos/${repo.full_name}/issues?per_page=${PER_PAGE}&page=${current_page}`)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 //console.debug(data); // Prints result from `response.json()` in getRequest
                 for (let i = 0; i < data.length; i++) {
                     let issue = {
@@ -210,11 +205,11 @@ function run() {
                         comments_count: data[i].comments,
                         created_at: data[i].created_at,
                         html_url: data[i].html_url,
-                        is_pr: (typeof data[i].pull_request !== "undefined"),
+                        is_pr: typeof data[i].pull_request !== 'undefined',
                         number: data[i].number,
                         state: data[i].state,
                         title: data[i].title,
-                        user_login: data[i].user?.login
+                        user_login: data[i].user?.login,
                     };
                     if (issue.is_pr === true) {
                         issue.reviews = [];
@@ -235,14 +230,14 @@ function run() {
                     afterFetch();
                 }
             })
-            .catch(error => console.error(error))
+            .catch((error) => console.error(error));
     }
 
     function fetchRepo() {
         //console.debug(`https://api.github.com/repos/${repo.full_name}`)
         fetch(`https://api.github.com/repos/${repo.full_name}`)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 //console.debug(data) // Prints result from `response.json()` in getRequest
                 repo.has_issues = data.has_issues;
                 repo.open_issues_count = data.open_issues_count;
@@ -256,18 +251,18 @@ function run() {
                     afterFetch();
                 }
             })
-            .catch(error => console.error(error))
+            .catch((error) => console.error(error));
     }
 
     function jsonToMarkdown() {
-        let md = "";
+        let md = '';
 
         md += `# [${repo.full_name}](${repo.html_url})\n\n`;
         md += `> number of open issues: ${repo.open_issues_count}\n\n`;
 
         for (let i in repo.issues) {
             let issue = repo.issues[i];
-            md += `## ${issue.is_pr ? "PR" : "Issue"} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
+            md += `## ${issue.is_pr ? 'PR' : 'Issue'} ${issue.number} - [${issue.title}](${issue.html_url})\n\n`;
             md += `> state: ${issue.state} opened by: ${issue.user_login} on: ${issue.created_at}\n\n`;
             md += `${issue.body}\n\n`;
 
@@ -289,7 +284,6 @@ function run() {
                         }
                     }
                 }
-
             }
 
             if (issue.comments_count > 0) {
@@ -310,50 +304,50 @@ function run() {
     function render(markdown) {
         const HTML5_BEGIN = `
 <!DOCTYPE html>
-<html lang="en" data-color-mode="dark" data-light-theme="light" data-dark-theme="${theme_light ? "light" : "dark"}">
+<html lang="en" data-color-mode="dark" data-light-theme="light" data-dark-theme="${theme_light ? 'light' : 'dark'}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>${GM_getResourceText("PRIMER_CSS")}</style>
-    <style>${GM_getResourceText(theme_light ? "PRIMER_CSS_SYNTAX_LIGHT" : "PRIMER_CSS_SYNTAX_DARK")}</style>
+    <style>${GM_getResourceText('PRIMER_CSS')}</style>
+    <style>${GM_getResourceText(theme_light ? 'PRIMER_CSS_SYNTAX_LIGHT' : 'PRIMER_CSS_SYNTAX_DARK')}</style>
     <title>Issues - ${repo.full_name}</title>
 </head>
 <body>
     <div id="readme" class="Box md js-code-block-container Box--responsive">
 		<div data-target="readme-toc.content" class="Box-body px-5 pb-5">
 	    	<article class="markdown-body entry-content container-lg" itemprop="text">
-        `
+        `;
         const HTML5_END = `
             </article>
         </div>
     </div>
 </body>
 </html>
-        `
+        `;
         let fetch_init = {
-            method: "POST",
+            method: 'POST',
             header: {
-                "accept": "application/vnd.github.v3+json"
+                accept: 'application/vnd.github.v3+json',
             },
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "mode": "markdown",
-                "text": markdown
-            })
+                mode: 'markdown',
+                text: markdown,
+            }),
         };
 
         fetch(`https://api.github.com/markdown`, fetch_init)
-            .then(response => response.text())
-            .then(data => {
+            .then((response) => response.text())
+            .then((data) => {
                 let blobrend = new Blob([`${HTML5_BEGIN}\n${data}\n${HTML5_END}`], {
-                    type: "text/plain;charset=utf-8"
+                    type: 'text/plain;charset=utf-8',
                 });
                 window.saveAs(blobrend, `${GH_OWNER}_${GH_REPO}_issues_rendered.html`);
             })
-            .catch(err => {
+            .catch((err) => {
                 alert(err);
             });
     }

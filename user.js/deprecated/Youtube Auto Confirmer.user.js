@@ -17,14 +17,12 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
-var msgs = ["Video paused. Continue watching?", "Vidéo mise en pause. Poursuivre la lecture?"];
-
+var msgs = ['Video paused. Continue watching?', 'Vidéo mise en pause. Poursuivre la lecture?'];
 
 // **************************************************
 // **********         S C R I P T          **********
@@ -35,7 +33,7 @@ setInterval(function () {
     for (let el of els) {
         for (let msg of msgs) {
             if (el.innerText === msg) {
-                el.parentNode.parentNode.parentNode.querySelector('#confirm-button').click()
+                el.parentNode.parentNode.parentNode.querySelector('#confirm-button').click();
             }
         }
     }

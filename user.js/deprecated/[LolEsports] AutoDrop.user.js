@@ -18,33 +18,32 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
-    var closeRewardDrop = function (){
+    var closeRewardDrop = function () {
         setTimeout(function () {
-            if (document.querySelector('.RewardsDropsOverlay .close')){
+            if (document.querySelector('.RewardsDropsOverlay .close')) {
                 console.log('%c Drop overlay closed! ', 'background: GhostWhite; color: DarkRed');
                 document.querySelector('.RewardsDropsOverlay .close').click();
                 lookForDrop();
-            }else{
+            } else {
                 closeRewardDrop();
             }
-        }, .5 * 1000);
+        }, 0.5 * 1000);
     };
 
-    var lookForDrop = function() {
+    var lookForDrop = function () {
         setTimeout(function () {
-            if (document.querySelector('.InformNotifications .drops-fulfilled')){
+            if (document.querySelector('.InformNotifications .drops-fulfilled')) {
                 console.log('%c Drop collected! ', 'background: GhostWhite; color: DarkGreen');
                 document.querySelector('.InformNotifications .drops-fulfilled .text').click();
                 closeRewardDrop();
-            }else{
+            } else {
                 lookForDrop();
             }
         }, 10 * 1000);
     };
 
     lookForDrop();
-
 })();

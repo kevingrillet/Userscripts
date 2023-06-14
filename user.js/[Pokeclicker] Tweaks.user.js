@@ -18,31 +18,30 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // Less animations
-    GM_addStyle(".animated-currency { display: none; }");
-    GM_addStyle(".text-danger { display: inline !important; }");
-
+    GM_addStyle('.animated-currency { display: none; }');
+    GM_addStyle('.text-danger { display: inline !important; }');
 
     // Nofication
     var observer,
-        elAchievementTrackerProgressBar = document.querySelector("#achivementTrackerContainer .progress-bar"),
+        elAchievementTrackerProgressBar = document.querySelector('#achivementTrackerContainer .progress-bar'),
         elPlayer = document.createElement('audio');
     // elPlayer.src = 'https://notificationsounds.com/storage/sounds/file-sounds-1229-my-work-is-done.mp3';
     elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
 
-    var onMutate = function(mutationsList) {
+    var onMutate = function (mutationsList) {
         mutationsList.forEach(() => {
             //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)));
-            if (Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) === 100){
+            if (Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) === 100) {
                 //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) + " DING!");
                 elPlayer.play();
             }
-        })
+        });
     };
     observer = new MutationObserver(onMutate);
-    observer.observe(elAchievementTrackerProgressBar, {attributes: true});
+    observer.observe(elAchievementTrackerProgressBar, { attributes: true });
     // observer.disconnect();
 })();

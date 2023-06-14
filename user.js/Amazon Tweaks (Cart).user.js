@@ -17,20 +17,18 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
 var cleanUI = true; // remove crap ui
 
-
 // **************************************************
 // **********         D E L E T E          **********
 // **************************************************
 function deleteAll() {
-    document.querySelectorAll(':scope #sc-active-cart .sc-action-delete').forEach(e => {
+    document.querySelectorAll(':scope #sc-active-cart .sc-action-delete').forEach((e) => {
         e.firstElementChild.firstElementChild.click();
     });
 }
@@ -39,11 +37,10 @@ function deleteAll() {
 // **********           S A V E            **********
 // **************************************************
 function saveAll() {
-    document.querySelectorAll(':scope #sc-active-cart .sc-action-save-for-later').forEach(e => {
+    document.querySelectorAll(':scope #sc-active-cart .sc-action-save-for-later').forEach((e) => {
         e.firstElementChild.firstElementChild.click();
     });
 }
-
 
 // **************************************************
 // **********             U I              **********
@@ -65,24 +62,27 @@ function setUI() {
     </span>`;
 
     document.querySelector('.sc-cart-header').insertBefore(el, document.querySelector('.sc-cart-header').firstElementChild);
-    el.querySelector('#my_delete_all').onclick = function () { deleteAll(); };
-    el.querySelector('#my_save_all').onclick = function () { saveAll(); };
+    el.querySelector('#my_delete_all').onclick = function () {
+        deleteAll();
+    };
+    el.querySelector('#my_save_all').onclick = function () {
+        saveAll();
+    };
 }
 
 function removeCrap() {
     // Header
-    document.querySelector('#nav-main').style.display = "none";
-    document.querySelector('#nav-progressive-subnav').style.display = "none";
-    document.querySelector('#sc-new-upsell').style.display = "none";
+    document.querySelector('#nav-main').style.display = 'none';
+    document.querySelector('#nav-progressive-subnav').style.display = 'none';
+    document.querySelector('#sc-new-upsell').style.display = 'none';
     // Footer
-    document.querySelector('#sc-rec-bottom').style.display = "none";
-    document.querySelector('#rhf').style.display = "none";
-    document.querySelector('.navAccessibility').style.display = "none";
-    document.querySelector('.navFooterLogoLine').style.display = "none";
-    document.querySelector('.navFooterPadItemLine').style.display = "none";
-    document.querySelector('.navFooterDescLine').style.display = "none";
+    document.querySelector('#sc-rec-bottom').style.display = 'none';
+    document.querySelector('#rhf').style.display = 'none';
+    document.querySelector('.navAccessibility').style.display = 'none';
+    document.querySelector('.navFooterLogoLine').style.display = 'none';
+    document.querySelector('.navFooterPadItemLine').style.display = 'none';
+    document.querySelector('.navFooterDescLine').style.display = 'none';
 }
-
 
 // **************************************************
 // **********       O B S E R V E R        **********
@@ -90,15 +90,17 @@ function removeCrap() {
 // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
 
 // Callback function to execute when mutations are observed
-const callback = function(mutationsList) {
+const callback = function (mutationsList) {
     // Use traditional 'for loops' for IE 11
-    for(const mutation of mutationsList) {
-        for(const node of mutation.addedNodes) {
-            if (node.classList
-                && node.classList.contains('a-row')
-                && node.classList.contains('sc-subtotal')
-                && node.classList.contains('sc-subtotal-activecart')) {
-                run()
+    for (const mutation of mutationsList) {
+        for (const node of mutation.addedNodes) {
+            if (
+                node.classList &&
+                node.classList.contains('a-row') &&
+                node.classList.contains('sc-subtotal') &&
+                node.classList.contains('sc-subtotal-activecart')
+            ) {
+                run();
             }
         }
     }
@@ -108,8 +110,6 @@ const callback = function(mutationsList) {
 const observer = new MutationObserver(callback);
 // Start observing the target node for configured mutations
 observer.observe(document.querySelector('#sc-active-cart'), { attributes: true, childList: true, subtree: true });
-
-
 
 // **************************************************
 // **********       L I S T E N E R        **********

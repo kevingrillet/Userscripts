@@ -18,13 +18,13 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     var observer;
     var elToObserve;
 
-    var goLive = function() {
+    var goLive = function () {
         if (document.querySelector('.EventShow .mondial')) {
             document.querySelector('.EventShow .mondial').click();
             if (observer) {
@@ -33,23 +33,23 @@
         }
     };
 
-    var onMutate = function() {
+    var onMutate = function () {
         goLive();
     };
 
-    var findElement = function() {
+    var findElement = function () {
         setTimeout(function () {
-            if (document.querySelector('.Event')){
+            if (document.querySelector('.Event')) {
                 goLive();
                 elToObserve = document.querySelector('.Event');
                 observer = new MutationObserver(onMutate);
-                observer.observe(elToObserve, {attributes: true, childList: true});
+                observer.observe(elToObserve, { attributes: true, childList: true });
                 console.log('%c Observer added! ', 'background: GhostWhite; color: DarkGreen');
                 console.log(observer);
-            }else{
+            } else {
                 findElement();
             }
-        }, .5 * 1000);
+        }, 0.5 * 1000);
     };
     findElement();
 })();

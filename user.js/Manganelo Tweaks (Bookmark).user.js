@@ -27,8 +27,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
@@ -71,7 +70,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_title: 'item-title', // class for Viewed / Current row
             // class_user_notif: 'user-notification', // class to copy number of notifs from home page
             full_manga_url: 'https://manganelo.com/manga/', // to complete
-            tag_manga_rank: '[property="v:average"]' // to find rate on manga page
+            tag_manga_rank: '[property="v:average"]', // to find rate on manga page
         },
         {
             name: 'Manganato', // Name
@@ -99,7 +98,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_title: 'user-bookmark-item-right', // class for Viewed / Current row
             // class_user_notif: 'user-notification', // class to copy number of notifs from home page
             full_manga_url: 'https://manganato.com/', // to complete
-            tag_manga_rank: '[property="v:average"]' // to find rate on manga page
+            tag_manga_rank: '[property="v:average"]', // to find rate on manga page
         },
         {
             name: 'M.Manganelo', // Name
@@ -127,10 +126,9 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             class_title: 'user-bookmark-item-right', // class for Viewed / Current row
             // class_user_notif: 'user-notification', // class to copy number of notifs from home page
             full_manga_url: 'https://m.manganelo.com/', // to complete
-            tag_manga_rank: '[property="v:average"]' // to find rate on manga page
+            tag_manga_rank: '[property="v:average"]', // to find rate on manga page
         },
     ];
-
 
 // **************************************************
 // **********      V A R I A B L E S       **********
@@ -192,15 +190,13 @@ env.some(function (e) {
     }
 });
 
-var
-	// domain = window.location.hostname,
+var // domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
     // eslint-disable-next-line no-unused-vars
     scrollInterval,
     // sortStyleInjected = false,
     timerStart = Date.now();
-
 
 // **************************************************
 // **********           M E N U            **********
@@ -240,9 +236,15 @@ function addMenu() {
     `;
 
     // document.querySelector('.export').onclick = function () { exportBookmark(); };
-    document.querySelector('.sort').onclick = function () { letsSort(); };
-    document.querySelector('.refresh').onclick = function () { doForceRefresh(); };
-    document.querySelector('.delete').onclick = function () { deleteValues(); };
+    document.querySelector('.sort').onclick = function () {
+        letsSort();
+    };
+    document.querySelector('.refresh').onclick = function () {
+        doForceRefresh();
+    };
+    document.querySelector('.delete').onclick = function () {
+        deleteValues();
+    };
 }
 
 function addMenuOnBookmark() {
@@ -269,11 +271,12 @@ function addMenuOnBookmark() {
     `;
 
             //el.querySelector('.bookmark_download').onclick = function () { prepareBookmarkDownload(bm[j]); };
-            el.querySelector('.bookmark_refresh').onclick = function () { doBookmarkRefresh(bm[j]); };
+            el.querySelector('.bookmark_refresh').onclick = function () {
+                doBookmarkRefresh(bm[j]);
+            };
         }
     }
 }
-
 
 // **************************************************
 // **********      S C R O L L I N G       **********
@@ -281,13 +284,12 @@ function addMenuOnBookmark() {
 function startScrolling(value) {
     scrollInterval = setInterval(function () {
         window.scrollBy(0, value);
-    }, scrollSpeed)
+    }, scrollSpeed);
 }
 function stopScrolling() {
     clearInterval(scroll);
     scrollInterval = null;
 }
-
 
 // **************************************************
 // **********       D O W N L O A D        **********
@@ -383,7 +385,6 @@ function stopScrolling() {
 //     }, .5 * 1000);
 // }
 
-
 // **************************************************
 // **********         E X P O R T          **********
 // **************************************************
@@ -469,7 +470,6 @@ function stopScrolling() {
 //     }
 // }
 
-
 // **************************************************
 // **********     M O V E   R I G H T      **********
 // **************************************************
@@ -483,15 +483,15 @@ function moveRight() {
 .panel-topview {
     margin-top: 10px;
 }
-`
-    );
+`);
     if (moveContainerTop) moveTop();
 }
 
 function moveTop() {
-    document.querySelector(CST_CLASS_CONTAINER_LEFT).parentNode.insertBefore(document.querySelector(CST_CLASS_SLIDER), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
+    document
+        .querySelector(CST_CLASS_CONTAINER_LEFT)
+        .parentNode.insertBefore(document.querySelector(CST_CLASS_SLIDER), document.querySelector(CST_CLASS_CONTAINER_RIGHT));
 }
-
 
 // **************************************************
 // **********      H I D E   C R A P       **********
@@ -500,7 +500,6 @@ function doHideCrap() {
     document.querySelector(CST_CLASS_CONTAINER_RIGHT).style.display = 'none';
     document.querySelector(CST_CLASS_SLIDER).style.display = 'none';
 }
-
 
 // **************************************************
 // **********           S O R T            **********
@@ -535,7 +534,7 @@ function sortTable() {
     while (switching) {
         switching = false;
         rows = table.querySelectorAll(CST_CLASS_BOOKMARK);
-        for (i = 0; i < (rows.length - 1); i++) {
+        for (i = 0; i < rows.length - 1; i++) {
             shouldSwitch = false;
             x = Number(rows[i].querySelector('.to-read').innerText) || 0;
             y = Number(rows[i + 1].querySelector('.to-read').innerText) || 0;
@@ -550,7 +549,6 @@ function sortTable() {
         }
     }
 }
-
 
 // **************************************************
 // **********        T O   R E A D         **********
@@ -577,14 +575,17 @@ ${CST_CLASS_BOOKMARK} {
     font-size: 12px;
     line-height: 20px;
 }
-`
-    );
+`);
     let bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
     for (let j = 0; j < bm.length; j++) {
         if (bm[j].querySelector(CST_CLASS_NAME)) {
-            let lastViewed = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(`:scope ${CST_CLASS_TITLE} a`)[1].href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') : null,
-                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[2] ? bm[j].querySelectorAll(`:scope ${CST_CLASS_TITLE} a`)[2].href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') : null;
+            let lastViewed = bm[j].querySelectorAll(CST_CLASS_TITLE)[1]
+                    ? bm[j].querySelectorAll(`:scope ${CST_CLASS_TITLE} a`)[1].href.split('/')[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')
+                    : null,
+                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[2]
+                    ? bm[j].querySelectorAll(`:scope ${CST_CLASS_TITLE} a`)[2].href.split('/')[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')
+                    : null;
 
             if (lastViewed && current) {
                 let el = document.createElement('em');
@@ -595,7 +596,6 @@ ${CST_CLASS_BOOKMARK} {
         }
     }
 }
-
 
 // **************************************************
 // **********     U S E R   N O T I F      **********
@@ -612,7 +612,6 @@ ${CST_CLASS_BOOKMARK} {
 //     xhr.send();
 // }
 
-
 // **************************************************
 // **********        S T O R A G E         **********
 // **************************************************
@@ -622,7 +621,7 @@ function diff_weeks(dt1, dt2) {
 }
 
 function deleteValues(force) {
-    if (force || confirm("Are you sure you want to empty cache?")) {
+    if (force || confirm('Are you sure you want to empty cache?')) {
         let keys = GM_listValues();
         console.debug(`Values to delete:`);
         console.debug(keys);
@@ -640,12 +639,12 @@ function doRequestData(url) {
     xhr.onload = function () {
         if (xhr.status >= 200 && xhr.status < 400) {
             let resp = xhr.responseXML,
-                tag = resp.querySelectorAll(CST_CLASS_BTN + " a")[1].href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
+                tag = resp.querySelectorAll(CST_CLASS_BTN + ' a')[1].href.split('/')[CST_CHAPTER_URL_SPLIT_MANGA],
                 value = {
                     date: new Date(),
                     adult: (resp.querySelector(CST_CLASS_MANGA_ADULT)?.innerHTML.match(/Adult/gm) || []).length,
                     hype: resp.querySelector(`:scope ${CST_CLASS_MANGA_HYPE} em`) ? resp.querySelector(`:scope ${CST_CLASS_MANGA_HYPE} em`).classList[0] : null,
-                    rank: resp.querySelector(`em${CST_TAG_MANGA_RANK}`)?.textContent
+                    rank: resp.querySelector(`em${CST_TAG_MANGA_RANK}`)?.textContent,
                 };
 
             GM_setValue(`${CST_NAME}_${tag}`, value);
@@ -653,7 +652,7 @@ function doRequestData(url) {
             if (showHype && value.hype) setHype(tag, value.hype);
             if (showRank && value.rank) setRank(tag, value.rank);
 
-            console.debug(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + " a")[1].text.replace(/[\r\n]/gm, '')}`);
+            console.debug(`Value updated for ${resp.querySelectorAll(CST_CLASS_BTN + ' a')[1].text.replace(/[\r\n]/gm, '')}`);
             console.debug(value);
         }
     };
@@ -662,17 +661,15 @@ function doRequestData(url) {
 
 function getData(elTmp) {
     // 404 / CORS
-    if (!elTmp.querySelector(CST_CLASS_NAME).href.includes(`${CST_FULL_MANGA_URL}`)){
+    if (!elTmp.querySelector(CST_CLASS_NAME).href.includes(`${CST_FULL_MANGA_URL}`)) {
         console.debug(`Value skiped for ${elTmp.querySelector(CST_CLASS_NAME).text} > ${elTmp.querySelector(CST_CLASS_NAME).href}`);
-        return
+        return;
     }
 
-    let tag = elTmp.querySelector(CST_CLASS_NAME).href.split("/")[CST_CHAPTER_URL_SPLIT_MANGA],
+    let tag = elTmp.querySelector(CST_CLASS_NAME).href.split('/')[CST_CHAPTER_URL_SPLIT_MANGA],
         value = GM_getValue(`${CST_NAME}_${tag}`, null);
 
-    if ((!forceRefresh && value
-        && value.date && diff_weeks(new Date(value.date), new Date()) < 1
-    )) {
+    if (!forceRefresh && value && value.date && diff_weeks(new Date(value.date), new Date()) < 1) {
         if (showAdult && value.adult) setAdult(tag, value.adult);
         if (showHype && value.hype) setHype(tag, value.hype);
         if (showRank && value.rank) setRank(tag, value.rank);
@@ -683,16 +680,24 @@ function getData(elTmp) {
 
 function loadData() {
     // first remove all tags
-    document.querySelectorAll('.adult').forEach(i => { i.parentElement.remove() });
-    document.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
-    document.querySelectorAll('.item-hot').forEach(i => { i.remove() });
-    document.querySelectorAll('.item-ss').forEach(i => { i.remove() });
+    document.querySelectorAll('.adult').forEach((i) => {
+        i.parentElement.remove();
+    });
+    document.querySelectorAll('.genres-item-rate').forEach((i) => {
+        i.remove();
+    });
+    document.querySelectorAll('.item-hot').forEach((i) => {
+        i.remove();
+    });
+    document.querySelectorAll('.item-ss').forEach((i) => {
+        i.remove();
+    });
 
     let bm = document.querySelectorAll(CST_CLASS_BOOKMARK);
 
     if (GM_getValue('app_version', 0) !== CST_APP_VERSION) {
         deleteValues(true);
-        GM_setValue('app_version', CST_APP_VERSION)
+        GM_setValue('app_version', CST_APP_VERSION);
     }
 
     for (let j = 0; j < bm.length; j++) {
@@ -713,10 +718,18 @@ function doForceRefresh() {
 
 function doBookmarkRefresh(e) {
     console.debug(`Bookmark to refresh: ${e.querySelector(CST_CLASS_NAME).text}`);
-    e.querySelectorAll('.adult').forEach(i => { i.parentElement.remove() });
-    e.querySelectorAll('.genres-item-rate').forEach(i => { i.remove() });
-    e.querySelectorAll('.item-hot').forEach(i => { i.remove() });
-    e.querySelectorAll('.item-ss').forEach(i => { i.remove() });
+    e.querySelectorAll('.adult').forEach((i) => {
+        i.parentElement.remove();
+    });
+    e.querySelectorAll('.genres-item-rate').forEach((i) => {
+        i.remove();
+    });
+    e.querySelectorAll('.item-hot').forEach((i) => {
+        i.remove();
+    });
+    e.querySelectorAll('.item-ss').forEach((i) => {
+        i.remove();
+    });
     doRequestData(e.querySelector(CST_CLASS_NAME).href);
 }
 
@@ -743,18 +756,17 @@ function addRank() {
         padding: 0;
         color: #f9d932;
     }
-`
-    );
+`);
 }
 
 function setRank(tag, value) {
-    let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
+    let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement
+            .parentElement,
         el = document.createElement('em');
     el.classList.add('genres-item-rate');
     el.innerHTML = `${value}`;
     elImg.appendChild(el);
 }
-
 
 // **************************************************
 // **********           H Y P E            **********
@@ -793,19 +805,18 @@ function addHype() {
     .item-ss:before{
         content: "SS";
     }
-`
-    );
+`);
 }
 
 function setHype(tag, value) {
-    if (value && value !== "" && value !== "img-loading") {
-        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
+    if (value && value !== '' && value !== 'img-loading') {
+        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement
+                .parentElement,
             el = document.createElement('em');
         el.classList.add(`${value}`);
         elImg?.appendChild(el);
     }
 }
-
 
 // **************************************************
 // **********          A D U L T           **********
@@ -819,13 +830,13 @@ function addAdult() {
         font-size: 1em;
         color: #f783ac;
     }
-`
-    );
+`);
 }
 
 function setAdult(tag, value) {
     if (value > 0) {
-        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement.parentElement,
+        let elImg = document.querySelector(`:scope ${CST_CLASS_BOOKMARK} ${CST_CLASS_NAME}[href="${CST_FULL_MANGA_URL}${tag}"]`).parentElement.parentElement
+                .parentElement,
             elDiv = elImg?.appendChild(document.createElement('div'));
         elDiv.innerHTML = `
         <span class="adult" title="Adult">
@@ -834,7 +845,6 @@ function setAdult(tag, value) {
         `;
     }
 }
-
 
 // **************************************************
 // **********       L I S T E N E R        **********
@@ -865,7 +875,7 @@ function run() {
     // ** Data
     if (showAdult || showHype || showRank) loadData();
 
-    document.addEventListener('keydown', event => {
+    document.addEventListener('keydown', (event) => {
         if (document.activeElement !== document.querySelector(CST_CLASS_SEARCH)) {
             if (event.ctrlKey || event.code === 'Meta') {
                 return;
@@ -875,25 +885,21 @@ function run() {
             // }
             else if (event.code === 'KeyS' && event.shiftKey) {
                 letsSort();
-            }
-            else if (event.code === 'KeyT' && event.shiftKey) {
+            } else if (event.code === 'KeyT' && event.shiftKey) {
                 doForceRefresh();
-            }
-            else if (event.code === 'Delete') {
+            } else if (event.code === 'Delete') {
                 deleteValues();
-            }
-            else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
+            } else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
                 stopScrolling();
                 startScrolling(-scrollValue);
-            }
-            else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
+            } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
                 stopScrolling();
                 startScrolling(scrollValue);
             }
         }
     });
 
-    document.addEventListener('keyup', event => {
+    document.addEventListener('keyup', (event) => {
         if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ' || event.code === 'ArrowDown' || event.code === 'KeyS') {
             stopScrolling();
         }
@@ -904,16 +910,16 @@ function run() {
     });
 }
 
-var init = function() {
+var init = function () {
     setTimeout(function () {
-        if (document.querySelector(CST_CLASS_BOOKMARK)){
+        if (document.querySelector(CST_CLASS_BOOKMARK)) {
             run();
             if (!pageCount) {
-                pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, ''))
+                pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, ''));
             }
-        }else{
+        } else {
             init();
         }
-    }, .5 * 1000);
+    }, 0.5 * 1000);
 };
 init();

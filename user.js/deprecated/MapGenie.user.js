@@ -18,15 +18,15 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     window.addEventListener('load', function () {
-        if (document.querySelector('#blobby-left') !== 'undefined'){
-            document.querySelector('#blobby-left').style.display = 'none'
+        if (document.querySelector('#blobby-left') !== 'undefined') {
+            document.querySelector('#blobby-left').style.display = 'none';
         }
-        if (document.querySelector('#onetrust-reject-all-handler') !== 'undefined'){
-            document.querySelector('#onetrust-reject-all-handler').click()
+        if (document.querySelector('#onetrust-reject-all-handler') !== 'undefined') {
+            document.querySelector('#onetrust-reject-all-handler').click();
         }
         //document.querySelector(':scope #right-sidebar .right-arrow').click()
     });

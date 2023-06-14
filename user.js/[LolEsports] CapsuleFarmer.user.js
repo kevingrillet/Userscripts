@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.13
+// @version       0.14
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -21,8 +21,8 @@
 
 (function () {
     'use strict';
-    const cls_filter = ['single', 'live', 'event', 'first', 'middle', 'last', 'link']
-    const loot_err = ['Les récompenses ont rencontré un problème.', 'Something went wrong with Rewards']
+    const cls_filter = ['single', 'live', 'event', 'first', 'middle', 'last', 'link'];
+    const loot_err = ['Les récompenses ont rencontré un problème.', 'Something went wrong with Rewards'];
 
     /****************************************************************************************************
      ******************************************** VARIABLES *********************************************
@@ -33,9 +33,9 @@
     var errLookForDrop = 0;
     var tryLookForDrop = 0;
     var nbLoot = 0;
-    var arr = GM_getValue("arr", new Array());
+    var arr = GM_getValue('arr', new Array());
     var map = new Map(arr.map((obj) => [obj.tournament, obj.drop]));
-    var totalNbLoot = GM_getValue("totalNbLoot", 0);
+    var totalNbLoot = GM_getValue('totalNbLoot', 0);
     var observer;
     var elToObserve;
 
@@ -146,7 +146,7 @@
             } else {
                 closeRewardDrop();
             }
-        }, .5 * 1000);
+        }, 0.5 * 1000);
     }
 
     function lookForDrop() {
@@ -168,7 +168,7 @@
                     tryLookForDrop = 0;
                     nbLoot += 1;
                     totalNbLoot += 1;
-                    GM_setValue("totalNbLoot", totalNbLoot);
+                    GM_setValue('totalNbLoot', totalNbLoot);
                     closeRewardDrop();
                 } else if (window.location.href.includes('https://lolesports.com/vods')) {
                     // if live did end, get back to schedule
@@ -194,14 +194,23 @@
     var goLive = function () {
         if (document.querySelector('a.live')) {
             let allLives = Array.from(document.querySelectorAll('a.live'));
-            let firstMatch = classEvents.filter(cls => allLives.some(lv => lv.classList.contains(cls)))[0] || '';
+            let firstMatch = classEvents.filter((cls) => allLives.some((lv) => lv.classList.contains(cls)))[0] || '';
             if (firstMatch !== '') firstMatch = '.' + firstMatch;
 
             if (observer) {
                 observer.disconnect();
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
             }
-            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch !== '' ? firstMatch.slice(1) : Array.from(document.querySelector('a.live').classList).filter(cls => !cls_filter.includes(cls)).toString()}] `, 'background: GhostWhite; color: DarkGreen');
+            console.debug(
+                `${formatConsoleDate(new Date())}- %c Go live! [${
+                    firstMatch !== ''
+                        ? firstMatch.slice(1)
+                        : Array.from(document.querySelector('a.live').classList)
+                              .filter((cls) => !cls_filter.includes(cls))
+                              .toString()
+                }] `,
+                'background: GhostWhite; color: DarkGreen'
+            );
             window.location = document.querySelector(`a.live${firstMatch}`).href;
         }
     };
@@ -222,7 +231,7 @@
             } else {
                 findElement();
             }
-        }, .5 * 1000);
+        }, 0.5 * 1000);
     }
 
     /****************************************************************************************************
@@ -230,9 +239,10 @@
      ****************************************************************************************************/
     function arrayUpdate() {
         arr = new Array();
-        map.forEach((value, key) => arr.push({ tournament : key, drop: value }));
-        arr.sort(function(a,b) {
-            return b.drop-a.drop
+        map.forEach((value, key) => arr.push({ tournament: key, drop: value }));
+        arr.sort(function (a, b) {
+            if (a.drop !== b.drop) return b.drop - a.drop;
+            return a.tournament.localeCompare(b.tournament, 'en', { sensitivity: 'base' });
         });
     }
 
@@ -242,15 +252,17 @@
         // var seconds = date.getSeconds();
         // var milliseconds = date.getMilliseconds();
 
-        return '[' +
-            ((hour < 10) ? '0' + hour : hour) +
+        return (
+            '[' +
+            (hour < 10 ? '0' + hour : hour) +
             ':' +
-            ((minutes < 10) ? '0' + minutes : minutes) +
+            (minutes < 10 ? '0' + minutes : minutes) +
             // ':' +
             // ((seconds < 10) ? '0' + seconds: seconds) +
             // '.' +
             // ('00' + milliseconds).slice(-3) +
-            '] ';
+            '] '
+        );
     }
 
     function mapAdd(value = 1) {
@@ -269,7 +281,7 @@
         } else {
             map = new Map(
                 // eslint-disable-next-line no-unused-vars
-                [...map].filter(([_, value]) => value > 0 )
+                [...map].filter(([_, value]) => value > 0)
             );
         }
         mapSave();
@@ -283,7 +295,7 @@
 
     function mapSave() {
         arrayUpdate();
-        GM_setValue("arr", arr);
+        GM_setValue('arr', arr);
     }
 
     function whereAmI() {
@@ -299,7 +311,7 @@
             // } else if(window.location.href.includes('https://lolesports.com/vods')) {
             //     window.location = 'https://lolesports.com/schedule';
         } else {
-            console.error(`${formatConsoleDate(new Date())}- Unknown location: ${window.location}`)
+            console.error(`${formatConsoleDate(new Date())}- Unknown location: ${window.location}`);
         }
     }
 
@@ -307,7 +319,7 @@
         whereAmI();
     });
 
-    document.addEventListener('keydown', event => {
+    document.addEventListener('keydown', (event) => {
         if (event.code === 'KeyM') {
             mapPrint();
         } else if (event.code === 'KeyI') {

@@ -19,26 +19,24 @@
 // @run-at        document-start
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
 // **************************************************
 var doReward = false; //Launch 30 consecutives searches for easy 90Points / day
 
-
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
-if (doReward && (GM_getValue('dayDone', null) !== new Date().getDay())) {
+if (doReward && GM_getValue('dayDone', null) !== new Date().getDay()) {
     GM_setValue('dayDone', new Date().getDay());
     GM_setValue('search', 0);
     GM_setValue('toSearch', document.URL.match(/q=[^&]*/));
 }
 
 if (!doReward || GM_getValue('search', 31) > 30) {
-    window.location.assign(`https://google.com/search?${document.URL.match(/q=[^&]*/)}`)
+    window.location.assign(`https://google.com/search?${document.URL.match(/q=[^&]*/)}`);
 } else {
     if (GM_getValue('search') === 30) {
         window.location.assign(`https://www.bing.com/search?${GM_getValue('toSearch')}`);

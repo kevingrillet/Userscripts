@@ -18,8 +18,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
-
+'use strict';
 
 // **************************************************
 // **********   C A N   B E   E D I T E D  **********
@@ -28,39 +27,36 @@ var tcOption = 0,
     toOption = 2,
     oOption = 0;
 
-
 // **************************************************
 // **********      V A R I A B L E S       **********
 // **************************************************
-var CST_tcOptions = ["Afficher", "Masquer"],
-    CST_toOptions = ["Tout afficher", "Afficher mes trophées obtenus", "Afficher mes trophées manquants"],
-    CST_oOptions = ["Tri Console", "Tri Rang", "Tri Alphabétique", "Tri Date d'obtention", "Tri Pourcentage d'obtention"];
-
+var CST_tcOptions = ['Afficher', 'Masquer'],
+    CST_toOptions = ['Tout afficher', 'Afficher mes trophées obtenus', 'Afficher mes trophées manquants'],
+    CST_oOptions = ['Tri Console', 'Tri Rang', 'Tri Alphabétique', "Tri Date d'obtention", "Tri Pourcentage d'obtention"];
 
 // **************************************************
 // **********         S C R I P T          **********
 // **************************************************
 function doTropheeCaches() {
     var tc = document.querySelector(':scope #filter5 .dropdown-menu');
-    tc.querySelectorAll('.dropdown-item').forEach(e => {
+    tc.querySelectorAll('.dropdown-item').forEach((e) => {
         if (e.text === CST_tcOptions[tcOption || 0]) e.click();
     });
 }
 
 function doTropheeObtenus() {
     var to = document.querySelector(':scope #filter6 .dropdown-menu');
-    to.querySelectorAll('.dropdown-item').forEach(e => {
+    to.querySelectorAll('.dropdown-item').forEach((e) => {
         if (e.text === CST_toOptions[toOption || 0]) e.click();
     });
 }
 
 function doOrdre() {
     var o = document.querySelector(':scope #filter3 .dropdown-menu');
-    o.querySelectorAll('.dropdown-item').forEach(e => {
+    o.querySelectorAll('.dropdown-item').forEach((e) => {
         if (e.text === CST_oOptions[oOption || 0]) e.click();
     });
 }
-
 
 // **************************************************
 // **********       L I S T E N E R        **********

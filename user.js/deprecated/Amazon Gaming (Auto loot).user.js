@@ -17,10 +17,14 @@
 // @run-at        document-end
 // ==/UserScript==
 
-"use strict";
+(function () {
+    'use strict';
 
-window.addEventListener('load', function () {
-    //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').scrollIntoView();
-    //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').click();
-    document.querySelectorAll(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').forEach((e) => { e.click() });
-})
+    window.addEventListener('load', function () {
+        //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').scrollIntoView();
+        //document.querySelector(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').click();
+        document.querySelectorAll(':scope div[data-a-target="offer-list-Game"] span[class="tw-button__text"]').forEach((e) => {
+            e.click();
+        });
+    });
+})();

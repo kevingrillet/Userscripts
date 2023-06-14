@@ -19,6 +19,8 @@
 // ==/UserScript==
 
 (function () {
+    'use strict';
+
     let uuid = Date.now().toString(36) + Math.random().toString(36).substring(2);
     let arr;
     let map;
@@ -26,23 +28,23 @@
     add_values(0);
 
     function add_values(value = 1) {
-        console.log(`Set ${(map.get(uuid) ?? 0) + value} to ${uuid}` );
+        console.log(`Set ${(map.get(uuid) ?? 0) + value} to ${uuid}`);
         map.set(uuid, (map.get(uuid) ?? 0) + value);
         update_array();
     }
 
     function clean_values() {
-        console.log("Clean")
+        console.log('Clean');
         map = new Map(
             // eslint-disable-next-line no-unused-vars
-            [...map].filter(([_, value]) => value > 0 )
+            [...map].filter(([_, value]) => value > 0)
         );
         update_array();
     }
 
     function load_values() {
-        console.log("Load")
-        arr = GM_getValue("arr", new Array())
+        console.log('Load');
+        arr = GM_getValue('arr', new Array());
         // map = GM_getValue("map", new Map())
         map = new Map();
         arr.forEach((obj) => {
@@ -51,47 +53,47 @@
     }
 
     function print_values() {
-        console.log("Print")
-        console.log("arr")
-        console.log(arr)
-        console.table(arr)
-        console.log("map")
-        console.log(map)
-        console.table(map)
+        console.log('Print');
+        console.log('arr');
+        console.log(arr);
+        console.table(arr);
+        console.log('map');
+        console.log(map);
+        console.table(map);
     }
 
     function reset_values() {
-        console.log("Reset")
+        console.log('Reset');
         arr = new Array();
         map = new Map();
     }
 
     function save_values() {
-        console.log(`Save` );
-        GM_setValue("map", map);
-        GM_setValue("arr", arr);
+        console.log(`Save`);
+        GM_setValue('map', map);
+        GM_setValue('arr', arr);
     }
 
     function update_array() {
         arr = new Array();
-        map.forEach((value, key) => arr.push({ key : key, value: value }));
-        arr.sort(function(a,b) {
-            return b.value-a.value
+        map.forEach((value, key) => arr.push({ key: key, value: value }));
+        arr.sort(function (a, b) {
+            return b.value - a.value;
         });
     }
 
-    document.addEventListener('keydown', event => {
+    document.addEventListener('keydown', (event) => {
         if (event.code === 'KeyA') {
             add_values();
-        }else if (event.code === 'KeyC') {
+        } else if (event.code === 'KeyC') {
             clean_values();
-        }else if (event.code === 'KeyL') {
+        } else if (event.code === 'KeyL') {
             load_values();
-        }else if (event.code === 'KeyP') {
+        } else if (event.code === 'KeyP') {
             print_values();
-        }else if (event.code === 'KeyR') {
+        } else if (event.code === 'KeyR') {
             reset_values();
-        }else if (event.code === 'KeyS') {
+        } else if (event.code === 'KeyS') {
             save_values();
         }
     });
