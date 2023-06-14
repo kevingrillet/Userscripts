@@ -18,10 +18,6 @@
 
 ## Amazon tweaks
 
-### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js)
-
-- Auto loot free games.
-
 ### Amazon tweaks - Cart [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Tweaks%20(Cart).user.js)
 
 - Delete all
@@ -52,8 +48,6 @@ Add warning to to repos without updates for more than 1/2 year.
 Export Issues.
 
 ## Google
-
-:warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
 ### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Google%20Search%20Ad%20Remover.user.js)
 

@@ -2,6 +2,10 @@
 
 ## Amazon tweaks
 
+### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Amazon%20Gaming%20(Auto%20loot).user.js)
+
+- Auto loot free games.
+
 ### Amazon tweaks - ToDo
 
 - Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
@@ -11,6 +15,8 @@
 ### ~~Google - Incognito~~ [![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/Google%20Incognito.user.js)
 
 ~~Open every docs.google.com link in incognito.~~
+
+:warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
 ## Manganelo tweaks
 

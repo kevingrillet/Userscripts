@@ -287,7 +287,7 @@ function startScrolling(value) {
     }, scrollSpeed);
 }
 function stopScrolling() {
-    clearInterval(scroll);
+    clearInterval(scrollInterval);
     scrollInterval = null;
 }
 
