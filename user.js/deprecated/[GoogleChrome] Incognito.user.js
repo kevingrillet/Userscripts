@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Google Incognito
+// @name          [GoogleChrome] Incognito
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Open google docs incognito
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Google%20Incognito.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Google%20Incognito.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[GoogleChrome]%20Incognito.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[GoogleChrome]%20Incognito.user.js
 
 // @match         *
 // @icon          https://www.google.com/s2/favicons?domain=google.com

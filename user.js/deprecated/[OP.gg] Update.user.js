@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          OP.gg (Update)
+// @name          [OP.gg] Update
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Auto-Update profile
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/OP.gg%20(Update).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/OP.gg%20(Update).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[OP.gg]%20Update.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[OP.gg]%20Update.user.js
 
 // @match         *://euw.op.gg/summoner/userName=*
 // @icon          https://www.google.com/s2/favicons?domain=op.gg

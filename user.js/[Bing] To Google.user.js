@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Bing to Google
+// @name          [Bing] to Google
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Redirect the search to google
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Bing%20To%20Google.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Bing%20To%20Google.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Bing]%20To%20Google.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Bing]%20To%20Google.user.js
 
 // @match         *://*.bing.com/search?*
 // @icon          https://www.google.com/s2/favicons?domain=bing.fr

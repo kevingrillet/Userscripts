@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Amazon Tweaks (Cart)
+// @name          [Amazon] Tweaks (Cart)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Delete / Save for later All.
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Tweaks%20(Cart).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Amazon%20Tweaks%20(Cart).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Cart).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Cart).user.js
 
 // @match         *://www.amazon.fr/gp/cart/view.html*
 // @icon          https://www.google.com/s2/favicons?domain=amazon.fr

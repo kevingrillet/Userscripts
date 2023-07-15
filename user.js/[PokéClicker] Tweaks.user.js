@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          [Pokeclicker] Tweaks
+// @name          [PokéClicker] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Less animations, achievement tracker sound notification
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Pokeclicker]%20Tweaks.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[PokéClicker]%20Tweaks.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[PokéClicker]%20Tweaks.user.js
 
 // @match         https://www.pokeclicker.com/
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=pokeclicker.com

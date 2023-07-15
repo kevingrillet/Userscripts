@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Manganelo Tweaks (Bookmark)
+// @name          [Manganelo] Tweaks (Bookmark)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Export Bookmark, repair user-notification, ...
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Manganelo%20Tweaks%20(Bookmark).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
 // @match         *://manganato.com/bookmark*
@@ -50,7 +50,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter_', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '5', // position in the href
             chapter_url_split_manga: '4', // position in the href
-            // class_blue: 'page-blue', // class to find active page
+            class_blue: 'page-blue', // class to find active page
             class_bookmark: 'bookmark-item', // class bookmark
             class_bookmark_panel: 'panel-bookmark', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -78,7 +78,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter-', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '4', // position in the href
             chapter_url_split_manga: '3', // position in the href
-            // class_blue: 'page-blue', // class to find active page
+            class_blue: 'page-blue', // class to find active page
             class_bookmark: 'user-bookmark-item', // class bookmark
             class_bookmark_panel: 'user-bookmark-content', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -106,7 +106,7 @@ var moveContainerRight = true, // Move MOST POPULAR MANGA & MANGA BY GENRES to b
             chapter_url: 'chapter-', // to remove chapter from link to do proper count
             chapter_url_split_chapter: '4', // position in the href
             chapter_url_split_manga: '3', // position in the href
-            // class_blue: 'page-blue', // class to find active page
+            class_blue: 'page-blue', // class to find active page
             class_bookmark: 'user-bookmark-item', // class bookmark
             class_bookmark_panel: 'user-bookmark-content', // class contain all bookmarks
             class_btn: 'panel-breadcrumb', // class to add icon
@@ -138,7 +138,7 @@ var CST_APP_VERSION = GM_info.script.version,
     CST_CHAPTER_URL = null,
     CST_CHAPTER_URL_SPLIT_CHAPTER = null,
     CST_CHAPTER_URL_SPLIT_MANGA = null,
-    // CST_CLASS_BLUE = null,
+    CST_CLASS_BLUE = null,
     CST_CLASS_BOOKMARK = null,
     CST_CLASS_BOOKMARK_PANEL = null,
     CST_CLASS_BTN = null,
@@ -166,7 +166,7 @@ env.some(function (e) {
         CST_CHAPTER_URL = e.chapter_url;
         CST_CHAPTER_URL_SPLIT_CHAPTER = e.chapter_url_split_chapter;
         CST_CHAPTER_URL_SPLIT_MANGA = e.chapter_url_split_manga;
-        // CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
+        CST_CLASS_BLUE = '.' + e.class_blue.replace(' ', '.');
         CST_CLASS_BOOKMARK = '.' + e.class_bookmark.replace(' ', '.');
         CST_CLASS_BOOKMARK_PANEL = '.' + e.class_bookmark_panel.replace(' ', '.');
         CST_CLASS_BTN = '.' + e.class_btn.replace(' ', '.');
@@ -190,7 +190,7 @@ env.some(function (e) {
     }
 });
 
-var // domain = window.location.hostname,
+var domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
     // eslint-disable-next-line no-unused-vars
@@ -216,11 +216,13 @@ function addMenu() {
 
     let elDiv = document.querySelector(CST_CLASS_BTN).appendChild(document.createElement('div'));
     elDiv.id = 'my_export';
-    // elDiv.innerHTML = `
-    // <span class="export" title="Export (Shift + E)">
-    //     <a><i class="fas fa-fw fa-file-download" ></i></a>
-    // </span>
-    // `;
+    if (['manganato.com', 'manganelo.com'].includes(domain)) {
+        elDiv.innerHTML += `
+        <span class="export" title="Export (Shift + E)">
+            <a><i class="fas fa-fw fa-file-download" ></i></a>
+        </span>
+        `;
+    }
     elDiv.innerHTML += `
     <span class="sort" title="Sort (Shift + S)">
         <a><i class="fas fa-fw fa-sort" ></i></a>
@@ -235,7 +237,18 @@ function addMenu() {
     </span>
     `;
 
-    // document.querySelector('.export').onclick = function () { exportBookmark(); };
+    if (document.querySelector('.export')) {
+        document.querySelector('.export').onclick = function () {
+            switch (domain) {
+                case 'manganato.com':
+                    exportBmManganato();
+                    break;
+                case 'manganelo.com':
+                    exportBmManganelo();
+                    break;
+            }
+        };
+    }
     document.querySelector('.sort').onclick = function () {
         letsSort();
     };
@@ -270,7 +283,6 @@ function addMenuOnBookmark() {
     </span>
     `;
 
-            //el.querySelector('.bookmark_download').onclick = function () { prepareBookmarkDownload(bm[j]); };
             el.querySelector('.bookmark_refresh').onclick = function () {
                 doBookmarkRefresh(bm[j]);
             };
@@ -292,183 +304,179 @@ function stopScrolling() {
 }
 
 // **************************************************
-// **********       D O W N L O A D        **********
-// **************************************************
-// function prepareBookmarkDownload(e) {
-//     if (document.querySelector('#my_dialog')) {
-//         document.querySelector('#my_dialog').remove();
-//     }
-
-//     var currentChapter = e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, ''),
-//         myDialog = document.body.appendChild(document.createElement('dialog'));
-
-//     myDialog.id = 'my_dialog';
-//     myDialog.innerHTML = `
-//         <form method="dialog">
-//             <p>Chapters to download:</p>
-//         </form>`;
-
-//     let xhr = new XMLHttpRequest();
-//     xhr.responseType = 'document';
-//     xhr.open('GET', e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
-//     xhr.onload = function () {
-//         if (xhr.status >= 200 && xhr.status < 400) {
-//             let resp = xhr.responseXML,
-//                 chapters = resp.querySelector(`:scope ${CST_CLASS_MANGA_CHANGE_CHAPTER}`).querySelectorAll('option');
-
-//             for (let chapter of chapters) {
-//                 if (Number(chapter.getAttribute('data-c')) <= Number(currentChapter)) break;
-
-//                 let chapter_name = chapter.innerText,
-//                     chapter_id = chapter.getAttribute('data-c'), // Do not work :/
-//                     myCB = myDialog.firstElementChild.appendChild(document.createElement('div'));
-
-//                 myCB.innerHTML = `
-//                 <input type="checkbox" id="my_dialog_${chapter_id}" value="${chapter_id}" checked>
-//                 <label for="my_dialog_${chapter_id}">${chapter_name}</label>`;
-//             }
-
-//             let myMenu = myDialog.firstElementChild.appendChild(document.createElement('menu'));
-//             myMenu.innerHTML = `
-//                 <menu>
-//                     <button id="confirmBtn" value="default">Confirm</button>
-//                     <button value="cancel">Cancel</button>
-//                 </menu>`;
-//             myDialog.querySelector('#confirmBtn').onclick = function () {
-//                 doBookmarkDownload(e.querySelector(`:scope ${CST_CLASS_TITLE} a`).href);
-//             };
-
-//             if (myDialog.querySelector('input')) {
-//                 myDialog.showModal();
-//             }
-//             else {
-//                 alert('No chapter found.')
-//             }
-//         }
-//     };
-//     xhr.send();
-// }
-
-// function doBookmarkDownload(url) {
-//     for (let checkboxe of document.querySelectorAll(':scope #my_dialog input[type=checkbox]:checked')) {
-//         doChapterDownload(`https://${domain}/chapter/${url.split("/")[CST_CHAPTER_URL_SPLIT_MANGA]}/${CST_CHAPTER_URL}${checkboxe.value}`);
-//     }
-//     if (!downloadedChaptersAsRead) {
-//         let xhr = new XMLHttpRequest();
-//         xhr.responseType = 'document';
-//         xhr.open('GET', url);
-//         xhr.send();
-//     }
-// }
-
-// function doChapterDownload(url) {
-//     let xhr = new XMLHttpRequest();
-//     xhr.responseType = 'document';
-//     xhr.open('GET', url);
-//     xhr.onload = function () {
-//         if (xhr.status >= 200 && xhr.status < 400) {
-//             let resp = xhr.responseXML,
-//                 title = resp.querySelector(CST_CLASS_CHAPTER_TITLE).firstElementChild.innerText,
-//                 images = resp.querySelectorAll(`:scope ${CST_CLASS_CHAPTER_IMG} img`);
-
-//             downloadImages(title, images);
-//         }
-//     };
-//     xhr.send();
-// }
-
-// function downloadImages(title, images, value) {
-//     value = value || 0;
-//     setTimeout(function () {
-//         GM_download(images[value].src, `${title}_${++value}`);
-//         if (value < images.length) downloadImages(title, images, value);
-//     }, .5 * 1000);
-// }
-
-// **************************************************
 // **********         E X P O R T          **********
 // **************************************************
 // require: https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js
-// function deleteTemp() {
-//     if (document.querySelector('#temp_data')) {
-//         document.querySelector('#temp_data').remove();
-//     }
-// }
+function deleteTemp() {
+    if (document.querySelector('#temp_data')) {
+        document.querySelector('#temp_data').remove();
+    }
+}
 
-// function saveFile(saveData) {
-//     let d = new Date(),
-//         time = d.getFullYear() + '.' + ('0' + parseInt(d.getMonth() + 1)).slice(-2) + '.' + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + '.' + ('0' + d.getMinutes()).slice(-2),
-//         fileData = new Blob([saveData], { type: 'application/octet-stream' });
+function saveFile(saveData) {
+    let d = new Date(),
+        time =
+            d.getFullYear() +
+            '.' +
+            ('0' + parseInt(d.getMonth() + 1)).slice(-2) +
+            '.' +
+            ('0' + d.getDate()).slice(-2) +
+            '_' +
+            ('0' + d.getHours()).slice(-2) +
+            '.' +
+            ('0' + d.getMinutes()).slice(-2),
+        fileData = new Blob([saveData], { type: 'application/octet-stream' });
 
-//     /* global saveAs */
-//     saveAs(fileData, 'manga_bookmark_' + time + '.csv')
-// }
+    /* global saveAs */
+    saveAs(fileData, 'manga_bookmark_' + time + '.csv');
+}
 
-// function exportBookmark() {
-//     deleteTemp();
+function getCookie(name = 'user_acc') {
+    let result = false;
+    const value = `; ${document.cookie}`;
+    try {
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) {
+            let user = parts.pop().split(';').shift();
+            if (name === 'user_acc') {
+                user = JSON.parse(decodeURIComponent(user));
+                result = user.user_data;
+            }
+        }
+    } catch (e) {
+        result = false;
+    }
 
-//     let elDivTemp = document.body.appendChild(document.createElement('div'));
-//     elDivTemp.id = 'temp_data';
+    return result;
+}
 
-//     let pageSuccess = 0,
-//         toSave = `${domain} Bookmark`;
-//     toSave += `;To Read`;
-//     toSave += `;Title Viewed`;
-//     toSave += `;Title Current`;
-//     toSave += `;Link Viewed`;
-//     //toSave += `;Link Current`;
-//     //toSave += `;Chapter Viewed`;
-//     //toSave += `;Chapter Current`;
-//     toSave += `\n`;
+async function getBMs(userCookie, currentPage = 1) {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
-//     for (let i = 0; i < 1; i++) {
-//         // Prepare divs for info (useless but easier to debug)
-//         let elDivPage = elDivTemp.appendChild(document.createElement('div'));
-//         elDivPage.id = `page${i + 1}`;
+    var urlencoded = new URLSearchParams();
+    urlencoded.append('out_type', 'json');
+    urlencoded.append('bm_source', 'manganato');
+    urlencoded.append('bm_page', currentPage);
+    urlencoded.append('user_data', userCookie);
 
-//         let xhr = new XMLHttpRequest();
-//         xhr.responseType = 'document';
-//         xhr.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
-//         xhr.onreadystatechange = function () {
-//             if (xhr.readyState !== 4) {
-//                 return
-//             }
-//             // Let's add info into the pages div
-//             if (xhr.status >= 200 && xhr.status < 400) {
-//                 console.log(xhr.responseXML)
-//                 pageSuccess++;
-//                 let resp = xhr.responseXML,
-//                     p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
-//                 document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow',
+    };
 
-//                 // Last page is load, let's save
-//                 if (pageSuccess === pageCount) {
-//                     let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
-//                     for (let j = 0; j < bm.length; j++) {
-//                         let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME)
-//                         if (bookmarkTitle) {
-//                             let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
-//                                 current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+    return await fetch('https://user.mngusr.com/bookmark_get_list_full', requestOptions)
+        .then((response) => response.json())
+        .then((result) => result)
+        .catch((error) => console.log('ExportError', error));
+}
 
-//                             toSave += bookmarkTitle.text;
-//                             toSave += `;${lastViewed && current ? (current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') - lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')).toFixed(2).replace('.', ',') : 'Not Found'}`;
-//                             toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
-//                             toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
-//                             toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
-//                             //toSave += `;${lastViewed && current ? current.href : 'Not Found' }`;
-//                             //toSave += `;${lastViewed && current ? lastViewed.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-//                             //toSave += `;${lastViewed && current ? current.href.split("/")[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL,'').replace('.',',') : 'Not Found' }`;
-//                             toSave += ` \n`;
-//                         }
-//                     }
-//                     saveFile(toSave);
-//                     deleteTemp();
-//                 }
-//             }
-//         };
-//         xhr.send();
-//     }
-// }
+async function exportBmManganato() {
+    let userData = getCookie(),
+        toSave = `${domain} Bookmark`;
+    toSave += `;To Read`;
+    toSave += `;Title Viewed`;
+    toSave += `;Title Current`;
+    toSave += `;Link Viewed`;
+    toSave += `\n`;
+
+    if (userData) {
+        $(this).html('Generating File...').prop('disabled', true);
+        let initBMFetch = await getBMs(userData);
+        pageCount = initBMFetch.bm_page_total || 0;
+        if (pageCount > 0) {
+            for (let i = 1; i <= pageCount; i++) {
+                let currPage = await getBMs(userData, i);
+                let currPageBMs = currPage.data;
+                for (let j = 0; j < currPageBMs.length; j++) {
+                    toSave += `${currPageBMs[j].note_story_name}`;
+                    toSave += `;${
+                        currPageBMs[j].chapter_numbernow && currPageBMs[j].chapterlastnumber
+                            ? (parseFloat(currPageBMs[j].chapterlastnumber) - parseFloat(currPageBMs[j].chapter_numbernow)).toFixed(2).replace('.', ',')
+                            : 'Not Found'
+                    }`;
+                    toSave += `;${currPageBMs[j].chapter_namenow}`;
+                    toSave += `;${currPageBMs[j].chapterlastname}`;
+                    toSave += `;${currPageBMs[j].link_chapter_now}`;
+                    toSave += ` \n`;
+                }
+            }
+
+            saveFile(toSave);
+        }
+    }
+}
+
+function exportBmManganelo() {
+    deleteTemp();
+
+    let elDivTemp = document.body.appendChild(document.createElement('div'));
+    elDivTemp.id = 'temp_data';
+
+    let pageSuccess = 0,
+        toSave = `${domain} Bookmark`;
+    toSave += `;To Read`;
+    toSave += `;Title Viewed`;
+    toSave += `;Title Current`;
+    toSave += `;Link Viewed`;
+    toSave += `\n`;
+
+    for (let i = 0; i < 1; i++) {
+        // Prepare divs for info (useless but easier to debug)
+        let elDivPage = elDivTemp.appendChild(document.createElement('div'));
+        elDivPage.id = `page${i + 1}`;
+
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'document';
+        xhr.open('GET', `https://${domain}/bookmark?page=${i + 1}`);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) {
+                return;
+            }
+            // Let's add info into the pages div
+            if (xhr.status >= 200 && xhr.status < 400) {
+                console.log(xhr.responseXML);
+                pageSuccess++;
+                let resp = xhr.responseXML,
+                    p = resp.querySelectorAll(`:scope ${CST_CLASS_PAGE} ${CST_CLASS_BLUE}`)[1].text; // 0 is first, 1 is current, 2 is last
+                document.querySelector(`#page${p}`).innerHTML = resp.querySelector(CST_CLASS_BOOKMARK_PANEL).innerHTML;
+
+                // Last page is load, let's save
+                if (pageSuccess === pageCount) {
+                    let bm = document.querySelectorAll(`:scope #temp_data ${CST_CLASS_BOOKMARK}`);
+                    for (let j = 0; j < bm.length; j++) {
+                        let bookmarkTitle = bm[j].querySelector(CST_CLASS_NAME);
+                        if (bookmarkTitle) {
+                            let lastViewed = bm[j].querySelector(CST_CLASS_TITLE) ? bm[j].querySelector(`:scope ${CST_CLASS_TITLE} a`) : null,
+                                current = bm[j].querySelectorAll(CST_CLASS_TITLE)[1] ? bm[j].querySelectorAll(CST_CLASS_TITLE)[1].querySelector('a') : null;
+
+                            toSave += bookmarkTitle.text;
+                            toSave += `;${
+                                lastViewed && current
+                                    ? (
+                                          current.href.split('/')[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '') -
+                                          lastViewed.href.split('/')[CST_CHAPTER_URL_SPLIT_CHAPTER].replace(CST_CHAPTER_URL, '')
+                                      )
+                                          .toFixed(2)
+                                          .replace('.', ',')
+                                    : 'Not Found'
+                            }`;
+                            toSave += `;${lastViewed && current ? lastViewed.text : 'Not Found'}`;
+                            toSave += `;${lastViewed && current ? current.text : 'Not Found'}`;
+                            toSave += `;${lastViewed && current ? lastViewed.href : 'Not Found'}`;
+                            toSave += ` \n`;
+                        }
+                    }
+                    saveFile(toSave);
+                    deleteTemp();
+                }
+            }
+        };
+        xhr.send();
+    }
+}
 
 // **************************************************
 // **********     M O V E   R I G H T      **********

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          MapGenie
+// @name          [MapGenie] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Tweak MapGenie
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/MapGenie.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/MapGenie.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[MapGenie]%20Tweaks.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[MapGenie]%20Tweaks.user.js
 
 // @match         https://mapgenie.io/*/maps/world
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=mapgenie.io

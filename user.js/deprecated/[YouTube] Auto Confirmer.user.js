@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Youtube Auto confirmer
+// @name          [YouTube] Auto confirmer
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Youtube%20Auto%20Confirmer.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Youtube%20Auto%20Confirmer.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[YouTube]%20Auto%20Confirmer.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[YouTube]%20Auto%20Confirmer.user.js
 
 // @match         https://www.youtube.com/*
 // @icon          https://www.google.com/s2/favicons?domain=youtube.com

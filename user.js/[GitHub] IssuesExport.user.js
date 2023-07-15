@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Github IssuesExport
+// @name          [GitHub] IssuesExport
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Export Issues
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesExport.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20IssuesExport.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20IssuesExport.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20IssuesExport.user.js
 
 // @match         https://github.com/*/*/issues
 

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Manganelo Tweaks (Manga)
+// @name          [Manganelo] Tweaks (Manga)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Try to work with gm_values to refresh specific manga
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Manganelo%20Tweaks%20(Manga).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/Manganelo%20Tweaks%20(Manga).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Manga).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Manga).user.js
 
 // @match         *://manganelo.com/manga*
 // @icon          https://www.google.com/s2/favicons?domain=manganelo.com

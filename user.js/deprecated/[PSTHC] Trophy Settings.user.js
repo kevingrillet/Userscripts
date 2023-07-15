@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          PSTHC Trophy Settings
+// @name          [PSTHC] Trophy Settings
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   PSTHC Trophy Settings
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/PSTHC%20Trophy%20Settings.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/PSTHC%20Trophy%20Settings.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[PSTHC]%20Trophy%20Settings.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[PSTHC]%20Trophy%20Settings.user.js
 
 // @include       /^https:\/\/www\.psthc\.fr\/unjeu\/.*\/guide-trophees\.htm/
 // @include       /^https:\/\/www\.psthc\.fr\/unjeu\/.*\/liste-trophees\.htm/

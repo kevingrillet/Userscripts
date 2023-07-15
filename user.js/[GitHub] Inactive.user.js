@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Github inactive
+// @name          [GitHub] inactive
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Add banner to innactive github
@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20Inactive.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/Github%20Inactive.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20Inactive.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20Inactive.user.js
 
 // @match         *://github.com/*/*
 // @icon          https://www.google.com/s2/favicons?domain=github.com
