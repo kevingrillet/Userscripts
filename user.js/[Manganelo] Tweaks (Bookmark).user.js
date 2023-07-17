@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.23
+// @version       1.24
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -375,36 +375,39 @@ async function getBMs(userCookie, currentPage = 1) {
 
 async function exportBmManganato() {
     let userData = getCookie(),
-        toSave = `${domain} Bookmark`;
-    toSave += `;To Read`;
-    toSave += `;Title Viewed`;
-    toSave += `;Title Current`;
-    toSave += `;Link Viewed`;
-    toSave += `\n`;
+        toSave = `${domain} Bookmark; ToRead; TitleViewed; TitleCurrent; LinkViewed\n`;
 
     if (userData) {
         $(this).html('Generating File...').prop('disabled', true);
         let initBMFetch = await getBMs(userData);
         pageCount = initBMFetch.bm_page_total || 0;
         if (pageCount > 0) {
+            let arrayBm = [];
             for (let i = 1; i <= pageCount; i++) {
                 let currPage = await getBMs(userData, i);
                 let currPageBMs = currPage.data;
                 for (let j = 0; j < currPageBMs.length; j++) {
-                    toSave += `${currPageBMs[j].note_story_name}`;
-                    toSave += `;${
-                        currPageBMs[j].chapter_numbernow && currPageBMs[j].chapterlastnumber
-                            ? (parseFloat(currPageBMs[j].chapterlastnumber) - parseFloat(currPageBMs[j].chapter_numbernow)).toFixed(2).replace('.', ',')
-                            : 'Not Found'
-                    }`;
-                    toSave += `;${currPageBMs[j].chapter_namenow}`;
-                    toSave += `;${currPageBMs[j].chapterlastname}`;
-                    toSave += `;${currPageBMs[j].link_chapter_now}`;
-                    toSave += ` \n`;
+                    let itemBm = {
+                        Bookmark: currPageBMs[j].note_story_name,
+                        ToRead:
+                            currPageBMs[j].chapter_numbernow && currPageBMs[j].chapterlastnumber
+                                ? parseFloat((parseFloat(currPageBMs[j].chapterlastnumber) - parseFloat(currPageBMs[j].chapter_numbernow)).toFixed(2))
+                                : 'Not Found',
+                        TitleViewed: currPageBMs[j].chapter_namenow,
+                        TitleCurrent: currPageBMs[j].chapterlastname,
+                        LinkViewed: currPageBMs[j].link_chapter_now,
+                    };
+                    toSave += `${itemBm.Bookmark}; ${itemBm.ToRead}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${itemBm.LinkViewed}\n`;
+
+                    arrayBm.push(itemBm);
                 }
             }
 
             saveFile(toSave);
+
+            arrayBm = arrayBm.filter((item) => item.ToRead > 0);
+            arrayBm.sort((a, b) => a.ToRead - b.ToRead);
+            console.table(arrayBm);
         }
     }
 }
