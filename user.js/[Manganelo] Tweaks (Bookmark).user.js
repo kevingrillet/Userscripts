@@ -406,6 +406,7 @@ async function exportBmManganato(bExport = true) {
                     };
                     toSave += `${itemBm.Bookmark}; ${itemBm.ToRead}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${itemBm.LinkViewed}\n`;
 
+                    delete itemBm.TitleCurrent, itemBm.TitleViewed;
                     arrayBm.push(itemBm);
                 }
             }
