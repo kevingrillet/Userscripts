@@ -238,10 +238,10 @@ function addMenu() {
     `;
 
     if (document.querySelector('.export')) {
-        document.querySelector('.export').onclick = function () {
+        document.querySelector('.export').onclick = function (event) {
             switch (domain) {
                 case 'manganato.com':
-                    exportBmManganato();
+                    exportBmManganato(!event.altKey);
                     break;
                 case 'manganelo.com':
                     exportBmManganelo();
@@ -373,7 +373,7 @@ async function getBMs(userCookie, currentPage = 1) {
         .catch((error) => console.log('ExportError', error));
 }
 
-async function exportBmManganato() {
+async function exportBmManganato(bExport = true) {
     let userData = getCookie(),
         toSave = `${domain} Bookmark; ToRead; TitleViewed; TitleCurrent; LinkViewed\n`;
 
@@ -403,7 +403,9 @@ async function exportBmManganato() {
                 }
             }
 
-            saveFile(toSave);
+            if (bExport === true) {
+                saveFile(toSave);
+            }
 
             arrayBm = arrayBm.filter((item) => item.ToRead > 0);
             arrayBm.sort((a, b) => a.ToRead - b.ToRead);
