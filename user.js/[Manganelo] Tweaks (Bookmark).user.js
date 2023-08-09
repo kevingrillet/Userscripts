@@ -404,7 +404,7 @@ async function exportBmManganato(bExport = true) {
                         }),
                         LinkViewed: currPageBMs[j].link_chapter_now,
                     };
-                    toSave += `${itemBm.Bookmark}; ${itemBm.ToRead}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${itemBm.LinkViewed}\n`;
+                    toSave += `${itemBm.Bookmark}; ${itemBm.ToRead.replace('.', ',')}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${itemBm.LinkViewed}\n`;
 
                     delete itemBm.TitleCurrent;
                     delete itemBm.TitleViewed;
