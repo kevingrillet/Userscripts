@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.25
+// @version       1.26
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -419,6 +419,9 @@ async function exportBmManganato(bExport = true) {
             arrayBm = arrayBm.filter((item) => item.ToRead > 0);
             arrayBm.sort((a, b) => a.ToRead - b.ToRead);
             console.table(arrayBm);
+            let arrayBmSum = 0;
+            arrayBm.forEach((item) => (arrayBmSum += item.ToRead));
+            console.debug(`Number of mangas: ${arrayBm.length}; number of chapters: ${arrayBmSum}`);
         }
     }
 }
