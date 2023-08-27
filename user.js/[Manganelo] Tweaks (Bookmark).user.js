@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.26
+// @version       1.27
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -404,7 +404,9 @@ async function exportBmManganato(bExport = true) {
                         }),
                         LinkViewed: currPageBMs[j].link_chapter_now,
                     };
-                    toSave += `${itemBm.Bookmark}; ${itemBm.ToRead.replace('.', ',')}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${itemBm.LinkViewed}\n`;
+                    toSave += `${itemBm.Bookmark}; ${itemBm.ToRead.toString().replace('.', ',')}; ${itemBm.TitleViewed}; ${itemBm.TitleCurrent}; ${
+                        itemBm.LinkViewed
+                    }\n`;
 
                     delete itemBm.TitleCurrent;
                     delete itemBm.TitleViewed;
