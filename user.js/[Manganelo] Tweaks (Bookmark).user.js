@@ -424,6 +424,9 @@ async function exportBmManganato(bExport = true) {
             let arrayBmSum = 0;
             arrayBm.forEach((item) => (arrayBmSum += item.ToRead));
             console.debug(`Number of mangas: ${arrayBm.length}; number of chapters: ${arrayBmSum}`);
+            let urls = '';
+            arrayBm.slice(0,10).forEach((item) => urls += `${item.LinkViewed}\n`)
+            console.debug(`${urls}`)
         }
     }
 }
