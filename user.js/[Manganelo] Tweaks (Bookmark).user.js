@@ -5,7 +5,7 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.28
+// @version       1.29
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -241,7 +241,7 @@ function addMenu() {
         document.querySelector('.export').onclick = function (event) {
             switch (domain) {
                 case 'manganato.com':
-                    exportBmManganato(!event.altKey);
+                    exportBmManganato(!event.altKey, event.ctrlKey);
                     break;
                 case 'manganelo.com':
                     exportBmManganelo();
@@ -373,7 +373,7 @@ async function getBMs(userCookie, currentPage = 1) {
         .catch((error) => console.log('ExportError', error));
 }
 
-async function exportBmManganato(bExport = true) {
+async function exportBmManganato(bExport = true, bOpenNewTab = false) {
     let userData = getCookie(),
         toSave = `${domain} Bookmark; ToRead; TitleViewed; TitleCurrent; LinkViewed\n`;
 
@@ -427,6 +427,10 @@ async function exportBmManganato(bExport = true) {
             let urls = '';
             arrayBm.slice(0, 10).forEach((item) => (urls += `${item.LinkViewed}\n`));
             console.debug(`${urls}`);
+
+            if (bOpenNewTab === true) {
+                arrayBm.slice(0, 10).forEach((item) =>  window.open(item.LinkViewed, '_blank'));
+            }
         }
     }
 }
