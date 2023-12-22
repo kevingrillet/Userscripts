@@ -5,7 +5,7 @@
 // @description   Sort Bookmarks
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.2
+// @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -18,33 +18,34 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
-    function sortFunc(a, b){
+    function sortFunc(a, b) {
         let aCard = a.querySelectorAll('.chapternumber'),
             bCard = b.querySelectorAll('.chapternumber');
 
-        let aVal = Number(aCard[1].innerText.replace('Last Chapter ','')) - Number(aCard[0].innerText.replace('Last Chapter Read ','')),
-            bVal = Number(bCard[1].innerText.replace('Last Chapter ','')) - Number(bCard[0].innerText.replace('Last Chapter Read ',''));
+        let aVal = Number(aCard[1].innerText.replace('Last Chapter ', '')) - Number(aCard[0].innerText.replace('Last Chapter Read ', '')),
+            bVal = Number(bCard[1].innerText.replace('Last Chapter ', '')) - Number(bCard[0].innerText.replace('Last Chapter Read ', ''));
 
-        if (aVal > bVal) {
-            return -1;
-        } else if (aVal === bVal) {
-            let aTitle = a.querySelector('.novel-title').innerText,
-                bTitle = b.querySelector('.novel-title').innerText;
-            return aTitle.localeCompare(bTitle);
-        } else {
+        if (aVal !== 0 && bVal !== 0 && aVal !== bVal) {
+            return aVal - bVal;
+        } else if (aVal === 0 && bVal !== 0) {
             return 1;
+        } else if (aVal !== 0 && bVal === 0) {
+            return -1;
         }
+        let aTitle = a.querySelector('.novel-title').innerText,
+            bTitle = b.querySelector('.novel-title').innerText;
+        return aTitle.localeCompare(bTitle);
     }
 
     function sortList() {
         let elUl = document.querySelector(':scope .latestupdates ul');
 
-        Array.from(elUl.getElementsByTagName("li"))
-            .sort((a, b) => sortFunc(a,b))
-            .forEach(elLi => elUl.appendChild(elLi));
+        Array.from(elUl.getElementsByTagName('li'))
+            .sort((a, b) => sortFunc(a, b))
+            .forEach((elLi) => elUl.appendChild(elLi));
     }
 
     window.addEventListener('load', function () {
