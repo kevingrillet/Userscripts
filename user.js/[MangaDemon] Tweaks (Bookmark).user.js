@@ -5,7 +5,7 @@
 // @description   Sort Bookmarks
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -22,23 +22,25 @@
     'use strict';
 
     function sortFunc(a, b){
-        var aCard = a.querySelectorAll('.chapternumber'),
+        let aCard = a.querySelectorAll('.chapternumber'),
             bCard = b.querySelectorAll('.chapternumber');
 
-        var aVal = Number(aCard[1].innerText.replace('Last Chapter ','')) - Number(aCard[0].innerText.replace('Last Chapter Read ','')),
+        let aVal = Number(aCard[1].innerText.replace('Last Chapter ','')) - Number(aCard[0].innerText.replace('Last Chapter Read ','')),
             bVal = Number(bCard[1].innerText.replace('Last Chapter ','')) - Number(bCard[0].innerText.replace('Last Chapter Read ',''));
 
         if (aVal > bVal) {
             return -1;
         } else if (aVal === bVal) {
-            return 0;
+            let aTitle = a.querySelector('.novel-title').innerText,
+                bTitle = b.querySelector('.novel-title').innerText;
+            return aTitle.localeCompare(bTitle);
         } else {
             return 1;
         }
     }
 
     function sortList() {
-        var elUl = document.querySelector(':scope .latestupdates ul');
+        let elUl = document.querySelector(':scope .latestupdates ul');
 
         Array.from(elUl.getElementsByTagName("li"))
             .sort((a, b) => sortFunc(a,b))
