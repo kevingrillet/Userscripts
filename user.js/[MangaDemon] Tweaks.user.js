@@ -5,7 +5,7 @@
 // @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.4
+// @version       0.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -61,6 +61,59 @@
         scrollInterval,
         scrollSpeed = 1000 / 60, // 1/60 s
         scrollValue = 48; // px;
+
+    function addProgressBar() {
+        let elDiv = document.body.appendChild(document.createElement('div'));
+        elDiv.id = 'my_progress_bar';
+
+        addStyles(`
+            #my_progress_bar {
+                --scrollAmount: 0%;
+                color: rgba(0,0,0,0);
+                font-size: .75rem;
+                text-align: right;
+                top: 0;
+                height: .5rem;
+                position: fixed;
+                vertical-align: middle;
+                background-image: linear-gradient(120deg, #800080 0%, #FF0000 100%);
+                width: var(--scrollAmount);
+                transition: height 100ms, color 100ms;
+            }
+            #my_progress_bar:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid rgba(0, 0, 0, .75);
+                border-left: 0;
+            }
+            #my_progress_bar:hover {
+                color: black;
+                height: 1rem;
+            }`);
+
+        let processScroll = () => {
+            let docElem = document.documentElement,
+                docBody = document.body,
+                scrollTop = docElem.scrollTop || docBody.scrollTop,
+                scrollBottom = (docElem.scrollHeight || docBody.scrollHeight) - window.innerHeight,
+                scrollPercent = (scrollTop / scrollBottom) * 100 + '%';
+            document.getElementById('my_progress_bar').style.setProperty('--scrollAmount', scrollPercent);
+            document.getElementById('my_progress_bar').innerHTML = Math.round((scrollTop / scrollBottom) * 100) + '%';
+        };
+
+        document.addEventListener('scroll', processScroll);
+    }
+
+    function addStyles(css) {
+        let style = head.appendChild(document.createElement('style'));
+        style.type = 'text/css';
+        style.innerHTML = css;
+    }
 
     function autoNext() {
         // Auto next when scroll to the bottom
@@ -123,6 +176,8 @@
         if (window.location.href.indexOf('/following.php') > -1) {
             sortBookmarks();
         } else if (window.location.href.indexOf('/manga/') > -1) {
+            addProgressBar();
+
             window.onscroll = function () {
                 autoNext();
                 prerender();
