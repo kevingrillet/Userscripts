@@ -5,7 +5,7 @@
 // @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5
+// @version       0.5.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -175,7 +175,7 @@
     window.addEventListener('load', function () {
         if (window.location.href.indexOf('/following.php') > -1) {
             sortBookmarks();
-        } else if (window.location.href.indexOf('/manga/') > -1) {
+        } else if (window.location.href.indexOf('/manga/') > -1 && window.location.href.indexOf('/chapter/') > -1) {
             addProgressBar();
 
             window.onscroll = function () {
