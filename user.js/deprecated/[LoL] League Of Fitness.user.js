@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LoL]%20League%20Of%20Fitness.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LoL]%20League%20Of%20Fitness.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[LoL]%20League%20Of%20Fitness.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[LoL]%20League%20Of%20Fitness.user.js
 
 // @match         *://matchhistory.euw.leagueoflegends.com/*/*
 // @icon          https://www.google.com/s2/favicons?domain=leagueoflegends.com

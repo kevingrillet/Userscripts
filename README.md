@@ -18,13 +18,13 @@
 
 ## Amazon
 
-### Amazon - tweaks (Cart) [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Amazon]%20Tweaks%20(Cart).user.js)
+### Amazon - tweaks (Cart) [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Amazon]%20Tweaks%20(Cart).user.js)
 
 - Delete all
 - Save for later all
 - Remove crap
 
-### Amazon - tweaks (Wishlist) [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Amazon]%20Tweaks%20(Wishlist).user.js)
+### Amazon - tweaks (Wishlist) [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Amazon]%20Tweaks%20(Wishlist).user.js)
 
 - Show total
 - Add button to add all products
@@ -32,34 +32,30 @@
 
 ## Bing
 
-### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-1.3-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Bing]%20To%20Google.user.js)
+### Bing - To Google [![Bing - To Google](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Bing]%20To%20Google.user.js)
 
 - Auto switch to google when doing a search on bing.
 - Do the 30 required search for the points on the first search of the day.
 
 ## Github
 
-### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-1.4-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[GitHub]%20Inactive.user.js)
+### Github - Inactive [![Github - Inactive](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[GitHub]%20Inactive.user.js)
 
 Add warning to to repos without updates for more than 1/2 year.
 
-### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-0.7-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[GitHub]%20IssuesExport.user.js)
+### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[GitHub]%20IssuesExport.user.js)
 
 Export Issues.
 
 ## Google
 
-### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Google]%20Search%20Ad%20Remover.user.js)
+### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Google]%20Search%20Ad%20Remover.user.js)
 
 Remove the add at the beginig of some searches.
 
 ## League Of Legends
 
-### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[LoL]%20League%20Of%20Fitness.user.js)
-
-[Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
-
-### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-0.14-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LoLEsports]%20CapsuleFarmer.user.js)
+### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LoLEsports]%20CapsuleFarmer.user.js)
 
 ## Manganelo tweaks
 
@@ -70,7 +66,7 @@ Inspired by:
 
 It's create for Manganelo, but i think it can be used on other website like Mangakalot, need to update the env var...
 
-### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-1.29-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js)
+### Manganelo tweaks - Bookmark [![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js)
 
 Add some functions:
 
@@ -82,7 +78,7 @@ Add some functions:
 
 I use it to order my bookmarks by number to read...
 
-### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-1.27-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Manganelo]%20Tweaks%20(Chapter).user.js)
+### Manganelo tweaks - Chapter [![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/[Manganelo]%20Tweaks%20(Chapter).user.js)
 
 Add many functions:
 
@@ -99,4 +95,4 @@ Add many functions:
 
 </details>
 
-## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-0.3-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[PokéClicker]%20Tweaks.user.js)
+## Pokeclicker [![Pokeclicker - Tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[PokéClicker]%20Tweaks.user.js)

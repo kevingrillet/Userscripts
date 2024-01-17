@@ -18,6 +18,14 @@
 
 :warning: [Can't be done](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/create)
 
+## League Of Legends
+
+### League Of Fitness [![League Of Fitness](https://img.shields.io/badge/Install-1.2-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/deprecated/[LoL]%20League%20Of%20Fitness.user.js)
+
+[Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
+
+Rito removes history page.
+
 ## Manganelo tweaks
 
 ### ~~Manganelo tweaks - Manga~~ [![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Manga).user.js)
