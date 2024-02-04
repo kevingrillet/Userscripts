@@ -5,7 +5,7 @@
 // @description   DL Json for Diablo Compagnon
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.1
+// @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -40,7 +40,27 @@
                 return res;
             }
 
+            function getClass() {
+                switch (document.querySelector('.builder__header__description').lastChild.textContent) {
+                    case 'Sorcerer':
+                        return 0;
+                    case 'Druid':
+                        return 1;
+                    case 'Barbarian':
+                        return 2;
+                    case 'Rogue':
+                        return 3;
+                    case 'Necromancer':
+                        return 4;
+                    default:
+                        return null;
+                }
+            }
+
             var result = {};
+            result.Name = document.querySelector('#renameBuild').value;
+            result.D4Class = getClass();
+
             result.Aspects = getAllAspects();
 
             result.Helm = getAllAffixes('Helm');
