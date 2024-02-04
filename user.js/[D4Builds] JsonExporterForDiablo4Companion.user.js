@@ -3,7 +3,7 @@
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   DL Json for Diablo Compagnon
-// @copyright     https://github.com/Azadrim
+// @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @version       0.1
 
