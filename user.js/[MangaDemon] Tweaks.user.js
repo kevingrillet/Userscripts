@@ -5,7 +5,7 @@
 // @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5.1
+// @version       0.5.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -14,6 +14,7 @@
 
 // @match         https://manga-demon.org/*
 // @match         https://demoncomics.org/*
+// @match         https://demontoon.com/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=demoncomics.org
 // @grant         none
 // @run-at        document-end
