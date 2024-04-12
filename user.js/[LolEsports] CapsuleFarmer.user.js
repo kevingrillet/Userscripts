@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.14
+// @version       0.15
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -21,7 +21,6 @@
 
 (function () {
     'use strict';
-    const cls_filter = ['single', 'live', 'event', 'first', 'middle', 'last', 'link'];
     const loot_err = ['Les récompenses ont rencontré un problème.', 'Something went wrong with Rewards'];
 
     /****************************************************************************************************
@@ -87,7 +86,7 @@
     // [VIETNAM] VCS
     // 38
 
-    var classEvents = [
+    var aEvents = [
         /* LOL */
         // [INTERNATIONAL] All-Star Event
         'mondial', // [INTERNATIONAL] MSI
@@ -95,7 +94,7 @@
 
         'lck', // [KOREA] LCK
         'lpl', // [CHINA] LPL
-        'emea-masters', // [EMEA] EMEA Masters
+        'emea', // [EMEA] EMEA Masters
         'lec', // [EMEA] LEC
         'lcs', // [NORTH AMERICA] LCS
 
@@ -103,15 +102,15 @@
         // [BRAZIL] CBLOL Academy
         'lcl', // [COMMONWEALTH OF INDEPENDENT STATES] LCL
         // [EMEA] Arabian League
-        'elite-series', // [EMEA] Elite Series
+        'elite', // [EMEA] Elite Series
         // [EMEA] Esports Balkan League
-        'greek-legends-league', // [EMEA] Greek Legends League
-        'hitpoint-masters', // [EMEA] Hitpoint Masters
-        'la-ligue-franaise', // [EMEA] La Ligue Française
-        'liga-portuguesa', // [EMEA] Liga Portuguesa
+        'greek', // [EMEA] Greek Legends League
+        'hitpoint', // [EMEA] Hitpoint Masters
+        // [EMEA] La Ligue Française
+        'liga', // [EMEA] Liga Portuguesa
         'nlc', // [EMEA] NLC
         // [EMEA] PG Nationals
-        'prime-league', // [EMEA] Prime League
+        'prime', // [EMEA] Prime League
         'superliga', // [EMEA] SuperLiga
         'tcl', // [EMEA] TCL
         'ultraliga', // [EMEA] Ultraliga
@@ -119,10 +118,10 @@
         'ljl', // [JAPAN] LJL
         // [JAPAN] LJL Academy
         // [KOREA] LCK Academy
-        'lck-challengers', // [KOREA] LCK Challengers
+        // [KOREA] LCK Challengers
         'lla', // [LATIN AMERICA] LLA
-        'north-regional-league', // [LATIN AMERICA NORTH] North Regional League
-        'south-regional-league', // [LATIN AMERICA SOUTH] South Regional League
+        // [LATIN AMERICA NORTH] North Regional League
+        // [LATIN AMERICA SOUTH] South Regional League
         // [NORTH AMERICA] College Championship
         // [NORTH AMERICA] LCS Challengers
         // [NORTH AMERICA] LCS Challengers Qualifiers
@@ -192,26 +191,18 @@
      ****************************************************************************************************/
     // Open Live
     var goLive = function () {
-        if (document.querySelector('a.live')) {
-            let allLives = Array.from(document.querySelectorAll('a.live'));
-            let firstMatch = classEvents.filter((cls) => allLives.some((lv) => lv.classList.contains(cls)))[0] || '';
-            if (firstMatch !== '') firstMatch = '.' + firstMatch;
+        if (document.querySelector('.text_live\\.primary')) {
+            let allLives = Array.from(document.querySelectorAll('.text_live\\.primary')).map(e => e.closest('a').href);
+
+            let firstMatch = allLives.filter((a) => aEvents.some((f) => a.includes(f)))[0] || '';
+            if (firstMatch === '') firstMatch = allLives[0];
 
             if (observer) {
                 observer.disconnect();
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
             }
-            console.debug(
-                `${formatConsoleDate(new Date())}- %c Go live! [${
-                    firstMatch !== ''
-                        ? firstMatch.slice(1)
-                        : Array.from(document.querySelector('a.live').classList)
-                              .filter((cls) => !cls_filter.includes(cls))
-                              .toString()
-                }] `,
-                'background: GhostWhite; color: DarkGreen'
-            );
-            window.location = document.querySelector(`a.live${firstMatch}`).href;
+            console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch}] `, 'background: GhostWhite; color: DarkGreen');
+            window.location = firstMatch;
         }
     };
 
