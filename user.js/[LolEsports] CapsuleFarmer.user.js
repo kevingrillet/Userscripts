@@ -212,8 +212,8 @@
 
     function findElement() {
         setTimeout(function () {
-            if (document.querySelector('.Event')) {
-                elToObserve = document.querySelector('.Event');
+            if (document.querySelectorAll('.simplebar-mask')[1]) {
+                elToObserve = document.querySelectorAll('.simplebar-mask')[1];
                 observer = new MutationObserver(onMutate);
                 observer.observe(elToObserve, { attributes: true, childList: true });
                 console.debug(`${formatConsoleDate(new Date())}- %c Observer added!`, 'background: GhostWhite; color: DarkGreen');
@@ -290,10 +290,10 @@
     }
 
     function whereAmI() {
-        if (window.location.href.includes('https://lolesports.com/schedule')) {
+        if (window.location.href.includes('schedule')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
             findElement();
-        } else if (window.location.href.includes('https://lolesports.com/live')) {
+        } else if (window.location.href.includes('live')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
             setTimeout(function () {
                 mapAdd(0);
