@@ -290,17 +290,17 @@
     }
 
     function whereAmI() {
-        if (window.location.href.includes('schedule')) {
+        if (window.location.href.includes('/schedule')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Schedule `, 'background: GhostWhite; color: DarkGreen');
             findElement();
-        } else if (window.location.href.includes('live')) {
+        } else if (window.location.href.includes('/live')) {
             console.debug(`${formatConsoleDate(new Date())}- %c WhereAmI? => Live `, 'background: GhostWhite; color: DarkGreen');
             setTimeout(function () {
                 mapAdd(0);
                 lookForDrop();
             }, 5 * 1000);
-            // } else if(window.location.href.includes('https://lolesports.com/vods')) {
-            //     window.location = 'https://lolesports.com/schedule';
+            } else if(window.location.href.includes('/vods')) {
+                window.location = 'https://lolesports.com/schedule';
         } else {
             console.error(`${formatConsoleDate(new Date())}- Unknown location: ${window.location}`);
         }
