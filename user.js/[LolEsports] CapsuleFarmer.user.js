@@ -5,7 +5,7 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.15
+// @version       0.16
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -35,8 +35,8 @@
     var arr = GM_getValue('arr', new Array());
     var map = new Map(arr.map((obj) => [obj.tournament, obj.drop]));
     var totalNbLoot = GM_getValue('totalNbLoot', 0);
-    var observer;
-    var elToObserve;
+    // var observer;
+    // var elToObserve;
 
     // var filt = [];
     // document.querySelectorAll(':scope .button.league .label').forEach(e =>
@@ -197,32 +197,38 @@
             let firstMatch = allLives.filter((a) => aEvents.some((f) => a.includes(f)))[0] || '';
             if (firstMatch === '') firstMatch = allLives[0];
 
-            if (observer) {
-                observer.disconnect();
-                console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
-            }
+            // if (observer) {
+            //     observer.disconnect();
+            //     console.debug(`${formatConsoleDate(new Date())}- %c Observer removed!`, 'background: GhostWhite; color: DarkGreen');
+            // }
             console.debug(`${formatConsoleDate(new Date())}- %c Go live! [${firstMatch}] `, 'background: GhostWhite; color: DarkGreen');
             window.location = firstMatch;
         }
     };
 
-    function onMutate() {
-        goLive();
-    }
+    // function onMutate() {
+    //     goLive();
+    // }
+
+    // function findElement() {
+    //     setTimeout(function () {
+    //         if (document.querySelectorAll('.simplebar-mask')[1]) {
+    //             elToObserve = document.querySelectorAll('.simplebar-mask')[1];
+    //             observer = new MutationObserver(onMutate);
+    //             observer.observe(elToObserve, { attributes: true, childList: true });
+    //             console.debug(`${formatConsoleDate(new Date())}- %c Observer added!`, 'background: GhostWhite; color: DarkGreen');
+    //             // console.log(observer);
+    //             goLive();
+    //         } else {
+    //             findElement();
+    //         }
+    //     }, 0.5 * 1000);
+    // }
 
     function findElement() {
         setTimeout(function () {
-            if (document.querySelectorAll('.simplebar-mask')[1]) {
-                elToObserve = document.querySelectorAll('.simplebar-mask')[1];
-                observer = new MutationObserver(onMutate);
-                observer.observe(elToObserve, { attributes: true, childList: true });
-                console.debug(`${formatConsoleDate(new Date())}- %c Observer added!`, 'background: GhostWhite; color: DarkGreen');
-                // console.log(observer);
-                goLive();
-            } else {
-                findElement();
-            }
-        }, 0.5 * 1000);
+            goLive();
+        }, 30 * 1000);
     }
 
     /****************************************************************************************************
