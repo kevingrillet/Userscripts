@@ -228,6 +228,7 @@
     function findElement() {
         setTimeout(function () {
             goLive();
+            findElement();
         }, 30 * 1000);
     }
 
