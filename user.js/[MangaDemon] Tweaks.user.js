@@ -5,17 +5,18 @@
 // @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       0.5.3
+// @version       0.5.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js
 
-// @match         https://manga-demon.org/*
+// @match         https://comicdemons.com/*
 // @match         https://demoncomics.org/*
-// @match         https://demontoon.com/*
 // @match         https://demonreader.org/*
+// @match         https://demontoon.com/*
+// @match         https://manga-demon.org/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=demoncomics.org
 // @grant         none
 // @run-at        document-end
