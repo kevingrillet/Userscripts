@@ -154,7 +154,6 @@ var buttonNext = document.querySelector(CST_CLASS_BTN_NEXT),
     chapterCurrent = Number(document.querySelector(CST_CLASS_CHANGE_CHAPTER).selectedOptions[0].getAttribute('data-c')),
     head = document.head,
     images = document.querySelectorAll(`:scope ${CST_CLASS_IMG} img`),
-    // eslint-disable-next-line no-unused-vars
     scrollInterval,
     timerStart = Date.now();
 

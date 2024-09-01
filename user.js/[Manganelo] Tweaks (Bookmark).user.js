@@ -193,7 +193,6 @@ env.some(function (e) {
 var domain = window.location.hostname,
     head = document.head,
     pageCount = Number(document.querySelector(CST_CLASS_PAGE)?.lastElementChild.text.replace(/\D+/g, '')),
-    // eslint-disable-next-line no-unused-vars
     scrollInterval,
     // sortStyleInjected = false,
     timerStart = Date.now();
@@ -343,7 +342,7 @@ function getCookie(name = 'user_acc') {
                 result = user.user_data;
             }
         }
-    } catch (e) {
+    } catch {
         result = false;
     }
 

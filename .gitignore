@@ -3,6 +3,10 @@
 \[WIP\]*
 .markdownlint.json
 
+# node
+node_modules
+package-lock.json
+
 # https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore
 .vscode/*
 !.vscode/settings.json
