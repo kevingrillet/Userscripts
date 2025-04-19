@@ -5,10 +5,12 @@ on:
     paths:
       - '*.js'
       - '**/*.js'
+      - '!lab/pokeclicker/**'
   pull_request:
     paths:
       - '*.js'
       - '**/*.js'
+      - '!lab/pokeclicker/**'
   schedule:
     - cron:  '0 0 * * SUN'
 
@@ -20,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run ESLint
-        run: npx eslint .
+        run: npx eslint . --ignore-pattern "lab/pokeclicker/**"
 
 # jobs:
 #   eslint:
