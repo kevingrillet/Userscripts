@@ -36,7 +36,6 @@
     function clean_values() {
         console.log('Clean');
         map = new Map(
-            // eslint-disable-next-line no-unused-vars
             [...map].filter(([_, value]) => value > 0)
         );
         update_array();
