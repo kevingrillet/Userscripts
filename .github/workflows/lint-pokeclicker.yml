@@ -1,0 +1,35 @@
+name: ESLint PokeClicker
+
+on:
+  push:
+    paths:
+      - 'lab/pokeclicker/*.js'
+      - 'lab/pokeclicker/**/*.js'
+  pull_request:
+    paths:
+      - 'lab/pokeclicker/*.js'
+      - 'lab/pokeclicker/**/*.js'
+  schedule:
+    - cron:  '0 0 * * SUN'
+
+jobs:
+  eslint-pokeclicker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          cd lab/pokeclicker
+          npm ci || npm install
+
+      - name: Run ESLint for PokeClicker
+        run: |
+          cd lab/pokeclicker
+          npx eslint .
