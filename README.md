@@ -90,7 +90,7 @@ Add many functions:
 - Navigation: ←/A/Q (previous), →/D (previous),  B (bookmark page), H (home page) [*](https://greasyfork.org/fr/scripts/38268-left-right-arrow-key-navigation-for-manga-manhwa-manhua-sites)
 - Prerender
 - Reloading on error
-- Removes Add div [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
+- Removes Add div
 - Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 
 </details>
