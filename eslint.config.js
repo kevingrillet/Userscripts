@@ -1,21 +1,24 @@
-export default [
+// CommonJS syntax instead of ESM
+module.exports = [
     {
+        ignores: ['lab/**'],
+
         // Environnements
         languageOptions: {
             ecmaVersion: 11,
             sourceType: 'script',
             globals: {
-                // Pour browser: true
+                // browser: true
                 window: 'readonly',
                 document: 'readonly',
-                // Pour greasemonkey: true
+                // greasemonkey: true
                 GM: 'readonly',
                 GM_addStyle: 'readonly',
                 GM_getValue: 'readonly',
                 GM_setValue: 'readonly',
                 GM_xmlhttpRequest: 'readonly',
                 unsafeWindow: 'readonly',
-                // Pour jquery: true
+                // jquery: true
                 $: 'readonly',
                 jQuery: 'readonly',
             },
@@ -26,7 +29,6 @@ export default [
                 },
             },
         },
-        // Règles
         rules: {
             eqeqeq: 'warn',
             'linebreak-style': ['warn', 'unix'],

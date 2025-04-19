@@ -55,7 +55,7 @@ Remove the add at the beginig of some searches.
 
 ## League Of Legends
 
-### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[LoLEsports]%20CapsuleFarmer.user.js)
+### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/refs/heads/main/user.js/%5BLolEsports%5D%20CapsuleFarmer.user.js)
 
 ## Manganelo tweaks
 
@@ -85,7 +85,7 @@ Add many functions:
 - Auto next (when scroll hit bottom)
 - Duplicate chapter
 - Load time (after JS is loaded, so it's mostly false, but indicate if images take .2s or 10s to load)
-- Margin [*](https://greasyfork.org/fr/scripts/412938-manganelo-gap-remover)
+- Margin
 - Max width [*](https://greasyfork.org/fr/scripts/408505-mangakakalot-image-max-width-height)
 - Navigation: ←/A/Q (previous), →/D (previous),  B (bookmark page), H (home page) [*](https://greasyfork.org/fr/scripts/38268-left-right-arrow-key-navigation-for-manga-manhwa-manhua-sites)
 - Prerender
