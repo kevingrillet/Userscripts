@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Library] Userscript Logger
 // @namespace     https://github.com/kevingrillet
-// @version       1.01
+// @version       1.02
 // @description   Bibliothèque de gestion de logs et notifications pour userscripts Tampermonkey
 // @author        Kevin GRILLET
 // @copyright     https://github.com/kevingrillet
@@ -131,98 +131,23 @@
                 this.close(this.notifications[0]);
             }
 
-            // Création de la notification avec classe unique
             const notification = document.createElement('div');
-            const notificationClass = `uslogger-notification-${Date.now()}`;
-            notification.className = `uslogger-notification ${notificationClass}`;
+            notification.className = 'uslogger-notification';
+            notification.style.borderLeft = `4px solid ${this._getTypeColor(type)} !important`;
 
-            // Ajout des styles spécifiques à cette notification
-            const style = document.createElement('style');
-            style.textContent = `
-                .${notificationClass} {
-                    all: initial !important;
-                    position: relative !important;
-                    background: white !important;
-                    color: #333 !important;
-                    border-radius: 4px !important;
-                    padding: 12px 16px !important;
-                    margin: 10px !important;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-                    max-width: 400px !important;
-                    border-left: 4px solid ${this._getTypeColor(type)} !important;
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-                    font-size: 14px !important;
-                    line-height: 1.4 !important;
-                    display: flex !important;
-                    justify-content: space-between !important;
-                    align-items: flex-start !important;
-                }
-
-                .${notificationClass} .content {
-                    flex: 1 !important;
-                    margin-right: 10px !important;
-                }
-
-                .${notificationClass} .message {
-                    margin-bottom: 8px !important;
-                }
-
-                .${notificationClass} .stack-container {
-                    margin-top: 8px !important;
-                }
-
-                .${notificationClass} .stack-textarea {
-                    width: 100% !important;
-                    height: 100px !important;
-                    padding: 8px !important;
-                    border: 1px solid #ddd !important;
-                    border-radius: 4px !important;
-                    font-family: monospace !important;
-                    font-size: 12px !important;
-                    resize: vertical !important;
-                    background: #f5f5f5 !important;
-                    color: #333 !important;
-                }
-
-                .${notificationClass} .buttons {
-                    display: flex !important;
-                    gap: 5px !important;
-                }
-
-                .${notificationClass} .button {
-                    all: initial !important;
-                    padding: 4px 8px !important;
-                    cursor: pointer !important;
-                    color: #666 !important;
-                    background: none !important;
-                    border: none !important;
-                    font-size: 16px !important;
-                    line-height: 1 !important;
-                    border-radius: 4px !important;
-                }
-
-                .${notificationClass} .button:hover {
-                    background-color: rgba(0,0,0,0.1) !important;
-                }
-            `;
-            document.head.appendChild(style);
-
-            // Construction du contenu
             const content = document.createElement('div');
-            content.className = 'content';
+            content.className = 'uslogger-content';
 
             const messageDiv = document.createElement('div');
-            messageDiv.className = 'message';
+            messageDiv.className = 'uslogger-message';
             messageDiv.textContent = message;
             content.appendChild(messageDiv);
 
-            // Stack trace pour les erreurs
             if (type === 'error' && options.stack) {
                 const stackContainer = document.createElement('div');
-                stackContainer.className = 'stack-container';
+                stackContainer.className = 'uslogger-stack';
 
                 const stackTextarea = document.createElement('textarea');
-                stackTextarea.className = 'stack-textarea';
                 stackTextarea.value = options.stack;
                 stackTextarea.readOnly = true;
 
@@ -230,29 +155,26 @@
                 content.appendChild(stackContainer);
             }
 
-            // Boutons
             const buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'buttons';
+            buttonsDiv.className = 'uslogger-buttons';
 
             if (options.copyable) {
                 const copyButton = document.createElement('button');
-                copyButton.className = 'button';
+                copyButton.className = 'uslogger-button';
                 copyButton.textContent = '📋';
                 copyButton.title = 'Copier';
                 copyButton.onclick = () => {
-                    const textToCopy = type === 'error' && options.stack ? 
-                        `${message}\n\nStack Trace:\n${options.stack}` : 
-                        message;
+                    const textToCopy = type === 'error' && options.stack ? `${message}\n\nStack Trace:\n${options.stack}` : message;
                     navigator.clipboard.writeText(textToCopy).then(() => {
                         copyButton.textContent = '✓';
-                        setTimeout(() => copyButton.textContent = '📋', 1000);
+                        setTimeout(() => (copyButton.textContent = '📋'), 1000);
                     });
                 };
                 buttonsDiv.appendChild(copyButton);
             }
 
             const closeButton = document.createElement('button');
-            closeButton.className = 'button';
+            closeButton.className = 'uslogger-button';
             closeButton.textContent = '×';
             closeButton.title = 'Fermer';
             closeButton.onclick = () => this.close(notification);
@@ -340,24 +262,99 @@
         },
 
         _initNotificationSystem() {
-            this.notificationContainer = document.createElement('div');
-            this.notificationContainer.style.cssText = `
-                all: initial !important;
-                position: fixed !important;
-                z-index: 999999 !important;
-                ${this._getPositionStyle()}
-                display: flex !important;
-                flex-direction: column !important;
-                pointer-events: none !important;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-            `;
-            document.body.appendChild(this.notificationContainer);
-
-            if (this.config.animate) {
+            // Créer les styles globaux une seule fois
+            if (!document.getElementById('uslogger-styles')) {
                 const style = document.createElement('style');
-                style.textContent = this._getAnimationStyles();
+                style.id = 'uslogger-styles';
+                style.textContent = `
+                    .uslogger-container {
+                        position: fixed !important;
+                        z-index: 999999 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        pointer-events: none !important;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+                    }
+
+                    .uslogger-notification {
+                        position: relative !important;
+                        background: white !important;
+                        color: #333 !important;
+                        border-radius: 4px !important;
+                        padding: 12px 16px !important;
+                        margin: 10px !important;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+                        max-width: 400px !important;
+                        font-size: 14px !important;
+                        line-height: 1.4 !important;
+                        display: flex !important;
+                        justify-content: space-between !important;
+                        align-items: flex-start !important;
+                        pointer-events: auto !important;
+                    }
+
+                    .uslogger-content {
+                        flex: 1 !important;
+                        margin-right: 10px !important;
+                    }
+
+                    .uslogger-message {
+                        margin-bottom: 8px !important;
+                    }
+
+                    .uslogger-stack {
+                        margin-top: 8px !important;
+                    }
+
+                    .uslogger-stack textarea {
+                        width: 100% !important;
+                        height: 100px !important;
+                        padding: 8px !important;
+                        border: 1px solid #ddd !important;
+                        border-radius: 4px !important;
+                        font-family: monospace !important;
+                        font-size: 12px !important;
+                        resize: vertical !important;
+                        background: #f5f5f5 !important;
+                        color: #333 !important;
+                    }
+
+                    .uslogger-buttons {
+                        display: flex !important;
+                        gap: 5px !important;
+                    }
+
+                    .uslogger-button {
+                        padding: 4px 8px !important;
+                        cursor: pointer !important;
+                        color: #666 !important;
+                        background: none !important;
+                        border: none !important;
+                        font-size: 16px !important;
+                        line-height: 1 !important;
+                        border-radius: 4px !important;
+                    }
+
+                    .uslogger-button:hover {
+                        background-color: rgba(0,0,0,0.1) !important;
+                    }
+
+                    @keyframes notification-fadein {
+                        from { opacity: 0; transform: translateY(20px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    .uslogger-notification {
+                        animation: notification-fadein 0.3s ease-out;
+                    }
+                `;
                 document.head.appendChild(style);
             }
+
+            this.notificationContainer = document.createElement('div');
+            this.notificationContainer.className = 'uslogger-container';
+            this.notificationContainer.style.cssText = this._getPositionStyle();
+            document.body.appendChild(this.notificationContainer);
         },
 
         _getPositionStyle() {
