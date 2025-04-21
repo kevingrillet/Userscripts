@@ -138,7 +138,7 @@
 
             const notification = document.createElement('div');
             notification.className = 'uslogger-notification';
-            notification.style.borderLeft = `4px solid ${this._getTypeColor(type)} !important`;
+            notification.setAttribute('data-type', type); // Ajoute l'attribut data-type
 
             const content = document.createElement('div');
             content.className = 'uslogger-content';
@@ -280,88 +280,60 @@
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
                         max-height: 100vh !important; /* Limite la hauteur à la hauteur de la fenêtre */
                         overflow-y: auto !important; /* Permet le défilement si nécessaire */
-                        padding: 10px !important;
+                        padding: 4px !important; /* Réduit de 10px à 4px */
                         box-sizing: border-box !important;
-                        width: fit-content !important; /* Ajusté pour s'adapter au contenu */
-                        min-width: 200px !important; /* Largeur minimum */
-                        max-width: 400px !important; /* Largeur maximum */
+                        width: auto !important; /* Change fit-content en auto */
+                        min-width: 200px !important; 
+                        max-width: 350px !important; /* Réduit de 400px à 350px */
                     }
 
                     .uslogger-notification {
                         position: relative !important;
-                        background: white !important;
                         color: #333 !important;
-                        border-radius: 4px !important;
-                        padding: 8px 12px !important; /* Réduit le padding */
-                        margin-bottom: 8px !important;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-                        font-size: 13px !important;
-                        line-height: 1.4 !important;
+                        border-radius: 3px !important;
+                        padding: 6px 8px !important; /* Réduit de 8px 12px à 6px 8px */
+                        margin-bottom: 4px !important; /* Réduit de 8px à 4px */
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important; /* Ombre plus légère */
+                        font-size: 12px !important; /* Réduit de 13px à 12px */
+                        line-height: 1.3 !important;
                         display: flex !important;
-                        align-items: flex-start !important;
+                        align-items: center !important; /* Change flex-start en center */
                         pointer-events: auto !important;
-                        width: fit-content !important; /* Ajusté pour s'adapter au contenu */
+                        width: 100% !important; /* Change fit-content en 100% */
                         box-sizing: border-box !important;
-                        gap: 8px !important; /* Espace entre le contenu et les boutons */
-                    }
-
-                    .uslogger-content {
-                        flex: 1 !important;
-                        min-width: 0 !important; /* Pour permettre le text-overflow */
-                    }
-
-                    .uslogger-message {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                        overflow-wrap: break-word !important;
-                        word-wrap: break-word !important;
-                    }
-
-                    .uslogger-buttons {
-                        display: flex !important;
-                        gap: 4px !important;
-                        align-items: center !important;
-                        margin-left: 8px !important;
-                    }
-
-                    .uslogger-button {
-                        padding: 2px 6px !important;
-                        cursor: pointer !important;
-                        color: #666 !important;
-                        background: none !important;
-                        border: none !important;
-                        font-size: 14px !important;
-                        line-height: 1 !important;
-                        border-radius: 4px !important;
-                        z-index: 1000000 !important;
-                        pointer-events: auto !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .uslogger-button:hover {
-                        background-color: rgba(0, 0, 0, 0.1) !important;
+                        gap: 4px !important; /* Réduit de 8px à 4px */
                     }
 
                     .uslogger-notification[data-type="error"] {
-                        border-left: 4px solid #F44336 !important;
+                        border-left: 3px solid #F44336 !important;
                         background-color: #FFF5F5 !important;
                     }
 
                     .uslogger-notification[data-type="warn"] {
-                        border-left: 4px solid #FF9800 !important;
+                        border-left: 3px solid #FF9800 !important;
                         background-color: #FFF9E6 !important;
                     }
 
                     .uslogger-notification[data-type="info"] {
-                        border-left: 4px solid #2196F3 !important;
+                        border-left: 3px solid #2196F3 !important;
                         background-color: #F5F9FF !important;
                     }
 
                     .uslogger-notification[data-type="debug"] {
-                        border-left: 4px solid #4CAF50 !important;
+                        border-left: 3px solid #4CAF50 !important;
                         background-color: #F5FFF5 !important;
+                    }
+
+                    .uslogger-buttons {
+                        display: flex !important;
+                        gap: 2px !important; /* Réduit de 4px à 2px */
+                        align-items: center !important;
+                        margin-left: 4px !important; /* Réduit de 8px à 4px */
+                    }
+
+                    .uslogger-button {
+                        padding: 2px 4px !important; /* Réduit de 2px 6px à 2px 4px */
+                        font-size: 12px !important; /* Réduit de 14px à 12px */
                     }
                 `;
                 document.head.appendChild(style);
