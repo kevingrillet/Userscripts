@@ -295,16 +295,29 @@
                 line-height: 1 !important;
                 border-radius: 4px !important;
                 transition: background-color 0.2s !important;
+                background-color: transparent !important;
             `;
             button.textContent = text;
             button.title = title;
 
-            // Hover effect
+            // Hover effect via classes plutôt que styles inline
+            const hoverClass = `${this.cssPrefix}button-hover`;
+            if (!document.getElementById(`${this.cssPrefix}styles`)) {
+                const style = document.createElement('style');
+                style.id = `${this.cssPrefix}styles`;
+                style.textContent = `
+                    .${hoverClass} {
+                        background-color: rgba(0,0,0,0.1) !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
             button.addEventListener('mouseenter', () => {
-                button.style.backgroundColor = 'rgba(0,0,0,0.1) !important';
+                button.classList.add(hoverClass);
             });
             button.addEventListener('mouseleave', () => {
-                button.style.backgroundColor = 'transparent !important';
+                button.classList.remove(hoverClass);
             });
 
             return button;
