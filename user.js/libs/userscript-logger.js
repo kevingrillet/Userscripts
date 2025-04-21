@@ -145,8 +145,7 @@
             // Structure HTML modifiée
             notification.innerHTML = `
                 <div class="uslogger-title">
-                    <span>${type.toUpperCase()}</span>
-                    <span class="uslogger-timestamp">${new Date().toLocaleTimeString()}</span>
+                    <span>${type.toUpperCase()} - ${new Date().toLocaleTimeString()}</span>
                 </div>
                 <div class="uslogger-content">
                     <div class="uslogger-message">${message}</div>
@@ -157,60 +156,6 @@
                     <button class="uslogger-button" title="Fermer">×</button>
                 </div>
             `;
-
-            // Mise à jour du CSS
-            const styles = `
-                .uslogger-notification {
-                    margin-bottom: 2px !important; /* Réduit de 4px à 2px */
-                    border-radius: 2px !important; /* Réduit de 3px à 2px */
-                }
-
-                .uslogger-title {
-                    padding: 2px 8px !important; /* Réduit de 4px à 2px */
-                    font-size: 10px !important; /* Réduit de 11px à 10px */
-                    background-color: rgba(0, 0, 0, 0.02) !important; /* Plus léger */
-                }
-
-                .uslogger-content {
-                    padding: 4px 8px !important; /* Réduit de 6px à 4px */
-                    font-size: 11px !important; /* Ajout d'une taille de police plus petite */
-                }
-
-                .uslogger-stack {
-                    margin-top: 4px !important;
-                    padding: 4px !important;
-                    background: rgba(0, 0, 0, 0.03) !important;
-                    border-radius: 2px !important;
-                    font-family: monospace !important;
-                    font-size: 11px !important;
-                    white-space: pre-wrap !important;
-                    max-height: 200px !important;
-                    overflow-y: auto !important;
-                }
-
-                .uslogger-buttons {
-                    padding: 0 4px 4px !important;
-                    margin-left: auto !important;
-                }
-
-                .uslogger-button {
-                    padding: 0 4px !important;
-                    font-size: 14px !important;
-                    opacity: 0.7 !important;
-                }
-
-                .uslogger-button:hover {
-                    opacity: 1 !important;
-                }
-            `;
-
-            // Ajout des styles
-            if (!document.getElementById('uslogger-styles-custom')) {
-                const styleEl = document.createElement('style');
-                styleEl.id = 'uslogger-styles-custom';
-                styleEl.textContent = styles;
-                document.head.appendChild(styleEl);
-            }
 
             // Gestion du hover
             let timeoutId;
@@ -235,7 +180,6 @@
         },
 
         _initNotificationSystem() {
-            // Ajout des styles s'ils n'existent pas déjà
             if (!document.getElementById('uslogger-styles')) {
                 const style = document.createElement('style');
                 style.id = 'uslogger-styles';
@@ -243,108 +187,131 @@
                     ${this._getAnimationStyles()}
 
                     .uslogger-container {
-                        position: fixed !important;
-                        z-index: 999999 !important;
-                        display: flex !important;
-                        flex-direction: column-reverse !important;
-                        pointer-events: none !important;
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-                        max-height: 100vh !important;
-                        overflow: hidden !important; /* Enlève la scrollbar */
-                        padding: 2px !important; /* Réduit de 4px à 2px */
-                        margin: 0 !important; /* Reset margin */
-                        box-sizing: border-box !important;
-                        width: fit-content !important; /* Ajuste à la largeur du contenu */
-                        min-width: 200px !important;
-                        max-width: 350px !important;
+                        position: fixed;
+                        z-index: 999999;
+                        display: flex;
+                        flex-direction: column-reverse;
+                        pointer-events: none;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                        max-height: 100vh;
+                        padding: 0; /* Supprime tout padding */
+                        margin: 0;
+                        box-sizing: border-box;
+                        width: 450px;
+                        background:transparent;
                     }
 
                     .uslogger-notification {
-                        position: relative !important;
-                        color: #333 !important;
-                        border-radius: 2px !important; /* Réduit de 3px à 2px */
-                        padding: 0 !important;
-                        margin: 1px 0 !important; /* Réduit de 2px à 1px et reset les marges horizontales */
-                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; /* Réduit l'ombre */
-                        font-size: 12px !important;
-                        line-height: 1.2 !important; /* Réduit de 1.3 à 1.2 */
-                        display: flex !important;
-                        flex-direction: column !important; /* Empile les éléments */
-                        pointer-events: auto !important;
-                        width: 100% !important;
-                        box-sizing: border-box !important;
-                        overflow: hidden !important;
+                        position: relative;
+                        color: #333;
+                        border-radius: 2px;
+                        padding: 0;
+                        margin: 5px;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                        font-size: 12px;
+                        line-height: 1.2;
+                        display: flex;
+                        flex-direction: column;
+                        pointer-events: auto;
+                        box-sizing: border-box;
+                        margin-bottom: 2px;
+                        border-radius: 2px;
                     }
 
                     .uslogger-title {
-                        padding: 1px 6px !important; /* Réduit de 2px à 1px */
-                        font-weight: bold !important;
-                        font-size: 10px !important; /* Réduit de 11px à 10px */
-                        text-transform: uppercase !important;
-                        display: flex !important;
-                        justify-content: space-between !important;
-                        align-items: center !important;
-                        background-color: rgba(0, 0, 0, 0.02) !important;
-                        border-bottom: 1px solid rgba(0, 0, 0, 0.03) !important; /* Ajoute une légère séparation */
+                        padding: 2px 8px;
+                        margin: 0 0 1px 0;
+                        font-weight: bold;
+                        font-size: 16px;
+                        text-transform: uppercase;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                     }
 
                     .uslogger-content {
-                        padding: 2px 6px !important; /* Réduit de 3px à 2px */
-                        flex: 1 !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        min-height: 18px !important; /* Hauteur minimum pour éviter le collapse */
+                        padding: 3px 8px;
+                        margin: 5px 5px 5px 5px;
+                        display: block;
+                        align-items: center;
+                        justify-content: space-between;
+                        min-height: 16px;
                     }
 
                     .uslogger-message {
-                        flex: 1 !important;
-                        margin-right: 4px !important;
+                        padding: 3px 8px;
+                        margin: 0;
+                        flex: 1;
+                        padding-right: 8px;
                     }
 
                     .uslogger-buttons {
-                        display: flex !important;
-                        gap: 2px !important;
-                        align-items: center !important;
-                        padding: 0 2px 2px !important; /* Réduit les paddings */
-                        margin-left: auto !important;
+                        display: flex;
+                        gap: 4px;
+                        align-items: center;
+                        padding: 0;
+                        margin: 0;
+                        white-space: nowrap;
+                        margin-left: auto;
                     }
 
-                    .uslogger-timestamp {
-                        font-size: 10px !important;
-                        color: #666 !important;
-                        font-weight: normal !important;
+                    .uslogger-button {
+                        cursor: pointer;
+                        padding: 0 4px;
+                        font-size: 14px;
+                        border: none;
+                        background: none;
+                        opacity: 0.7;
+                        line-height: 1;
+                        opacity: 0.7;
+                    }
+
+                    .uslogger-button:hover {
+                        opacity: 1;
+                    }
+
+                    .uslogger-stack {
+                        margin-top: 4px;
+                        padding: 4px;
+                        background: rgba(0, 0, 0, 0.03);
+                        border-radius: 2px;
+                        font-family: monospace;
+                        font-size: 11px;
+                        white-space: pre-wrap;
+                        max-height: 200px;
+                        overflow-y: auto;
                     }
 
                     .uslogger-notification[data-type="error"] {
-                        background-color: #FFF5F5 !important;
-                        border-left: 3px solid #F44336 !important;
+                        background-color: #FFF5F5;
+                        border-left: 3px solid #F44336;
                     }
                     .uslogger-notification[data-type="error"] .uslogger-title {
-                        background-color: #FFE8E8 !important;
+                        background-color: #FFE8E8;
                     }
 
                     .uslogger-notification[data-type="warn"] {
-                        background-color: #FFF9E6 !important;
-                        border-left: 3px solid #FF9800 !important;
+                        background-color: #FFF9E6;
+                        border-left: 3px solid #FF9800;
                     }
                     .uslogger-notification[data-type="warn"] .uslogger-title {
-                        background-color: #FFF3D6 !important;
+                        background-color: #FFF3D6;
                     }
 
                     .uslogger-notification[data-type="info"] {
-                        background-color: #F5F9FF !important;
-                        border-left: 3px solid #2196F3 !important;
+                        background-color: #F5F9FF;
+                        border-left: 3px solid #2196F3;
                     }
                     .uslogger-notification[data-type="info"] .uslogger-title {
-                        background-color: #EBF3FE !important;
+                        background-color: #EBF3FE;
                     }
 
                     .uslogger-notification[data-type="debug"] {
-                        background-color: #F5FFF5 !important;
-                        border-left: 3px solid #4CAF50 !important;
+                        background-color: #F5FFF5;
+                        border-left: 3px solid #4CAF50;
                     }
                     .uslogger-notification[data-type="debug"] .uslogger-title {
-                        background-color: #EBFEEB !important;
+                        background-color: #EBFEEB;
                     }
                 `;
                 document.head.appendChild(style);
