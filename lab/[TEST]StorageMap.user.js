@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          /!\ Test Storage Map
+// @name          /!\ [TEST]StorageMap
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Experiment about GM Storage & JS Map
@@ -9,10 +9,11 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/Test%20Storage%20Map.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/Test%20Storage%20Map.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]StorageMap.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]StorageMap.user.js
 
-// @match         *://*/*
+// @match         https://example.com/*
+// @icon          https://www.google.com/s2/favicons?domain=example.com
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @run-at        document-end
