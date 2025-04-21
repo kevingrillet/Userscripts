@@ -146,16 +146,31 @@
             notification.innerHTML = `
                 <div class="uslogger-title">
                     <span>${type.toUpperCase()} - ${new Date().toLocaleTimeString()}</span>
+                    <div class="uslogger-buttons">
+                        <button class="uslogger-button" title="Copier" ${!options.copyable ? 'disabled' : ''}>📋</button>
+                        <button class="uslogger-button" title="Fermer">×</button>
+                    </div>
                 </div>
                 <div class="uslogger-content">
                     <div class="uslogger-message">${message}</div>
                     ${options.stack ? `<pre class="uslogger-stack">${options.stack}</pre>` : ''}
                 </div>
-                <div class="uslogger-buttons">
-                    ${options.copyable ? `<button class="uslogger-button" title="Copier">📋</button>` : ''}
-                    <button class="uslogger-button" title="Fermer">×</button>
-                </div>
             `;
+
+            // Ajout des événements pour les boutons
+            const copyButton = notification.querySelector('.uslogger-button[title="Copier"]');
+            const closeButton = notification.querySelector('.uslogger-button[title="Fermer"]');
+
+            copyButton.addEventListener('click', () => {
+                if (options.copyable) {
+                    const textToCopy = options.stack ? `${message}\n\n${options.stack}` : message;
+                    navigator.clipboard.writeText(textToCopy).catch(console.error);
+                }
+            });
+
+            closeButton.addEventListener('click', () => {
+                this.close(notification);
+            });
 
             // Gestion du hover
             let timeoutId;
@@ -191,68 +206,47 @@
                         z-index: 999999;
                         display: flex;
                         flex-direction: column-reverse;
-                        pointer-events: none;
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
                         max-height: 100vh;
-                        padding: 0; /* Supprime tout padding */
+                        padding: 4px;
                         margin: 0;
                         box-sizing: border-box;
-                        width: 450px;
+                        width: 350px;
                         background:transparent;
                     }
 
                     .uslogger-notification {
                         position: relative;
-                        color: #333;
-                        border-radius: 2px;
-                        padding: 0;
-                        margin: 5px;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-                        font-size: 12px;
-                        line-height: 1.2;
+                        width: 100%;
                         display: flex;
                         flex-direction: column;
-                        pointer-events: auto;
+                        margin: 0 0 4px 0;
                         box-sizing: border-box;
-                        margin-bottom: 2px;
-                        border-radius: 2px;
+                        overflow: visible;
+                        padding: 0;
                     }
 
                     .uslogger-title {
-                        padding: 2px 8px;
-                        margin: 0 0 1px 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
                         font-weight: bold;
                         font-size: 16px;
                         text-transform: uppercase;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-
-                    .uslogger-content {
-                        padding: 3px 8px;
-                        margin: 5px 5px 5px 5px;
-                        display: block;
-                        align-items: center;
-                        justify-content: space-between;
-                        min-height: 16px;
-                    }
-
-                    .uslogger-message {
-                        padding: 3px 8px;
+                        padding: 4px 8px;
                         margin: 0;
-                        flex: 1;
-                        padding-right: 8px;
+                        min-height: 24px;
+                        background: inherit;
+                        white-space: nowrap;
                     }
 
                     .uslogger-buttons {
-                        display: flex;
-                        gap: 4px;
-                        align-items: center;
-                        padding: 0;
-                        margin: 0;
-                        white-space: nowrap;
                         margin-left: auto;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        padding: 0;
+                        background: transparent;
+                        white-space: nowrap;
                     }
 
                     .uslogger-button {
@@ -260,14 +254,33 @@
                         padding: 0 4px;
                         font-size: 14px;
                         border: none;
-                        background: none;
+                        background: transparent;
                         opacity: 0.7;
                         line-height: 1;
-                        opacity: 0.7;
+                        color: inherit;
                     }
 
-                    .uslogger-button:hover {
+                    .uslogger-button:disabled {
+                        opacity: 0.3;
+                        cursor: not-allowed;
+                    }
+
+                    .uslogger-button:not(:disabled):hover {
                         opacity: 1;
+                    }
+
+                    .uslogger-content {
+                        padding: 5px;
+                        font-size: 12px;
+                        margin: 5px;
+                        background: transparent;
+                    }
+
+                    .uslogger-message {
+                        margin: 0;
+                        padding: 0;
+                        word-break: break-word;
+                        background: transparent;
                     }
 
                     .uslogger-stack {
