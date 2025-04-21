@@ -12,7 +12,7 @@
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]StorageMap.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]StorageMap.user.js
 
-// @match         https://example.com/*
+// @match         https://www.example.com/*
 // @icon          https://www.google.com/s2/favicons?domain=example.com
 // @grant         GM_getValue
 // @grant         GM_setValue

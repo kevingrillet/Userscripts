@@ -12,7 +12,7 @@
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]USLibs.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/lab/[TEST]USLibs.user.js
 
-// @match         https://example.com/*
+// @match         https://www.example.com/*
 // @icon          https://www.google.com/s2/favicons?domain=example.com
 // @require       https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-config-manager.js
 // @require       https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger-notify.js
