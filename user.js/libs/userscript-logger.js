@@ -9,8 +9,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger-notify.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger-notify.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger.js
 // ==/UserScript==
 
 (function (context) {
@@ -131,47 +131,47 @@
                 this.close(this.notifications[0]);
             }
 
+            // Création de la notification avec classe unique
             const notification = document.createElement('div');
-            notification.className = `userscript-notification userscript-notification-${type}`;
+            const notificationClass = `uslogger-notification-${Date.now()}`;
+            notification.className = `uslogger-notification ${notificationClass}`;
 
-            // Style plus robuste avec !important
-            notification.style.cssText = `
-                all: initial !important;
-                background-color: white !important;
-                color: #333 !important;
-                border-radius: 4px !important;
-                padding: 12px 16px !important;
-                margin: 10px !important;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-                pointer-events: auto !important;
-                position: relative !important;
-                max-width: 400px !important;
-                display: flex !important;
-                justify-content: space-between !important;
-                align-items: flex-start !important;
-                border-left: 4px solid ${this._getTypeColor(type)} !important;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-                font-size: 14px !important;
-                line-height: 1.4 !important;
-            `;
-
-            const contentDiv = document.createElement('div');
-            contentDiv.style.cssText = 'flex: 1; margin-right: 10px !important;';
-
-            const messageDiv = document.createElement('div');
-            messageDiv.style.cssText = 'margin-bottom: 8px !important;';
-            messageDiv.textContent = message;
-            contentDiv.appendChild(messageDiv);
-
-            // Ajout de la zone de texte pour la stack si c'est une erreur
-            if (type === 'error' && options.stack) {
-                const stackContainer = document.createElement('div');
-                stackContainer.style.cssText = 'margin-top: 8px !important;';
-
-                const stackTextarea = document.createElement('textarea');
-                stackTextarea.value = options.stack;
-                stackTextarea.style.cssText = `
+            // Ajout des styles spécifiques à cette notification
+            const style = document.createElement('style');
+            style.textContent = `
+                .${notificationClass} {
                     all: initial !important;
+                    position: relative !important;
+                    background: white !important;
+                    color: #333 !important;
+                    border-radius: 4px !important;
+                    padding: 12px 16px !important;
+                    margin: 10px !important;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+                    max-width: 400px !important;
+                    border-left: 4px solid ${this._getTypeColor(type)} !important;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+                    font-size: 14px !important;
+                    line-height: 1.4 !important;
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: flex-start !important;
+                }
+
+                .${notificationClass} .content {
+                    flex: 1 !important;
+                    margin-right: 10px !important;
+                }
+
+                .${notificationClass} .message {
+                    margin-bottom: 8px !important;
+                }
+
+                .${notificationClass} .stack-container {
+                    margin-top: 8px !important;
+                }
+
+                .${notificationClass} .stack-textarea {
                     width: 100% !important;
                     height: 100px !important;
                     padding: 8px !important;
@@ -182,33 +182,83 @@
                     resize: vertical !important;
                     background: #f5f5f5 !important;
                     color: #333 !important;
-                    margin-top: 4px !important;
-                `;
+                }
+
+                .${notificationClass} .buttons {
+                    display: flex !important;
+                    gap: 5px !important;
+                }
+
+                .${notificationClass} .button {
+                    all: initial !important;
+                    padding: 4px 8px !important;
+                    cursor: pointer !important;
+                    color: #666 !important;
+                    background: none !important;
+                    border: none !important;
+                    font-size: 16px !important;
+                    line-height: 1 !important;
+                    border-radius: 4px !important;
+                }
+
+                .${notificationClass} .button:hover {
+                    background-color: rgba(0,0,0,0.1) !important;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Construction du contenu
+            const content = document.createElement('div');
+            content.className = 'content';
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.textContent = message;
+            content.appendChild(messageDiv);
+
+            // Stack trace pour les erreurs
+            if (type === 'error' && options.stack) {
+                const stackContainer = document.createElement('div');
+                stackContainer.className = 'stack-container';
+
+                const stackTextarea = document.createElement('textarea');
+                stackTextarea.className = 'stack-textarea';
+                stackTextarea.value = options.stack;
+                stackTextarea.readOnly = true;
+
                 stackContainer.appendChild(stackTextarea);
-                contentDiv.appendChild(stackContainer);
+                content.appendChild(stackContainer);
             }
 
+            // Boutons
             const buttonsDiv = document.createElement('div');
-            buttonsDiv.style.cssText = 'display: flex !important; gap: 5px !important; margin-left: 10px !important;';
+            buttonsDiv.className = 'buttons';
 
-            // Boutons avec styles plus robustes
             if (options.copyable) {
-                const copyButton = this._createButton('📋', 'Copier tout');
+                const copyButton = document.createElement('button');
+                copyButton.className = 'button';
+                copyButton.textContent = '📋';
+                copyButton.title = 'Copier';
                 copyButton.onclick = () => {
-                    const textToCopy = type === 'error' && options.stack ? `${message}\n\nStack Trace:\n${options.stack}` : message;
+                    const textToCopy = type === 'error' && options.stack ? 
+                        `${message}\n\nStack Trace:\n${options.stack}` : 
+                        message;
                     navigator.clipboard.writeText(textToCopy).then(() => {
                         copyButton.textContent = '✓';
-                        setTimeout(() => (copyButton.textContent = '📋'), 1000);
+                        setTimeout(() => copyButton.textContent = '📋', 1000);
                     });
                 };
                 buttonsDiv.appendChild(copyButton);
             }
 
-            const closeButton = this._createButton('×', 'Fermer');
+            const closeButton = document.createElement('button');
+            closeButton.className = 'button';
+            closeButton.textContent = '×';
+            closeButton.title = 'Fermer';
             closeButton.onclick = () => this.close(notification);
             buttonsDiv.appendChild(closeButton);
 
-            notification.appendChild(contentDiv);
+            notification.appendChild(content);
             notification.appendChild(buttonsDiv);
 
             // Gestion du hover
@@ -222,55 +272,6 @@
                     timeoutId = setTimeout(() => this.close(notification), this.config.notifyDuration);
                 }
             });
-
-            // Ajouter la barre de progression
-            if (this.config.notifyDuration > 0) {
-                const progressBar = document.createElement('div');
-                progressBar.style.cssText = `
-                    all: initial !important;
-                    position: absolute !important;
-                    bottom: 0 !important;
-                    left: 0 !important;
-                    width: 100% !important;
-                    height: 2px !important;
-                    background-color: rgba(0, 0, 0, 0.1) !important;
-                    transform-origin: left !important;
-                `;
-
-                const progress = document.createElement('div');
-                progress.style.cssText = `
-                    all: initial !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    background-color: ${this._getTypeColor(type)} !important;
-                    transition: transform ${this.config.notifyDuration}ms linear !important;
-                    transform: scaleX(1) !important;
-                `;
-
-                progressBar.appendChild(progress);
-                notification.appendChild(progressBar);
-
-                // Animation de la barre de progression
-                requestAnimationFrame(() => {
-                    progress.style.transform = 'scaleX(0)';
-                });
-
-                // Gestion du hover pour la barre de progression
-                notification.addEventListener('mouseenter', () => {
-                    progress.style.transition = 'none';
-                    const computedStyle = window.getComputedStyle(progress);
-                    const currentScale = computedStyle.transform.split('(')[1].split(')')[0].split(',')[0];
-                    progress.style.transform = `scaleX(${currentScale})`;
-                });
-
-                notification.addEventListener('mouseleave', () => {
-                    const remainingTime = this.config.notifyDuration * parseFloat(progress.style.transform.split('(')[1]) || 0;
-                    if (remainingTime > 0) {
-                        progress.style.transition = `transform ${remainingTime}ms linear`;
-                        progress.style.transform = 'scaleX(0)';
-                    }
-                });
-            }
 
             this.notificationContainer.appendChild(notification);
             this.notifications.push(notification);

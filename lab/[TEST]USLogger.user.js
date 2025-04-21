@@ -14,7 +14,7 @@
 
 // @match         https://www.example.com/*
 // @icon          https://www.google.com/s2/favicons?domain=example.com
-// @require       https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger-notify.js
+// @require       https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/libs/userscript-logger.js
 // @grant         none
 // @run-at        document-end
 // ==/UserScript==
