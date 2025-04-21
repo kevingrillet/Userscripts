@@ -138,7 +138,19 @@
 
             const notification = document.createElement('div');
             notification.className = 'uslogger-notification';
-            notification.setAttribute('data-type', type); // Ajoute l'attribut data-type
+            notification.setAttribute('data-type', type);
+
+            // Ajoute le titre
+            const title = document.createElement('div');
+            title.className = 'uslogger-title';
+            const typeText = document.createElement('span');
+            typeText.textContent = type.toUpperCase();
+            const timestamp = document.createElement('span');
+            timestamp.className = 'uslogger-timestamp';
+            timestamp.textContent = new Date().toLocaleTimeString('fr-FR', { hour12: false });
+            title.appendChild(typeText);
+            title.appendChild(timestamp);
+            notification.appendChild(title);
 
             const content = document.createElement('div');
             content.className = 'uslogger-content';
@@ -210,142 +222,115 @@
             return notification;
         },
 
-        _createButton(text, title = '') {
-            const button = document.createElement('button');
-            button.style.cssText = `
-                all: initial !important;
-                background: none !important;
-                border: none !important;
-                color: #666 !important;
-                font-size: 16px !important;
-                cursor: pointer !important;
-                padding: 4px 8px !important;
-                line-height: 1 !important;
-                border-radius: 4px !important;
-                transition: background-color 0.2s !important;
-                background-color: transparent !important;
-            `;
-            button.textContent = text;
-            button.title = title;
-
-            // Hover effect via classes plutôt que styles inline
-            const hoverClass = `${this.cssPrefix}button-hover`;
-            if (!document.getElementById(`${this.cssPrefix}styles`)) {
-                const style = document.createElement('style');
-                style.id = `${this.cssPrefix}styles`;
-                style.textContent = `
-                    .${hoverClass} {
-                        background-color: rgba(0,0,0,0.1) !important;
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-
-            button.addEventListener('mouseenter', () => {
-                button.classList.add(hoverClass);
-            });
-            button.addEventListener('mouseleave', () => {
-                button.classList.remove(hoverClass);
-            });
-
-            return button;
-        },
-
-        _getTypeColor(type) {
-            switch (type) {
-                case 'error':
-                    return '#F44336';
-                case 'warn':
-                    return '#FF9800';
-                case 'info':
-                    return '#2196F3';
-                case 'debug':
-                    return '#4CAF50';
-                default:
-                    return '#2196F3';
-            }
-        },
-
         _initNotificationSystem() {
             if (!document.getElementById('uslogger-styles')) {
                 const style = document.createElement('style');
                 style.id = 'uslogger-styles';
                 style.textContent = `
+                    ${this._getAnimationStyles()}
+
                     .uslogger-container {
                         position: fixed !important;
                         z-index: 999999 !important;
                         display: flex !important;
-                        flex-direction: column-reverse !important; /* Inverse l'ordre pour que les nouvelles notifications apparaissent en bas */
+                        flex-direction: column-reverse !important;
                         pointer-events: none !important;
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-                        max-height: 100vh !important; /* Limite la hauteur à la hauteur de la fenêtre */
-                        overflow-y: auto !important; /* Permet le défilement si nécessaire */
-                        padding: 4px !important; /* Réduit de 10px à 4px */
+                        max-height: 100vh !important;
+                        overflow: hidden !important; /* Enlève la scrollbar */
+                        padding: 8px !important;
                         box-sizing: border-box !important;
-                        width: auto !important; /* Change fit-content en auto */
-                        min-width: 200px !important; 
-                        max-width: 350px !important; /* Réduit de 400px à 350px */
+                        width: fit-content !important; /* Ajuste à la largeur du contenu */
+                        min-width: 200px !important;
+                        max-width: 350px !important;
                     }
 
                     .uslogger-notification {
                         position: relative !important;
                         color: #333 !important;
                         border-radius: 3px !important;
-                        padding: 6px 8px !important; /* Réduit de 8px 12px à 6px 8px */
-                        margin-bottom: 4px !important; /* Réduit de 8px à 4px */
-                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important; /* Ombre plus légère */
-                        font-size: 12px !important; /* Réduit de 13px à 12px */
+                        padding: 0 !important; /* Reset padding */
+                        margin-bottom: 4px !important;
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+                        font-size: 12px !important;
                         line-height: 1.3 !important;
                         display: flex !important;
-                        align-items: center !important; /* Change flex-start en center */
+                        flex-direction: column !important; /* Empile les éléments */
                         pointer-events: auto !important;
-                        width: 100% !important; /* Change fit-content en 100% */
+                        width: 100% !important;
                         box-sizing: border-box !important;
-                        gap: 4px !important; /* Réduit de 8px à 4px */
+                        overflow: hidden !important;
                     }
 
-                    .uslogger-notification[data-type="error"] {
-                        border-left: 3px solid #F44336 !important;
-                        background-color: #FFF5F5 !important;
+                    .uslogger-title {
+                        padding: 4px 8px !important;
+                        font-weight: bold !important;
+                        font-size: 11px !important;
+                        text-transform: uppercase !important;
+                        display: flex !important;
+                        justify-content: space-between !important;
+                        align-items: center !important;
+                        background-color: rgba(0, 0, 0, 0.03) !important;
                     }
 
-                    .uslogger-notification[data-type="warn"] {
-                        border-left: 3px solid #FF9800 !important;
-                        background-color: #FFF9E6 !important;
+                    .uslogger-content {
+                        padding: 6px 8px !important;
+                        flex: 1 !important;
+                        display: flex !important;
+                        align-items: center !important;
                     }
 
-                    .uslogger-notification[data-type="info"] {
-                        border-left: 3px solid #2196F3 !important;
-                        background-color: #F5F9FF !important;
-                    }
-
-                    .uslogger-notification[data-type="debug"] {
-                        border-left: 3px solid #4CAF50 !important;
-                        background-color: #F5FFF5 !important;
+                    .uslogger-message {
+                        flex: 1 !important;
+                        margin-right: 4px !important;
                     }
 
                     .uslogger-buttons {
                         display: flex !important;
-                        gap: 2px !important; /* Réduit de 4px à 2px */
+                        gap: 2px !important;
                         align-items: center !important;
-                        margin-left: 4px !important; /* Réduit de 8px à 4px */
                     }
 
-                    .uslogger-button {
-                        padding: 2px 4px !important; /* Réduit de 2px 6px à 2px 4px */
-                        font-size: 12px !important; /* Réduit de 14px à 12px */
+                    .uslogger-timestamp {
+                        font-size: 10px !important;
+                        color: #666 !important;
+                        font-weight: normal !important;
+                    }
+
+                    .uslogger-notification[data-type="error"] {
+                        background-color: #FFF5F5 !important;
+                        border-left: 3px solid #F44336 !important;
+                    }
+                    .uslogger-notification[data-type="error"] .uslogger-title {
+                        background-color: #FFE8E8 !important;
+                    }
+
+                    .uslogger-notification[data-type="warn"] {
+                        background-color: #FFF9E6 !important;
+                        border-left: 3px solid #FF9800 !important;
+                    }
+                    .uslogger-notification[data-type="warn"] .uslogger-title {
+                        background-color: #FFF3D6 !important;
+                    }
+
+                    .uslogger-notification[data-type="info"] {
+                        background-color: #F5F9FF !important;
+                        border-left: 3px solid #2196F3 !important;
+                    }
+                    .uslogger-notification[data-type="info"] .uslogger-title {
+                        background-color: #EBF3FE !important;
+                    }
+
+                    .uslogger-notification[data-type="debug"] {
+                        background-color: #F5FFF5 !important;
+                        border-left: 3px solid #4CAF50 !important;
+                    }
+                    .uslogger-notification[data-type="debug"] .uslogger-title {
+                        background-color: #EBFEEB !important;
                     }
                 `;
                 document.head.appendChild(style);
             }
-
-            this.notificationContainer = document.createElement('div');
-            this.notificationContainer.className = 'uslogger-container';
-            this.notificationContainer.style.cssText = `
-                ${this._getPositionStyle()}
-                background: transparent !important;
-            `;
-            document.body.appendChild(this.notificationContainer);
         },
 
         _getPositionStyle() {
@@ -364,13 +349,13 @@
 
         _getAnimationStyles() {
             return `
-                @keyframes notification-fadein {
+                @keyframes uslogger-fadein {
                     from { opacity: 0; transform: translateY(20px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
 
-                .userscript-notification {
-                    animation: notification-fadein 0.3s ease-out;
+                .uslogger-notification {
+                    animation: uslogger-fadein 0.3s ease-out;
                 }
             `;
         },
