@@ -105,9 +105,14 @@
 
         _formatLogToString(timestamp, level, args) {
             let message = '';
-            if (timestamp) message += `[${timestamp}] `;
 
-            args.forEach((arg) => {
+            // Ne pas ajouter le timestamp ici puisqu'il est déjà dans args
+            args.forEach((arg, index) => {
+                if (index === 0 && typeof arg === 'string' && arg.startsWith('[') && arg.endsWith(']')) {
+                    // Skip le premier argument s'il contient déjà le timestamp
+                    return;
+                }
+
                 if (typeof arg === 'object') {
                     try {
                         message += JSON.stringify(arg, null, 2) + ' ';
@@ -277,16 +282,9 @@
                         overflow-y: auto !important; /* Permet le défilement si nécessaire */
                         padding: 10px !important;
                         box-sizing: border-box !important;
-                    }
-
-                    /* Cache la scrollbar mais garde la fonctionnalité */
-                    .uslogger-container::-webkit-scrollbar {
-                        display: none !important;
-                    }
-
-                    .uslogger-container {
-                        -ms-overflow-style: none !important;
-                        scrollbar-width: none !important;
+                        width: fit-content !important; /* Ajusté pour s'adapter au contenu */
+                        min-width: 200px !important; /* Largeur minimum */
+                        max-width: 400px !important; /* Largeur maximum */
                     }
 
                     .uslogger-notification {
@@ -294,33 +292,76 @@
                         background: white !important;
                         color: #333 !important;
                         border-radius: 4px !important;
-                        padding: 12px 16px !important;
-                        margin-bottom: 10px !important;
+                        padding: 8px 12px !important; /* Réduit le padding */
+                        margin-bottom: 8px !important;
                         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-                        max-width: 400px !important;
-                        font-size: 14px !important;
+                        font-size: 13px !important;
                         line-height: 1.4 !important;
                         display: flex !important;
-                        justify-content: space-between !important;
                         align-items: flex-start !important;
                         pointer-events: auto !important;
-                        width: 100% !important;
+                        width: fit-content !important; /* Ajusté pour s'adapter au contenu */
                         box-sizing: border-box !important;
+                        gap: 8px !important; /* Espace entre le contenu et les boutons */
                     }
 
-                    /* ... rest of styles ... */
+                    .uslogger-content {
+                        flex: 1 !important;
+                        min-width: 0 !important; /* Pour permettre le text-overflow */
+                    }
+
+                    .uslogger-message {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow-wrap: break-word !important;
+                        word-wrap: break-word !important;
+                    }
+
+                    .uslogger-buttons {
+                        display: flex !important;
+                        gap: 4px !important;
+                        align-items: center !important;
+                        margin-left: 8px !important;
+                    }
 
                     .uslogger-button {
-                        padding: 4px 8px !important;
+                        padding: 2px 6px !important;
                         cursor: pointer !important;
                         color: #666 !important;
                         background: none !important;
                         border: none !important;
-                        font-size: 16px !important;
+                        font-size: 14px !important;
                         line-height: 1 !important;
                         border-radius: 4px !important;
-                        z-index: 1000000 !important; /* Assure que les boutons sont toujours au-dessus */
+                        z-index: 1000000 !important;
                         pointer-events: auto !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .uslogger-button:hover {
+                        background-color: rgba(0, 0, 0, 0.1) !important;
+                    }
+
+                    .uslogger-notification[data-type="error"] {
+                        border-left: 4px solid #F44336 !important;
+                        background-color: #FFF5F5 !important;
+                    }
+
+                    .uslogger-notification[data-type="warn"] {
+                        border-left: 4px solid #FF9800 !important;
+                        background-color: #FFF9E6 !important;
+                    }
+
+                    .uslogger-notification[data-type="info"] {
+                        border-left: 4px solid #2196F3 !important;
+                        background-color: #F5F9FF !important;
+                    }
+
+                    .uslogger-notification[data-type="debug"] {
+                        border-left: 4px solid #4CAF50 !important;
+                        background-color: #F5FFF5 !important;
                     }
                 `;
                 document.head.appendChild(style);
