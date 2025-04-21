@@ -128,9 +128,8 @@
         },
 
         notify(message, type = 'info', options = {}) {
-            if (!this.notificationContainer) {
-                this._initNotificationSystem();
-            }
+            // S'assurer que le système est initialisé
+            this._initNotificationSystem();
 
             if (this.notifications.length >= this.config.maxNotifications) {
                 this.close(this.notifications[0]);
@@ -223,6 +222,7 @@
         },
 
         _initNotificationSystem() {
+            // Ajout des styles s'ils n'existent pas déjà
             if (!document.getElementById('uslogger-styles')) {
                 const style = document.createElement('style');
                 style.id = 'uslogger-styles';
@@ -330,6 +330,14 @@
                     }
                 `;
                 document.head.appendChild(style);
+            }
+
+            // Création du conteneur de notifications s'il n'existe pas déjà
+            if (!this.notificationContainer) {
+                this.notificationContainer = document.createElement('div');
+                this.notificationContainer.className = 'uslogger-container';
+                this.notificationContainer.style.cssText = this._getPositionStyle();
+                document.body.appendChild(this.notificationContainer);
             }
         },
 
