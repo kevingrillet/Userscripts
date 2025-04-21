@@ -38,6 +38,7 @@
 
         notificationContainer: null,
         notifications: [],
+        notificationQueue: [], // Ajouter cette propriété
 
         init(config = {}) {
             this.config = { ...this.config, ...config };
@@ -129,6 +130,12 @@
 
         notify(message, type = 'info', options = {}) {
             this._initNotificationSystem();
+
+            // Si on a atteint le maximum de notifications, on met en file d'attente
+            if (this.notifications.length >= this.config.maxNotifications) {
+                this.notificationQueue.push({ message, type, options });
+                return;
+            }
 
             // Afficher immédiatement la notification
             const notification = document.createElement('div');
@@ -244,7 +251,8 @@
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
                         max-height: 100vh !important;
                         overflow: hidden !important; /* Enlève la scrollbar */
-                        padding: 8px !important;
+                        padding: 2px !important; /* Réduit de 4px à 2px */
+                        margin: 0 !important; /* Reset margin */
                         box-sizing: border-box !important;
                         width: fit-content !important; /* Ajuste à la largeur du contenu */
                         min-width: 200px !important;
@@ -254,12 +262,12 @@
                     .uslogger-notification {
                         position: relative !important;
                         color: #333 !important;
-                        border-radius: 3px !important;
-                        padding: 0 !important; /* Reset padding */
-                        margin-bottom: 4px !important;
-                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+                        border-radius: 2px !important; /* Réduit de 3px à 2px */
+                        padding: 0 !important;
+                        margin: 1px 0 !important; /* Réduit de 2px à 1px et reset les marges horizontales */
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; /* Réduit l'ombre */
                         font-size: 12px !important;
-                        line-height: 1.3 !important;
+                        line-height: 1.2 !important; /* Réduit de 1.3 à 1.2 */
                         display: flex !important;
                         flex-direction: column !important; /* Empile les éléments */
                         pointer-events: auto !important;
@@ -269,21 +277,23 @@
                     }
 
                     .uslogger-title {
-                        padding: 4px 8px !important;
+                        padding: 1px 6px !important; /* Réduit de 2px à 1px */
                         font-weight: bold !important;
-                        font-size: 11px !important;
+                        font-size: 10px !important; /* Réduit de 11px à 10px */
                         text-transform: uppercase !important;
                         display: flex !important;
                         justify-content: space-between !important;
                         align-items: center !important;
-                        background-color: rgba(0, 0, 0, 0.03) !important;
+                        background-color: rgba(0, 0, 0, 0.02) !important;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.03) !important; /* Ajoute une légère séparation */
                     }
 
                     .uslogger-content {
-                        padding: 6px 8px !important;
+                        padding: 2px 6px !important; /* Réduit de 3px à 2px */
                         flex: 1 !important;
                         display: flex !important;
                         align-items: center !important;
+                        min-height: 18px !important; /* Hauteur minimum pour éviter le collapse */
                     }
 
                     .uslogger-message {
@@ -295,6 +305,8 @@
                         display: flex !important;
                         gap: 2px !important;
                         align-items: center !important;
+                        padding: 0 2px 2px !important; /* Réduit les paddings */
+                        margin-left: auto !important;
                     }
 
                     .uslogger-timestamp {
@@ -383,8 +395,14 @@
                     notification.remove();
                     this.notifications.splice(index, 1);
 
-                    // Supprime le container s'il n'y a plus de notifications
-                    if (this.notifications.length === 0 && this.notificationContainer) {
+                    // Afficher la prochaine notification en attente s'il y en a
+                    if (this.notificationQueue.length > 0) {
+                        const next = this.notificationQueue.shift();
+                        this.notify(next.message, next.type, next.options);
+                    }
+
+                    // Supprime le container s'il n'y a plus de notifications et pas d'attente
+                    if (this.notifications.length === 0 && this.notificationQueue.length === 0 && this.notificationContainer) {
                         this.notificationContainer.remove();
                         this.notificationContainer = null;
                     }
