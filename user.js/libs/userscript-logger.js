@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          [Library] Userscript Logger
 // @namespace     https://github.com/kevingrillet
-// @version       1.02
+// @version       1.01
 // @description   Bibliothèque de gestion de logs et notifications pour userscripts Tampermonkey
 // @author        Kevin GRILLET
 // @copyright     https://github.com/kevingrillet
@@ -262,7 +262,6 @@
         },
 
         _initNotificationSystem() {
-            // Créer les styles globaux une seule fois
             if (!document.getElementById('uslogger-styles')) {
                 const style = document.createElement('style');
                 style.id = 'uslogger-styles';
@@ -271,9 +270,23 @@
                         position: fixed !important;
                         z-index: 999999 !important;
                         display: flex !important;
-                        flex-direction: column !important;
+                        flex-direction: column-reverse !important; /* Inverse l'ordre pour que les nouvelles notifications apparaissent en bas */
                         pointer-events: none !important;
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+                        max-height: 100vh !important; /* Limite la hauteur à la hauteur de la fenêtre */
+                        overflow-y: auto !important; /* Permet le défilement si nécessaire */
+                        padding: 10px !important;
+                        box-sizing: border-box !important;
+                    }
+
+                    /* Cache la scrollbar mais garde la fonctionnalité */
+                    .uslogger-container::-webkit-scrollbar {
+                        display: none !important;
+                    }
+
+                    .uslogger-container {
+                        -ms-overflow-style: none !important;
+                        scrollbar-width: none !important;
                     }
 
                     .uslogger-notification {
@@ -282,7 +295,7 @@
                         color: #333 !important;
                         border-radius: 4px !important;
                         padding: 12px 16px !important;
-                        margin: 10px !important;
+                        margin-bottom: 10px !important;
                         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
                         max-width: 400px !important;
                         font-size: 14px !important;
@@ -291,38 +304,11 @@
                         justify-content: space-between !important;
                         align-items: flex-start !important;
                         pointer-events: auto !important;
-                    }
-
-                    .uslogger-content {
-                        flex: 1 !important;
-                        margin-right: 10px !important;
-                    }
-
-                    .uslogger-message {
-                        margin-bottom: 8px !important;
-                    }
-
-                    .uslogger-stack {
-                        margin-top: 8px !important;
-                    }
-
-                    .uslogger-stack textarea {
                         width: 100% !important;
-                        height: 100px !important;
-                        padding: 8px !important;
-                        border: 1px solid #ddd !important;
-                        border-radius: 4px !important;
-                        font-family: monospace !important;
-                        font-size: 12px !important;
-                        resize: vertical !important;
-                        background: #f5f5f5 !important;
-                        color: #333 !important;
+                        box-sizing: border-box !important;
                     }
 
-                    .uslogger-buttons {
-                        display: flex !important;
-                        gap: 5px !important;
-                    }
+                    /* ... rest of styles ... */
 
                     .uslogger-button {
                         padding: 4px 8px !important;
@@ -333,19 +319,8 @@
                         font-size: 16px !important;
                         line-height: 1 !important;
                         border-radius: 4px !important;
-                    }
-
-                    .uslogger-button:hover {
-                        background-color: rgba(0,0,0,0.1) !important;
-                    }
-
-                    @keyframes notification-fadein {
-                        from { opacity: 0; transform: translateY(20px); }
-                        to { opacity: 1; transform: translateY(0); }
-                    }
-
-                    .uslogger-notification {
-                        animation: notification-fadein 0.3s ease-out;
+                        z-index: 1000000 !important; /* Assure que les boutons sont toujours au-dessus */
+                        pointer-events: auto !important;
                     }
                 `;
                 document.head.appendChild(style);
@@ -353,7 +328,10 @@
 
             this.notificationContainer = document.createElement('div');
             this.notificationContainer.className = 'uslogger-container';
-            this.notificationContainer.style.cssText = this._getPositionStyle();
+            this.notificationContainer.style.cssText = `
+                ${this._getPositionStyle()}
+                background: transparent !important;
+            `;
             document.body.appendChild(this.notificationContainer);
         },
 
@@ -387,8 +365,18 @@
         close(notification) {
             const index = this.notifications.indexOf(notification);
             if (index !== -1) {
-                notification.remove();
-                this.notifications.splice(index, 1);
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    notification.remove();
+                    this.notifications.splice(index, 1);
+
+                    // Supprime le container s'il n'y a plus de notifications
+                    if (this.notifications.length === 0 && this.notificationContainer) {
+                        this.notificationContainer.remove();
+                        this.notificationContainer = null;
+                    }
+                }, 300);
             }
         },
     };
