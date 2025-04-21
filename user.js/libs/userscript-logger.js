@@ -139,21 +139,21 @@
 
             // Afficher immédiatement la notification
             const notification = document.createElement('div');
-            notification.className = 'uslogger-notification';
+            notification.className = 'uslogger-reset uslogger-notification';
             notification.setAttribute('data-type', type);
 
             // Structure HTML modifiée
             notification.innerHTML = `
-                <div class="uslogger-title">
-                    <span>${type.toUpperCase()} - ${new Date().toLocaleTimeString()}</span>
-                    <div class="uslogger-buttons">
-                        <button class="uslogger-button" title="Copier" ${!options.copyable ? 'disabled' : ''}>📋</button>
-                        <button class="uslogger-button" title="Fermer">×</button>
+                <div class="uslogger-reset uslogger-title">
+                    <span class="uslogger-reset">${type.toUpperCase()} - ${new Date().toLocaleTimeString()}</span>
+                    <div class="uslogger-reset uslogger-buttons">
+                        <button class="uslogger-reset uslogger-button" title="Copier" ${!options.copyable ? 'disabled' : ''}>📋</button>
+                        <button class="uslogger-reset uslogger-button" title="Fermer">×</button>
                     </div>
                 </div>
-                <div class="uslogger-content">
-                    <div class="uslogger-message">${message}</div>
-                    ${options.stack ? `<pre class="uslogger-stack">${options.stack}</pre>` : ''}
+                <div class="uslogger-reset uslogger-content">
+                    <div class="uslogger-reset uslogger-message">${message}</div>
+                    ${options.stack ? `<pre class=" uslogger-stack">${options.stack}</pre>` : ''}
                 </div>
             `;
 
@@ -201,12 +201,17 @@
                 style.textContent = `
                     ${this._getAnimationStyles()}
 
+                    .uslogger-reset{
+                        all: unset;
+                    }
+
                     .uslogger-container {
                         position: fixed;
                         z-index: 999999;
                         display: flex;
                         flex-direction: column-reverse;
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                        color: rgb(0, 0, 0);
                         max-height: 100vh;
                         padding: 4px;
                         margin: 0;
@@ -281,6 +286,7 @@
                         padding: 0;
                         word-break: break-word;
                         background: transparent;
+                        color: rgb(0, 0, 0);
                     }
 
                     .uslogger-stack {
@@ -290,6 +296,7 @@
                         border-radius: 2px;
                         font-family: monospace;
                         font-size: 11px;
+                        color: rgb(0, 0, 0);
                         white-space: pre-wrap;
                         max-height: 200px;
                         overflow-y: auto;
@@ -333,7 +340,7 @@
             // Création du conteneur de notifications s'il n'existe pas déjà
             if (!this.notificationContainer) {
                 this.notificationContainer = document.createElement('div');
-                this.notificationContainer.className = 'uslogger-container';
+                this.notificationContainer.className = 'uslogger-reset uslogger-container';
                 this.notificationContainer.style.cssText = this._getPositionStyle();
                 document.body.appendChild(this.notificationContainer);
             }
