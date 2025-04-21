@@ -128,76 +128,82 @@
         },
 
         notify(message, type = 'info', options = {}) {
-            // S'assurer que le système est initialisé
             this._initNotificationSystem();
 
-            if (this.notifications.length >= this.config.maxNotifications) {
-                this.close(this.notifications[0]);
-            }
-
+            // Afficher immédiatement la notification
             const notification = document.createElement('div');
             notification.className = 'uslogger-notification';
             notification.setAttribute('data-type', type);
 
-            // Ajoute le titre
-            const title = document.createElement('div');
-            title.className = 'uslogger-title';
-            const typeText = document.createElement('span');
-            typeText.textContent = type.toUpperCase();
-            const timestamp = document.createElement('span');
-            timestamp.className = 'uslogger-timestamp';
-            timestamp.textContent = new Date().toLocaleTimeString('fr-FR', { hour12: false });
-            title.appendChild(typeText);
-            title.appendChild(timestamp);
-            notification.appendChild(title);
+            // Structure HTML modifiée
+            notification.innerHTML = `
+                <div class="uslogger-title">
+                    <span>${type.toUpperCase()}</span>
+                    <span class="uslogger-timestamp">${new Date().toLocaleTimeString()}</span>
+                </div>
+                <div class="uslogger-content">
+                    <div class="uslogger-message">${message}</div>
+                    ${options.stack ? `<pre class="uslogger-stack">${options.stack}</pre>` : ''}
+                </div>
+                <div class="uslogger-buttons">
+                    ${options.copyable ? `<button class="uslogger-button" title="Copier">📋</button>` : ''}
+                    <button class="uslogger-button" title="Fermer">×</button>
+                </div>
+            `;
 
-            const content = document.createElement('div');
-            content.className = 'uslogger-content';
+            // Mise à jour du CSS
+            const styles = `
+                .uslogger-notification {
+                    margin-bottom: 2px !important; /* Réduit de 4px à 2px */
+                    border-radius: 2px !important; /* Réduit de 3px à 2px */
+                }
 
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'uslogger-message';
-            messageDiv.textContent = message;
-            content.appendChild(messageDiv);
+                .uslogger-title {
+                    padding: 2px 8px !important; /* Réduit de 4px à 2px */
+                    font-size: 10px !important; /* Réduit de 11px à 10px */
+                    background-color: rgba(0, 0, 0, 0.02) !important; /* Plus léger */
+                }
 
-            if (type === 'error' && options.stack) {
-                const stackContainer = document.createElement('div');
-                stackContainer.className = 'uslogger-stack';
+                .uslogger-content {
+                    padding: 4px 8px !important; /* Réduit de 6px à 4px */
+                    font-size: 11px !important; /* Ajout d'une taille de police plus petite */
+                }
 
-                const stackTextarea = document.createElement('textarea');
-                stackTextarea.value = options.stack;
-                stackTextarea.readOnly = true;
+                .uslogger-stack {
+                    margin-top: 4px !important;
+                    padding: 4px !important;
+                    background: rgba(0, 0, 0, 0.03) !important;
+                    border-radius: 2px !important;
+                    font-family: monospace !important;
+                    font-size: 11px !important;
+                    white-space: pre-wrap !important;
+                    max-height: 200px !important;
+                    overflow-y: auto !important;
+                }
 
-                stackContainer.appendChild(stackTextarea);
-                content.appendChild(stackContainer);
+                .uslogger-buttons {
+                    padding: 0 4px 4px !important;
+                    margin-left: auto !important;
+                }
+
+                .uslogger-button {
+                    padding: 0 4px !important;
+                    font-size: 14px !important;
+                    opacity: 0.7 !important;
+                }
+
+                .uslogger-button:hover {
+                    opacity: 1 !important;
+                }
+            `;
+
+            // Ajout des styles
+            if (!document.getElementById('uslogger-styles-custom')) {
+                const styleEl = document.createElement('style');
+                styleEl.id = 'uslogger-styles-custom';
+                styleEl.textContent = styles;
+                document.head.appendChild(styleEl);
             }
-
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'uslogger-buttons';
-
-            if (options.copyable) {
-                const copyButton = document.createElement('button');
-                copyButton.className = 'uslogger-button';
-                copyButton.textContent = '📋';
-                copyButton.title = 'Copier';
-                copyButton.onclick = () => {
-                    const textToCopy = type === 'error' && options.stack ? `${message}\n\nStack Trace:\n${options.stack}` : message;
-                    navigator.clipboard.writeText(textToCopy).then(() => {
-                        copyButton.textContent = '✓';
-                        setTimeout(() => (copyButton.textContent = '📋'), 1000);
-                    });
-                };
-                buttonsDiv.appendChild(copyButton);
-            }
-
-            const closeButton = document.createElement('button');
-            closeButton.className = 'uslogger-button';
-            closeButton.textContent = '×';
-            closeButton.title = 'Fermer';
-            closeButton.onclick = () => this.close(notification);
-            buttonsDiv.appendChild(closeButton);
-
-            notification.appendChild(content);
-            notification.appendChild(buttonsDiv);
 
             // Gestion du hover
             let timeoutId;
