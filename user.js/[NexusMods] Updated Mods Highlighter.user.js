@@ -5,7 +5,7 @@
 // @description   Highlight mods that have been updated since your last download
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
-// @version       1.0
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -87,8 +87,10 @@
             const downloadCell = row.querySelector('.table-download');
             // Find the "Updated" column
             const updateCell = row.querySelector('.table-update');
+            // Find the mod title container
+            const titleContainer = row.querySelector('.tracking-title');
 
-            if (!downloadCell || !updateCell) return;
+            if (!downloadCell || !updateCell || !titleContainer) return;
 
             const downloadDate = downloadCell.textContent.trim();
             const updateDate = updateCell.textContent.trim();
@@ -97,21 +99,29 @@
             if (isUpdatedSinceDownload(downloadDate, updateDate)) {
                 // Apply highlighting to the entire row
                 row.style.cssText = HIGHLIGHT_STYLE;
+                // Apply bold style to all links within the row
+                row.querySelectorAll('a').forEach(link => {
+                    link.style.fontWeight = 'bold';
+                });
 
-                // Optionally, you can add a visual indicator or text
-                if (!downloadCell.querySelector('.update-indicator')) {
+                // Add indicator before the mod name
+                if (!titleContainer.querySelector('.update-indicator')) {
                     const indicator = document.createElement('span');
                     indicator.className = 'update-indicator';
-                    indicator.style.cssText = 'margin-left: 5px; color: #d60; font-weight: bold;';
+                    indicator.style.cssText = 'margin-right: 5px; color: #d60; font-weight: bold;';
                     indicator.textContent = '⚠️'; // Update warning symbol
-                    downloadCell.appendChild(indicator);
+                    titleContainer.insertBefore(indicator, titleContainer.firstChild);
                 }
             } else {
                 // Reset styling if not updated
                 row.style.cssText = '';
+                // Reset link styles
+                row.querySelectorAll('a').forEach(link => {
+                    link.style.fontWeight = '';
+                });
 
                 // Remove the indicator if it exists
-                const indicator = downloadCell.querySelector('.update-indicator');
+                const indicator = titleContainer.querySelector('.update-indicator');
                 if (indicator) {
                     indicator.remove();
                 }
