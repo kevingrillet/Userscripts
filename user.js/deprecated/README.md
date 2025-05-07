@@ -1,6 +1,18 @@
 # Deprecated files
 
-## Amazon tweaks
+## Amazon
+
+### Amazon - tweaks (Cart) [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Cart).user.js)
+
+- Delete all
+- Save for later all
+- Remove crap
+
+### Amazon - tweaks (Wishlist) [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Whishlist).user.js)
+
+- Show total
+- Add button to add all products
+- Remove crap
 
 ### Amazon Gaming - Auto loot [![Amazon Gaming - Auto loot](https://img.shields.io/badge/Install-1.1-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[AmazonGaming]%20Auto%20loot.user.js)
 

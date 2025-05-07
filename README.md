@@ -18,17 +18,10 @@
 
 ## Amazon
 
-### Amazon - tweaks (Cart) [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Cart).user.js)
+### Amazon - tweaks [![Amazon tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks.user.js)
 
-- Delete all
-- Save for later all
-- Remove crap
-
-### Amazon - tweaks (Wishlist) [![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Whishlist).user.js)
-
-- Show total
-- Add button to add all products
-- Remove crap
+- Cart
+- Wishlist
 
 ## Bing
 

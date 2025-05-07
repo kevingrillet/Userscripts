@@ -2,7 +2,7 @@
 // @name          [Amazon] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add total and "add all to cart" for Amazon wishlists
+// @description   Add total and "add all to cart" for Amazon wishlists + Cart management
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
@@ -14,12 +14,18 @@
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks.user.js
 
-// @include       https://www.amazon.com/hz/wishlist/*
-// @include       https://www.amazon.fr/hz/wishlist/*
-// @include       https://www.amazon.co.uk/hz/wishlist/*
-// @include       https://www.amazon.de/hz/wishlist/*
-// @include       https://www.amazon.it/hz/wishlist/*
-// @include       https://www.amazon.es/hz/wishlist/*
+// @match         https://www.amazon.com/hz/wishlist/*
+// @match         https://www.amazon.fr/hz/wishlist/*
+// @match         https://www.amazon.co.uk/hz/wishlist/*
+// @match         https://www.amazon.de/hz/wishlist/*
+// @match         https://www.amazon.it/hz/wishlist/*
+// @match         https://www.amazon.es/hz/wishlist/*
+// @match         https://www.amazon.com/gp/cart/view.html*
+// @match         https://www.amazon.fr/gp/cart/view.html*
+// @match         https://www.amazon.co.uk/gp/cart/view.html*
+// @match         https://www.amazon.de/gp/cart/view.html*
+// @match         https://www.amazon.it/gp/cart/view.html*
+// @match         https://www.amazon.es/gp/cart/view.html*
 // @icon          https://www.google.com/s2/favicons?domain=amazon.com
 // @run-at        document-end
 // ==/UserScript==
@@ -38,6 +44,8 @@
                         article: 'article',
                         articles: 'articles',
                         addAllToCart: 'Tout ajouter au panier',
+                        deleteAll: 'Tout supprimer',
+                        saveAll: 'Tout mettre de côté',
                     },
                     en: {
                         quantity: 'Quantity',
@@ -45,6 +53,8 @@
                         article: 'item',
                         articles: 'items',
                         addAllToCart: 'Add all to Cart',
+                        deleteAll: 'Delete all',
+                        saveAll: 'Save all for later',
                     },
                     de: {
                         quantity: 'Menge',
@@ -52,6 +62,8 @@
                         article: 'Artikel',
                         articles: 'Artikel',
                         addAllToCart: 'Alle in den Einkaufswagen',
+                        deleteAll: 'Alles löschen',
+                        saveAll: 'Alles für später speichern',
                     },
                     es: {
                         quantity: 'Cantidad',
@@ -59,6 +71,8 @@
                         article: 'artículo',
                         articles: 'artículos',
                         addAllToCart: 'Añadir todo al carrito',
+                        deleteAll: 'Eliminar todo',
+                        saveAll: 'Guardar todo para más tarde',
                     },
                     it: {
                         quantity: 'Quantità',
@@ -66,13 +80,14 @@
                         article: 'articolo',
                         articles: 'articoli',
                         addAllToCart: 'Aggiungi tutto al carrello',
+                        deleteAll: 'Elimina tutto',
+                        saveAll: 'Salva tutto per dopo',
                     },
                 },
                 cleanUI: true,
                 selectors: {
                     crapElements: {
                         carousel: '.copilot-secure-display',
-                        nav: ['#nav-main', '#nav-progressive-subnav'],
                         footer: ['.navAccessibility', '.navFooterLogoLine', '.navFooterPadItemLine', '.navFooterDescLine'],
                     },
                 },
@@ -107,9 +122,8 @@
         }
 
         removeCrap() {
-            const { carousel, nav, footer } = this.CONFIG.selectors.crapElements;
+            const { carousel, footer } = this.CONFIG.selectors.crapElements;
             document.querySelector(carousel).style.display = 'none';
-            nav.forEach((selector) => (document.querySelector(selector).style.display = 'none'));
             footer.forEach((selector) => (document.querySelector(selector).style.display = 'none'));
         }
 
@@ -224,9 +238,135 @@
         }
     }
 
+    class Cart extends Amazon {
+        constructor() {
+            super();
+            this.CONFIG = {
+                ...this.CONFIG,
+                selectors: {
+                    ...this.CONFIG.selectors,
+                    cartHeader: '.sc-cart-header',
+                    deleteButtons: '#sc-active-cart .sc-action-delete',
+                    saveButtons: '#sc-active-cart .sc-action-save-for-later',
+                    activeCart: '#sc-active-cart',
+                    crapElements: {
+                        ...this.CONFIG.selectors.crapElements,
+                        cart: ['#sc-new-upsell', '#sc-rec-bottom', '#rhf'],
+                    },
+                },
+            };
+        }
+
+        init() {
+            if (!this.isCartPage()) return;
+            super.init();
+            this.setupObserver();
+            this.setUI();
+        }
+
+        isCartPage() {
+            return window.location.pathname.includes('/gp/cart/view.html');
+        }
+
+        deleteAll() {
+            const buttons = Array.from(document.querySelectorAll(this.CONFIG.selectors.deleteButtons));
+            if (buttons.length > 0) {
+                // Click first button then wait for DOM update
+                const firstButton = buttons[0].querySelector('input, a');
+                if (firstButton) {
+                    firstButton.click();
+                    // Wait for DOM update then delete remaining items
+                    setTimeout(() => this.deleteAll(), 500);
+                }
+            }
+        }
+
+        saveAll() {
+            const buttons = Array.from(document.querySelectorAll(this.CONFIG.selectors.saveButtons));
+            if (buttons.length > 0) {
+                // Click first button then wait for DOM update
+                const firstButton = buttons[0].querySelector('input, a');
+                if (firstButton) {
+                    firstButton.click();
+                    // Wait for DOM update then save remaining items
+                    setTimeout(() => this.saveAll(), 500);
+                }
+            }
+        }
+
+        setUI() {
+            // Don't add buttons if they already exist or if cart is empty
+            if (document.querySelector('#my_delete_all') || !document.querySelector(this.CONFIG.selectors.deleteButtons)) {
+                return;
+            }
+
+            const template = `
+                <div class="a-row a-spacing-base" style="text-align: right; padding: 10px;">
+                    <span id="my_save_all" class="a-button a-button-normal a-button-primary" style="margin-right: 10px;">
+                        <span class="a-button-inner">
+                            <span class="a-button-text">${this.t('saveAll')}</span>
+                        </span>
+                    </span>
+                    <span id="my_delete_all" class="a-button a-button-normal a-button-primary">
+                        <span class="a-button-inner">
+                            <span class="a-button-text">${this.t('deleteAll')}</span>
+                        </span>
+                    </span>
+                </div>
+            `;
+
+            const container = document.querySelector(this.CONFIG.selectors.cartHeader);
+            if (container) {
+                container.insertAdjacentHTML('beforeend', template);
+
+                // Add event listeners
+                document.querySelector('#my_delete_all').addEventListener('click', () => this.deleteAll());
+                document.querySelector('#my_save_all').addEventListener('click', () => this.saveAll());
+            }
+        }
+
+        setupObserver() {
+            // Create a more robust observer that watches for cart changes
+            const config = {
+                childList: true,
+                subtree: true,
+            };
+
+            const callback = (mutationsList) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        // Check if cart has items
+                        const hasItems = document.querySelector(this.CONFIG.selectors.deleteButtons);
+                        // Add buttons if they don't exist and cart has items
+                        if (!document.querySelector('#my_delete_all') && hasItems) {
+                            this.setUI();
+                        }
+                    }
+                }
+            };
+
+            const observer = new MutationObserver(callback);
+            const targetNode = document.querySelector('body');
+            if (targetNode) {
+                observer.observe(targetNode, config);
+            }
+        }
+
+        removeCrap() {
+            super.removeCrap();
+            const { cart } = this.CONFIG.selectors.crapElements;
+            cart.forEach((selector) => {
+                const element = document.querySelector(selector);
+                if (element) element.style.display = 'none';
+            });
+        }
+    }
+
     // Initialize
     window.addEventListener('load', function () {
         const wishlist = new Wishlist();
+        const cart = new Cart();
         wishlist.init();
+        cart.init();
     });
 })();

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          [Amazon] Tweaks (Whishlist)
+// @name          [Amazon] Tweaks (Wishlist)
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Add total and "add all to cart".
@@ -7,12 +7,13 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           amazon.fr
+// @tag           deprecated
 // @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Whishlist).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks%20(Whishlist).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Wishlist).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Wishlist).user.js
 
 // @match         *://www.amazon.fr/hz/wishlist/genericItemsPage/*
 // @icon          https://www.google.com/s2/favicons?domain=amazon.fr
