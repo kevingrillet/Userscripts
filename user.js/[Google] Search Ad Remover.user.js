@@ -5,6 +5,8 @@
 // @description   Remove Adds on top of Google search
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           google.com
 // @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

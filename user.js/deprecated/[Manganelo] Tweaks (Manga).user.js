@@ -5,6 +5,9 @@
 // @description   Try to work with gm_values to refresh specific manga
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           manganelo.com
+// @tag           deprecated
 // @version       0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

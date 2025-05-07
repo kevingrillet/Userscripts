@@ -5,6 +5,9 @@
 // @description   Add link to Yout.com
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           youtube.com
+// @tag           deprecated
 // @version       1.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

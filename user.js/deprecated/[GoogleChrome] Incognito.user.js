@@ -5,6 +5,9 @@
 // @description   Open google docs incognito
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           googlechrome
+// @tag           deprecated
 // @version       0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

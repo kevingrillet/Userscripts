@@ -5,6 +5,9 @@
 // @description   Auto loot free games.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           amazon.com
+// @tag           deprecated
 // @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

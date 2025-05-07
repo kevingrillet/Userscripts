@@ -5,6 +5,8 @@
 // @description   Add total and "add all to cart".
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           amazon.fr
 // @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

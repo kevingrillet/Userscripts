@@ -6,6 +6,9 @@
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @version       1.2
+// @tag           kevingrillet
+// @tag           op.gg
+// @tag           deprecated
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues

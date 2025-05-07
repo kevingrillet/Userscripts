@@ -5,6 +5,8 @@
 // @description   Adds a button to toggle visibility of completed updates (100%) and unlocked achievements on SteamHunters
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           steamhunters.com
 // @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

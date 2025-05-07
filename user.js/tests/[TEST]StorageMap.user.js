@@ -5,6 +5,8 @@
 // @description   Experiment about GM Storage & JS Map
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           test
 // @version       0.01
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

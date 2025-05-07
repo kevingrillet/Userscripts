@@ -5,6 +5,8 @@
 // @description   Less animations, achievement tracker sound notification
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           pokeclicker.com
 // @version       0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

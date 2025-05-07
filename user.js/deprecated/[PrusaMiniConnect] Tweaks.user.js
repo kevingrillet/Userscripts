@@ -5,6 +5,9 @@
 // @description   Replace name of the page with status.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           prusaminiconnect
+// @tag           deprecated
 // @version       1.24
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

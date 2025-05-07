@@ -5,6 +5,8 @@
 // @description   Auto loot capsules
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           lolesports.com
 // @version       0.16
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

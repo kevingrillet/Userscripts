@@ -5,6 +5,8 @@
 // @description   Add banner to innactive github
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           github.com
 // @version       1.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

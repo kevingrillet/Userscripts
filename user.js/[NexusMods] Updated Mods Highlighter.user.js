@@ -5,6 +5,8 @@
 // @description   Highlight mods that have been updated since your last download
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           nexusmods.com
 // @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

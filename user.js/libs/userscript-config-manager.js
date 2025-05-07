@@ -3,7 +3,10 @@
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Bibliothèque de gestion de configuration pour userscripts
+// @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           library
 // @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

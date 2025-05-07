@@ -5,6 +5,9 @@
 // @description   Automatically clicks 'Ok' when the 'Video paused. Continue watching?' dialog pops up and pauses your videos.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           youtube.com
+// @tag           deprecated
 // @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

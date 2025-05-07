@@ -5,6 +5,8 @@
 // @description   DL Json for Diablo Compagnon
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           d4builds.gg
 // @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

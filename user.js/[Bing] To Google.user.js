@@ -5,6 +5,8 @@
 // @description   Redirect the search to google
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           bing.com
 // @version       1.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

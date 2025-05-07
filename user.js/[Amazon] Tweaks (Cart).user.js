@@ -5,6 +5,8 @@
 // @description   Delete / Save for later All.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           amazon.fr
 // @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

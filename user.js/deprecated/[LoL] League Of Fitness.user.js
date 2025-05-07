@@ -5,6 +5,9 @@
 // @description   https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           leagueoflegends.com
+// @tag           deprecated
 // @version       1.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

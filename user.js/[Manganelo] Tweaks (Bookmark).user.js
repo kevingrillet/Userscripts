@@ -5,6 +5,8 @@
 // @description   Export Bookmark, repair user-notification, ...
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           manganelo.com
 // @version       1.29
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

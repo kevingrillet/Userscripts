@@ -5,6 +5,8 @@
 // @description   Export Issues
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           github.com
 // @version       0.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
@@ -13,7 +15,6 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20IssuesExport.user.js
 
 // @match         https://github.com/*/*/issues
-
 // @icon          https://www.google.com/s2/favicons?domain=github.com
 // @grant         GM_getResourceText
 // @require       https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.4/FileSaver.min.js

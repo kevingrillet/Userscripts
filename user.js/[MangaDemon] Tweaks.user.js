@@ -5,6 +5,8 @@
 // @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           mangademon.com
 // @version       0.5.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

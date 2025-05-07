@@ -5,6 +5,9 @@
 // @description   Et on se sort les doigts du C.
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           lolesports.com
+// @tag           deprecated
 // @version       0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/

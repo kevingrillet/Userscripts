@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name          [Library] Userscript Logger
 // @namespace     https://github.com/kevingrillet
-// @version       1.01
-// @description   Bibliothèque de gestion de logs et notifications pour userscripts Tampermonkey
 // @author        Kevin GRILLET
+// @description   Bibliothèque de gestion de logs et notifications pour userscripts Tampermonkey
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
+// @tag           kevingrillet
+// @tag           library
+// @version       1.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
