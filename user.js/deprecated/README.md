@@ -22,6 +22,12 @@
 
 - Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
 
+## Github
+
+### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[GitHub]%20IssuesExport.user.js)
+
+Export Issues.
+
 ## Google
 
 ### ~~Google - Incognito~~ [![Google - Incognito](https://img.shields.io/badge/Install-0.1-black.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[GoogleChrome]%20Incognito.user.js)
@@ -37,6 +43,8 @@
 [Original concept.](https://www.reddit.com/r/leagueoflegends/comments/1li068/league_of_fitness/)
 
 Rito removes history page.
+
+### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/refs/heads/main/user.js/deprecated/[LoLEsports]%20CapsuleFarmer.user.js)
 
 ## Manganelo tweaks
 

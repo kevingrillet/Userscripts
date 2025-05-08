@@ -12,7 +12,6 @@
 - [Bing](#bing)
 - [Github](#github)
 - [Google](#google)
-- [League of Legends](#league-of-legends)
 - [Manganelo](#manganelo-tweaks)
 - [PokéClicker](#pokeclicker-)
 
@@ -36,19 +35,11 @@
 
 Add warning to to repos without updates for more than 1/2 year.
 
-### Github - IssuesExport [![Github - IssuesExport](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20IssuesExport.user.js)
-
-Export Issues.
-
 ## Google
 
 ### Google - Search Ad Remover [![Google - Search Ad Remover](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Google]%20Search%20Ad%20Remover.user.js)
 
 Remove the add at the beginig of some searches.
-
-## League Of Legends
-
-### LoLEsports - CapsuleFarmer [![LoLEsports - CapsuleFarmer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey)](https://github.com/kevingrillet/Userscripts/raw/refs/heads/main/user.js/%5BLolEsports%5D%20CapsuleFarmer.user.js)
 
 ## Manganelo tweaks
 
