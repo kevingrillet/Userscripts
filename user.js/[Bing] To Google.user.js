@@ -14,8 +14,8 @@
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Bing]%20To%20Google.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Bing]%20To%20Google.user.js
 
-// @match         *://*.bing.com/search?*
-// @icon          https://www.google.com/s2/favicons?domain=bing.fr
+// @match         https://www.bing.com/search?*
+// @icon          https://www.google.com/s2/favicons?domain=bing.com
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @grant         GM_registerMenuCommand
@@ -29,13 +29,13 @@
     var debugWord = GM_getValue('debugWord', 'debug'); //Word to stay on Bing
 
     // Register Tampermonkey menu commands
-    GM_registerMenuCommand('Toggle Reward Mode', function() {
+    GM_registerMenuCommand('Toggle Reward Mode', function () {
         doReward = !doReward;
         GM_setValue('doReward', doReward);
         alert('Reward Mode is now ' + (doReward ? 'enabled' : 'disabled'));
     });
 
-    GM_registerMenuCommand('Change Debug Word', function() {
+    GM_registerMenuCommand('Change Debug Word', function () {
         const newWord = prompt('Enter new debug word:', debugWord);
         if (newWord !== null && newWord.trim() !== '') {
             debugWord = newWord.trim();

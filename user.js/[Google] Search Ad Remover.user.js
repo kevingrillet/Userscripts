@@ -14,25 +14,32 @@
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Google]%20Search%20Ad%20Remover.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Google]%20Search%20Ad%20Remover.user.js
 
-// @match         *://www.google.tld/search?*
+// @match         https://www.google.tld/search?*
 // @icon          https://www.google.com/s2/favicons?domain=google.com
+// @grant         GM_registerMenuCommand
+// @grant         GM_setValue
+// @grant         GM_getValue
 // @run-at        document-end
 // ==/UserScript==
 
-'use strict';
+(function () {
+    'use strict';
 
-// **************************************************
-// **********   C A N   B E   E D I T E D  **********
-// **************************************************
-var removeAdd = true;
+    const removeAdd = GM_getValue('removeAdd', true);
 
-// **************************************************
-// **********         S C R I P T          **********
-// **************************************************
-if (removeAdd) {
-    document.querySelectorAll('#taw').forEach((ad) => ad.remove());
-} else {
-    document.querySelectorAll('#taw').forEach((ad) => {
-        ad.style.display = 'none';
-    });
-}
+    function toggleRemoveAdd() {
+        const newValue = !GM_getValue('removeAdd', true);
+        GM_setValue('removeAdd', newValue);
+        location.reload();
+    }
+
+    GM_registerMenuCommand(removeAdd ? '✅ Toogle remove Ads' : '❌ Toogle remove Ads', toggleRemoveAdd);
+
+    if (removeAdd) {
+        document.querySelectorAll('#taw').forEach((ad) => ad.remove());
+    } else {
+        document.querySelectorAll('#taw').forEach((ad) => {
+            ad.style.display = 'none';
+        });
+    }
+})();
