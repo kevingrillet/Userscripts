@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           bing.com
-// @version       1.3
+// @version       1.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -18,32 +18,52 @@
 // @icon          https://www.google.com/s2/favicons?domain=bing.fr
 // @grant         GM_getValue
 // @grant         GM_setValue
+// @grant         GM_registerMenuCommand
 // @run-at        document-start
 // ==/UserScript==
 
-'use strict';
+(function () {
+    'use strict';
 
-// **************************************************
-// **********   C A N   B E   E D I T E D  **********
-// **************************************************
-var doReward = false; //Launch 30 consecutives searches for easy 90Points / day
+    var doReward = GM_getValue('doReward', false); //Launch 30 consecutives searches for easy 90Points / day
+    var debugWord = GM_getValue('debugWord', 'debug'); //Word to stay on Bing
 
-// **************************************************
-// **********         S C R I P T          **********
-// **************************************************
-if (doReward && GM_getValue('dayDone', null) !== new Date().getDay()) {
-    GM_setValue('dayDone', new Date().getDay());
-    GM_setValue('search', 0);
-    GM_setValue('toSearch', document.URL.match(/q=[^&]*/));
-}
+    // Register Tampermonkey menu commands
+    GM_registerMenuCommand('Toggle Reward Mode', function() {
+        doReward = !doReward;
+        GM_setValue('doReward', doReward);
+        alert('Reward Mode is now ' + (doReward ? 'enabled' : 'disabled'));
+    });
 
-if (!doReward || GM_getValue('search', 31) > 30) {
-    window.location.assign(`https://google.com/search?${document.URL.match(/q=[^&]*/)}`);
-} else {
-    if (GM_getValue('search') === 30) {
-        window.location.assign(`https://www.bing.com/search?${GM_getValue('toSearch')}`);
-    } else {
-        window.location.assign(`https://www.bing.com/search?q=Reward${GM_getValue('search')}`);
+    GM_registerMenuCommand('Change Debug Word', function() {
+        const newWord = prompt('Enter new debug word:', debugWord);
+        if (newWord !== null && newWord.trim() !== '') {
+            debugWord = newWord.trim();
+            GM_setValue('debugWord', debugWord);
+            alert('Debug word changed to: ' + debugWord);
+        }
+    });
+
+    // Check if search contains debug word
+    const searchQuery = document.URL.match(/q=([^&]*)/);
+    if (searchQuery && decodeURIComponent(searchQuery[1]) === debugWord) {
+        return; // Stay on Bing if debug word is used
     }
-    GM_setValue('search', GM_getValue('search') + 1);
-}
+
+    if (doReward && GM_getValue('dayDone', null) !== new Date().getDay()) {
+        GM_setValue('dayDone', new Date().getDay());
+        GM_setValue('search', 0);
+        GM_setValue('toSearch', document.URL.match(/q=[^&]*/));
+    }
+
+    if (!doReward || GM_getValue('search', 31) > 30) {
+        window.location.assign(`https://google.com/search?${document.URL.match(/q=[^&]*/)}`);
+    } else {
+        if (GM_getValue('search') === 30) {
+            window.location.assign(`https://www.bing.com/search?${GM_getValue('toSearch')}`);
+        } else {
+            window.location.assign(`https://www.bing.com/search?q=Reward${GM_getValue('search')}`);
+        }
+        GM_setValue('search', GM_getValue('search') + 1);
+    }
+})();
