@@ -1,6 +1,6 @@
 <div align="center">
    <a href="https://github.com/kyechan99/capsule-render">
-      <img align="center" alt="Header" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&section=header&text=Userscripts&fontAlign=45&fontAlignY=30&fontSize=80&desc=Deprecated scripts&descAlign=70&descAlignY=55&descSize=50" />
+      <img align="center" alt="Header" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&section=header&text=Userscripts&fontAlign=45&fontAlignY=30&fontSize=80&desc=Deprecated%20scripts&descAlign=70&descAlignY=55&descSize=50" />
    </a>
    <br>
    <a href="https://www.gnu.org/licenses/gpl-3.0">
