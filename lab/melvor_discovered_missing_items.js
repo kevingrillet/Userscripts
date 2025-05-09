@@ -43,14 +43,66 @@
 
             // Add the complete item object to missing items list if discovered but not in inventory or equipped
             if (isDiscovered && !isInInventory && !isEquipped) {
-                missingItems.push(item);
+                // Get drop sources for this item
+                const dropSources = [];
+                game.monsters.allObjects.forEach((monster) => {
+                    const drops = monster.lootTable.drops;
+                    drops.forEach((drop) => {
+                        if (drop.item === item) {
+                            // Get slayer task difficulty based on combat level
+                            let taskDifficulty = '';
+                            if (monster.canSlayer) {
+                                if (monster.combatLevel <= 49) taskDifficulty = 'Easy';
+                                else if (monster.combatLevel <= 99) taskDifficulty = 'Normal';
+                                else if (monster.combatLevel <= 199) taskDifficulty = 'Hard';
+                                else if (monster.combatLevel <= 374) taskDifficulty = 'Elite';
+                                else if (monster.combatLevel <= 789) taskDifficulty = 'Master';
+                                else if (monster.combatLevel <= 999) taskDifficulty = 'Legendary';
+                                else taskDifficulty = 'Mythical';
+
+                                slayerInfo = ` [${taskDifficulty} Task]`;
+                            }
+
+                            dropSources.push({
+                                monster: monster.name,
+                                chance: (drop.weight / monster.lootTable.totalWeight) * 100,
+                                canSlayer: monster.canSlayer,
+                                taskDifficulty: monster.canSlayer ? taskDifficulty : '',
+                            });
+                        }
+                    });
+                });
+
+                // Sort drop sources by chance (highest to lowest)
+                dropSources.sort((a, b) => b.chance - a.chance);
+
+                missingItems.push({
+                    item: item,
+                    dropSources: dropSources,
+                });
             }
         });
 
         // Print all results in a single console.log
         console.log(
             'Discovered but missing items:',
-            missingItems.length > 0 ? '\n' + missingItems.map((item) => `- ${item.name} [ID: ${item.id}]`).join('\n') : 'None found'
+            missingItems.length > 0
+                ? '\n' +
+                      missingItems
+                          .map(({ item, dropSources }) => {
+                              if (dropSources.length === 0) return null;
+                              const dropInfo =
+                                  dropSources
+                                      .map((source) => {
+                                          const slayerInfo = source.canSlayer ? ` [${source.taskDifficulty} Task]` : '';
+                                          return `\n-- Drops from ${source.monster}${slayerInfo} (${source.chance.toFixed(2)}%)`;
+                                      })
+                                      .join('');
+                              return `- ${item.name} [ID: ${item.id}]${dropInfo}`;
+                          })
+                          .filter(Boolean)
+                          .join('\n')
+                : 'None found'
         );
     } catch (error) {
         console.error('An error occurred while running the script:', error);
