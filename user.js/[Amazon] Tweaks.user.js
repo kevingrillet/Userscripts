@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           amazon
-// @version       2.0
+// @version       2.0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -27,6 +27,7 @@
 // @match         https://www.amazon.it/gp/cart/view.html*
 // @match         https://www.amazon.es/gp/cart/view.html*
 // @icon          https://www.google.com/s2/favicons?domain=amazon.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

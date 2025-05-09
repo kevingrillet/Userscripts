@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           github.com
-// @version       1.5
+// @version       1.5.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -16,6 +16,7 @@
 
 // @match         https://github.com/*/*
 // @icon          https://www.google.com/s2/favicons?domain=github.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 
