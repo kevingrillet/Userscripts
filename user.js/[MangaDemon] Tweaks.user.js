@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0
+// @version       1.0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -48,17 +48,17 @@
     };
 
     const SELECTORS = {
-        BOOKMARKS_CONTAINER: '#bookmarks-container',
+        BOOKMARKS_CONTAINER: 'bookmarks-container',
         BUTTON_NEXT: '.nextchap',
         BUTTON_PREVIOUS: '.prevchap',
         CHAPTER_TITLE: 'h1',
-        PROGRESS_BAR: '#my_progress_bar',
+        PROGRESS_BAR: 'my_progress_bar',
         UPDATES_CHECK: '.updates-check-available span',
     };
 
     /** BOOKMARK SECTION */
     function sortBookmarks() {
-        const container = document.querySelector(SELECTORS.BOOKMARKS_CONTAINER);
+        const container = document.getElementById(SELECTORS.BOOKMARKS_CONTAINER);
         if (!container) {
             console.warn('[MangaDemon Tweaks] Bookmarks container not found');
             return;
