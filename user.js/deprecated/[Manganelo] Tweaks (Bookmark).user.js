@@ -7,12 +7,13 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           manganelo.com
+// @tag           deprecated
 // @version       1.29
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Manganelo]%20Tweaks%20(Bookmark).user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Bookmark).user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Bookmark).user.js
 
 // @match         *://manganelo.com/bookmark*
 // @match         *://manganato.com/bookmark*
