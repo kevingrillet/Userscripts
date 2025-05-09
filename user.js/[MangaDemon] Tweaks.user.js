@@ -7,66 +7,130 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       0.5.5
+// @version       1.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js
 
+// @match         https://ciorti.online/*
 // @match         https://comicdemons.com/*
 // @match         https://demoncomics.org/*
+// @match         https://demonicscans.org/*
 // @match         https://demonreader.org/*
 // @match         https://demontoon.com/*
 // @match         https://manga-demon.org/*
 // @match         https://mgdemon.org/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=demoncomics.org
-// @grant         none
+// @grant         GM_registerMenuCommand
 // @run-at        document-end
 // ==/UserScript==
 
 (function () {
     'use strict';
 
+    // Configuration constants
+    const CONFIG = {
+        AUTO_NEXT_SPEED: 0.5 * 1000, // 0.5s
+        AUTO_NEXT_BOOKMARK_SPEED: 1 * 1000, // 1s
+        SCROLL_SPEED: 1000 / 60, // ~16.67ms (60fps)
+        SCROLL_VALUE: 48, // pixels per scroll
+        PRERENDER_TYPE: 'prerender', // or 'prefetch'
+        ENABLE_REL: true, // enable/disable rel attribute
+    };
+
+    const KEYS = {
+        PREVIOUS: ['ArrowLeft', 'KeyA', 'KeyQ'],
+        SCROLL_UP: ['ArrowUp', 'KeyW', 'KeyZ'],
+        NEXT: ['ArrowRight', 'KeyD'],
+        SCROLL_DOWN: ['ArrowDown', 'KeyS'],
+    };
+
+    const SELECTORS = {
+        BOOKMARKS_CONTAINER: '#bookmarks-container',
+        BUTTON_NEXT: '.nextchap',
+        BUTTON_PREVIOUS: '.prevchap',
+        CHAPTER_TITLE: 'h1',
+        PROGRESS_BAR: '#my_progress_bar',
+        UPDATES_CHECK: '.updates-check-available span',
+    };
+
     /** BOOKMARK SECTION */
     function sortBookmarks() {
+        const container = document.querySelector(SELECTORS.BOOKMARKS_CONTAINER);
+        if (!container) {
+            console.warn('[MangaDemon Tweaks] Bookmarks container not found');
+            return;
+        }
+
+        function extractChapterNumber(text) {
+            return Number(text?.replace(/[^0-9.-]+/g, '') || 0);
+        }
+
         function sortFunc(a, b) {
-            let aCard = a.querySelectorAll('.chapternumber'),
-                bCard = b.querySelectorAll('.chapternumber');
+            const aCard = a.querySelectorAll(SELECTORS.UPDATES_CHECK);
+            const bCard = b.querySelectorAll(SELECTORS.UPDATES_CHECK);
 
-            let aVal = Number(aCard[1].innerText.replace('Last Chapter ', '')) - Number(aCard[0].innerText.replace('Last Chapter Read ', '')),
-                bVal = Number(bCard[1].innerText.replace('Last Chapter ', '')) - Number(bCard[0].innerText.replace('Last Chapter Read ', ''));
+            const aVal = extractChapterNumber(aCard[1]?.innerText) - extractChapterNumber(aCard[0]?.innerText);
+            const bVal = extractChapterNumber(bCard[1]?.innerText) - extractChapterNumber(bCard[0]?.innerText);
 
-            if (aVal !== 0 && bVal !== 0 && aVal !== bVal) {
-                return aVal - bVal;
-            } else if (aVal === 0 && bVal !== 0) {
-                return 1;
-            } else if (aVal !== 0 && bVal === 0) {
-                return -1;
-            }
-            let aTitle = a.querySelector('.novel-title').innerText,
-                bTitle = b.querySelector('.novel-title').innerText;
+            if (aVal !== 0 && bVal !== 0 && aVal !== bVal) return aVal - bVal;
+            if (aVal === 0 && bVal !== 0) return 1;
+            if (aVal !== 0 && bVal === 0) return -1;
+
+            const aTitle = a.querySelector(SELECTORS.CHAPTER_TITLE)?.innerText || '';
+            const bTitle = b.querySelector(SELECTORS.CHAPTER_TITLE)?.innerText || '';
             return aTitle.localeCompare(bTitle);
         }
 
-        let elUl = document.querySelector(':scope .latestupdates ul');
-
-        Array.from(elUl.getElementsByTagName('li'))
-            .sort((a, b) => sortFunc(a, b))
-            .forEach((elLi) => elUl.appendChild(elLi));
+        const items = Array.from(container.getElementsByTagName('li'));
+        items.sort(sortFunc).forEach((item) => container.appendChild(item));
     }
 
     /** CHAPTEUR SECTION */
-    var autoNextSpeed = 0.5 * 1000, // .5 s
-        autoNextBookmarkSpeed = 1 * 1000, // +1 s
-        buttonNext = document.querySelector('.nextchap'),
-        buttonPrevious = document.querySelector('.prevchap'),
-        doRel = true, // does rel is added on scroll
-        head = document.head,
-        rel = 'prerender', // prerender/prefetch;
-        scrollInterval,
-        scrollSpeed = 1000 / 60, // 1/60 s
-        scrollValue = 48; // px;
+    const NAVIGATION = {
+        next: document.querySelector(SELECTORS.BUTTON_NEXT),
+        previous: document.querySelector(SELECTORS.BUTTON_PREVIOUS),
+    };
+
+    let scrollInterval;
+
+    function _get_window_height() {
+        return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+    }
+
+    function _get_window_Yscroll() {
+        return window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop || 0;
+    }
+    function _get_doc_height() {
+        return Math.max(
+            document.body.scrollHeight || 0,
+            document.documentElement.scrollHeight || 0,
+            document.body.offsetHeight || 0,
+            document.documentElement.offsetHeight || 0,
+            document.body.clientHeight || 0,
+            document.documentElement.clientHeight || 0
+        );
+    }
+
+    function _get_scroll_percentage() {
+        try {
+            const windowScroll = _get_window_Yscroll();
+            const windowHeight = _get_window_height();
+            const docHeight = _get_doc_height();
+
+            if (docHeight === 0) {
+                console.warn('[MangaDemon Tweaks] Invalid document height');
+                return 0;
+            }
+
+            return ((windowScroll + windowHeight) / docHeight) * 100;
+        } catch (error) {
+            console.error('[MangaDemon Tweaks] Error calculating scroll percentage:', error);
+            return 0;
+        }
+    }
 
     function addProgressBar() {
         let elDiv = document.body.appendChild(document.createElement('div'));
@@ -103,20 +167,16 @@
             }`);
 
         let processScroll = () => {
-            let docElem = document.documentElement,
-                docBody = document.body,
-                scrollTop = docElem.scrollTop || docBody.scrollTop,
-                scrollBottom = (docElem.scrollHeight || docBody.scrollHeight) - window.innerHeight,
-                scrollPercent = (scrollTop / scrollBottom) * 100 + '%';
-            document.getElementById('my_progress_bar').style.setProperty('--scrollAmount', scrollPercent);
-            document.getElementById('my_progress_bar').innerHTML = Math.round((scrollTop / scrollBottom) * 100) + '%';
+            let scrollPercent = _get_scroll_percentage() - 1;
+            document.getElementById(SELECTORS.PROGRESS_BAR).style.setProperty('--scrollAmount', scrollPercent + '%');
+            document.getElementById(SELECTORS.PROGRESS_BAR).innerHTML = Math.round(scrollPercent) + '%';
         };
 
         document.addEventListener('scroll', processScroll);
     }
 
     function addStyles(css) {
-        let style = head.appendChild(document.createElement('style'));
+        let style = document.head.appendChild(document.createElement('style'));
         style.type = 'text/css';
         style.innerHTML = css;
     }
@@ -126,42 +186,42 @@
         if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
             setTimeout(function () {
                 if (Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
-                    if (buttonNext && buttonNext !== undefined) {
+                    if (NAVIGATION.next && NAVIGATION.next !== undefined) {
                         goNext();
                     } else {
                         setTimeout(function () {
                             goBookmark();
-                        }, autoNextBookmarkSpeed); // wait 4 secs
+                        }, CONFIG.AUTO_NEXT_BOOKMARK_SPEED); // wait 4 secs
                     }
                 }
-            }, autoNextSpeed); // wait 1 secs
+            }, CONFIG.AUTO_NEXT_SPEED); // wait 1 secs
         }
     }
 
     function goBookmark() {
-        window.location.href = window.location.origin + '/following.php';
+        window.location.href = window.location.origin + '/bookmarks.php';
     }
     function goNext() {
-        if (buttonNext) {
-            buttonNext.click();
+        if (NAVIGATION.next?.href) {
+            window.location.href = NAVIGATION.next.href;
         }
     }
     function goPrevious() {
-        if (buttonPrevious) {
-            buttonPrevious.click();
+        if (NAVIGATION.previous?.href) {
+            window.location.href = NAVIGATION.previous.href;
         }
     }
 
     function prerender(force) {
-        if (!doRel) return;
+        if (!CONFIG.ENABLE_REL) return;
         force = force || false;
-        if (buttonNext && buttonNext !== undefined) {
-            if (buttonNext.rel === 'nofollow') {
+        if (NAVIGATION.next && NAVIGATION.next !== undefined) {
+            if (NAVIGATION.next.rel === 'nofollow') {
                 if (force || Math.round(window.innerHeight + window.scrollY) >= document.body.offsetHeight * 0.75) {
-                    let link = head.appendChild(document.createElement('link'));
-                    link.setAttribute('rel', rel);
-                    link.setAttribute('href', buttonNext.href);
-                    buttonNext.setAttribute('rel', rel);
+                    let link = document.head.appendChild(document.createElement('link'));
+                    link.setAttribute('rel', CONFIG.PRERENDER_TYPE);
+                    link.setAttribute('href', NAVIGATION.next.href);
+                    NAVIGATION.next.setAttribute('rel', CONFIG.PRERENDER_TYPE);
                     console.debug('Prerender added.');
                 }
             }
@@ -170,18 +230,47 @@
     function startScrolling(value) {
         scrollInterval = setInterval(function () {
             window.scrollBy(0, value);
-        }, scrollSpeed);
+        }, CONFIG.SCROLL_SPEED);
     }
     function stopScrolling() {
         clearInterval(scrollInterval);
         scrollInterval = null;
     }
 
+    function handleKeyDown(event) {
+        if (event.ctrlKey || event.code === 'MetaLeft' || event.code === 'MetaRight') {
+            return;
+        }
+
+        if (KEYS.PREVIOUS.includes(event.code)) {
+            goPrevious();
+        } else if (KEYS.SCROLL_UP.includes(event.code)) {
+            stopScrolling();
+            startScrolling(-CONFIG.SCROLL_VALUE);
+        } else if (KEYS.NEXT.includes(event.code)) {
+            goNext();
+        } else if (KEYS.SCROLL_DOWN.includes(event.code)) {
+            stopScrolling();
+            startScrolling(CONFIG.SCROLL_VALUE);
+        }
+    }
+
+    function handleKeyUp(event) {
+        if (KEYS.SCROLL_UP.includes(event.code) || KEYS.SCROLL_DOWN.includes(event.code)) {
+            stopScrolling();
+        }
+    }
+
+    const PAGE_TYPE = {
+        isBookmarkPage: () => window.location.href.includes('/bookmarks.php'),
+        isChapterPage: () => window.location.href.includes('/title/') && window.location.href.includes('/chapter/'),
+    };
+
     /** MAIN SECTION */
     window.addEventListener('load', function () {
-        if (window.location.href.indexOf('/following.php') > -1) {
+        if (PAGE_TYPE.isBookmarkPage()) {
             sortBookmarks();
-        } else if (window.location.href.indexOf('/manga/') > -1 && window.location.href.indexOf('/chapter/') > -1) {
+        } else if (PAGE_TYPE.isChapterPage()) {
             addProgressBar();
 
             window.onscroll = function () {
@@ -189,28 +278,14 @@
                 prerender();
             };
 
-            document.addEventListener('keydown', (event) => {
-                if (event.ctrlKey || event.code === 'MetaLeft' || event.code === 'MetaRight') {
-                    return;
-                }
-                if (event.code === 'ArrowLeft' || event.code === 'KeyA' || event.code === 'KeyQ') {
-                    goPrevious();
-                } else if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ') {
-                    stopScrolling();
-                    startScrolling(-scrollValue);
-                } else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
-                    goNext();
-                } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
-                    stopScrolling();
-                    startScrolling(scrollValue);
-                }
-            });
-
-            document.addEventListener('keyup', (event) => {
-                if (event.code === 'ArrowUp' || event.code === 'KeyW' || event.code === 'KeyZ' || event.code === 'ArrowDown' || event.code === 'KeyS') {
-                    stopScrolling();
-                }
-            });
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
         }
     });
+
+    if (PAGE_TYPE.isBookmarkPage()) {
+        GM_registerMenuCommand('Sort bookmarks', function () {
+            sortBookmarks();
+        });
+    }
 })();
