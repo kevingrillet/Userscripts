@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steamhunters.com
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -23,38 +23,47 @@
 (function () {
     'use strict';
 
+    let isFiltered = false;
+
+    function toggleVisibility() {
+        isFiltered = !isFiltered;
+        const button = document.getElementById('toggle-visibility-btn');
+        const icon = button.querySelector('i');
+
+        // Update button appearance
+        icon.className = isFiltered ? 'fa fa-eye-slash' : 'fa fa-filter';
+        button.querySelector('span').textContent = isFiltered ? ' Show Completed' : ' Hide Completed';
+
+        // Toggle visibility of completed updates (100%)
+        const updates = document.querySelectorAll('li[data-flash^="updates/"]');
+        updates.forEach((update) => {
+            const contentDiv = update.querySelector('a.media.group.collapse-rotate.rotate-90 > div.media-body.media-middle > div');
+            if (contentDiv) {
+                const text = contentDiv.textContent || '';
+                const isCompleted = text.includes('(100 %)');
+                if (isCompleted) {
+                    update.style.display = isFiltered ? 'none' : '';
+                }
+            }
+        });
+
+        // Toggle visibility of unlocked achievements
+        const unlockedItems = document.querySelectorAll('li.unlocked.check-item');
+        unlockedItems.forEach((item) => {
+            item.style.display = isFiltered ? 'none' : '';
+        });
+    }
+
     const buttonTemplate = `
-        <button type="button" class="btn btn-default btn-xs">
-            <i class="fa fa-filter"></i> Toggle Visibility
+        <button id="toggle-visibility-btn" type="button" class="btn btn-default btn-xs">
+            <i class="fa fa-filter"></i><span> Hide Completed</span>
         </button>
     `.trim();
 
     const spanContainer = document.querySelector('span.pull-right');
     if (spanContainer) {
         spanContainer.insertAdjacentHTML('beforeend', buttonTemplate);
-
-        // Get the button reference and add event listener
-        const toggleButton = spanContainer.querySelector('button:last-child');
-        toggleButton.addEventListener('click', () => {
-            // Toggle visibility of completed updates (100%)
-            const updates = document.querySelectorAll('li[data-flash^="updates/"]');
-            updates.forEach((update) => {
-                const contentDiv = update.querySelector('a.media.group.collapse-rotate.rotate-90 > div.media-body.media-middle > div');
-                if (contentDiv) {
-                    const text = contentDiv.textContent || '';
-                    const isCompleted = text.includes('(100 %)');
-                    if (isCompleted) {
-                        update.style.display = update.style.display === 'none' ? '' : 'none';
-                    }
-                }
-            });
-
-            // Toggle visibility of unlocked achievements
-            const unlockedItems = document.querySelectorAll('li.unlocked.check-item');
-            unlockedItems.forEach((item) => {
-                item.style.display = item.style.display === 'none' ? '' : 'none';
-            });
-        });
+        document.getElementById('toggle-visibility-btn').addEventListener('click', toggleVisibility);
     } else {
         console.error('Unable to find <span class="pull-right">');
     }
