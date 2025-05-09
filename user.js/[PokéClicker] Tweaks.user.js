@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           pokeclicker.com
-// @version       0.3
+// @version       0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -24,26 +24,37 @@
     'use strict';
 
     // Less animations
-    GM_addStyle('.animated-currency { display: none; }');
-    GM_addStyle('.text-danger { display: inline !important; }');
+    GM_addStyle(`
+        .animated-currency {
+            display: none;
+        }
+        .text-danger {
+            display: inline !important;
+        }
+    `);
 
-    // Nofication
-    var observer,
-        elAchievementTrackerProgressBar = document.querySelector('#achivementTrackerContainer .progress-bar'),
-        elPlayer = document.createElement('audio');
-    // elPlayer.src = 'https://notificationsounds.com/storage/sounds/file-sounds-1229-my-work-is-done.mp3';
+    // Notification
+    const elAchievementTrackerProgressBar = document.querySelector('#achivementTrackerContainer .progress-bar');
+    if (!elAchievementTrackerProgressBar) {
+        console.warn('[PokéClicker] Tweaks: Achievement tracker progress bar not found');
+        return;
+    }
+
+    const elPlayer = document.createElement('audio');
     elPlayer.src = 'https://raw.githubusercontent.com/kevingrillet/Userscripts/main/assets/my-work-is-done.mp3';
 
-    var onMutate = function (mutationsList) {
+    const onMutate = (mutationsList) => {
         mutationsList.forEach(() => {
-            //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)));
-            if (Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) === 100) {
-                //console.log("Achievement Tracker progress: " + Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1)) + " DING!");
+            const progress = Math.trunc(elAchievementTrackerProgressBar.style.width.slice(0, -1));
+            //console.log(`Achievement Tracker progress: ${progress}`);
+            if (progress === 100) {
+                //console.log(`Achievement Tracker progress: ${progress} DING!`);
                 elPlayer.play();
             }
         });
     };
-    observer = new MutationObserver(onMutate);
+
+    const observer = new MutationObserver(onMutate);
     observer.observe(elAchievementTrackerProgressBar, { attributes: true });
     // observer.disconnect();
 })();
