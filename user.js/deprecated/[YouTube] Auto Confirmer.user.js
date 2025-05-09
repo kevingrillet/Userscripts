@@ -17,6 +17,7 @@
 
 // @match         https://www.youtube.com/*
 // @icon          https://www.google.com/s2/favicons?domain=youtube.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

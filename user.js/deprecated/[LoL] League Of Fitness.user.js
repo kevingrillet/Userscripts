@@ -17,6 +17,7 @@
 
 // @match         *://matchhistory.euw.leagueoflegends.com/*/*
 // @icon          https://www.google.com/s2/favicons?domain=leagueoflegends.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

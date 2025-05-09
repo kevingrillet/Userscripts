@@ -17,6 +17,7 @@
 
 // @match         *
 // @icon          https://www.google.com/s2/favicons?domain=google.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

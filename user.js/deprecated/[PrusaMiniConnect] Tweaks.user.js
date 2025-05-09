@@ -17,6 +17,7 @@
 
 // @match         http://192.168.1.59/
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=https://www.prusa3d.com/fr/
+// @grant         none
 // @run-at        document-idle
 // ==/UserScript==
 

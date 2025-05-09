@@ -17,6 +17,7 @@
 
 // @match         *://euw.op.gg/summoner/userName=*
 // @icon          https://www.google.com/s2/favicons?domain=op.gg
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

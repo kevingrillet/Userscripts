@@ -18,6 +18,7 @@
 // @match         https://www.youtube.com/*
 // @icon          https://www.google.com/s2/favicons?domain=youtube.com
 // @require       https://use.fontawesome.com/releases/v5.15.2/js/all.js
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

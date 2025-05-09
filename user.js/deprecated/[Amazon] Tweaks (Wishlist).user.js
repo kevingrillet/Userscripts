@@ -16,7 +16,8 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Wishlist).user.js
 
 // @match         *://www.amazon.fr/hz/wishlist/genericItemsPage/*
-// @icon          https://www.google.com/s2/favicons?domain=amazon.fr
+// @icon          https://www.google.com/s2/favicons?domain=amazon.com
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 

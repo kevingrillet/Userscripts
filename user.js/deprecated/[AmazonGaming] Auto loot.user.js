@@ -16,7 +16,8 @@
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[AmazonGaming]%20Auto%20loot.user.js
 
 // @match         https://gaming.amazon.com/home
-// @icon          https://www.google.com/s2/favicons?domain=twitch.tv
+// @icon          https://www.google.com/s2/favicons?domain=gaming.amazon.com/
+// @grant         none
 // @run-at        document-end
 // ==/UserScript==
 
