@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -149,6 +149,7 @@
                 background-image: linear-gradient(120deg, #800080 0%, #FF0000 100%);
                 width: var(--scrollAmount);
                 transition: height 100ms, color 100ms;
+                z-index: 9999;
             }
             #my_progress_bar:before {
                 content: "";
@@ -171,6 +172,8 @@
             document.getElementById(SELECTORS.PROGRESS_BAR).style.setProperty('--scrollAmount', scrollPercent + '%');
             document.getElementById(SELECTORS.PROGRESS_BAR).innerHTML = Math.round(scrollPercent) + '%';
         };
+
+        processScroll();
 
         document.addEventListener('scroll', processScroll);
     }
