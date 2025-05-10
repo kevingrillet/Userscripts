@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          [SteamHunters] Achievements tweaks
+// @name          [SteamHunters] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Adds a button to toggle visibility of completed updates (100%) and unlocked achievements on SteamHunters
@@ -11,8 +11,8 @@
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
-// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Achievements%20tweaks.user.js
-// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Achievements%20tweaks.user.js
+// @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Tweaks.user.js
+// @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Tweaks.user.js
 
 // @match         https://steamhunters.com/id/*/apps/*/achievements
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=steamhunters.com
