@@ -7,7 +7,9 @@
     // Configuration object
     const CONFIG = {
         filterDiscovered: true, // Set to false to show all items regardless of discovery status
+        gameMode: [], // Possible values: 'base', 'td', 'aod', 'cr' (for base game, Throne of the Herald, Astrology of Dragons, Crimson Reborn)
         showDropSources: true, // Set to false to hide drop source information
+        showDungeonInfo: true, // Set to false to hide dungeon information
         showItemIds: true, // Set to false to hide item IDs
         showSlayerInfo: true, // Set to false to hide slayer task information
         sortByCombatLevel: true, // Set to false to keep default sort
@@ -25,6 +27,21 @@
 
         // Loop through all game items
         game.items.allObjects.forEach((item) => {
+            // Check item game mode
+            if (CONFIG.gameMode && CONFIG.gameMode.length > 0) {
+                const itemGameMode = item.gamemode;
+                const isValidGameMode = CONFIG.gameMode.some(
+                    (mode) =>
+                        (mode === 'base' && itemGameMode === 'melvorBase') ||
+                        (mode === 'td' && itemGameMode === 'melvorTotH') ||
+                        (mode === 'aod' && itemGameMode === 'melvorAoD') ||
+                        (mode === 'cr' && itemGameMode === 'melvorCR')
+                );
+                if (!isValidGameMode) {
+                    return; // Skip items not from selected game modes
+                }
+            }
+
             // Check if item has been discovered
             const isDiscovered = game.stats.itemFindCount(item) > 0;
             // Check if it's not in inventory
@@ -57,6 +74,7 @@
                 if ((!CONFIG.filterDiscovered || isDiscovered) && !isInInventory && !isEquipped) {
                     // Get drop sources for this item
                     const dropSources = [];
+                    const dungeonSources = []; // Array for dungeon sources
 
                     game.monsters.allObjects.forEach((monster) => {
                         const drops = monster.lootTable.drops;
@@ -86,12 +104,49 @@
                         });
                     });
 
+                    // Function to get dungeon combat level
+                    const getDungeonLevel = (dungeon) => {
+                        // Use the highest level monster in the dungeon as reference
+                        return dungeon.monsters
+                            ? Math.max(...dungeon.monsters.map((monster) => monster.combatLevel))
+                            : dungeon.combinedModifiers?.decreasedMinimumCombatLevel || dungeon.recommendedBaseCombatLevel || 0;
+                    };
+
+                    // Modify dungeon sources collection to include max monster level
+                    game.dungeons.allObjects.forEach((dungeon) => {
+                        if (dungeon._rewards) {
+                            const dungeonLevel = getDungeonLevel(dungeon);
+                            dungeon._rewards.forEach((reward) => {
+                                if (reward.type === 'Item' && reward.name === item.name) {
+                                    dungeonSources.push({
+                                        dungeon: dungeon.name,
+                                        chance: 100,
+                                        type: 'completion',
+                                        level: dungeonLevel,
+                                    });
+                                } else if (reward.type === 'Chest' && reward.dropTable && reward.dropTable.drops) {
+                                    reward.dropTable.drops.forEach((drop) => {
+                                        if (drop.item === item) {
+                                            dungeonSources.push({
+                                                dungeon: dungeon.name,
+                                                chance: (drop.weight / reward.dropTable.totalWeight) * 100,
+                                                type: 'chest',
+                                                level: dungeonLevel,
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+
                     // Sort drop sources by chance (highest to lowest)
                     dropSources.sort((a, b) => b.chance - a.chance);
 
                     missingItems.push({
                         item: item,
                         dropSources: dropSources,
+                        dungeonSources: dungeonSources, // Add dungeon sources
                     });
                 }
             }
@@ -115,10 +170,14 @@
 
                 const aHasSlayer = hasSlayerDrops(a);
                 const bHasSlayer = hasSlayerDrops(b);
+                const aHasDrops = a.dropSources.length > 0;
+                const bHasDrops = b.dropSources.length > 0;
+                const aHasDungeon = a.dungeonSources.length > 0;
+                const bHasDungeon = b.dungeonSources.length > 0;
 
-                // First sort by whether the item has slayer drops
+                // Slayer first
                 if (aHasSlayer !== bHasSlayer) {
-                    return bHasSlayer - aHasSlayer; // Slayer items first
+                    return bHasSlayer - aHasSlayer;
                 }
 
                 // If both have slayer drops, sort by slayer combat level
@@ -126,16 +185,32 @@
                     return getMinSlayerCombatLevel(a) - getMinSlayerCombatLevel(b);
                 }
 
-                // If neither have slayer drops, sort by non-slayer combat level
-                const aHasDrops = a.dropSources.length > 0;
-                const bHasDrops = b.dropSources.length > 0;
+                if (aHasDrops !== bHasDrops) {
+                    return bHasDrops - aHasDrops;
+                }
 
                 if (aHasDrops && bHasDrops) {
                     return getMinNonSlayerCombatLevel(a) - getMinNonSlayerCombatLevel(b);
                 }
 
-                // Put items without drops at the end
-                return aHasDrops ? -1 : bHasDrops ? 1 : 0;
+                // Add check for dungeon sources
+                if (aHasDungeon !== bHasDungeon) {
+                    return bHasDungeon - aHasDungeon;
+                }
+
+                // Then dungeons
+                if (aHasDungeon && bHasDungeon) {
+                    // First sort by dungeon level
+                    const aMinLevel = Math.min(...a.dungeonSources.map((source) => source.level));
+                    const bMinLevel = Math.min(...b.dungeonSources.map((source) => source.level));
+                    if (aMinLevel !== bMinLevel) {
+                        return aMinLevel - bMinLevel;
+                    }
+                    // If same level, sort by name
+                    return a.dungeonSources[0].dungeon.localeCompare(b.dungeonSources[0].dungeon);
+                }
+
+                return 0;
             });
         }
 
@@ -146,10 +221,10 @@
             itemsToShow.length > 0
                 ? '\n' +
                       itemsToShow
-                          .map(({ item, dropSources }) => {
+                          .map(({ item, dropSources, dungeonSources }) => {
                               const itemInfo = `- ${item.name}${CONFIG.showItemIds ? ` [ID: ${item.id}]` : ''}`;
 
-                              if (!CONFIG.showDropSources || dropSources.length === 0) return itemInfo;
+                              if (!CONFIG.showDropSources || (dropSources.length === 0 && dungeonSources.length === 0)) return itemInfo;
 
                               const dropInfo = dropSources
                                   .map((source) => {
@@ -157,7 +232,19 @@
                                       return `\n-- Drops from ${source.monster} (${source.combatLevel})${slayerInfo} (${source.chance.toFixed(2)}%)`;
                                   })
                                   .join('');
-                              return `${itemInfo}${dropInfo}`;
+
+                              const dungeonInfo =
+                                  CONFIG.showDungeonInfo && dungeonSources.length > 0
+                                      ? dungeonSources
+                                            .map((source) => {
+                                                const levelInfo = source.level > 0 ? ` (Level ${source.level})` : '';
+                                                const sourceType = source.type === 'chest' ? 'Chest' : 'Completion';
+                                                return `\n-- Found in ${source.dungeon}${levelInfo} (${sourceType}) (${source.chance.toFixed(2)}%)`;
+                                            })
+                                            .join('')
+                                      : '';
+
+                              return `${itemInfo}${dropInfo}${dungeonInfo}`;
                           })
                           .filter(Boolean)
                           .join('\n')
