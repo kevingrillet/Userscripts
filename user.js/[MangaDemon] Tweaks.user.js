@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.2
+// @version       1.0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -125,7 +125,11 @@
                 return 0;
             }
 
-            return ((windowScroll + windowHeight) / docHeight) * 100;
+            // Calculate total scrollable area (document height minus window height)
+            const scrollable = docHeight - windowHeight;
+
+            // Calculate percentage based on current scroll position relative to scrollable area
+            return scrollable > 0 ? (windowScroll / scrollable) * 100 : 100;
         } catch (error) {
             console.error('[MangaDemon Tweaks] Error calculating scroll percentage:', error);
             return 0;
@@ -168,7 +172,7 @@
             }`);
 
         let processScroll = () => {
-            let scrollPercent = _get_scroll_percentage() - 1;
+            let scrollPercent = _get_scroll_percentage();
             document.getElementById(SELECTORS.PROGRESS_BAR).style.setProperty('--scrollAmount', scrollPercent + '%');
             document.getElementById(SELECTORS.PROGRESS_BAR).innerHTML = Math.round(scrollPercent) + '%';
         };
