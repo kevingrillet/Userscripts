@@ -3,6 +3,8 @@
  * Use in browser console while the game is open
  */
 
+console.clear(); // Clear console for better readability
+
 (function () {
     // Configuration object
     const CONFIG = {
