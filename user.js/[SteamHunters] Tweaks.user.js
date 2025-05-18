@@ -7,13 +7,14 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steamhunters.com
-// @version       1.0.3
+// @version       1.0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Tweaks.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[SteamHunters]%20Tweaks.user.js
 
+// @match         https://steamhunters.com/id/*/games*
 // @match         https://steamhunters.com/id/*/apps/*/achievements
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=steamhunters.com
 // @grant         GM_getValue
@@ -77,23 +78,56 @@
         }
     }
 
+    function addDateInfo() {
+        const breadcrumb = document.querySelector('.breadcrumb');
+        if (breadcrumb && !document.getElementById('date-info')) {
+            const date = new Date();
+            const year = date.getFullYear();
+            const week = getWeekNumber(date);
+
+            const dateInfoTemplate = `
+                <li id="date-info" class="pull-right" style="margin-left: auto;">
+                    <span class="text-muted">${year} - W${week}</span>
+                </li>
+            `.trim();
+
+            breadcrumb.insertAdjacentHTML('beforeend', dateInfoTemplate);
+        }
+    }
+
+    function getWeekNumber(date) {
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const daysSinceFirstDay = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
+        return Math.ceil((daysSinceFirstDay + firstDayOfYear.getDay() + 1) / 7);
+    }
+
+    function isAchievementsPage() {
+        return window.location.pathname.includes('/apps/') && window.location.pathname.includes('/achievements');
+    }
+
     // Observer for dynamic content
     const observer = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                initButton();
-                applyFilter();
+                if (isAchievementsPage()) {
+                    initButton();
+                    applyFilter();
+                }
+                addDateInfo();
             }
         }
     });
 
     // Start observing
-    const targetNode = document.querySelector('.achievements');
+    const targetNode = document.querySelector('.achievements') || document.querySelector('.breadcrumb');
     if (targetNode) {
         observer.observe(targetNode, { childList: true, subtree: true });
     }
 
     // Initial setup
-    initButton();
-    applyFilter();
+    if (isAchievementsPage()) {
+        initButton();
+        applyFilter();
+    }
+    addDateInfo();
 })();
