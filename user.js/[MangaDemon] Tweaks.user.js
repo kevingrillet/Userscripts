@@ -2,12 +2,12 @@
 // @name          [MangaDemon] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Sort Bookmarks, goto next chapter at the ens of page or list of bookmarks if last
+// @description   Sort Bookmarks, goto next chapter at the end of page, keyboard navigation, and remove ads/Discord/Ko-fi blocks on chapter pages
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.3
+// @version       1.0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -205,6 +205,37 @@
         }
     }
 
+    function cleanChapterAds() {
+        const container = document.querySelector('.main-width.center-m');
+        if (!container) return;
+
+        const btn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent.includes('CLICK HERE IF IMAGES ARE NOT LOADING'));
+        if (!btn) return;
+
+        let node = btn.parentNode;
+        let startNode = node;
+        let endNode = null;
+        let found = false;
+
+        while (node && node.nextSibling) {
+            node = node.nextSibling;
+            if (node.nodeType === Node.COMMENT_NODE && node.nodeValue.trim().startsWith('Cached copy')) {
+                endNode = node;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) return;
+
+        node = startNode.nextSibling;
+        while (node && node !== endNode) {
+            let toRemove = node;
+            node = node.nextSibling;
+            toRemove.remove();
+        }
+    }
+
     function goBookmark() {
         window.location.href = window.location.origin + '/bookmarks.php';
     }
@@ -279,6 +310,7 @@
             sortBookmarks();
         } else if (PAGE_TYPE.isChapterPage()) {
             addProgressBar();
+            cleanChapterAds();
 
             window.onscroll = function () {
                 autoNext();

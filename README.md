@@ -1,18 +1,16 @@
 <div align="center">
-   <a href="https://github.com/kyechan99/capsule-render">
-      <img align="center" alt="Header" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&section=header&text=Userscripts&fontAlign=45&fontSize=90" />
-   </a>
-   <br>
-   <a href="https://www.gnu.org/licenses/gpl-3.0">
-      <img align="center" alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg?logo=gnu&style=for-the-badge" />
-   </a>
-   <a href="https://www.tampermonkey.net/">
-      <img align="center" alt="Tampermonkey, v4.11" src="https://img.shields.io/badge/Tampermonkey-v4.11-blue?logo=tampermonkey&style=for-the-badge" />
-   </a>
-   <a href="https://www.google.com/intl/fr_fr/chrome/">
-      <img align="center" alt="Google Chrome, v88 min" src="https://img.shields.io/badge/Chrome->v88-blue?logo=googlechrome&style=for-the-badge" />
-   </a>
-   <hr>
+  <a href="https://github.com/kyechan99/capsule-render">
+    <img align="center" alt="Header" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&section=header&text=Userscripts&fontAlign=45&fontSize=90" />
+  </a>
+  <br>
+  <img align="center" alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg?logo=gnu&style=for-the-badge" />
+  <a href="https://www.tampermonkey.net/">
+    <img align="center" alt="Tampermonkey, v4.11" src="https://img.shields.io/badge/Tampermonkey-v4.11-blue?logo=tampermonkey&style=for-the-badge" />
+  </a>
+  <a href="https://www.google.com/intl/fr_fr/chrome/">
+    <img align="center" alt="Google Chrome, v88 min" src="https://img.shields.io/badge/Chrome->v88-blue?logo=googlechrome&style=for-the-badge" />
+  </a>
+  <hr>
 </div>
 
 My homemade Tampermonkey userscripts.
@@ -76,9 +74,10 @@ Remove the ads at the beginning of some searches.
 
 [![MangaDemon - Tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js)
 
-- Auto load next chapter
-- Keyboard navigation (←/→)
-- Remove ads
+- Auto load next chapter when you reach the bottom of the page
+- Keyboard navigation (←/→, WASD, ZQSD)
+- Sort bookmarks by progress and title
+- Removes ads and Discord/Ko-fi blocks between the "CLICK HERE IF IMAGES ARE NOT LOADING" button and the "Cached copy" marker on chapter pages
 
 ## NexusMods
 
