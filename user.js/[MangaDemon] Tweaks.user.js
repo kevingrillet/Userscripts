@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.4
+// @version       1.0.5
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -326,5 +326,8 @@
         GM_registerMenuCommand('Sort bookmarks', function () {
             sortBookmarks();
         });
+    }
+    if (PAGE_TYPE.isChapterPage()) {
+        cleanChapterAds();
     }
 })();
