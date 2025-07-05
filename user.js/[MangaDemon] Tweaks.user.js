@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.5
+// @version       1.0.6
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -232,7 +232,9 @@
         while (node && node !== endNode) {
             let toRemove = node;
             node = node.nextSibling;
-            toRemove.remove();
+            if (toRemove && typeof toRemove.remove === 'function') {
+                toRemove.remove();
+            }
         }
     }
 
