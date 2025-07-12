@@ -2,12 +2,12 @@
 // @name          [MangaDemon] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Sort Bookmarks, goto next chapter at the end of page, keyboard navigation, and remove ads/Discord/Ko-fi blocks on chapter pages
+// @description   Sort Bookmarks, auto-next chapter at end of page, keyboard navigation, remove ads/Discord/Ko-fi blocks, and auto-close 0 Ads Subscription/teaser popups on chapter pages
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.6
+// @version       1.0.7
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -238,6 +238,19 @@
         }
     }
 
+    function closeTeaserByButton() {
+        const closeBtn = document.getElementById('close-teaser');
+        if (closeBtn) {
+            closeBtn.click();
+        }
+    }
+
+    function closeZeroAdsPopin() {
+        if (typeof window.closesub === 'function') {
+            window.closesub();
+        }
+    }
+
     function goBookmark() {
         window.location.href = window.location.origin + '/bookmarks.php';
     }
@@ -313,6 +326,8 @@
         } else if (PAGE_TYPE.isChapterPage()) {
             addProgressBar();
             cleanChapterAds();
+            closeTeaserByButton();
+            closeZeroAdsPopin();
 
             window.onscroll = function () {
                 autoNext();
@@ -331,5 +346,7 @@
     }
     if (PAGE_TYPE.isChapterPage()) {
         cleanChapterAds();
+        closeTeaserByButton();
+        closeZeroAdsPopin();
     }
 })();
