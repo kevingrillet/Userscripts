@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           imdb.com
-// @version       1.0.0
+// @version       1.0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -51,7 +51,7 @@
         }
         const suffix = getSuffix();
         const query = encodeURIComponent(title + ' ' + suffix);
-        const url = 'https://www.google.com/search?q=' + query;
+        const url = 'https://www.google.com/search?q=' + query + '&tbm=vid'; // <-- ajout ici
         GM_openInTab(url, { active: true });
     }
 
