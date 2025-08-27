@@ -25,8 +25,11 @@ My homemade Tampermonkey userscripts.
   - [Github - Inactive](#github---inactive)
 - [Google](#google)
   - [Google - Search Ad Remover](#google---search-ad-remover)
+- [IMDB](#imdb)
+  - [IMDB - Google Search with Custom Suffix](#imdb---google-search-with-custom-suffix)
 - [MangaDemon](#mangademon)
-  - [MangaDemon - Tweaks](#mangademon---tweaks)
+  - [MangaDemon - Tweaks (Scan)](#mangademon---tweaks-scan)
+  - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
 - [NexusMods](#nexusmods)
   - [NexusMods - Tweaks](#nexusmods---tweaks)
 - [PokéClicker](#pokeclicker)
@@ -68,9 +71,18 @@ Add warning to repos without updates for more than 1/2 year.
 
 Remove the ads at the beginning of some searches.
 
+## IMDB
+
+### IMDB - Google Search with Custom Suffix
+
+[![IMDB - Google Search with Custom Suffix](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[IMDB]%20Google%20Search%20with%20Custom%20Suffix.user.js)
+
+- Adds a Tampermonkey menu to search Google for the current IMDB movie/series title with a customizable suffix (e.g., `site:youtube.com`).
+- Lets you change the suffix via a menu command.
+
 ## MangaDemon
 
-### MangaDemon - Tweaks
+### MangaDemon - Tweaks (Scan)
 
 [![MangaDemon - Tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemon]%20Tweaks.user.js)
 
@@ -78,6 +90,15 @@ Remove the ads at the beginning of some searches.
 - Keyboard navigation (←/→, WASD, ZQSD)
 - Sort bookmarks by progress and title
 - Removes ads and Discord/Ko-fi blocks between the "CLICK HERE IF IMAGES ARE NOT LOADING" button and the "Cached copy" marker on chapter pages
+
+### MangaDemonGame - Tweaks (Game)
+
+[![MangaDemonGame - Tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[MangaDemonGame]%20Tweaks.user.js)
+
+- Various UI tweaks for demonicscans.org game pages.
+- Hides dead monster cards without loot.
+- Collapses info sections into expandable blocks.
+- Hides monster image on battle page.
 
 ## NexusMods
 
