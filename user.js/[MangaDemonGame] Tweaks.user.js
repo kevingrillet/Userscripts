@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -231,9 +231,65 @@
         if (topbar) topbar.insertAdjacentElement('afterend', bar);
     }
 
+    // Add a toggle button to show/hide completed achievements on the achievements page
+    function addAchievementsToggleButton() {
+        // Find the panel and the h1 title
+        const panel = document.querySelector('.panel');
+        const h1 = panel?.querySelector('h1');
+        if (!panel || !h1) return;
+
+        // Create the toggle button
+        const btn = document.createElement('button');
+        btn.textContent = 'Hide completed';
+        btn.type = 'button';
+        btn.style.cssText = `
+            margin-left: 14px;
+            padding: 4px 12px;
+            border-radius: 7px;
+            border: 1px solid #333;
+            background: #4caf50;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        `;
+
+        // Load state from storage
+        const storageKey = 'mdg_hide_completed_achievements';
+        let hideCompleted = GM_getValue(storageKey, '0') === '1';
+
+        // Update button and cards according to state
+        function update() {
+            btn.textContent = hideCompleted ? 'Show completed' : 'Hide completed';
+            btn.style.background = hideCompleted ? '#e53935' : '#4caf50';
+            // For each achievement card, check if completed (progress is 100%)
+            document.querySelectorAll('.panel .card').forEach(card => {
+                const percent = card.querySelector('.row > div:last-child');
+                if (percent && percent.textContent.trim() === '100%') {
+                    card.style.display = hideCompleted ? 'none' : '';
+                } else {
+                    card.style.display = '';
+                }
+            });
+        }
+
+        btn.onclick = () => {
+            hideCompleted = !hideCompleted;
+            GM_setValue(storageKey, hideCompleted ? '1' : '0');
+            update();
+        };
+
+        // Insert the button next to the h1 title
+        h1.insertAdjacentElement('afterend', btn);
+        update();
+    }
+
     /** MAIN SECTION */
     window.addEventListener('load', function () {
-        if (PAGE_TYPE.activeWave()) {
+        if (PAGE_TYPE.achievements()) {
+            addAchievementsToggleButton();
+        } else if (PAGE_TYPE.activeWave()) {
             encapsulateDetails('.gate-info', 'Gate Info');
             addMonsterTypeFilterBar();
         } else if (PAGE_TYPE.battle()) {
@@ -258,6 +314,8 @@
         ) {
             addGameMenuBar();
         }
+
+        // Add achievements toggle button if on achievements page
     });
 
 })();
