@@ -314,8 +314,6 @@
         ) {
             addGameMenuBar();
         }
-
-        // Add achievements toggle button if on achievements page
     });
 
 })();
