@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.2
+// @version       1.0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -240,7 +240,7 @@
 
         // Create the toggle button
         const btn = document.createElement('button');
-        btn.textContent = 'Hide completed';
+        btn.textContent = 'Hide claimed';
         btn.type = 'button';
         btn.style.cssText = `
             margin-left: 14px;
@@ -256,18 +256,18 @@
         `;
 
         // Load state from storage
-        const storageKey = 'mdg_hide_completed_achievements';
-        let hideCompleted = GM_getValue(storageKey, '0') === '1';
+        const storageKey = 'mdg_hide_claimed_achievements';
+        let hideClaimed = GM_getValue(storageKey, '0') === '1';
 
         // Update button and cards according to state
         function update() {
-            btn.textContent = hideCompleted ? 'Show completed' : 'Hide completed';
-            btn.style.background = hideCompleted ? '#e53935' : '#4caf50';
-            // For each achievement card, check if completed (progress is 100%)
+            btn.textContent = hideClaimed ? 'Show claimed' : 'Hide claimed';
+            btn.style.background = hideClaimed ? '#e53935' : '#4caf50';
+            // For each achievement card, check if claimed (button with text "Claimed" and disabled)
             document.querySelectorAll('.panel .card').forEach(card => {
-                const percent = card.querySelector('.row > div:last-child');
-                if (percent && percent.textContent.trim() === '100%') {
-                    card.style.display = hideCompleted ? 'none' : '';
+                const claimedBtn = card.querySelector('button.btn[disabled]');
+                if (claimedBtn && claimedBtn.textContent.trim().toLowerCase() === 'claimed') {
+                    card.style.display = hideClaimed ? 'none' : '';
                 } else {
                     card.style.display = '';
                 }
@@ -275,8 +275,8 @@
         }
 
         btn.onclick = () => {
-            hideCompleted = !hideCompleted;
-            GM_setValue(storageKey, hideCompleted ? '1' : '0');
+            hideClaimed = !hideClaimed;
+            GM_setValue(storageKey, hideClaimed ? '1' : '0');
             update();
         };
 
