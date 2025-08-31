@@ -34,6 +34,8 @@ My homemade Tampermonkey userscripts.
   - [NexusMods - Tweaks](#nexusmods---tweaks)
 - [PokéClicker](#pokeclicker)
   - [PokéClicker - Tweaks](#pokeclicker---tweaks)
+- [Steam](#steam)
+  - [Steam - Steam Search](#steam---steam-search)
 - [StreamHunters](#streamhunters)
   - [StreamHunters - Tweaks](#streamhunters---tweaks)
 
@@ -119,6 +121,18 @@ Remove the ads at the beginning of some searches.
 - Auto click
 - Auto battle
 - Various QoL improvements
+
+## Steam
+
+### Steam - Steam Search
+
+[![Steam - Steam Search](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Steam%20Search.user.js)
+
+- Adds Tampermonkey menu commands to search the current Steam game on:
+  - DLCompare
+  - G2A
+  - InstantGaming
+  - Kinguin
 
 ## StreamHunters
 
