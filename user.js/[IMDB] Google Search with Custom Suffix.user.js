@@ -3,11 +3,11 @@
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Perform a Google search from IMDB movie/series pages using a customizable suffix (e.g., site:youtube.com).
-// @copyright     Kevin GRILLET
+// @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           imdb.com
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
