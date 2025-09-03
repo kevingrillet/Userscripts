@@ -2,12 +2,12 @@
 // @name          [Instagram] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add menu commands to auto scroll, export CSV, and open links from CSV on Instagram
+// @description   Add menu commands to auto scroll, export CSV, open links from CSV, and merge two CSV exports on Instagram
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           instagram.com
-// @version       1.0.0
+// @version       1.0.1
 //
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -24,6 +24,37 @@
 
 (function () {
     'use strict';
+
+    // ---- Helper: Generate filename with date ----
+    function generateFilename() {
+        const now = new Date();
+        const timestamp =
+            now.getFullYear() +
+            '-' +
+            String(now.getMonth() + 1).padStart(2, '0') +
+            '-' +
+            String(now.getDate()).padStart(2, '0') +
+            '_' +
+            String(now.getHours()).padStart(2, '0') +
+            '-' +
+            String(now.getMinutes()).padStart(2, '0') +
+            '-' +
+            String(now.getSeconds()).padStart(2, '0');
+        return `export_${timestamp}.csv`;
+    }
+
+    // ---- Helper: Save CSV ----
+    function saveCSV(csv, filename) {
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 
     // ---- Auto scroll until content stops loading ----
     function autoScrollUntilStable(el, minDelay = 2000, maxDelay = 4000) {
@@ -58,39 +89,14 @@
             href: el.href || '',
         }));
 
-        // Sort alphabetically by text
+        // Sort alphabetically
         results.sort((a, b) => a.text.localeCompare(b.text, 'en', { sensitivity: 'base' }));
 
         let csv = 'text,href\n';
         csv += results.map((r) => `"${r.text.replace(/"/g, '""')}","${r.href.replace(/"/g, '""')}"`).join('\n');
 
-        // Generate filename with date & time
-        const now = new Date();
-        const timestamp =
-            now.getFullYear() +
-            '-' +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            '-' +
-            String(now.getDate()).padStart(2, '0') +
-            '_' +
-            String(now.getHours()).padStart(2, '0') +
-            '-' +
-            String(now.getMinutes()).padStart(2, '0') +
-            '-' +
-            String(now.getSeconds()).padStart(2, '0');
-
-        const filename = `export_${timestamp}.csv`;
-
-        // Download the CSV file
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        const filename = generateFilename();
+        saveCSV(csv, filename);
 
         alert(`✅ CSV export finished (${results.length} items, sorted alphabetically).\nFile: ${filename}`);
     }
@@ -121,6 +127,48 @@
         }
 
         alert(`✅ ${opened} tabs opened from CSV.`);
+    }
+
+    // ---- Merge two CSV contents ----
+    function mergeTwoCSVs(csv1, csv2) {
+        function parseCSV(csv) {
+            const lines = csv
+                .trim()
+                .split(/\r?\n/)
+                .filter((l) => l.trim());
+            const start = lines[0].toLowerCase().startsWith('text,href') ? 1 : 0;
+            return lines
+                .slice(start)
+                .map((line) => {
+                    const match = line.match(/"([^"]*)","([^"]*)"/);
+                    return match ? { text: match[1], href: match[2] } : null;
+                })
+                .filter(Boolean);
+        }
+
+        const arr1 = parseCSV(csv1);
+        const arr2 = parseCSV(csv2);
+
+        // Merge + remove duplicates by href
+        const mergedMap = new Map();
+        [...arr1, ...arr2].forEach((item) => {
+            if (!mergedMap.has(item.href)) {
+                mergedMap.set(item.href, item);
+            }
+        });
+
+        const merged = Array.from(mergedMap.values());
+
+        // Sort alphabetically
+        merged.sort((a, b) => a.text.localeCompare(b.text, 'en', { sensitivity: 'base' }));
+
+        let csv = 'text,href\n';
+        csv += merged.map((r) => `"${r.text.replace(/"/g, '""')}","${r.href.replace(/"/g, '""')}"`).join('\n');
+
+        const filename = generateFilename();
+        saveCSV(csv, filename);
+
+        alert(`✅ Merge finished (${merged.length} unique items, sorted alphabetically).\nFile: ${filename}`);
     }
 
     // ---- Tampermonkey menu commands ----
@@ -158,5 +206,14 @@
         const csvInput = prompt('Paste here the CSV lines to open (format: "text","href").\n\n⚠️ Links will be opened in new tabs.');
         if (!csvInput) return;
         openLinksFromCSV(csvInput);
+    });
+
+    GM_registerMenuCommand('🔀 Merge two CSVs', () => {
+        const csv1 = prompt('Paste the first CSV content:');
+        if (!csv1) return;
+        const csv2 = prompt('Paste the second CSV content:');
+        if (!csv2) return;
+
+        mergeTwoCSVs(csv1, csv2);
     });
 })();
