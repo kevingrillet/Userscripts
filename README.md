@@ -27,6 +27,8 @@ My homemade Tampermonkey userscripts.
   - [Google - Search Ad Remover](#google---search-ad-remover)
 - [IMDB](#imdb)
   - [IMDB - Google Search with Custom Suffix](#imdb---google-search-with-custom-suffix)
+- [Instagram](#instagram)
+  - [Instagram - Tweaks](#instagram---tweaks)
 - [MangaDemon](#mangademon)
   - [MangaDemon - Tweaks (Scan)](#mangademon---tweaks-scan)
   - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
@@ -81,6 +83,18 @@ Remove the ads at the beginning of some searches.
 
 - Adds a Tampermonkey menu to search Google for the current IMDB movie/series title with a customizable suffix (e.g., `site:youtube.com`).
 - Lets you change the suffix via a menu command.
+
+## Instagram
+
+### Instagram - Tweaks
+
+[![Instagram - Tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Instagram]%20Tweaks.user.js)
+
+- Auto scroll inside a given element until no new content is loaded.
+- Export elements (like posts or links) to CSV (sorted alphabetically, timestamped filename).
+- Open multiple links from a pasted CSV directly in new tabs.
+- Merge two CSV exports (removes duplicates, sorts, re-downloads).
+- Compare two CSVs (diff mode: items in second file that are not in the first).
 
 ## MangaDemon
 
