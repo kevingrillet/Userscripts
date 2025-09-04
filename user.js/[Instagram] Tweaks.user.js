@@ -2,12 +2,12 @@
 // @name          [Instagram] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add menu commands to auto scroll, export CSV, open links from CSV, and merge two CSV exports on Instagram
+// @description   Add menu commands to auto scroll, export CSV, open links from CSV, merge two CSV exports, and compare two CSVs (diff) on Instagram
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           instagram.com
-// @version       1.0.1
+// @version       1.0.2
 //
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -26,7 +26,7 @@
     'use strict';
 
     // ---- Helper: Generate filename with date ----
-    function generateFilename() {
+    function generateFilename(prefix = 'export') {
         const now = new Date();
         const timestamp =
             now.getFullYear() +
@@ -40,7 +40,7 @@
             String(now.getMinutes()).padStart(2, '0') +
             '-' +
             String(now.getSeconds()).padStart(2, '0');
-        return `export_${timestamp}.csv`;
+        return `${prefix}_${timestamp}.csv`;
     }
 
     // ---- Helper: Save CSV ----
@@ -54,6 +54,22 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+
+    // ---- Helper: Parse CSV ----
+    function parseCSV(csv) {
+        const lines = csv
+            .trim()
+            .split(/\r?\n/)
+            .filter((l) => l.trim());
+        const start = lines[0].toLowerCase().startsWith('text,href') ? 1 : 0;
+        return lines
+            .slice(start)
+            .map((line) => {
+                const match = line.match(/"([^"]*)","([^"]*)"/);
+                return match ? { text: match[1], href: match[2] } : null;
+            })
+            .filter(Boolean);
     }
 
     // ---- Auto scroll until content stops loading ----
@@ -89,13 +105,12 @@
             href: el.href || '',
         }));
 
-        // Sort alphabetically
         results.sort((a, b) => a.text.localeCompare(b.text, 'en', { sensitivity: 'base' }));
 
         let csv = 'text,href\n';
         csv += results.map((r) => `"${r.text.replace(/"/g, '""')}","${r.href.replace(/"/g, '""')}"`).join('\n');
 
-        const filename = generateFilename();
+        const filename = generateFilename('export');
         saveCSV(csv, filename);
 
         alert(`✅ CSV export finished (${results.length} items, sorted alphabetically).\nFile: ${filename}`);
@@ -131,25 +146,9 @@
 
     // ---- Merge two CSV contents ----
     function mergeTwoCSVs(csv1, csv2) {
-        function parseCSV(csv) {
-            const lines = csv
-                .trim()
-                .split(/\r?\n/)
-                .filter((l) => l.trim());
-            const start = lines[0].toLowerCase().startsWith('text,href') ? 1 : 0;
-            return lines
-                .slice(start)
-                .map((line) => {
-                    const match = line.match(/"([^"]*)","([^"]*)"/);
-                    return match ? { text: match[1], href: match[2] } : null;
-                })
-                .filter(Boolean);
-        }
-
         const arr1 = parseCSV(csv1);
         const arr2 = parseCSV(csv2);
 
-        // Merge + remove duplicates by href
         const mergedMap = new Map();
         [...arr1, ...arr2].forEach((item) => {
             if (!mergedMap.has(item.href)) {
@@ -158,17 +157,34 @@
         });
 
         const merged = Array.from(mergedMap.values());
-
-        // Sort alphabetically
         merged.sort((a, b) => a.text.localeCompare(b.text, 'en', { sensitivity: 'base' }));
 
         let csv = 'text,href\n';
         csv += merged.map((r) => `"${r.text.replace(/"/g, '""')}","${r.href.replace(/"/g, '""')}"`).join('\n');
 
-        const filename = generateFilename();
+        const filename = generateFilename('merge');
         saveCSV(csv, filename);
 
         alert(`✅ Merge finished (${merged.length} unique items, sorted alphabetically).\nFile: ${filename}`);
+    }
+
+    // ---- Compare two CSVs (diff) ----
+    function diffTwoCSVs(csv1, csv2) {
+        const arr1 = parseCSV(csv1);
+        const arr2 = parseCSV(csv2);
+
+        const hrefSet1 = new Set(arr1.map((i) => i.href));
+        const diff = arr2.filter((i) => !hrefSet1.has(i.href));
+
+        diff.sort((a, b) => a.text.localeCompare(b.text, 'en', { sensitivity: 'base' }));
+
+        let csv = 'text,href\n';
+        csv += diff.map((r) => `"${r.text.replace(/"/g, '""')}","${r.href.replace(/"/g, '""')}"`).join('\n');
+
+        const filename = generateFilename('diff');
+        saveCSV(csv, filename);
+
+        alert(`✅ Diff finished (${diff.length} new items found in second CSV).\nFile: ${filename}`);
     }
 
     // ---- Tampermonkey menu commands ----
@@ -215,5 +231,14 @@
         if (!csv2) return;
 
         mergeTwoCSVs(csv1, csv2);
+    });
+
+    GM_registerMenuCommand('📊 Compare two CSVs (Diff)', () => {
+        const csv1 = prompt('Paste the first CSV content (base):');
+        if (!csv1) return;
+        const csv2 = prompt('Paste the second CSV content (to compare):');
+        if (!csv2) return;
+
+        diffTwoCSVs(csv1, csv2);
     });
 })();
