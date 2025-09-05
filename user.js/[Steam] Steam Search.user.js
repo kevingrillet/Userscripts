@@ -7,14 +7,14 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steampowered.com
-// @version       1.0.0
+// @version       1.0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Steam%20Search.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Steam%20Search.user.js
 
-// @match         https://store.steampowered.com/app/*/*/
+// @match         https://store.steampowered.com/app/*/*
 // @icon          https://www.google.com/s2/favicons?sz=64&domain=steampowered.com
 // @grant         GM_registerMenuCommand
 // @grant         GM_openInTab
