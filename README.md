@@ -143,6 +143,7 @@ Remove the ads at the beginning of some searches.
 [![Steam - Steam Search](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Steam%20Search.user.js)
 
 - Adds Tampermonkey menu commands to search the current Steam game on:
+  - HowLongToBeat
   - DLCompare
   - G2A
   - InstantGaming
