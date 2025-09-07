@@ -2,12 +2,12 @@
 // @name          [Steam] Steam Search
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add menu commands to search the current Steam game on DLCompare, G2A, InstantGaming, and Kinguin
+// @description   Add menu commands to search the current Steam game on HowLongToBeat, DLCompare, G2A, InstantGaming, and Kinguin
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steampowered.com
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -43,6 +43,7 @@
     function getUrls(gameName) {
         const encoded = encodeURIComponent(gameName);
         return [
+            { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${encoded}` },
             { label: 'DLCompare', url: `https://www.dlcompare.fr/search?q=${encoded}` },
             { label: 'G2A', url: `https://www.g2a.com/search?query=${encoded}` },
             { label: 'InstantGaming', url: `https://www.instant-gaming.com/fr/rechercher/?q=${encoded}` },
