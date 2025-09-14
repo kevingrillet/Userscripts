@@ -2,12 +2,12 @@
 // @name          [Steam] Steam Search
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add menu commands to search the current Steam game on HowLongToBeat, DLCompare, G2A, InstantGaming, and Kinguin
+// @description   Add menu commands to search the current Steam game on HowLongToBeat, SteamHunters, DLCompare, G2A, InstantGaming and Kinguin
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steampowered.com
-// @version       1.0.2
+// @version       1.0.3
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -30,6 +30,12 @@
         return el ? el.textContent.trim() : '';
     }
 
+    // Get the AppID from the Steam URL
+    function getAppId() {
+        const match = window.location.pathname.match(/\/app\/(\d+)\//);
+        return match ? match[1] : '';
+    }
+
     // Open a new tab with the given URL
     function openInTab(url) {
         if (typeof GM_openInTab === 'function') {
@@ -40,10 +46,11 @@
     }
 
     // Generate search URLs for each site
-    function getUrls(gameName) {
+    function getUrls(gameName, appId) {
         const encoded = encodeURIComponent(gameName);
         return [
             { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${encoded}` },
+            { label: 'SteamHunters', url: `https://steamhunters.com/apps/${appId}/achievements` },
             { label: 'DLCompare', url: `https://www.dlcompare.fr/search?q=${encoded}` },
             { label: 'G2A', url: `https://www.g2a.com/search?query=${encoded}` },
             { label: 'InstantGaming', url: `https://www.instant-gaming.com/fr/rechercher/?q=${encoded}` },
@@ -54,9 +61,10 @@
     // Register Tampermonkey menu commands for each site
     function registerMenuCommands() {
         const gameName = getGameName();
-        if (!gameName) return;
+        const appId = getAppId();
+        if (!gameName || !appId) return;
 
-        getUrls(gameName).forEach(({ label, url }) => {
+        getUrls(gameName, appId).forEach(({ label, url }) => {
             GM_registerMenuCommand(`🔎 Search on ${label}`, () => openInTab(url));
         });
     }

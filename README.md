@@ -144,6 +144,7 @@ Remove the ads at the beginning of some searches.
 
 - Adds Tampermonkey menu commands to search the current Steam game on:
   - HowLongToBeat
+  - SteamHunters
   - DLCompare
   - G2A
   - InstantGaming
