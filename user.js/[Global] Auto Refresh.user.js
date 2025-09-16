@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           all-sites
-// @version       1.0.1
+// @version       1.0.2
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -25,37 +25,53 @@
 (function () {
     'use strict';
 
-    const DEF_INTERVAL_KEY = 'default_interval'; // minutes
-    const DEF_JITTER_KEY = 'default_jitter'; // seconds
-    const ENABLED_KEY = 'enabled';
-    const SITE_KEY_PREFIX = 'site_interval_';
+    const DEF_INTERVAL_KEY = 'default_interval';
+    const DEF_JITTER_KEY = 'default_jitter';
+    const SITE_INTERVAL_PREFIX = 'site_interval_';
+    const SITE_ENABLED_PREFIX = 'site_enabled_';
 
     const DEFAULT_MINUTES = 5;
     const DEFAULT_JITTER = 0;
 
     const host = location.hostname;
 
-    function isEnabled() {
-        return GM_getValue(ENABLED_KEY, true);
+    function formatDelay(ms) {
+        let totalSec = Math.floor(ms / 1000);
+        let h = Math.floor(totalSec / 3600);
+        let m = Math.floor((totalSec % 3600) / 60);
+        let s = totalSec % 60;
+        return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function formatTime(date) {
+        let h = String(date.getHours()).padStart(2, '0');
+        let m = String(date.getMinutes()).padStart(2, '0');
+        let s = String(date.getSeconds()).padStart(2, '0');
+        return `${h}:${m}:${s}`;
     }
 
     function schedule() {
-        if (!isEnabled()) {
-            console.log('[AutoRefresh] Disabled');
+        if (!GM_getValue(SITE_ENABLED_PREFIX + host, false)) {
+            console.log('[AutoRefresh] Disabled for ' + host);
             return;
         }
-        let base = GM_getValue(SITE_KEY_PREFIX + host, 0);
-        if (base === 0) base = GM_getValue(DEF_INTERVAL_KEY, DEFAULT_MINUTES);
+
+        let siteInterval = GM_getValue(SITE_INTERVAL_PREFIX + host, 0);
+        let base = siteInterval > 0 ? siteInterval : GM_getValue(DEF_INTERVAL_KEY, DEFAULT_MINUTES);
         if (base <= 0) return;
+
         let jitter = GM_getValue(DEF_JITTER_KEY, DEFAULT_JITTER);
         let delay = base * 60000 + (jitter > 0 ? Math.random() * jitter * 1000 : 0);
-        console.log(`[AutoRefresh] Reload in ${(delay / 1000).toFixed(1)}s`);
+
+        let next = new Date(Date.now() + delay);
+        console.log(`[AutoRefresh] ${host} → reload in ${formatDelay(delay)} (at ${formatTime(next)})`);
+
         setTimeout(() => location.reload(), delay);
     }
 
     // --- Menu ---
-    GM_registerMenuCommand('Toggle AutoRefresh (' + (isEnabled() ? 'ON' : 'OFF') + ')', () => {
-        GM_setValue(ENABLED_KEY, !isEnabled());
+    GM_registerMenuCommand('Toggle AutoRefresh for ' + host + ' (' + (GM_getValue(SITE_ENABLED_PREFIX + host, false) ? 'ON' : 'OFF') + ')', () => {
+        GM_setValue(SITE_ENABLED_PREFIX + host, !GM_getValue(SITE_ENABLED_PREFIX + host, false));
         location.reload();
     });
 
@@ -66,8 +82,8 @@
     });
 
     GM_registerMenuCommand('Set interval for this site (' + host + ')', () => {
-        let val = prompt('Interval for ' + host + ' (minutes, 0=use default):', GM_getValue(SITE_KEY_PREFIX + host, 0));
-        if (val !== null) GM_setValue(SITE_KEY_PREFIX + host, parseInt(val) || 0);
+        let val = prompt('Interval for ' + host + ' (minutes, 0=use default):', GM_getValue(SITE_INTERVAL_PREFIX + host, 0));
+        if (val !== null) GM_setValue(SITE_INTERVAL_PREFIX + host, parseInt(val) || 0);
         location.reload();
     });
 
