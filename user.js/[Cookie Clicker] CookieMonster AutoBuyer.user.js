@@ -7,13 +7,13 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           cookieclicker
-// @version       1.0.0
-//
+// @version       1.0.1
+
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
 // @downloadURL   https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Cookie%20Clicker]%20CookieMonster%20AutoBuyer.user.js
 // @updateURL     https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Cookie%20Clicker]%20CookieMonster%20AutoBuyer.user.js
-//
+
 // @match         https://orteil.dashnet.org/cookieclicker/*
 // @icon          https://www.google.com/s2/favicons?domain=orteil.dashnet.org
 // @grant         GM_registerMenuCommand
@@ -25,17 +25,6 @@
 
 (function () {
     'use strict';
-
-    // ==========================
-    //  ⚙️ Defaults
-    // ==========================
-    const DEFAULT_INTERVAL = 5; // ⏱️ Check every 5 seconds
-    const DEFAULT_ENABLED = false; // ❌ Disabled by default
-    const DEFAULT_DEBUG = false; // ❌ Debug mode off by default
-
-    // 🎨 Default modes: buy all upgrades (🟦+🟩+⬜) and ⏸️ wait for blue upgrades before buildings
-    const DEFAULT_UPGRADE_MODE = 3; // BLUE_GREEN_GRAY
-    const DEFAULT_STRATEGY = 1; // WAIT_BLUE
 
     // ==========================
     //  📊 Enums (Modes)
@@ -57,6 +46,12 @@
         WAIT_BLUE: 1, // ⏸️ Wait until all blue upgrades are bought before buying buildings
     });
 
+    const AutoAscendMode = Object.freeze({
+        NEVER: 0, // Never auto ascend
+        UNTIL_ENDLESS: 1, // Ascend until HF Endless cycle achievement (id 207) is unlocked
+        ALWAYS: 2, // Always auto ascend when possible
+    });
+
     // ==========================
     //  🎨 Classes / Color selectors
     // ==========================
@@ -68,18 +63,20 @@
     // ==========================
     //  💾 State
     // ==========================
-    let isEnabled = GM_getValue('autobuy_enabled', DEFAULT_ENABLED);
-    let intervalSeconds = GM_getValue('autobuy_interval', DEFAULT_INTERVAL);
-    let debugMode = GM_getValue('autobuy_debug', DEFAULT_DEBUG);
-    let upgradeMode = GM_getValue('autobuy_upgradeMode', DEFAULT_UPGRADE_MODE);
+    let isEnabled = GM_getValue('autobuy_enabled', false);
+    let intervalSeconds = GM_getValue('autobuy_interval', 5);
+    let debugMode = GM_getValue('autobuy_debug', false);
+    let upgradeMode = GM_getValue('autobuy_upgradeMode', UpgradeMode.BLUE_GREEN_GRAY);
     let techStrategy = GM_getValue('autobuy_techStrategy', TechStrategy.AUTO);
-    let purchaseStrategy = GM_getValue('autobuy_strategy', DEFAULT_STRATEGY);
-    let upgradeBuildings = GM_getValue('autobuy_upgradeBuildings', true); // Default: true
+    let purchaseStrategy = GM_getValue('autobuy_strategy', PurchaseStrategy.NO_WAIT);
+    let upgradeBuildings = GM_getValue('autobuy_upgradeBuildings', true);
+    let autoHandOfFate = GM_getValue('autobuy_autoHandOfFate', true);
+    let autoAscendMode = GM_getValue('autobuy_autoAscendMode', AutoAscendMode.NEVER);
 
     let intervalId = null;
 
     // Store menu IDs to cleanly refresh menu entries
-    let menuToggleId, menuIntervalId, menuDebugId, menuUpgradeId, menuTechId, menuStrategyId, menuUpgradeBuildingsId;
+    let menuToggleId, menuIntervalId, menuDebugId, menuUpgradeId, menuTechId, menuStrategyId, menuUpgradeBuildingsId, menuHandOfFateId, menuAutoAscendId;
 
     function logDebug(...args) {
         if (debugMode) console.log('[AutoBuyer DEBUG]', ...args);
@@ -116,25 +113,15 @@
     //  🧠 Upgrade/Research Selection
     // ==========================
     function getEligibleItems(selector) {
-        // 🏢💨 No upgrades at all in NONE mode
         if (upgradeMode === UpgradeMode.NONE) return [];
 
-        return Array.from(document.querySelectorAll(`${selector} .upgrade.enabled`)).filter((el) => {
-            const hasBlue = el.querySelector(`.${CLASS_BLUE_UPGRADE}`); // 🟦
-            const hasGreen = el.querySelector(`.${CLASS_GREEN_UPGRADE}`); // 🟩
-            const hasGray = el.querySelector(`.${CLASS_GRAY_UPGRADE}`); // ⬜
+        const upgrades = document.querySelectorAll(`${selector} .upgrade.enabled`);
+        const modeClasses = [];
+        if (upgradeMode >= UpgradeMode.BLUE) modeClasses.push(CLASS_BLUE_UPGRADE);
+        if (upgradeMode >= UpgradeMode.BLUE_GREEN) modeClasses.push(CLASS_GREEN_UPGRADE);
+        if (upgradeMode >= UpgradeMode.BLUE_GREEN_GRAY) modeClasses.push(CLASS_GRAY_UPGRADE);
 
-            switch (upgradeMode) {
-                case UpgradeMode.BLUE:
-                    return hasBlue;
-                case UpgradeMode.BLUE_GREEN:
-                    return hasBlue || hasGreen;
-                case UpgradeMode.BLUE_GREEN_GRAY:
-                    return hasBlue || hasGreen || hasGray;
-                default:
-                    return false;
-            }
-        });
+        return Array.from(upgrades).filter((el) => modeClasses.some((cls) => el.querySelector(`.${cls}`)));
     }
 
     function getEligibleResearches() {
@@ -148,48 +135,104 @@
     // ==========================
     //  🤖 Core Auto-Buy Logic
     // ==========================
+    function showGameNotification(title, message, type = 'notice') {
+        if (typeof Game !== 'undefined' && Game.Notify) {
+            Game.Notify(title, message, null, type);
+        } else {
+            alert(`[${title}] ${message}`);
+        }
+    }
+
     function buyNext() {
-        // 1️⃣ 🔬 Researches first
-        if (techStrategy === TechStrategy.AUTO) {
-            const researches = getEligibleResearches();
-            if (researches.length > 0) {
-                logDebug('Buying research:', researches[0].title);
-                researches[0].click();
-                confirmPromptIfVisible(); // click OK if needed
-                return true;
+        try {
+            // 1️⃣ 🔬 Researches first
+            if (techStrategy === TechStrategy.AUTO) {
+                const researches = getEligibleResearches();
+                if (researches.length > 0) {
+                    logDebug('Buying research:', researches[0].title);
+                    const upgradeId = researches[0].getAttribute('data-id');
+                    if (upgradeId && Game.UpgradesById[upgradeId]) {
+                        Game.UpgradesById[upgradeId].buy();
+                        confirmPromptIfVisible(); // click OK if needed
+                        return true;
+                    }
+                }
             }
-        }
 
-        // 2️⃣ 🟦🟩⬜ Upgrades
-        const upgrades = getEligibleUpgrades();
-        const blueUpgradesRemaining = upgrades.some((el) => el.querySelector(`.${CLASS_BLUE_UPGRADE}`));
+            // 2️⃣ 🟦🟩⬜ Upgrades
+            const upgrades = getEligibleUpgrades();
+            const blueUpgradesRemaining = upgrades.some((el) => el.querySelector(`.${CLASS_BLUE_UPGRADE}`));
 
-        if (upgrades.length > 0) {
-            logDebug('Buying eligible upgrade:', upgrades[0].title);
-            upgrades[0].click();
-            return true;
-        }
+            if (upgrades.length > 0) {
+                logDebug('Buying eligible upgrade:', upgrades[0].title);
+                const upgradeId = upgrades[0].getAttribute('data-id');
+                if (upgradeId && Game.UpgradesById[upgradeId]) {
+                    Game.UpgradesById[upgradeId].buy();
+                    return true;
+                }
+            }
 
-        // 3️⃣ ⏸️ If strategy is WAIT_BLUE
-        if (purchaseStrategy === PurchaseStrategy.WAIT_BLUE && blueUpgradesRemaining) {
-            logDebug('⏸️ Waiting for blue upgrades before buying buildings');
+            // 3️⃣ ⏸️ If strategy is WAIT_BLUE
+            if (purchaseStrategy === PurchaseStrategy.WAIT_BLUE && blueUpgradesRemaining) {
+                logDebug('⏸️ Waiting for blue upgrades before buying buildings');
+                return false;
+            }
+
+            // 4️⃣ 🏢 Buildings (only if upgradeBuildings is true)
+            if (upgradeBuildings) {
+                ensureCorrectBulkSelected();
+                const product = document.querySelector(`#products .product.enabled .price[style*="${COLOR_GREEN}"]`);
+                if (product) {
+                    const parent = product.closest('.product');
+                    const buildingId = parent.getAttribute('data-id');
+                    if (buildingId && Game.ObjectsById[buildingId]) {
+                        let bulkAmount = Game.buyBulk > 0 ? Game.buyBulk : 1;
+                        logDebug('Auto-buying building:', Game.ObjectsById[buildingId].name, 'x', bulkAmount);
+                        Game.ObjectsById[buildingId].buy(bulkAmount);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        } catch (err) {
+            logDebug('Error in buyNext:', err);
+            showGameNotification('AutoBuyer Error', err.message || String(err), 'alert');
             return false;
         }
+    }
 
-        // 4️⃣ 🏢 Buildings (only if upgradeBuildings is true)
-        if (upgradeBuildings) {
-            ensureCorrectBulkSelected();
-            const product = document.querySelector(`#products .product.enabled .price[style*="${COLOR_GREEN}"]`);
-            if (product) {
-                const parent = product.closest('.product');
-                const title = parent.querySelector('.title')?.innerText || parent.id;
-                logDebug('Auto-buying building:', title);
-                parent.click();
-                return true;
-            }
+    function handOfFateLogic() {
+        if (!autoHandOfFate) return;
+        const grimoire = Game.Objects.ById[7]?.minigame;
+        if (!grimoire) return;
+        const spell = grimoire.spells['hand of fate'];
+        if (!spell) return;
+
+        // Mana full and enough for spell
+        if (grimoire.magic === grimoire.magicM && grimoire.magic > spell.costMin + grimoire.magicM * spell.costPercent) {
+            grimoire.castSpell(spell);
+            // Pop golden cookies
+            Game.shimmers.forEach(function (shimmer) {
+                if (shimmer.type === 'golden' && shimmer.wrath === 0) shimmer.pop();
+            });
         }
+    }
 
-        return false;
+    function autoAscendLogic() {
+        if (autoAscendMode === AutoAscendMode.NEVER) return;
+        if (autoAscendMode === AutoAscendMode.UNTIL_ENDLESS && Game.AchievementsById[207]?.won) return;
+        // Ascend if at least 1 prestige is available
+        if (Game.HowMuchPrestige(Game.cookiesEarned) >= 1 && Game.OnAscend === 0 && Game.AscendTimer === 0) {
+            logDebug('Auto ascending: 1 prestige available');
+            Game.Ascend(1);
+            return;
+        }
+        // If on ascend screen, auto click "Reincarnate"
+        if (Game.OnAscend === 1 && Game.AscendTimer === 0) {
+            logDebug('Auto calling Game.Reincarnate()');
+            Game.Reincarnate();
+        }
     }
 
     // ==========================
@@ -201,6 +244,8 @@
         intervalId = setInterval(() => {
             function processBuys() {
                 let boughtSomething = buyNext();
+                handOfFateLogic();
+                autoAscendLogic();
                 if (boughtSomething) {
                     setTimeout(processBuys, 50);
                 }
@@ -223,7 +268,17 @@
     //  🧭 Menu Management
     // ==========================
     function unregisterMenu() {
-        [menuToggleId, menuIntervalId, menuDebugId, menuUpgradeId, menuStrategyId, menuTechId].forEach((id) => {
+        [
+            menuToggleId,
+            menuIntervalId,
+            menuDebugId,
+            menuUpgradeId,
+            menuStrategyId,
+            menuTechId,
+            menuUpgradeBuildingsId,
+            menuHandOfFateId,
+            menuAutoAscendId,
+        ].forEach((id) => {
             if (id) GM_unregisterMenuCommand(id);
         });
     }
@@ -253,6 +308,21 @@
         return `Upgrade buildings: ${upgradeBuildings ? 'ON' : 'OFF'}`;
     }
 
+    function getHandOfFateLabel() {
+        return `Auto Hand of Fate: ${autoHandOfFate ? 'ON' : 'OFF'}`;
+    }
+
+    function getAutoAscendModeLabel() {
+        switch (autoAscendMode) {
+            case AutoAscendMode.NEVER:
+                return 'Auto Ascend: 🚫 Never';
+            case AutoAscendMode.UNTIL_ENDLESS:
+                return 'Auto Ascend: ⏩ Until Endless Cycle';
+            case AutoAscendMode.ALWAYS:
+                return 'Auto Ascend: ♾️ Always';
+        }
+    }
+
     function registerMenu() {
         menuToggleId = GM_registerMenuCommand(`AutoBuyer: ${isEnabled ? 'Disable' : 'Enable'}`, toggleAutoBuy);
         menuIntervalId = GM_registerMenuCommand(`Set interval (current: ${intervalSeconds}s)`, changeInterval);
@@ -261,6 +331,8 @@
         menuTechId = GM_registerMenuCommand(getTechLabel(), cycleTechStrategy);
         menuStrategyId = GM_registerMenuCommand(getStrategyLabel(), cycleStrategy);
         menuUpgradeBuildingsId = GM_registerMenuCommand(getUpgradeBuildingsLabel(), toggleUpgradeBuildings);
+        menuHandOfFateId = GM_registerMenuCommand(getHandOfFateLabel(), toggleHandOfFate);
+        menuAutoAscendId = GM_registerMenuCommand(getAutoAscendModeLabel(), cycleAutoAscendMode);
     }
 
     function refreshMenu() {
@@ -276,14 +348,16 @@
     }
 
     function changeInterval() {
-        const newVal = prompt('Enter new interval in seconds:', intervalSeconds);
+        const newVal = prompt('Enter new interval in seconds (1-60):', intervalSeconds);
         if (newVal !== null) {
             const num = parseInt(newVal, 10);
-            if (!isNaN(num) && num > 0) {
+            if (!isNaN(num) && num >= 1 && num <= 60) {
                 intervalSeconds = num;
                 GM_setValue('autobuy_interval', intervalSeconds);
                 if (isEnabled) startAutoBuy();
                 refreshMenu();
+            } else {
+                showGameNotification('AutoBuyer', 'Interval must be between 1 and 60 seconds.', 'alert');
             }
         }
     }
@@ -316,6 +390,19 @@
     function toggleUpgradeBuildings() {
         upgradeBuildings = !upgradeBuildings;
         GM_setValue('autobuy_upgradeBuildings', upgradeBuildings);
+        refreshMenu();
+    }
+
+    function toggleHandOfFate() {
+        autoHandOfFate = !autoHandOfFate;
+        GM_setValue('autobuy_autoHandOfFate', autoHandOfFate);
+        refreshMenu();
+    }
+
+    function cycleAutoAscendMode() {
+        const totalModes = Object.keys(AutoAscendMode).length;
+        autoAscendMode = (autoAscendMode + 1) % totalModes;
+        GM_setValue('autobuy_autoAscendMode', autoAscendMode);
         refreshMenu();
     }
 
