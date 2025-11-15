@@ -2,12 +2,12 @@
 // @name          [Steam] Steam Search
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Add menu commands to search the current Steam game on HowLongToBeat, SteamHunters, DLCompare, G2A, InstantGaming and Kinguin
+// @description   Add menu commands to search the current Steam game on HowLongToBeat, Steam Charts, SteamDB, SteamHunters, DLCompare, G2A, InstantGaming and Kinguin
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           steampowered.com
-// @version       1.0.3
+// @version       1.0.4
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -50,6 +50,8 @@
         const encoded = encodeURIComponent(gameName);
         return [
             { label: 'HowLongToBeat', url: `https://howlongtobeat.com/?q=${encoded}` },
+            { label: 'Steam Charts', url: `https://steamcharts.com/app/${appId}` },
+            { label: 'SteamDB', url: `https://steamdb.info/app/${appId}/` },
             { label: 'SteamHunters', url: `https://steamhunters.com/apps/${appId}/achievements` },
             { label: 'DLCompare', url: `https://www.dlcompare.fr/search?q=${encoded}` },
             { label: 'G2A', url: `https://www.g2a.com/search?query=${encoded}` },
