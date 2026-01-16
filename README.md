@@ -15,14 +15,21 @@
 
 My homemade Tampermonkey userscripts.
 
+## Contributing
+
+For contributing guidelines, coding standards, and pre-commit hooks information, please read [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Summary
 
-- [Amazon](#amazon)
-  - [Amazon - tweaks](#amazon---tweaks)
 - [Bing](#bing)
   - [Bing - To Google](#bing---to-google)
+- [Cookie Clicker](#cookie-clicker)
+  - [Cookie Clicker - CookieMonster AutoBuyer](#cookie-clicker---cookiemonster-autobuyer)
 - [Github](#github)
   - [Github - Inactive](#github---inactive)
+- [Global](#global)
+  - [Global - Auto Refresh](#global---auto-refresh)
+  - [Global - Seasonal Decorations](#global---seasonal-decorations)
 - [Google](#google)
   - [Google - Search Ad Remover](#google---search-ad-remover)
 - [IMDB](#imdb)
@@ -34,21 +41,13 @@ My homemade Tampermonkey userscripts.
   - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
 - [NexusMods](#nexusmods)
   - [NexusMods - Tweaks](#nexusmods---tweaks)
+  - [NexusMods - Updated Mods Highlighter](#nexusmods---updated-mods-highlighter)
 - [PokéClicker](#pokeclicker)
   - [PokéClicker - Tweaks](#pokeclicker---tweaks)
 - [Steam](#steam)
   - [Steam - Steam Search](#steam---steam-search)
 - [StreamHunters](#streamhunters)
   - [StreamHunters - Tweaks](#streamhunters---tweaks)
-
-## Amazon
-
-### Amazon - tweaks
-
-[![Amazon tweaks](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Amazon]%20Tweaks.user.js)
-
-- Cart
-- Wishlist
 
 ## Bing
 
@@ -59,6 +58,14 @@ My homemade Tampermonkey userscripts.
 - Auto switch to google when doing a search on bing.
 - Do the 30 required search for the points on the first search of the day.
 
+## Cookie Clicker
+
+### Cookie Clicker - CookieMonster AutoBuyer
+
+[![Cookie Clicker - CookieMonster AutoBuyer](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Cookie%20Clicker]%20CookieMonster%20AutoBuyer.user.js)
+
+Automatically buys researches, upgrades & buildings with configurable priority and strategy.
+
 ## Github
 
 ### Github - Inactive
@@ -66,6 +73,20 @@ My homemade Tampermonkey userscripts.
 [![Github - Inactive](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[GitHub]%20Inactive.user.js)
 
 Add warning to repos without updates for more than 1/2 year.
+
+## Global
+
+### Global - Auto Refresh
+
+[![Global - Auto Refresh](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Global]%20Auto%20Refresh.user.js)
+
+Automatically refreshes the page at a configurable interval (default: 1 minute). Useful for monitoring pages that update frequently.
+
+### Global - Seasonal Decorations
+
+[![Global - Seasonal Decorations](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Global]%20Seasonal%20Decorations.user.js)
+
+Adds event-based decorations (Christmas, Valentine's Day, Halloween, etc.) in background during event week. Configurable per site via CSV-like format.
 
 ## Google
 
@@ -125,6 +146,12 @@ Remove the ads at the beginning of some searches.
 - Auto skip ads
 - Remove premium popups
 - Faster download start
+
+### NexusMods - Updated Mods Highlighter
+
+[![NexusMods - Updated Mods Highlighter](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[NexusMods]%20Updated%20Mods%20Highlighter.user.js)
+
+Highlight mods that have been updated since your last download
 
 ## Pokeclicker
 

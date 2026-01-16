@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          /!\ [TEST]StorageMap
+// @name          [TEST] StorageMap
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Experiment about GM Storage & JS Map
@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           test
-// @version       0.01
+// @version       0.0.1
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues

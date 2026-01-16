@@ -1,7 +1,7 @@
 // CommonJS syntax instead of ESM
 module.exports = [
     {
-        ignores: ['lab/pokeclicker/**'],
+        ignores: ['[WIP]/**', 'lab/**', 'node_modules/**'],
 
         // Environnements
         languageOptions: {

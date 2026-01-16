@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          [Bing] to Google
+// @name          [Bing] To Google
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Redirect the search to google
@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           bing.com
-// @version       1.4
+// @version       1.4.0
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues

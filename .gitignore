@@ -1,7 +1,6 @@
 # Specific
 *.old
 \[WIP\]*
-.markdownlint.json
 
 # node
 node_modules

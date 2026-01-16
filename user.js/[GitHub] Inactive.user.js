@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          [GitHub] inactive
+// @name          [GitHub] Inactive
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
 // @description   Add banner to innactive github

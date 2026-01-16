@@ -20,9 +20,12 @@ My homemade Tampermonkey userscripts.
 ## Summary
 
 - [Amazon](#amazon)
+  - [Amazon - tweaks](#amazon---tweaks)
   - [Amazon - tweaks (Cart)](#amazon---tweaks-cart)
   - [Amazon - tweaks (Wishlist)](#amazon---tweaks-wishlist)
   - [Amazon Gaming - Auto loot](#amazon-gaming---auto-loot)
+- [D4Builds](#d4builds)
+  - [D4Builds - JsonExporterForDiablo4Companion](#d4builds---jsonexporterfordiablo4companion)
 - [Github](#github)
   - [Github - IssuesExport](#github---issuesexport)
 - [Google](#google)
@@ -52,6 +55,13 @@ My homemade Tampermonkey userscripts.
 
 ## Amazon
 
+### Amazon - tweaks
+
+[![Amazon tweaks](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks.user.js)
+
+- Cart
+- Wishlist
+
 ### Amazon - tweaks (Cart)
 
 [![Amazon tweaks - Cart](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Cart).user.js)
@@ -77,6 +87,14 @@ My homemade Tampermonkey userscripts.
 ### Amazon tweaks - ToDo
 
 - Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
+
+## D4Builds
+
+### D4Builds - JsonExporterForDiablo4Companion
+
+[![D4Builds - JsonExporterForDiablo4Companion](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[D4Builds]%20JsonExporterForDiablo4Companion.user.js)
+
+DL Json for Diablo Compagnon
 
 ## Github
 

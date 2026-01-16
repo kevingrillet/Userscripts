@@ -2,12 +2,12 @@
 // @name          [MangaDemon] Tweaks
 // @namespace     https://github.com/kevingrillet
 // @author        Kevin GRILLET
-// @description   Sort Bookmarks, auto-next chapter at end of page, keyboard navigation, remove ads/Discord/Ko-fi blocks, and auto-close 0 Ads Subscription/teaser popups on chapter pages
+// @description   Sort Bookmarks, auto-next chapter at end of page, keyboard navigation, remove ads/Discord/Ko-fi blocks, auto-close 0 Ads Subscription/teaser popups, and collapse comment section on chapter pages
 // @copyright     https://github.com/kevingrillet
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.7
+// @version       1.0.8
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -251,6 +251,44 @@
         }
     }
 
+    function collapseCommentSection() {
+        // Find all .main-width.center-m containers
+        const containers = document.querySelectorAll('.main-width.center-m');
+        
+        // Find the one that contains #discuscontainer
+        let commentContainer = null;
+        for (const container of containers) {
+            if (container.querySelector('#discuscontainer')) {
+                commentContainer = container;
+                break;
+            }
+        }
+        
+        if (!commentContainer) {
+            console.warn('[MangaDemon Tweaks] Comment container not found');
+            return;
+        }
+        
+        // Create details and summary elements
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        summary.textContent = 'Comments';
+        summary.style.cursor = 'pointer';
+        summary.style.fontSize = '1.2em';
+        summary.style.fontWeight = 'bold';
+        summary.style.padding = '10px';
+        summary.style.backgroundColor = '#2a2a2a';
+        summary.style.color = '#fff';
+        summary.style.marginBottom = '10px';
+        
+        // Insert details before the comment container
+        commentContainer.parentNode.insertBefore(details, commentContainer);
+        
+        // Move comment container inside details
+        details.appendChild(summary);
+        details.appendChild(commentContainer);
+    }
+
     function goBookmark() {
         window.location.href = window.location.origin + '/bookmarks.php';
     }
@@ -328,6 +366,7 @@
             cleanChapterAds();
             closeTeaserByButton();
             closeZeroAdsPopin();
+            collapseCommentSection();
 
             window.onscroll = function () {
                 autoNext();
@@ -348,5 +387,6 @@
         cleanChapterAds();
         closeTeaserByButton();
         closeZeroAdsPopin();
+        collapseCommentSection();
     }
 })();
