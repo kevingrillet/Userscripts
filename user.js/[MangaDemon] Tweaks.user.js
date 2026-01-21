@@ -7,7 +7,7 @@
 // @license       GPL-3.0 License
 // @tag           kevingrillet
 // @tag           mangademon.com
-// @version       1.0.8
+// @version       1.0.9
 
 // @homepageURL   https://github.com/kevingrillet/Userscripts/
 // @supportURL    https://github.com/kevingrillet/Userscripts/issues
@@ -110,7 +110,7 @@
             document.body.offsetHeight || 0,
             document.documentElement.offsetHeight || 0,
             document.body.clientHeight || 0,
-            document.documentElement.clientHeight || 0
+            document.documentElement.clientHeight || 0,
         );
     }
 
@@ -252,23 +252,14 @@
     }
 
     function collapseCommentSection() {
-        // Find all .main-width.center-m containers
-        const containers = document.querySelectorAll('.main-width.center-m');
-        
-        // Find the one that contains #discuscontainer
-        let commentContainer = null;
-        for (const container of containers) {
-            if (container.querySelector('#discuscontainer')) {
-                commentContainer = container;
-                break;
-            }
-        }
-        
-        if (!commentContainer) {
-            console.warn('[MangaDemon Tweaks] Comment container not found');
+        // Find the #discuscontainer directly
+        const discusContainer = document.getElementById('discuscontainer');
+
+        if (!discusContainer) {
+            console.warn('[MangaDemon Tweaks] Comment container (#discuscontainer) not found');
             return;
         }
-        
+
         // Create details and summary elements
         const details = document.createElement('details');
         const summary = document.createElement('summary');
@@ -280,13 +271,13 @@
         summary.style.backgroundColor = '#2a2a2a';
         summary.style.color = '#fff';
         summary.style.marginBottom = '10px';
-        
+
         // Insert details before the comment container
-        commentContainer.parentNode.insertBefore(details, commentContainer);
-        
-        // Move comment container inside details
+        discusContainer.parentNode.insertBefore(details, discusContainer);
+
+        // Move only the comment container inside details
         details.appendChild(summary);
-        details.appendChild(commentContainer);
+        details.appendChild(discusContainer);
     }
 
     function goBookmark() {
