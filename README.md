@@ -22,32 +22,32 @@ For contributing guidelines, coding standards, and pre-commit hooks information,
 ## Summary
 
 - [Bing](#bing)
-  - [Bing - To Google](#bing---to-google)
+    - [Bing - To Google](#bing---to-google)
 - [Cookie Clicker](#cookie-clicker)
-  - [Cookie Clicker - CookieMonster AutoBuyer](#cookie-clicker---cookiemonster-autobuyer)
+    - [Cookie Clicker - CookieMonster AutoBuyer](#cookie-clicker---cookiemonster-autobuyer)
 - [Github](#github)
-  - [Github - Inactive](#github---inactive)
+    - [Github - Inactive](#github---inactive)
 - [Global](#global)
-  - [Global - Auto Refresh](#global---auto-refresh)
-  - [Global - Seasonal Decorations](#global---seasonal-decorations)
+    - [Global - Auto Refresh](#global---auto-refresh)
+    - [Global - Seasonal Decorations](#global---seasonal-decorations)
 - [Google](#google)
-  - [Google - Search Ad Remover](#google---search-ad-remover)
+    - [Google - Search Ad Remover](#google---search-ad-remover)
 - [IMDB](#imdb)
-  - [IMDB - Google Search with Custom Suffix](#imdb---google-search-with-custom-suffix)
+    - [IMDB - Google Search with Custom Suffix](#imdb---google-search-with-custom-suffix)
 - [Instagram](#instagram)
-  - [Instagram - Tweaks](#instagram---tweaks)
+    - [Instagram - Tweaks](#instagram---tweaks)
 - [MangaDemon](#mangademon)
-  - [MangaDemon - Tweaks (Scan)](#mangademon---tweaks-scan)
-  - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
+    - [MangaDemon - Tweaks (Scan)](#mangademon---tweaks-scan)
+    - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
 - [NexusMods](#nexusmods)
-  - [NexusMods - Tweaks](#nexusmods---tweaks)
-  - [NexusMods - Updated Mods Highlighter](#nexusmods---updated-mods-highlighter)
+    - [NexusMods - Tweaks](#nexusmods---tweaks)
+    - [NexusMods - Updated Mods Highlighter](#nexusmods---updated-mods-highlighter)
 - [PokéClicker](#pokeclicker)
-  - [PokéClicker - Tweaks](#pokeclicker---tweaks)
+    - [PokéClicker - Tweaks](#pokeclicker---tweaks)
 - [Steam](#steam)
-  - [Steam - Steam Search](#steam---steam-search)
+    - [Steam - Steam Search](#steam---steam-search)
 - [StreamHunters](#streamhunters)
-  - [StreamHunters - Tweaks](#streamhunters---tweaks)
+    - [StreamHunters - Tweaks](#streamhunters---tweaks)
 
 ## Bing
 
@@ -170,14 +170,14 @@ Highlight mods that have been updated since your last download
 [![Steam - Steam Search](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Steam%20Search.user.js)
 
 - Adds Tampermonkey menu commands to search the current Steam game on:
-  - HowLongToBeat
-  - Steam Charts
-  - SteamDB
-  - SteamHunters
-  - DLCompare
-  - G2A
-  - InstantGaming
-  - Kinguin
+    - HowLongToBeat
+    - Steam Charts
+    - SteamDB
+    - SteamHunters
+    - DLCompare
+    - G2A
+    - InstantGaming
+    - Kinguin
 
 ## StreamHunters
 

@@ -8,9 +8,9 @@ For each script, make sure to:
 
 1. Add an entry in the summary
 2. Create a dedicated section with:
-   - The script title
-   - An installation badge pointing to the raw file on GitHub
-   - A description of the features
+    - The script title
+    - An installation badge pointing to the raw file on GitHub
+    - A description of the features
 
 ## Mandatory Header Structure
 
@@ -45,7 +45,7 @@ All Tampermonkey scripts must follow this header structure:
 #### Base Metadata
 
 - **@name**: Format `[Service] Short description`
-  - Example: `[Amazon] Tweaks`, `[GitHub] Inactive`
+    - Example: `[Amazon] Tweaks`, `[GitHub] Inactive`
 - **@namespace**: Always `https://github.com/kevingrillet`
 - **@author**: Always `Kevin GRILLET`
 - **@description**: Clear and concise description of features
@@ -55,36 +55,36 @@ All Tampermonkey scripts must follow this header structure:
 #### Tags
 
 - **@tag**: At least two tags
-  1. `kevingrillet` (mandatory)
-  2. The service/domain name (e.g.: `amazon`, `github.com`, `instagram.com`)
+    1. `kevingrillet` (mandatory)
+    2. The service/domain name (e.g.: `amazon`, `github.com`, `instagram.com`)
 
 #### Version
 
 - **@version**: Semantic format `MAJOR.MINOR.PATCH`
-  - MAJOR: Breaking changes
-  - MINOR: Backward-compatible feature additions
-  - PATCH: Bug fixes
+    - MAJOR: Breaking changes
+    - MINOR: Backward-compatible feature additions
+    - PATCH: Bug fixes
 
 #### URLs
 
 - **@homepageURL**: `https://github.com/kevingrillet/Userscripts/`
 - **@supportURL**: `https://github.com/kevingrillet/Userscripts/issues`
 - **@downloadURL**: GitHub raw URL to the file
-  - Format: `https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Service]%20Description.user.js`
-  - **Important**: Encode spaces with `%20`
+    - Format: `https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Service]%20Description.user.js`
+    - **Important**: Encode spaces with `%20`
 - **@updateURL**: Same as `@downloadURL`
 
 #### Execution
 
 - **@match**: URL(s) where the script should run
-  - Use precise patterns
-  - Add multiple @match if needed for different domains
+    - Use precise patterns
+    - Add multiple @match if needed for different domains
 - **@icon**: Service favicon
-  - Recommended format: `https://www.google.com/s2/favicons?domain=example.com`
-  - Or with size: `https://www.google.com/s2/favicons?sz=64&domain=example.com`
+    - Recommended format: `https://www.google.com/s2/favicons?domain=example.com`
+    - Or with size: `https://www.google.com/s2/favicons?sz=64&domain=example.com`
 - **@grant**: Required permissions
-  - `none` if no special permissions
-  - Otherwise, list the GM_ APIs used (e.g.: `GM_registerMenuCommand`, `GM_getValue`, `GM_setValue`)
+    - `none` if no special permissions
+    - Otherwise, list the GM\_ APIs used (e.g.: `GM_registerMenuCommand`, `GM_getValue`, `GM_setValue`)
 - **@run-at**: Generally `document-end`
 
 ### Empty Line
@@ -108,8 +108,8 @@ Examples:
 - [ ] Download URLs use `%20` for spaces
 - [ ] Version number has been incremented
 - [ ] README.md has been updated with:
-  - [ ] Entry in the summary
-  - [ ] Dedicated section with badge and description
+    - [ ] Entry in the summary
+    - [ ] Dedicated section with badge and description
 - [ ] Script works correctly on @match URLs
 - [ ] Code follows JavaScript best practices
 - [ ] Script is tested in Tampermonkey
@@ -118,12 +118,12 @@ Examples:
 
 1. **Strict mode**: Wrap code in an IIFE with `'use strict'`
 
-   ```javascript
-   (function () {
-       'use strict';
-       // Your code here
-   })();
-   ```
+    ```javascript
+    (function () {
+        'use strict';
+        // Your code here
+    })();
+    ```
 
 2. **Code organization**: Use classes or functions to structure the code
 

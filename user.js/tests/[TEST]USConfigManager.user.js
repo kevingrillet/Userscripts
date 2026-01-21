@@ -23,21 +23,21 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // Configuration par défaut
     const DEFAULT_CONFIG = {
         visitCount: 0,
         backgroundColor: '#4CAF50',
-        showCounter: true
+        showCounter: true,
     };
 
     // Initialiser le gestionnaire de configuration
     const config = USConfigManager.init({
         scriptKey: 'visitCounter',
         scriptName: 'Compteur de visites',
-        defaultConfig: DEFAULT_CONFIG
+        defaultConfig: DEFAULT_CONFIG,
     });
 
     // Incrémenter le compteur

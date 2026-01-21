@@ -195,7 +195,7 @@
     // Open Live
     var goLive = function () {
         if (document.querySelector('.text_live\\.primary')) {
-            let allLives = Array.from(document.querySelectorAll('.text_live\\.primary')).map(e => e.closest('a').href);
+            let allLives = Array.from(document.querySelectorAll('.text_live\\.primary')).map((e) => e.closest('a').href);
 
             let firstMatch = allLives.filter((a) => aEvents.some((f) => a.includes(f)))[0] || '';
             if (firstMatch === '') firstMatch = allLives[0];
@@ -280,9 +280,7 @@
         if (full === true) {
             map = new Map();
         } else {
-            map = new Map(
-                [...map].filter(([_, value]) => value > 0)
-            );
+            map = new Map([...map].filter(([_, value]) => value > 0));
         }
         mapSave();
     }
@@ -308,8 +306,8 @@
                 mapAdd(0);
                 lookForDrop();
             }, 5 * 1000);
-            } else if(window.location.href.includes('/vods')) {
-                window.location = 'https://lolesports.com/schedule';
+        } else if (window.location.href.includes('/vods')) {
+            window.location = 'https://lolesports.com/schedule';
         } else {
             console.error(`${formatConsoleDate(new Date())}- Unknown location: ${window.location}`);
         }

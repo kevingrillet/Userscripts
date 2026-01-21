@@ -20,36 +20,36 @@ My homemade Tampermonkey userscripts.
 ## Summary
 
 - [Amazon](#amazon)
-  - [Amazon - tweaks](#amazon---tweaks)
-  - [Amazon - tweaks (Cart)](#amazon---tweaks-cart)
-  - [Amazon - tweaks (Wishlist)](#amazon---tweaks-wishlist)
-  - [Amazon Gaming - Auto loot](#amazon-gaming---auto-loot)
+    - [Amazon - tweaks](#amazon---tweaks)
+    - [Amazon - tweaks (Cart)](#amazon---tweaks-cart)
+    - [Amazon - tweaks (Wishlist)](#amazon---tweaks-wishlist)
+    - [Amazon Gaming - Auto loot](#amazon-gaming---auto-loot)
 - [D4Builds](#d4builds)
-  - [D4Builds - JsonExporterForDiablo4Companion](#d4builds---jsonexporterfordiablo4companion)
+    - [D4Builds - JsonExporterForDiablo4Companion](#d4builds---jsonexporterfordiablo4companion)
 - [Github](#github)
-  - [Github - IssuesExport](#github---issuesexport)
+    - [Github - IssuesExport](#github---issuesexport)
 - [Google](#google)
-  - [Google - Incognito](#google---incognito)
+    - [Google - Incognito](#google---incognito)
 - [League Of Legends](#league-of-legends)
-  - [League Of Fitness](#league-of-fitness)
-  - [LoLEsports - CapsuleFarmer](#lolesports---capsulefarmer)
-  - [LoLEsports - Live](#lolesports---live)
-  - [LoLEsports - Schedule](#lolesports---schedule)
+    - [League Of Fitness](#league-of-fitness)
+    - [LoLEsports - CapsuleFarmer](#lolesports---capsulefarmer)
+    - [LoLEsports - Live](#lolesports---live)
+    - [LoLEsports - Schedule](#lolesports---schedule)
 - [Manganelo](#manganelo-tweaks)
-  - [Manganelo tweaks - Bookmark](#manganelo-tweaks---bookmark)
-  - [Manganelo tweaks - Chapter](#manganelo-tweaks---chapter)
-  - [Manganelo tweaks - Manga](#manganelo-tweaks---manga)
+    - [Manganelo tweaks - Bookmark](#manganelo-tweaks---bookmark)
+    - [Manganelo tweaks - Chapter](#manganelo-tweaks---chapter)
+    - [Manganelo tweaks - Manga](#manganelo-tweaks---manga)
 - [MapGenie](#mapgenie)
-  - [MapGenie - Tweaks](#mapgenie---tweaks)
+    - [MapGenie - Tweaks](#mapgenie---tweaks)
 - [OP.gg](#opgg)
-  - [OP.gg - Update](#opgg---update)
+    - [OP.gg - Update](#opgg---update)
 - [Prusa](#prusa)
-  - [Prusa Mini Connect](#prusa-mini-connect)
+    - [Prusa Mini Connect](#prusa-mini-connect)
 - [PSTHC](#psthc)
-  - [PSTHC - Trophy Settings](#psthc---trophy-settings)
+    - [PSTHC - Trophy Settings](#psthc---trophy-settings)
 - [YouTube](#youtube)
-  - [YouTube - Auto Confirmer](#youtube---auto-confirmer)
-  - [YouTube - Downloader](#youtube---downloader-youtcom)
+    - [YouTube - Auto Confirmer](#youtube---auto-confirmer)
+    - [YouTube - Downloader](#youtube---downloader-youtcom)
 
 # Deprecated files
 
@@ -64,7 +64,7 @@ My homemade Tampermonkey userscripts.
 
 ### Amazon - tweaks (Cart)
 
-[![Amazon tweaks - Cart](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Cart).user.js)
+[![Amazon tweaks - Cart](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](<https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Cart).user.js>)
 
 - Delete all
 - Save for later all
@@ -72,7 +72,7 @@ My homemade Tampermonkey userscripts.
 
 ### Amazon - tweaks (Wishlist)
 
-[![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Whishlist).user.js)
+[![Amazon tweaks - Wishlist](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](<https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Amazon]%20Tweaks%20(Whishlist).user.js>)
 
 - Show total
 - Add button to add all products
@@ -86,7 +86,7 @@ My homemade Tampermonkey userscripts.
 
 ### Amazon tweaks - ToDo
 
-- Load the full page without playing with scroll... but how? [*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
+- Load the full page without playing with scroll... but how? [\*](https://stackoverflow.com/questions/66536837/how-can-i-fully-load-amazon-wish-list-with-javascript)
 
 ## D4Builds
 
@@ -159,11 +159,11 @@ It's create for Manganelo, but i think it can be used on other website like Mang
 
 ### Manganelo tweaks - Bookmark
 
-[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Bookmark).user.js)
+[![Manganelo tweaks - Bookmark](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](<https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Bookmark).user.js>)
 
 Add some functions:
 
-- Export [*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
+- Export [\*](https://greasyfork.org/fr/scripts/390432-mananelo-mangakakalot-bookmarks-export) (Shift + E)
 - Repair user-notification
 - Sort (Shift + S)
 - ToRead
@@ -173,7 +173,7 @@ I use it to order my bookmarks by number to read...
 
 ### Manganelo tweaks - Chapter
 
-[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Chapter).user.js)
+[![Manganelo tweaks - Chapter](https://img.shields.io/badge/Install-orange.svg?logo=tampermonkey&style=for-the-badge)](<https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Chapter).user.js>)
 
 Add many functions:
 
@@ -181,18 +181,18 @@ Add many functions:
 - Duplicate chapter
 - Load time (after JS is loaded, so it's mostly false, but indicate if images take .2s or 10s to load)
 - Margin
-- Max width [*](https://greasyfork.org/fr/scripts/408505-mangakakalot-image-max-width-height)
-- Navigation: ←/A/Q (previous), →/D (previous),  B (bookmark page), H (home page) [*](https://greasyfork.org/fr/scripts/38268-left-right-arrow-key-navigation-for-manga-manhwa-manhua-sites)
+- Max width [\*](https://greasyfork.org/fr/scripts/408505-mangakakalot-image-max-width-height)
+- Navigation: ←/A/Q (previous), →/D (previous), B (bookmark page), H (home page) [\*](https://greasyfork.org/fr/scripts/38268-left-right-arrow-key-navigation-for-manga-manhwa-manhua-sites)
 - Prerender
 - Reloading on error
 - Removes Add div
-- Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
+- Scrolling: ↑/W/Z (scroll up), ↓/S (scroll down) [\*](https://greasyfork.org/fr/scripts/418594-chapter-changer-smooth-scrolling)
 
 </details>
 
 ### ~~Manganelo tweaks - Manga~~
 
-[![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-black.svg?logo=tampermonkey&style=for-the-badge)](https://github.com/kevingrillet/Userscripts/raw/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Manga).user.js)
+[![Manganelo tweaks - Manga](https://img.shields.io/badge/Install-black.svg?logo=tampermonkey&style=for-the-badge)](<https://github.com/kevingrillet/Userscripts/raw/main/user.js/deprecated/[Manganelo]%20Tweaks%20(Manga).user.js>)
 
 Experiment to update value everytime i look at a manga page, but gm_values are script specific :/
 

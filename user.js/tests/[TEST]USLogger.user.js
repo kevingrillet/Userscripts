@@ -33,7 +33,7 @@
         notifyPosition: 'bottom-right',
         notifyDuration: 8000,
         maxNotifications: 5,
-        animate: true
+        animate: true,
     });
 
     // Test des logs basiques
@@ -42,13 +42,13 @@
     USLogger.warn('Test warn:', 'Attention!');
 
     // Test des erreurs simples
-    USLogger.error('Test error simple:', 'Message d\'erreur');
+    USLogger.error('Test error simple:', "Message d'erreur");
 
     // Test des objets Error
     try {
         throw new Error('Erreur simulée pour test');
     } catch (error) {
-        USLogger.error(error, 'Contexte de l\'erreur');
+        USLogger.error(error, "Contexte de l'erreur");
     }
 
     // Test des erreurs avec données additionnelles
@@ -58,7 +58,7 @@
     } catch (error) {
         USLogger.error(error, 'Erreur avec contexte:', {
             page: window.location.href,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
         });
     }
 
@@ -68,9 +68,9 @@
         nested: {
             a: 1,
             b: '2',
-            c: true
+            c: true,
         },
-        date: new Date()
+        date: new Date(),
     });
 
     // Test de surcharge des notifications

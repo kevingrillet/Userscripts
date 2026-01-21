@@ -70,7 +70,7 @@
 
         // Get all monster types present and sort alphabetically
         const cards = Array.from(container.querySelectorAll('.monster-card'));
-        const types = [...new Set(cards.map(card => card.querySelector('h3')?.textContent?.trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        const types = [...new Set(cards.map((card) => card.querySelector('h3')?.textContent?.trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
 
         // Create the filter bar
         const bar = document.createElement('div');
@@ -90,7 +90,11 @@
         // Load state from Tampermonkey storage
         const storageKey = 'mdg_monster_type_filters';
         let state = {};
-        try { state = JSON.parse(GM_getValue(storageKey, '{}')) || {}; } catch { state = {}; }
+        try {
+            state = JSON.parse(GM_getValue(storageKey, '{}')) || {};
+        } catch {
+            state = {};
+        }
 
         // Add the button to hide/show dead monsters without loot (in English)
         const deadKey = '_hide_dead';
@@ -119,7 +123,7 @@
         bar.appendChild(deadBtn);
 
         // Add monster type buttons (sorted)
-        types.forEach(type => {
+        types.forEach((type) => {
             const btn = document.createElement('button');
             btn.textContent = type;
             btn.style.cssText = `
@@ -150,18 +154,16 @@
 
         // Show/hide monster cards according to filter state
         function updateCards() {
-            cards.forEach(card => {
+            cards.forEach((card) => {
                 const type = card.querySelector('h3')?.textContent?.trim();
                 const hpFill = card.querySelector('.hp-fill');
                 const isDead = hpFill && hpFill.style.width === '0%';
                 const hasLoot = card.querySelector('a > .join-btn');
                 if (type && state[type] === false) {
                     card.style.display = 'none';
-                }
-                else if (isDead && !hasLoot && state[deadKey]) {
+                } else if (isDead && !hasLoot && state[deadKey]) {
                     card.style.display = 'none';
-                }
-                else {
+                } else {
                     card.style.display = '';
                 }
             });
@@ -172,15 +174,15 @@
     // Add a compact game menu bar with icon buttons above the filter bar
     function addGameMenuBar() {
         const menu = [
-            { href: "inventory.php", img: "images/menu/compressed_chest.webp", alt: "Inventory", title: "Inventory" },
-            { href: "pets.php", img: "images/menu/compressed_eggs_menu.webp", alt: "Pets", title: "Pets" },
-            { href: "stats.php", img: "images/menu/compressed_stats_menu.webp", alt: "Stats", title: "Stats" },
-            { href: "blacksmith.php", img: "images/menu/compressed_crafting.webp", alt: "Blacksmith", title: "Blacksmith" },
-            { href: "merchant.php", img: "images/menu/compressed_merchant.webp", alt: "Merchant", title: "Merchant" },
-            { href: "achievements.php", img: "images/menu/compressed_achievments.webp", alt: "Achievements", title: "Achievements" },
-            { href: "guide.php", img: "images/menu/compressed_guide.webp", alt: "How To Play", title: "How To Play" },
-            { href: "weekly.php", img: "images/menu/weekly_leaderboard.webp", alt: "Weekly Leaderboard", title: "Weekly Leaderboard" },
-            { href: "chat.php", img: "images/menu/compressed_chat.webp", alt: "Global Chat", title: "Global Chat" }
+            { href: 'inventory.php', img: 'images/menu/compressed_chest.webp', alt: 'Inventory', title: 'Inventory' },
+            { href: 'pets.php', img: 'images/menu/compressed_eggs_menu.webp', alt: 'Pets', title: 'Pets' },
+            { href: 'stats.php', img: 'images/menu/compressed_stats_menu.webp', alt: 'Stats', title: 'Stats' },
+            { href: 'blacksmith.php', img: 'images/menu/compressed_crafting.webp', alt: 'Blacksmith', title: 'Blacksmith' },
+            { href: 'merchant.php', img: 'images/menu/compressed_merchant.webp', alt: 'Merchant', title: 'Merchant' },
+            { href: 'achievements.php', img: 'images/menu/compressed_achievments.webp', alt: 'Achievements', title: 'Achievements' },
+            { href: 'guide.php', img: 'images/menu/compressed_guide.webp', alt: 'How To Play', title: 'How To Play' },
+            { href: 'weekly.php', img: 'images/menu/weekly_leaderboard.webp', alt: 'Weekly Leaderboard', title: 'Weekly Leaderboard' },
+            { href: 'chat.php', img: 'images/menu/compressed_chat.webp', alt: 'Global Chat', title: 'Global Chat' },
         ];
         const bar = document.createElement('div');
         bar.className = 'game-menu-bar';
@@ -196,7 +198,7 @@
             top: 48px;
             z-index: 9999;
         `;
-        menu.forEach(item => {
+        menu.forEach((item) => {
             const a = document.createElement('a');
             a.href = item.href;
             a.title = item.title;
@@ -214,15 +216,19 @@
                 gap: 12px;
                 transition: background 0.15s;
             `;
-            a.onmouseover = () => { a.style.background = "#232323"; };
-            a.onmouseout = () => { a.style.background = "none"; };
+            a.onmouseover = () => {
+                a.style.background = '#232323';
+            };
+            a.onmouseout = () => {
+                a.style.background = 'none';
+            };
             const img = document.createElement('img');
             img.src = item.img;
             img.alt = item.alt;
-            img.style.cssText = "width:22px;height:22px;display:block;filter:drop-shadow(0 0 1px #0008);";
+            img.style.cssText = 'width:22px;height:22px;display:block;filter:drop-shadow(0 0 1px #0008);';
             const span = document.createElement('span');
             span.textContent = item.title;
-            span.style.cssText = "font-size:13px;line-height:1.1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;";
+            span.style.cssText = 'font-size:13px;line-height:1.1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;';
             a.appendChild(img);
             a.appendChild(span);
             bar.appendChild(a);
@@ -264,7 +270,7 @@
             btn.textContent = hideClaimed ? 'Show claimed' : 'Hide claimed';
             btn.style.background = hideClaimed ? '#e53935' : '#4caf50';
             // For each achievement card, check if claimed (button with text "Claimed" and disabled)
-            document.querySelectorAll('.panel .card').forEach(card => {
+            document.querySelectorAll('.panel .card').forEach((card) => {
                 const claimedBtn = card.querySelector('button.btn[disabled]');
                 if (claimedBtn && claimedBtn.textContent.trim().toLowerCase() === 'claimed') {
                     card.style.display = hideClaimed ? 'none' : '';
@@ -315,5 +321,4 @@
             addGameMenuBar();
         }
     });
-
 })();

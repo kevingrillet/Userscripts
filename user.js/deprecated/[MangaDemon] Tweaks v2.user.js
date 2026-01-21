@@ -83,7 +83,7 @@
             document.body.offsetHeight || 0,
             document.documentElement.offsetHeight || 0,
             document.body.clientHeight || 0,
-            document.documentElement.clientHeight || 0
+            document.documentElement.clientHeight || 0,
         );
     }
 

@@ -102,7 +102,7 @@
                 // Apply highlighting to the entire row
                 row.style.cssText = HIGHLIGHT_STYLE;
                 // Apply bold style to all links within the row
-                row.querySelectorAll('a').forEach(link => {
+                row.querySelectorAll('a').forEach((link) => {
                     link.style.fontWeight = 'bold';
                 });
 
@@ -118,7 +118,7 @@
                 // Reset styling if not updated
                 row.style.cssText = '';
                 // Reset link styles
-                row.querySelectorAll('a').forEach(link => {
+                row.querySelectorAll('a').forEach((link) => {
                     link.style.fontWeight = '';
                 });
 

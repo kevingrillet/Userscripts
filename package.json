@@ -1,34 +1,42 @@
 {
-  "name": "userscripts",
-  "version": "1.0.0",
-  "description": "My homemade Tampermonkey userscripts",
-  "license": "GPL-3.0",
-  "author": "Kevin GRILLET",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kevingrillet/Userscripts.git"
-  },
-  "scripts": {
-    "lint": "npm run lint:js && npm run lint:md",
-    "lint:js": "eslint user.js",
-    "lint:js:fix": "eslint user.js --fix",
-    "lint:md": "markdownlint *.md **/*.md",
-    "lint:md:fix": "markdownlint *.md **/*.md --fix",
-    "lint:fix": "npm run lint:js:fix && npm run lint:md:fix",
-    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\""
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "markdownlint-cli": "^0.37.0"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint"
-    ],
-    "*.md": [
-      "markdownlint"
-    ]
-  }
+    "name": "userscripts",
+    "version": "1.0.0",
+    "description": "My homemade Tampermonkey userscripts",
+    "license": "GPL-3.0",
+    "author": "Kevin GRILLET",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kevingrillet/Userscripts.git"
+    },
+    "scripts": {
+        "lint": "npm run lint:js && npm run lint:md",
+        "lint:js": "eslint user.js",
+        "lint:js:fix": "eslint user.js --fix",
+        "lint:md": "markdownlint *.md **/*.md",
+        "lint:md:fix": "markdownlint *.md **/*.md --fix",
+        "lint:fix": "npm run lint:js:fix && npm run lint:md:fix",
+        "format": "prettier --write \"**/*.{js,json,md}\"",
+        "format:check": "prettier --check \"**/*.{js,json,md}\"",
+        "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\""
+    },
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.2.0",
+        "markdownlint-cli": "^0.37.0",
+        "prettier": "^3.8.0"
+    },
+    "lint-staged": {
+        "*.js": [
+            "prettier --write",
+            "eslint"
+        ],
+        "*.md": [
+            "prettier --write",
+            "markdownlint"
+        ],
+        "*.json": [
+            "prettier --write"
+        ]
+    }
 }

@@ -80,9 +80,9 @@ git commit --no-verify
 1. Make your changes
 2. Run linting tools:
 
-   ```bash
-   npm run lint
-   ```
+    ```bash
+    npm run lint
+    ```
 
 3. Fix any errors
 4. Commit your changes

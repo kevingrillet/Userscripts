@@ -36,13 +36,13 @@ github.com; .application-main; #ffffff
 
     // Events definition with dates (month/day)
     const EVENTS = [
-        { name: 'christmas', month: 12, day: 25, window: 7 },       // Noël ± 7 jours
-        { name: 'newyear', month: 1, day: 1, window: 3 },           // Nouvel an ± 3 jours
-        { name: 'chandeleur', month: 2, day: 2, window: 3 },        // Chandeleur ± 3 jours
-        { name: 'valentine', month: 2, day: 14, window: 3 },        // Saint-Valentin ± 3 jours
-        { name: 'aprilfools', month: 4, day: 1, window: 1 },        // Poisson d'avril ± 1 jour
-        { name: 'musicday', month: 6, day: 21, window: 3 },         // Fête de la musique ± 3 jours
-        { name: 'halloween', month: 10, day: 31, window: 7 },       // Halloween ± 7 jours
+        { name: 'christmas', month: 12, day: 25, window: 7 }, // Noël ± 7 jours
+        { name: 'newyear', month: 1, day: 1, window: 3 }, // Nouvel an ± 3 jours
+        { name: 'chandeleur', month: 2, day: 2, window: 3 }, // Chandeleur ± 3 jours
+        { name: 'valentine', month: 2, day: 14, window: 3 }, // Saint-Valentin ± 3 jours
+        { name: 'aprilfools', month: 4, day: 1, window: 1 }, // Poisson d'avril ± 1 jour
+        { name: 'musicday', month: 6, day: 21, window: 3 }, // Fête de la musique ± 3 jours
+        { name: 'halloween', month: 10, day: 31, window: 7 }, // Halloween ± 7 jours
     ];
 
     // Calculate Easter date (Computus algorithm)
@@ -112,12 +112,12 @@ github.com; .application-main; #ffffff
             // Skip comments and empty lines
             if (!trimmed || trimmed.startsWith('#')) continue;
 
-            const parts = trimmed.split(';').map(p => p.trim());
+            const parts = trimmed.split(';').map((p) => p.trim());
             if (parts.length >= 2) {
                 configs.push({
                     baseUrl: parts[0],
                     selector: parts[1],
-                    color: parts[2] || 'white'
+                    color: parts[2] || 'white',
                 });
             }
         }
@@ -347,10 +347,7 @@ github.com; .application-main; #ffffff
     // Edit configuration
     function editConfig() {
         const currentConfig = GM_getValue(CONFIG_KEY, DEFAULT_CONFIG);
-        const newConfig = prompt(
-            'Edit seasonal decorations configuration:\nFormat: baseurl; selector; color\n(One per line, # for comments)',
-            currentConfig
-        );
+        const newConfig = prompt('Edit seasonal decorations configuration:\nFormat: baseurl; selector; color\n(One per line, # for comments)', currentConfig);
 
         if (newConfig !== null) {
             GM_setValue(CONFIG_KEY, newConfig);
@@ -363,7 +360,7 @@ github.com; .application-main; #ffffff
         const currentMode = GM_getValue(DEBUG_MODE_KEY, false);
         const newMode = !currentMode;
         GM_setValue(DEBUG_MODE_KEY, newMode);
-        
+
         if (newMode) {
             alert('Debug mode enabled! Snowflakes will appear on configured sites.\nReload the page to see decorations.');
         } else {
@@ -376,7 +373,7 @@ github.com; .application-main; #ffffff
         // Register menu commands
         const debugMode = GM_getValue(DEBUG_MODE_KEY, false);
         const debugModeLabel = debugMode ? '✅ Debug Mode: ON' : '❌ Debug Mode: OFF';
-        
+
         GM_registerMenuCommand('⚙️ Edit Seasonal Decorations Config', editConfig);
         GM_registerMenuCommand(debugModeLabel + ' (Toggle)', toggleDebugMode);
 
@@ -390,11 +387,11 @@ github.com; .application-main; #ffffff
         // Wait for element to be available
         let attempts = 0;
         const maxAttempts = 20; // 10 seconds (20 * 500ms)
-        
+
         const checkElement = setInterval(() => {
             attempts++;
             const element = document.querySelector(config.selector);
-            
+
             if (element) {
                 clearInterval(checkElement);
                 addDecorations(element, config.color);

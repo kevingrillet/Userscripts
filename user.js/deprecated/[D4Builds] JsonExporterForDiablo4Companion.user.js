@@ -99,7 +99,7 @@
                 // console.debug(result);
                 console.debug(JSON.stringify(result, null, 2));
             },
-            'd'
+            'd',
         );
     }
 
@@ -114,7 +114,7 @@
 
                     // Get the slot element
                     const slotElement = Array.from(document.querySelectorAll('.stats__slot')).find(
-                        (slot) => slot.querySelector('.stats__slot__name').textContent === slotName
+                        (slot) => slot.querySelector('.stats__slot__name').textContent === slotName,
                     );
 
                     if (slotElement) {
@@ -161,7 +161,7 @@
 
                 console.debug(JSON.stringify(result, null, 2));
             },
-            'a'
+            'a',
         );
     }
 })();

@@ -24,7 +24,7 @@
 // @run-at        document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // ==== Test USConfigManager ====
@@ -32,14 +32,14 @@
     const DEFAULT_CONFIG = {
         visitCount: 0,
         backgroundColor: '#4CAF50',
-        showCounter: true
+        showCounter: true,
     };
 
     // Initialiser le gestionnaire de configuration
     const config = USConfigManager.init({
         scriptKey: 'visitCounter',
         scriptName: 'Compteur de visites',
-        defaultConfig: DEFAULT_CONFIG
+        defaultConfig: DEFAULT_CONFIG,
     });
 
     // ==== Test USLogger ====
@@ -52,7 +52,7 @@
         notifyPosition: 'top-right', // Différent du compteur pour éviter la superposition
         notifyDuration: 8000,
         maxNotifications: 5,
-        animate: true
+        animate: true,
     });
 
     // Log l'état initial
@@ -88,10 +88,10 @@
                 cursor: pointer !important;
             `;
             counter.textContent = `Visites: ${config.visitCount}`;
-            
+
             // Ajouter un événement click pour tester les erreurs
             counter.addEventListener('click', () => {
-                throw new Error('Test d\'erreur sur clic du compteur');
+                throw new Error("Test d'erreur sur clic du compteur");
             });
 
             document.body.appendChild(counter);
@@ -114,7 +114,7 @@
             USLogger.error(error, 'Erreur avec contexte:', {
                 config: config,
                 page: window.location.href,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
             });
         }
 
@@ -124,9 +124,9 @@
             nested: {
                 a: 1,
                 b: '2',
-                c: true
+                c: true,
             },
-            date: new Date()
+            date: new Date(),
         });
     }
 

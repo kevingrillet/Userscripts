@@ -218,7 +218,7 @@ function addMenu() {
     </span>
     <span>
     <a class="my_search" href="https://www.google.com/search?q=${encodeURI(
-        document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText
+        document.querySelector(CST_CLASS_TITLE).firstElementChild.innerText,
     )}" target="_blank" title="Search (F)" ><i class="fas fa-fw fa-search" ></i></a>
     </span>
     </br>

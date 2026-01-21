@@ -398,7 +398,7 @@ async function exportBmManganato(bExport = true, bOpenNewTab = false) {
                         TitleViewed: currPageBMs[j].chapter_namenow,
                         TitleCurrent: currPageBMs[j].chapterlastname,
                         LastUpdate: new Date(
-                            Date.parse(currPageBMs[j].chapterlastdateupdate) ? Date.parse(currPageBMs[j].chapterlastdateupdate) : Date.now()
+                            Date.parse(currPageBMs[j].chapterlastdateupdate) ? Date.parse(currPageBMs[j].chapterlastdateupdate) : Date.now(),
                         ).toLocaleDateString('ja-JP', {
                             year: 'numeric',
                             month: '2-digit',
@@ -431,7 +431,7 @@ async function exportBmManganato(bExport = true, bOpenNewTab = false) {
             console.debug(`${urls}`);
 
             if (bOpenNewTab === true) {
-                arrayBm.slice(0, 10).forEach((item) =>  window.open(item.LinkViewed, '_blank'));
+                arrayBm.slice(0, 10).forEach((item) => window.open(item.LinkViewed, '_blank'));
             }
         }
     }

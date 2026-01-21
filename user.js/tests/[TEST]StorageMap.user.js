@@ -38,9 +38,7 @@
 
     function clean_values() {
         console.log('Clean');
-        map = new Map(
-            [...map].filter(([_, value]) => value > 0)
-        );
+        map = new Map([...map].filter(([_, value]) => value > 0));
         update_array();
     }
 
