@@ -36,6 +36,8 @@ For contributing guidelines, coding standards, and pre-commit hooks information,
     - [IMDB - Google Search with Custom Suffix](#imdb---google-search-with-custom-suffix)
 - [Instagram](#instagram)
     - [Instagram - Tweaks](#instagram---tweaks)
+- [KamaMaster](#kamamaster)
+    - [KamaMaster - Leveling Resources Tracker](#kamamaster---leveling-resources-tracker)
 - [MangaDemon](#mangademon)
     - [MangaDemon - Tweaks (Scan)](#mangademon---tweaks-scan)
     - [MangaDemonGame - Tweaks (Game)](#mangademongame---tweaks-game)
@@ -116,6 +118,19 @@ Remove the ads at the beginning of some searches.
 - Open multiple links from a pasted CSV directly in new tabs.
 - Merge two CSV exports (removes duplicates, sorts, re-downloads).
 - Compare two CSVs (diff mode: items in second file that are not in the first).
+
+## KamaMaster
+
+### KamaMaster - Leveling Resources Tracker
+
+[![KamaMaster - Leveling Resources Tracker](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[KamaMaster]%20Leveling%20Resources%20Tracker.user.js)
+
+- Displays a summary panel of all resources needed for Dofus profession leveling on KamaMaster
+- Auto-updates when you calculate new levels
+- Click to mark resources as purchased (grayed out, crossed)
+- Shift+Click to copy resource name to clipboard
+- Shows total estimated cost
+- Resources sorted by quantity (highest first)
 
 ## MangaDemon
 
