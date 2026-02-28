@@ -188,9 +188,10 @@ Highlight mods that have been updated since your last download
 Improves the print layout of Steam Community guides:
 
 - Hides navigation bar, sidebar, breadcrumbs, comments and footer
-- Makes guide content full-width on white background
+- Makes guide content full-width
 - Readable typography with proper page breaks
 - Shows link URLs in print
+- Toggleable light/dark print theme via Tampermonkey menu (preference saved)
 
 ### Steam - Steam Search
 
