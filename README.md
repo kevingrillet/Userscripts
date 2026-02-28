@@ -47,6 +47,7 @@ For contributing guidelines, coding standards, and pre-commit hooks information,
 - [PokéClicker](#pokeclicker)
     - [PokéClicker - Tweaks](#pokeclicker---tweaks)
 - [Steam](#steam)
+    - [Steam - Guide Print](#steam---guide-print)
     - [Steam - Steam Search](#steam---steam-search)
 - [StreamHunters](#streamhunters)
     - [StreamHunters - Tweaks](#streamhunters---tweaks)
@@ -179,6 +180,17 @@ Highlight mods that have been updated since your last download
 - Various QoL improvements
 
 ## Steam
+
+### Steam - Guide Print
+
+[![Steam - Guide Print](https://img.shields.io/badge/Install-green.svg?logo=tampermonkey&style=for-the-badge)](https://raw.githubusercontent.com/kevingrillet/Userscripts/main/user.js/[Steam]%20Guide%20Print.user.js)
+
+Improves the print layout of Steam Community guides:
+
+- Hides navigation bar, sidebar, breadcrumbs, comments and footer
+- Makes guide content full-width on white background
+- Readable typography with proper page breaks
+- Shows link URLs in print
 
 ### Steam - Steam Search
 
